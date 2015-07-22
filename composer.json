@@ -1,0 +1,27 @@
+{
+    "name": "styde/html",
+    "description": "Build form fields, menus, alert messages and other view components quickly",
+    "authors": [
+        {
+            "name": "Duilio Palacios",
+            "email": "admin@styde.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/support": "5.*",
+        "laravelcollective/html": "5.*"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "~2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Styde\\Html\\": "src/"
+        },
+        "files": [
+          "src/helpers.php"
+        ]
+    },
+    "minimum-stability": "stable"
+}

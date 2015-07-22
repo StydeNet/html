@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: Styde\Html
+        psr4_prefix: Styde\Html
+        src_path: src
