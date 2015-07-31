@@ -15,7 +15,7 @@ Begin by installing this package through Composer. Do this either by running `co
 
 Next, add your new provider to the `providers` array of `config/app.php`
 
-```
+```php
   'providers' => [
     // ...
     'Styde\Html\HtmlServiceProvider',
@@ -27,7 +27,7 @@ Finally, add two class aliases to the `aliases` array of `config/app.php`
 
 
 
-```
+```php
   'aliases' => [
     // ...
     'Styde\Html\HtmlServiceProvider',
@@ -47,7 +47,26 @@ Since this package is largely using [LaravelCollective/Html](https://github.com/
 
 ### Form functionality (Field builder)
 
+you can use the form/field builder for generation of just about any kind of form element. The form builder extends Laravel Collective's form builder. Hence, any method you can use on that form builder can be used in this package too. However, this form builder adds a few new input types, as well as the output not only of the fields, but the html as however is structured in the theme. You can access the field builder through the `Field` facade.
+
 ### Access handler
+
+This package includes rudimentary access management through the `AccessHandler` interface. By default, a basic implementation is provided with the package. Using the access handler, you can use the check method for some level of user control. The check method will search for one of these options, in the following and only one option will be used to check if the user has access:
+
+1. callback (should return true if access is granted, false otherwise)
+2. logged (true: requires authenticated user, false: requires guest user)
+3. role (true if the user has any of the required roles)
+4. Returns true if no security options are set.
+
+**Example in Blade:**
+
+```
+@if (Access::check('roles' => 'owner')
+	{!! Field::text('super-secure', null, ['label' => 'Type yes to delete site']) !!}
+@endif
+```
+
+This will check that the user has the owner role. However, you have to implement the role system yourself, this will merely check for the available roles and see if the current user has that role.
 
 ### Alert messages
 
