@@ -6,7 +6,7 @@ So instead of adding a lot of HTML and Blade boilerplate code, you can use this 
 
 To generate a menu simply add the following code in your layout's template:
 
-`{!! Menu::make('items.here') !!}`
+`{!! Menu::make('items.here', 'optional css classes') !!}`
 
 `'items.here'` can be an array or a configuration key (that contains an array), there you will specify the menu items, for example:
 

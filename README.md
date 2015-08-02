@@ -108,6 +108,16 @@ To generate a menu simply add the following code in your layout's template:
 
 [Learn more about the menu generator](docs/menu-generator.md)
 
+### HTML builder
+
+### Helpers
+
+In addition of using the facade methods `Alert::message` and `Menu::make`, you can use:
+
+`alert('this is the message', 'type')`
+
+`menu($items, $classes)`
+
 ### Access handler
 
 ## Themes
