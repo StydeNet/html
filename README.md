@@ -23,7 +23,17 @@ This is an extension of the Laravel Collective [HTML package](https://github.com
   ],
 ```
 
-3. Add the following middleware to the `$middleware` array in `app/Http/Kernel.php` **BEFORE** the `\App\Http\Middleware\EncryptCookies` class: `\Styde\Html\Alert\Middleware::class`. This middleware is needed to persist the alert messages after each request is completed.
+3. Add the following middleware to the `$middleware` array in `app/Http/Kernel.php` **BEFORE** the `\App\Http\Middleware\EncryptCookies`: 
+
+```
+protected $middleware = [
+    //...
+    \Styde\Html\Alert\Middleware::class
+    //...
+];
+```
+
+This middleware is needed to persist the alert messages after each request is completed.
 
 And this is it.
 
@@ -68,6 +78,23 @@ For this:
 ### Forms
 
 ### Alert messages
+
+This component will allow you to generate complex alert messages.
+
+ ```
+        Alert::info('Your account is about to expire')
+            ->details('Renew now to learn about:')
+            ->items([
+                'Laravel',
+                'PHP,
+                'And more',
+            ])
+            ->button('Renew now!', '#', 'primary');
+```
+
+`{!! Alert::render() !!}`
+
+[Learn more about the alert component](docs/alert-messages.md)
 
 ### Menu generator
 
