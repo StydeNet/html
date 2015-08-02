@@ -9,11 +9,11 @@ This package contains a collection of Laravel PHP classes designed to generate c
 
 This is an extension of the Laravel Collective [HTML package](https://github.com/laravelcollective/html) and will be very useful for you if you are working in a custom CMS, an admin panel or basically any project that needs to generate dynamic HTML.
 
-## Quickstart
+## How to install
 
-Begin by installing this package through Composer. Do this either by running `composer require styde/html ~1.0` or adding `styde/html: ~1.0` to your `composer.json` and running `composer update`.
+1. You can install this package through Composer. Do this either by running `composer require styde/html ~1.0` or adding `styde/html: ~1.0` to your `composer.json` and running `composer update`.
 
-Next, add your new provider to the `providers` array of `config/app.php`
+2. Next, add your new provider to the `providers` array of `config/app.php`
 
 ```
   'providers' => [
@@ -23,18 +23,24 @@ Next, add your new provider to the `providers` array of `config/app.php`
   ],
 ```
 
-Finally, add two class aliases to the `aliases` array of `config/app.php`
+3. Add the following middleware to the `$middleware` array in `app/Http/Kernel.php` **BEFORE** the `\App\Http\Middleware\EncryptCookies` class: `\Styde\Html\Alert\Middleware::class`. This middleware is needed to persist the alert messages after each request is completed.
 
+And this is it.
 
+Please notice that the following aliases will be added automatically (you don't need to add them manually):
+
+```
+    'Alert'	=> Styde\Html\Facades\Alert,
+    'Field'	=> Styde\Html\Facades\Field,
+    'Menu'	=> Styde\Html\Facades\Menu,
+```
+
+If you plan to use the Access Handler as a standalone class, please add this alias:
 
 ```
   'aliases' => [
     // ...
-    'Styde\Html\HtmlServiceProvider',
-    'Access'	=> Styde\Html\Facades\Access,
-    'Alert'	=> Styde\Html\Facades\Alert,
-    'Field'	=> Styde\Html\Facades\Field,
-    'Menu'	=> Styde\Html\Facades\Menu,
+    'Access' => Styde\Html\Facades\Access,
     // ...
   ],
 ```
@@ -45,13 +51,27 @@ Optionally, you may also run `php artisan vendor:publish --provider='Styde\Html\
 
 Since this package is largely using [LaravelCollective/Html](https://github.com/laravelcollective/html), following their documentation is perfectly sufficient for base functionality such as forms and fields.
 
-### Form functionality (Field builder)
+### Form Field builder
 
-### Access handler
+This component will allow you to generate complete form fields (not just inputs or selects) with one line of code.
+
+If you have used the Laravel Collective HTML component before, you already know how to use the basics of this component; simply replace the alias “Form” for “Field”, for example, replace:
+
+`{!! Form::text(‘name’, ‘value’, $attributes) !!}`
+
+For this:
+
+`{!! Field::text(‘name’, ‘value’, $attributes) !!}`
+
+[Learn more about the field builder](docs/field-builder.md)
+
+### Forms
 
 ### Alert messages
 
 ### Menu generator
+
+### Access handler
 
 ## Themes
 
