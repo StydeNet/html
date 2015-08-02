@@ -71,6 +71,16 @@ For this:
 
 ### Menu generator
 
+Menus are not static elements, you either need to mark the active section, translate items, generate dynamic URLs or show/hide options only for certain users.
+
+So instead of adding a lot of HTML and Blade boilerplate code, you can use this component to generate dynamic menus styled for your current CSS framework.
+
+To generate a menu simply add the following code in your layout's template:
+
+`{!! Menu::make('items.here') !!}`
+
+[Learn more about the field builder](docs/menu-generator.md)
+
 ### Access handler
 
 ## Themes
