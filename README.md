@@ -79,7 +79,7 @@ To generate a menu simply add the following code in your layout's template:
 
 `{!! Menu::make('items.here') !!}`
 
-[Learn more about the field builder](docs/menu-generator.md)
+[Learn more about the menu generator](docs/menu-generator.md)
 
 ### Access handler
 
