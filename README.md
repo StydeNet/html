@@ -110,6 +110,14 @@ To generate a menu simply add the following code in your layout's template:
 
 ### HTML builder
 
+Generate CSS classes:
+
+`{!! Html::classes(['home' => true, 'main', 'dont-use-this' => false]) !!}`
+
+Returns: ` class="home main"`.
+
+[Learn more about the html builder](docs/html-builder.md)
+
 ### Helpers
 
 In addition of using the facade methods `Alert::message` and `Menu::make`, you can use:
@@ -118,9 +126,11 @@ In addition of using the facade methods `Alert::message` and `Menu::make`, you c
 
 `menu($items, $classes)`
 
-### Access handler
+## Access handler
 
 ## Themes
+
+## Internationalization
 
 ## Readme in progress
 
