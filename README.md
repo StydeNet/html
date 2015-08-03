@@ -61,6 +61,12 @@ Optionally, you may also run `php artisan vendor:publish --provider='Styde\Html\
 
 Since this package is largely using [LaravelCollective/Html](https://github.com/laravelcollective/html), following their documentation is sufficient for base functionality such as forms and fields.
 
+## Test this package
+
+This package is well documented and unit tested, however there is also another repository that includes integration tests and several routes, so you can test and watch the component in action without the need to create a new repository or adding it to your project. 
+
+[Go to the sandbox repository](https://github.com/StydeNet/html-integration-tests)
+
 ## Configuration
 
 This package was created with configuration in mind, if this is the first time you will use this package, you can just simply run:
