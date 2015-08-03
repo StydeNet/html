@@ -77,11 +77,48 @@ For this:
 
 ### Forms
 
+This package extends the functionality of the Laravel Collective's Form Builder
+
+#### novalidate
+
+Deactivate the HTML5 validation in the configuration, ideal for local or development environments
+
+```
+return [
+    'novalidate' => true
+];
+```
+
+#### radios
+
+Generate a collection of radios:
+
+`{!! i.e. Form::radios('status', ['a' => 'Active', 'i' => 'Inactive']) !!}`
+
+#### checkboxes
+
+Generate a collection of checkboxes
+
+```
+$tags = [
+    'php' => 'PHP',
+    'python' => 'Python',
+    'js' => 'JS',
+    'ruby' => 'Ruby on Rails'
+];
+
+$checked = ['php', 'js'];
+```
+
+`{!! Form::checkboxes('tags', $tags, $checked) !!}`
+
+[Learn more about the form builder](docs/form-builder.md)
+
 ### Alert messages
 
 This component will allow you to generate complex alert messages.
 
- ```
+```
         Alert::info('Your account is about to expire')
             ->details('Renew now to learn about:')
             ->items([
@@ -110,7 +147,9 @@ To generate a menu simply add the following code in your layout's template:
 
 ### HTML builder
 
-Generate CSS classes:
+This package extends the functionality of the Laravel Collective's HTML Builder
+
+####Generate CSS classes:
 
 `{!! Html::classes(['home' => true, 'main', 'dont-use-this' => false]) !!}`
 
@@ -127,6 +166,18 @@ In addition of using the facade methods `Alert::message` and `Menu::make`, you c
 `menu($items, $classes)`
 
 ## Access handler
+
+Sometimes you want to show or hide certain menu items, form fields, etc. for certain users, with this component you can do it without the need of conditionals or a lot of boiler plate code, just pass one of the following options as a field's attributes or menu item values.
+
+1. callback: should return true if access is granted, false otherwise.
+2. logged: true: requires authenticated user, false: requires guest user.
+3. role: true if the user has any of the required roles.
+
+i.e.: 
+
+`{!! Field::select('user_id', null, ['role' => 'admin'])`
+
+[Learn more about the access handler](docs/access-handler.md)
 
 ## Themes
 
