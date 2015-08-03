@@ -31,7 +31,7 @@ For example:
 Alert::message('The end is near', 'danger');
 ```
 
-You can also use magic methods, the name of the method become the alert type:
+You can also use magic methods, the name of the method then becomes the alert type:
 
 ```
 Alert::success("It's all good now");
@@ -91,14 +91,17 @@ By default the alert messages will be persisted using the Laravel's session comp
 
 ## Translations
 
-If the `'translate_texts'` options is set to true in the configuration (it's true by default), the alert component will attempt to translate all the messages, using the `$message` value as a lang key, if it is not sucessful it will return the plain message.
+If the `'translate_texts'` options is set to true in the configuration (it's true by default), the alert component will attempt to translate all the messages, using the `$message` value as a lang key, if the language key is not found, it will return the literal string.
  
-If you don't want to use the translator component (and save some miliseconds) just set translate_texts to false in the configuration:
+If you don't need to use the translator component, just set translate_texts to false in the configuration:
 
 ```
-//...
-'translate_texts' => false
-//...
+//config/html.php
+return [
+    //...
+    'translate_texts' => false
+    //...
+];
 ```
 
 ## Themes

@@ -11,7 +11,9 @@ return [
 ];
 ```
 
-But if your project needs to implement more than one language or you want to organize all the texts in one place instead of hardcoding them in the controllers, views, etc. leave `'translate_texts'` as `true`.
+But if your project needs to implement more than one language or you want to organize all the texts in one place instead of hardcoding them in the controllers, views, etc. set `'translate_texts'` to `true`.
+
+*Note:* The Field Builder will always attempt to translate texts.
 
 ## Translating alert messages
 
@@ -21,13 +23,13 @@ If the `'translate_texts'` is set to `true`, this component will assume that all
 Alert::success('messages.users.updated')
 		->button('messages.users.go_to_profile', url('users/profile'))
 ```
-Of course is the lang key is not found, this will return the default text.
+Of course is the lang key is not found, it will return the literal string (so you can also pass the full message instead of a lang key).
 
 [Learn more about the alert component](docs/alert-messages.md)
 
 ## Translating menu items
 
-If the `'translate_texts'` is set to `true`, and you don't specify an explicit title for a menu item; the component will search for a lang key in: `menu.[menu_item_key]` if this key is not found, the package will attempt to convert the menu item key in a title format. For example:
+If the `'translate_texts'` is set to `true`, and you don't specify an explicit title for a menu item; the component will search for a lang key in: `menu.[menu_item_key]` if the key is not found, the package will attempt to convert the menu item key in a title format. For example:
 
 ```
 //resources/lang/en/menu.php
@@ -62,7 +64,7 @@ Will return something like:
 Notice that:
  
 * "Homepage" is taken from the menu key "menu.home".
-* "Who we are" is explicit defined (not translation is attempted)
+* "Who we are" is explicit defined (no translation is attempted)
 * "Contact us" is generated from the key "contact-us" (since no lang key is provided)
 
 [Learn more about the menu generator](docs/menu-generator.md)

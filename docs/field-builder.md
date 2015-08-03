@@ -1,6 +1,6 @@
 # Field (FieldBuilder)
 
-This component will allow you to generate complete form fields (not just inputs or selects) with one line of code.
+This component will allow you to generate the entire markup for form fields with one line of code.
 
 If you have used the Laravel Collective HTML component before, you already know how to use the basics of this component; simply replace the alias “Form” for “Field”, for example, replace:
 
@@ -12,13 +12,13 @@ For this:
 
 This will generate a field including the container, the label, the control and any errors associated with it.
 
-The fields will be generated with the right markup for **Twitter Bootstrap** (but you can also publish and customize the templates).
+The fields will be generated with the **Twitter Bootstrap** markup out of the box (but you can also publish and customize the templates).
 
 There are also a lot of convenient options and handy fallbacks:
 
 ##Skip value argument
 
-If you want to leave the value argument as `null` but you want to pass the array of `$attributes`, you can simply skip the second argument. i.e. this:
+If you don't want to pass a value argument (`null`) but you want to pass the array of `$attributes`, you can  skip the second argument. i.e. this:
 
 `{!! Field::text(‘name’, $attributes) !!}`
 
@@ -29,17 +29,17 @@ Is the same as:
 
 ##Labels:
 
-You can explicitly pass the label for this field as part of the attributes array, i.e.:
+You can explicitly pass a label for a field as part of the attributes array, i.e.:
 
 `{!! Field::text(’name’, [‘label’ => ‘Full name’]) !!}`
 
 As a second option, you can store the labels in the lang/ folder with the same convention used to store the attribute's names for the validation errors:
 
-validation.attributes.*name_of_the_attribute*.
+validation.attributes.[name_of_the_attribute].
 
 (This way you can store all the form labels in one place)
 
-If you skip both options, then the FieldBuilder will try its best to guess the label text based on the name of the field. i.e.:
+If you skip both options, then the FieldBuilder will generate a label based on the name of the field. i.e.:
 
 `full_name` will show "Full name" as the default label.
 
@@ -53,7 +53,7 @@ But you have options to customize the template used for a particular type or fie
 
 ###Customize by type
 
-Some CSS frameworks (like Bootstrap) need different markup for different form field types, so you can use the configuration to assign a different template to a particular field type, like this:
+Some CSS frameworks (like Bootstrap) need different markups for different form field types, so you can use the configuration to assign a different template to a particular field type, like this:
 
 ```
 	'themes' => [
@@ -71,7 +71,7 @@ With this configuration, the "checkbox" fields will use the `vendor/styde/html/t
 
 As you can see, the configuration for this is theme specific, as each CSS framework have different specifications.
 
-Of course, you'd only have to worry for the theme you actually need, so if you don't plan to use Bootstrap, you can erase/skip the Bootstrap configuration.
+Note: you'd only have to worry for the theme you actually need, so if you don't plan to use Bootstrap, you can erase/skip the Bootstrap configuration.
 
 ###Customize for a particular field
 
@@ -85,7 +85,7 @@ The path will be relative to the resources/views/ directory.
 
 If you want to customize the default templates, just run: `php artisan vendor:publish` in the console, all the templates will be copied to the `resources/views/themes/[theme]/fields/` folder.
 
-Otherwise, the package will use the default templates (stored in /vendor/styde/html/themes/) so you don’t need to copy the extra files into your project. 
+Otherwise, the package will use the default templates (stored in /vendor/styde/html/themes/) so you don’t need to copy extra files into your project. 
 
 ##name attribute:
 
@@ -107,7 +107,7 @@ Or as a key => value pair (the field will be marked as required if the value eva
 
 `{!! Field::text(’name’, null, [’required’ => $required]) !!}`
 
-The field templates will always have a ‘required’ var so you can use it to print extra CSS classes or badges, to indicate whether a field is required or optional, i.e.:
+The field templates will always have a ‘required’ variable so you can use it to print extra CSS classes or badges, to indicate whether a field is required or optional, i.e.:
 
 ```
     @if ($required)
@@ -146,7 +146,7 @@ For selects, radios and checkboxes, you can skip the options argument or pass nu
 
 `{!! Field::select('os') !!}` or `{!! Field::select('os', null) !!}`
 
-If there is a model bound to the form, then the FieldBuilder will check if there is a method called: `get[fieldName]Options` in that case it will be called and the returned options will be used, i.e.:
+If there is a model bound to the form, then the FieldBuilder will check if there is a method called: `get[fieldName]Options` in that case, it will be called and the returned value will be used as the options, i.e.:
 
 ```
 class Product extends Model 
@@ -167,7 +167,7 @@ Select fields usually need an empty option, (like "Select something please"), yo
 
 `{!! Field::select('os', null, ['empty' => 'Select your favorite operative system']) !!}`
 
-If you don't pass a 'empty' attribute, then the component will search for one using the translator component.
+If you don't pass an 'empty' attribute, then the component will search for one using the translator component.
 
 First it will search for a custom empty text according to the field's name, following this convention: `"validation.empty_option.[field_name]"`
 
@@ -177,7 +177,7 @@ If that's not found either, it will use an empty string as the empty option.
 
 ##Abbreviations
 
-To save some key strokes, you can use abbreviations instead of the full attribute's names, pass them in the configuration: 
+To save some key strokes, you can use abbreviations instead of the full name of the attributes, pass them in the configuration: 
 
 ```
     /*
@@ -190,13 +190,13 @@ To save some key strokes, you can use abbreviations instead of the full attribut
     ],
 ```
 
-Then you can do this:
+Then you can do things like this:
 
 `{!! Field::text('name', ['ph' => 'This will be the placeholder]) !!}`
 
 ##CSS classes
 
-You can pass custom CSS classes for each field using the 'class' key of the attributes array, also these additional classes will be added:
+You can pass custom CSS classes for each field using the 'class' key of the attributes array, also some additional classes will be added:
 
 ###Default classes (by type)
 
@@ -215,7 +215,7 @@ Using the configuration, you can assign default CSS class for every field accord
             ],
 ```
 
-Of course this is theme specific, since it was impossible to convince all CSS framework creators to use the same classes...
+Of course this is theme specific, since it was impossible to convince all CSS framework authors to use the same classes...
 
 ###CSS class for controls with errors
 
@@ -223,7 +223,9 @@ If a input has errors, an additional CSS class called 'error' will be added, thi
 
 ##Control access
 
-You may want to hide some fields for certain users, you can do this using the Access Handler included with this component... more documentation about this soon.
+You may want to hide some fields for certain users, you can do this using the Access Handler included with this component:
+
+[Learn more about the access handler](docs/access-handler.md)
 
 
 

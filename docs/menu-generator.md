@@ -18,7 +18,7 @@ To generate a menu simply add the following code in your layout's template:
 ]
 ```
 
-Each item in the array will be a menu item, the array key is required and will be used to generate some default options, the value will be an array of options (all of them optional).
+Each item in the array will be a menu item, the array key is required and will be used to generate some default options, each menu item value needs to be an array of options (all of them optional).
 
 You can specify the following options for each menu item:
 
