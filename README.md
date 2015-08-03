@@ -183,11 +183,11 @@ Sometimes you want to show or hide certain menu items, form fields, etc. for cer
 
 1. callback: should return true if access is granted, false otherwise.
 2. logged: true: requires authenticated user, false: requires guest user.
-3. role: true if the user has any of the required roles.
+3. roles: true if the user has any of the required roles.
 
 i.e.: 
 
-`{!! Field::select('user_id', null, ['role' => 'admin'])`
+`{!! Field::select('user_id', null, ['roles' => 'admin'])`
 
 [Learn more about the access handler](docs/access-handler.md)
 

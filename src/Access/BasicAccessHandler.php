@@ -31,7 +31,7 @@ class BasicAccessHandler implements AccessHandler {
      *
      * 1. callback (should return true if access is granted, false otherwise)
      * 2. logged (true: requires authenticated user, false: requires guest user)
-     * 3. role (true if the user has any of the required roles)
+     * 3. roles (true if the user has any of the required roles)
      * 4. Returns true if no security options are set.
      *
      * @param array $options
