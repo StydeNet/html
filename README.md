@@ -59,7 +59,19 @@ Optionally, you may also run `php artisan vendor:publish --provider='Styde\Html\
 
 ## Usage
 
-Since this package is largely using [LaravelCollective/Html](https://github.com/laravelcollective/html), following their documentation is perfectly sufficient for base functionality such as forms and fields.
+Since this package is largely using [LaravelCollective/Html](https://github.com/laravelcollective/html), following their documentation is sufficient for base functionality such as forms and fields.
+
+## Configuration
+
+This package was created with configuration in mind, if this is the first time you will use this package, you can just simply run:
+
+`php artisan vendor:publish --provider='Styde\Html\HtmlServiceProvider'`
+
+to publish all the configuration options to: `config/html.php`, then you can just explore the default options and read the comments.
+  
+Since the default configuration will be merged with the custom configuration, you don't need to publish the configuration or you can just set the values you need to override.  
+
+You'll learn more about different configuration options you have available trough this documentation.
 
 ### Form Field builder
 
@@ -77,7 +89,7 @@ For this:
 
 ### Forms
 
-This package extends the functionality of the Laravel Collective's Form Builder
+This package extends the Laravel Collective's Form Builder with the following functionality:
 
 #### novalidate
 
@@ -181,7 +193,41 @@ i.e.:
 
 ## Themes
 
+There are a lot of CSS (and all kind of) frameworks out there, this package was created with that in mind, and even though Twitter Bootstrap is included out of the box, we plan to add more packages in the future (we also invite you to collaborate) and you can create your own themes, publish and customize all the templates if you need to.
+
+To change and / or customize the theme or the templates, simply run: 
+
+`php artisan vendor:publish`
+
+Then go to `config/html.php` and change the theme value:
+
+```
+//config/html.php
+return [
+    'theme' => 'your-theme-here'
+];
+```
+
+You can edit and/or create new templates in `resources/views/themes/` 
+
+[Learn more about the themes](docs/themes.md)
+
 ## Internationalization
+
+You can configure whether you want this package to attempt to translate texts or not, for example if your project only needs to implement one language, you can deactivate translations in the configuration:
+
+```
+//config/html.php
+return [
+  //...
+  'translate_texts' => false
+  //...
+];
+```
+
+But if your project needs to implement more than one language or you want to organize all the texts in one place instead of hardcoding them in the controllers, views, etc. leave `'translate_texts'` as `true`.
+
+[Learn more about the internationalization](docs/internationalization.md)
 
 ## Readme in progress
 
