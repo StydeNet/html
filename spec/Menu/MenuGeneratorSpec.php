@@ -28,8 +28,8 @@ class MenuGeneratorSpec extends ObjectBehavior
         $url->current()->shouldBeCalled()->willReturn('http://example/about-us');
         $url->to('')->shouldBeCalled()->willReturn('http://example/');
 
-        $url->to('', false)->shouldBeCalled()->willReturn('http://example/');
-        $url->to('about-us', false)->shouldBeCalled()->willReturn('http://example/about-us');
+        $url->to('', [], false)->shouldBeCalled()->willReturn('http://example/');
+        $url->to('about-us', [], false)->shouldBeCalled()->willReturn('http://example/about-us');
 
         // When
         $menu = $this->make([

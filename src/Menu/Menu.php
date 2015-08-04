@@ -470,15 +470,17 @@ class Menu
      * this URL should be secure or not. Otherwise the defaultSecure option will
      * be used.
      *
-     * If you pass a 'route' key then it will call the getRouteAndParameters to
-     * return the route's name and its parameters, then it will call Url::route
+     * If you pass a 'route' key then it will call Url::route
      *
-     * If you pass an 'action' key it'd be processed in a similar way as the
-     * route key, but calling the Url::action method instead.
+     * If you pass an 'action' it will call the Url::action method instead.
+     *
+     * If you need to pass parameters for the url, route or action, just specify
+     * an array where the first position will be the url, route or action name
+     * and the rest of the array will contain the parameters. You can specify
+     * dynamic parameters (see methods above).
      *
      * If none of these options are found then this function will simple return
      * a placeholder (#).
-     *
      *
      * @param $values
      * @return mixed
@@ -490,8 +492,9 @@ class Menu
         }
 
         if (isset($values['url'])) {
-            $isSecure = isset($values['secure']) ? $values['secure'] : $this->defaultSecure;
-            return $this->url->to($values['url'], $isSecure);
+            list($url, $params) = $this->getRouteAndParameters($values['url']);
+            $secure = isset($values['secure']) ? $values['secure'] : $this->defaultSecure;
+            return $this->url->to($url, $params, $secure);
         }
 
         if (isset($values['route'])) {
