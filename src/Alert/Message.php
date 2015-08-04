@@ -64,9 +64,9 @@ class Message
      * @param $details
      * @return \Styde\Html\Alert\Message $this
      */
-    public function details($details)
+    public function details($details, $parameters = array())
     {
-        $this->message['details'] = $details;
+        $this->message['details'] = $this->container->translate($details, $parameters);
         return $this;
     }
 
