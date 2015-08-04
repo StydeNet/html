@@ -25,6 +25,7 @@ class BasicAccessHandlerSpec extends ObjectBehavior
 
     function it_checks_for_roles()
     {
+        $this->check(['roles' => 'admin|editor'])->shouldReturn(true);
         $this->check(['roles' => ['admin', 'editor']])->shouldReturn(true);
         $this->check(['roles' => ['superadmin']])->shouldReturn(false);
     }

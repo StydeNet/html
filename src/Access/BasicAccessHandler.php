@@ -62,6 +62,10 @@ class BasicAccessHandler implements AccessHandler {
      */
     protected function checkRole($allowed)
     {
-        return $allowed === $this->role || in_array($this->role, $allowed);
+        if (!is_array($allowed)) {
+            $allowed = explode('|', $allowed);
+        }
+
+        return in_array($this->role, $allowed);
     }
 }
