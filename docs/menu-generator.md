@@ -162,4 +162,4 @@ The menu will be rendered automatically if you treat `Menu::make` as a string, b
 
 A lot of times is useful to show and hide options for guest, logged or users with certain roles, you can do this using the Access Handler included in this component:
 
-[Learn more about the access handler](docs/access-handler.md)
+[Learn more about the access handler](access-handler.md)

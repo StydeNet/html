@@ -225,7 +225,7 @@ If a input has errors, an additional CSS class called 'error' will be added, thi
 
 You may want to hide some fields for certain users, you can do this using the Access Handler included with this component:
 
-[Learn more about the access handler](docs/access-handler.md)
+[Learn more about the access handler](access-handler.md)
 
 
 
