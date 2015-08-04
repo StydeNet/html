@@ -21,29 +21,6 @@ class String extends Str
     }
 
     /**
-     * Convert a string (title or name) to a SLUG to be used as part of an URL.
-     *
-     * @param $string
-     * @return string
-     */
-    public static function slugify($string)
-    {
-        // transliterate
-        if (function_exists('iconv')) {
-            $string = iconv('utf-8', 'ascii//TRANSLIT', $string);
-        }
-
-        // lowercase
-        $string = strtolower($string);
-
-        $string = preg_replace('/[^a-z0-9-]+/', '-', $string);
-        $string = preg_replace('@\-+@', '-', $string);
-        $string = trim($string, '-');
-
-        return $string;
-    }
-
-    /**
      * Convert text links to HTML links.
      *
      * @param $text

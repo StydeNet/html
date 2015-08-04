@@ -12,16 +12,6 @@ class StringSpec extends ObjectBehavior
         $this->shouldHaveType('Styde\Html\String');
     }
 
-    function it_converts_strings_to_slugs()
-    {
-        $this->slugify('Cadena')->shouldReturn('cadena');
-        $this->slugify('Esto es una cadena')->shouldReturn('esto-es-una-cadena');
-        $this->slugify('Wake up, Neo.')->shouldReturn('wake-up-neo');
-        // It works with accents too!
-        $this->slugify('Oración con acentos')->shouldReturn('oracion-con-acentos');
-        $this->slugify("C'est un éléphant")->shouldReturn('c-est-un-elephant');
-    }
-
     function it_converts_strings_like_field_names_to_titles()
     {
         $this->title('full_name')->shouldReturn('Full name');
