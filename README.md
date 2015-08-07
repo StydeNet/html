@@ -1,17 +1,17 @@
-#StydeNet Html package
+# StydeNet Html package
 
-This package contains a collection of Laravel PHP classes designed to generate common HTML components, like:
+This package contains a collection of Laravel PHP classes designed to generate common HTML components, such as:
 
 * Menus
 * Alert messages
 * Form fields
 * Collection of radios and checkboxes
 
-This is an extension of the Laravel Collective [HTML package](https://github.com/laravelcollective/html) and will be very useful for you if you are working in a custom CMS, an admin panel or basically any project that needs to generate dynamic HTML.
+This is an extension of the Laravel Collective [HTML package](https://github.com/laravelcollective/html) and will be very useful if you are working on a custom CMS, an admin panel or basically any project that needs to generate HTML dynamically.
 
 ## How to install
 
-1. You can install this package through Composer. Do this either by running `composer require styde/html ~1.0` or adding `styde/html: ~1.0` to your `composer.json` and running `composer update`.
+1. The preferred way to install this package is through Composer. Do this by either running `composer require styde/html ~1.0` or adding `styde/html: ~1.0` to your `composer.json` file and then running `composer update`.
 
 2. Next, add the new provider to the `providers` array in `config/app.php`
 
@@ -33,7 +33,7 @@ protected $middleware = [
 ];
 ```
 
-This middleware is needed to persist the alert messages after each request is completed, and this is it.
+This middleware is needed to make the alert messages persistent between sessions, after each request is completed.
 
 Please notice that the following global aliases will be automatically available (you don't need to add them):
 
@@ -43,7 +43,7 @@ Please notice that the following global aliases will be automatically available 
     'Menu'	=> Styde\Html\Facades\Menu,
 ```
 
-In case you plan to use the Access Handler as a standalone class, you need to add this alias:
+If you plan to use the _Access Handler_ as a standalone class, you will need to add the following alias:
 
 ```
   'aliases' => [
@@ -53,25 +53,25 @@ In case you plan to use the Access Handler as a standalone class, you need to ad
   ],
 ```
 
-Optionally, you may also run `php artisan vendor:publish --provider='Styde\Html\HtmlServiceProvider'` to publish the configuration file and explore at own will.
+Optionally, you may also run `php artisan vendor:publish --provider='Styde\Html\HtmlServiceProvider'` to publish the configuration file in `config/html.php` and review its options and values.
 
 ## Usage
 
-Since this package is largely using [LaravelCollective/Html](https://github.com/laravelcollective/html), following their documentation is sufficient for the forms and fields base functionality.
+Since this package is largely using [LaravelCollective/Html](https://github.com/laravelcollective/html), its documentation for forms and fields is applicable to this package.
 
 ## Sandbox
 
-This package is well documented and unit tested; however, there is also another repository that includes integration tests and several routes, so you can clone that repository to watch this component in action in your browser or take a look and run the integration tests (is another way to learn about this component, besides reading this documentation).
+This package aims to stay well documented and unit tested; however, there is another repository that includes integration tests and several routes, so you can clone it to watch the components of this package in action in your browser or run the included integration tests. This is another way to learn how the components work, besides reading the documentation.
 
-[Go to the sandbox repository](https://github.com/StydeNet/html-integration-tests)
+[Check out the sandbox repository](https://github.com/StydeNet/html-integration-tests)
 
 ## Configuration
 
-This package was created with configuration in mind, if you haven't used this component before, you can just simply run:
+This package was created with configuration in mind, if you haven't used this component before, you can simply run:
 
 `php artisan vendor:publish --provider='Styde\Html\HtmlServiceProvider'`
 
-to publish all the configuration options to: `config/html.php`, then you can just explore them and read the comments.
+this will publish all the configuration options to: `config/html.php` file, where you can explore and read the comments to learn more about the configuration options and their values.
   
 Since the default configuration will be merged with the custom configuration, you don't need to publish the entire configuration, you can just set the values you need to override.  
 
