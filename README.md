@@ -23,7 +23,7 @@ This is an extension of the Laravel Collective [HTML package](https://github.com
   ],
 ```
 
-3. Add the following middleware to the `$middleware` array in `app/Http/Kernel.php` **BEFORE** the `\App\Http\Middleware\EncryptCookies`: 
+3. Add the following middleware to the `$middleware` array in `app/Http/Kernel.php` **BEFORE** the `EncryptCookies` middleware: 
 
 ```
 protected $middleware = [
@@ -33,7 +33,7 @@ protected $middleware = [
 ];
 ```
 
-This middleware is needed to persist the alert messages after each request is completed, and this is it.
+This middleware is needed to persist the alert messages after each request is completed.
 
 Please notice that the following global aliases will be automatically available (you don't need to add them):
 
@@ -61,9 +61,11 @@ Since this package is largely using [LaravelCollective/Html](https://github.com/
 
 ## Sandbox
 
-This package is well documented and unit tested; however, there is also another repository that includes integration tests and several routes, so you can clone that repository to watch this component in action in your browser or take a look and run the integration tests (is another way to learn about this component, besides reading this documentation).
+This package is well documented and unit tested; however, there is also another repository that includes integration tests and several demo pages; so if you want to watch this component in action quickly, just clone the following repository and take a look at the `routes.php` or the PHPUnit `tests/` folder:
 
 [Go to the sandbox repository](https://github.com/StydeNet/html-integration-tests)
+
+You can review those examples and tests as another way to learn more about what you can do with this component.
 
 ## Configuration
 
@@ -73,15 +75,15 @@ This package was created with configuration in mind, if you haven't used this co
 
 to publish all the configuration options to: `config/html.php`, then you can just explore them and read the comments.
   
-Since the default configuration will be merged with the custom configuration, you don't need to publish the entire configuration, you can just set the values you need to override.  
+*Note:* Since the default configuration will be merged with the custom configuration, you don't need to publish the entire configuration in every project; instead, just set the values you need to override.  
 
-Read this documentation to learn more about different configuration options this package provides.
+Read this documentation to learn more about the different configuration options this package provides.
 
 ## Form Field builder
 
-This component will allow you to render the full dynamic markup you need for a form field with only one line of code.
+The Field Builder will allow you to render the full dynamic markup you need for each form field with only one line of code.
 
-If you have used the Laravel Collective HTML component before, you already know how to use the basics of this component; simply replace the alias “Form” for “Field”, for example, replace:
+If you have used the Laravel Collective HTML component before, you already know the basics, simply replace the alias “Form” for “Field”, for example, replace:
 
 `{!! Form::text(‘name’, ‘value’, $attributes) !!}`
 
@@ -167,7 +169,7 @@ There's only one extra method _for now_, but it's very useful!
 
 Returns: ` class="home main"`.
 
-[Learn more about the html builder](docs/html-builder.md)
+[Learn more about the HTML builder](docs/html-builder.md)
 
 ### Helpers
 
@@ -181,7 +183,7 @@ In addition of using the facade methods `Alert::message` and `Menu::make`, you c
 
 Sometimes you want to show or hide certain menu items, form fields, etc. for certain users, with this component you can do it without the need of conditionals or a lot of boiler plate code, just pass one of the following options as a field attribute or menu item value.
 
-1. callback: should return true if access is granted, false otherwise.
+1. callback: a function that should return true if access is granted, false otherwise.
 2. logged: true: requires authenticated user, false: requires guest user.
 3. roles: true if the user has any of the required roles.
 
@@ -193,7 +195,9 @@ i.e.:
 
 ## Themes
 
-There are a lot of CSS (in fact, there's a lot of all kind of) frameworks out there, this package was created with that in mind, and even though only Twitter Bootstrap is included out of the box, we plan to add more packages in the future (we also invite you to collaborate) also, it very easy to create your own themes, publish and customize all the templates if you need to.
+There are a lot of CSS frameworks out there, this package was created with that in mind, and even though only Twitter Bootstrap is included out of the box, we plan to add more packages in the future (we also invite you to collaborate).
+
+But you can also create your own themes with ease, or modify the existing one:
 
 To change and / or customize the theme, simply run: 
 
@@ -214,7 +218,9 @@ You can edit and/or create new templates in `resources/views/themes/`
 
 ## Internationalization
 
-You can configure whether you want this package to attempt to translate texts or not. For example, if your project only needs to implement one language, you can deactivate translations in the configuration:
+This package was also created with internationalization in mind.
+
+If you don't plan to use this feature, you can deactivate translations in the configuration
 
 ```
 //config/html.php
@@ -225,10 +231,12 @@ return [
 ];
 ```
 
-But if your project needs to implement more than one language or you want to organize all the texts in one place instead of hardcoding them in the controllers, views, etc. set `'translate_texts'` to `true`.
+But if your project needs to implement more than one language or you want to organize all the texts in `resources/lang/` instead of hard coding them in the controllers, views, etc. set `'translate_texts'` to `true`.
 
 [Learn more about the internationalization](docs/internationalization.md)
 
 ## More documentation
 
-You can find a lot of docblock comments if you dig into the source course, as well as unit tests in the spec/ directory, you can also clone the [integration tests repository](https://github.com/StydeNet/html-integration-tests).
+You can find a lot of comments if you dig into the source course, as well as unit tests in the spec/ directory, you can also clone the [integration tests repository](https://github.com/StydeNet/html-integration-tests).
+
+If you have additional questions, feel free to contact me on Twitter ([@Sileence](https://twitter.com/sileence)) or send me an email to [admin@styde.net](mailto:admin@styde.net).
