@@ -25,7 +25,7 @@ Alert::success('messages.users.updated')
 ```
 Of course is the lang key is not found, it will return the literal string (so you can also pass the full message instead of a lang key).
 
-[Learn more about the alert component](docs/alert-messages.md)
+[Learn more about the alert component](alert-messages.md)
 
 ## Translating menu items
 
@@ -55,7 +55,7 @@ Will return something like:
 
 ```
 <ul>
-    <li><a href="#">Homepage</a></l
+    <li><a href="#">Homepage</a></li>
     <li><a href="#">Who we are</a></li>
     <li><a href="#">Contact us</a></li>
 </ul>
@@ -67,4 +67,4 @@ Notice that:
 * "Who we are" is explicit defined (no translation is attempted)
 * "Contact us" is generated from the key "contact-us" (since no lang key is provided)
 
-[Learn more about the menu generator](docs/menu-generator.md)
+[Learn more about the menu generator](menu-generator.md)
