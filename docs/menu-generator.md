@@ -1,6 +1,6 @@
 # Menus (MenuGenerator)
 
-Menus are not static elements, you either need to mark the active section, translate items, generate dynamic URLs or show/hide options only for certain users.
+Menus are not static elements,  it is often necessary to mark the active section, translate items, generate dynamic URLs or show/hide options only for certain users.
 
 So instead of adding a lot of HTML and Blade boilerplate code, you can use this component to generate dynamic menus styled for your current CSS framework.
 

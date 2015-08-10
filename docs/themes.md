@@ -31,7 +31,7 @@ Maybe you don't need to create or use a new theme and you just simply need to ov
 
 ## Customize templates by field type (field builder)
 
-Are you using a CSS framework that requires a different markup for a particular field type? Don't worry, just read the "configure by type" section of the [ field builder page](gfield-builder.md)
+Are you using a CSS framework that requires a different markup for a particular field type? Don't worry, just read the "Customize by type" section of the [ field builder page](field-builder.md)
 
 ## Pull requests
 
