@@ -173,7 +173,7 @@ First it will search for a custom empty text according to the field's name, foll
 
 If none is found it will search for a default empty option: `"validation.empty_option.default"`
 
-If that's not found either, it will use an empty string as the empty option.
+At last if none of these options is not found, it will use an empty string as the empty option.
 
 ##Abbreviations
 

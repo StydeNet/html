@@ -6,7 +6,7 @@ Construye dinámicamente un atributo de la clase HTML.
 
 Este método es similar al del atributo ng-class de AngularJS.
 
-Puedes especificar una o más clases CSS como una clave y una condición como un valor. Si la condición es true entonces la(s) clase(s) serán usadas, de lo contrario, serán omitidas.  Puedes también establecer clases estáticas (las cuales siempre se van a usar como un valor sin clave).
+Puedes especificar una o más clases CSS como una llave y una condición como un valor. Si la condición es true entonces la(s) clase(s) serán usadas, de lo contrario, serán omitidas.  Puedes también establecer clases estáticas (las cuales siempre se van a usar como un valor sin llave).
 
 Ejemplo:
 

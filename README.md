@@ -61,11 +61,11 @@ Since this package is largely using [LaravelCollective/Html](https://github.com/
 
 ## Sandbox
 
-This package aims to stay well documented and unit tested; however, there is another repository that includes integration tests and several routes, so you can clone it to watch the components of this package in action in your browser or run the included integration tests. This is another way to learn how the components work, besides reading the documentation.
+This package aims to stay well documented and unit tested; however, there is another repository that includes integration tests and several routes, so you can clone it to watch the components of this package in action in your browser or run the included integration tests. 
 
 [Check out the sandbox repository](https://github.com/StydeNet/html-integration-tests)
 
-You can review those examples and tests as another way to learn more about what you can do with this component.
+You can review those examples and tests as another way to learn more about what you can do with this component, besides reading the documentation.
 
 ## Configuration
 
@@ -237,6 +237,6 @@ But if your project needs to implement more than one language or you want to org
 
 ## More documentation
 
-You can find a lot of comments if you dig into the source course, as well as unit tests in the spec/ directory, you can also clone the [integration tests repository](https://github.com/StydeNet/html-integration-tests).
+You can find a lot of comments if you dig into the source code, as well as unit tests in the spec/ directory, you can also clone the [integration tests repository](https://github.com/StydeNet/html-integration-tests).
 
 If you have additional questions, feel free to contact me on Twitter ([@Sileence](https://twitter.com/sileence)) or send me an email to [admin@styde.net](mailto:admin@styde.net).

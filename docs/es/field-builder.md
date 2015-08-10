@@ -1,8 +1,8 @@
 # Field (FieldBuilder)
 
-Este componente permitirá generar el markup completo para los fields del formulario con una línea de código.
+Este componente permitirá generar el markup completo para los campos del formulario con una línea de código.
 
-Si has usado antes el componente Laravel Collective HTML, ya sabes cómo utilizar los conceptos básicos de este componente; simplemente reemplaza el alias “Form” por “Field”, por ejemplo, sustituye:
+Si has usado antes el componente HTML de Laravel Collective, ya sabes cómo utilizar los conceptos básicos de este componente; simplemente reemplaza el alias “Form” por “Field”, por ejemplo, sustituye:
 
 `{!! Form::text(‘name’, ‘value’, $attributes) !!}`
 
@@ -29,7 +29,7 @@ Es lo mismo que:
 
 ##Labels:
 
-Se puede explicítamente pasar un label a un field como parte del array de atributos, es decir: 
+Se puede explicítamente pasar un label a un campo como parte del array de atributos, es decir: 
 
 `{!! Field::text(’name’, [‘label’ => ‘Full name’]) !!}`
 
@@ -39,21 +39,21 @@ validation.atributos.[nombre_del_atributo].
 
 (De esta manera se puede almacenar todas los labels del formulario en un solo lugar)
 
-Si saltas ambas opciones, entonces FieldBuilder generará un label basado en el nombre del field, es decir:
+Si saltas ambas opciones, entonces FieldBuilder generará un label basado en el nombre del campo, es decir:
 
 `full_name` se mostrará "Full name" como el label predeterminado.
 
 ##Templates
 
-Por defecto, los fields serán renderizados con la plantilla predeterminada, ubicada en la carpeta [theme]/fields, por ejemplo, para el tema Bootstrap sería:
+Por defecto, los campos serán renderizados con la plantilla predeterminada, ubicada en la carpeta [theme]/fields, por ejemplo, para el tema Bootstrap sería:
 
 `vendor/styde/html/themes/bootstrap/fields/default.blade.php`
 
-Pero se tiene la opción de personalizar la plantilla usada para un tipo o field particular: 
+Pero se tiene la opción de personalizar la plantilla usada para un tipo o campo particular: 
 
 ###Personalizar por tipo
 
-Algunos frameworks de CSS (como Bootstrap) necesitan diferentes markups para distintas tipos de field, así que para utilizar la configuración que asigna una plantilla diferente a un tipo de field determinado, se hace algo como esto:
+Algunos frameworks de CSS (como Bootstrap) necesitan diferentes markups para distintas tipos de campos, así que para utilizar la configuración que asigna una plantilla diferente a un tipo de campo determinado, se hace algo como esto:
 
 ```
 	'themes' => [
@@ -67,15 +67,15 @@ Algunos frameworks de CSS (como Bootstrap) necesitan diferentes markups para dis
 	//...
 ```
 
-Con esta configuración los fields "checkbox" usarán la plantilla `vendor/styde/html/themes/bootstrap/fields/checkbox.blade.php` por defecto, mientras que los fields "checkboxes" y "radios" utilizará la plantilla `vendor/styde/html/themes/bootstrap/fields/collection.blade.php`.
+Con esta configuración los campos "checkbox" usarán la plantilla `vendor/styde/html/themes/bootstrap/fields/checkbox.blade.php` por defecto, mientras que los campos "checkboxes" y "radios" utilizará la plantilla `vendor/styde/html/themes/bootstrap/fields/collection.blade.php`.
 
 Como puedes ver, la configuración es para este theme en específico, ya que cada framework de CSS tiene especificaciones diferentes.
 
 Nota: sólo tienes que preocuparte por el theme que realmente necesitas, por lo que si no planeas usar Bootstrap, puedes borrar/omitir la configuración `bootstrap`
 
-###Personalizar un field determinado
+###Personalizar un campo determinado
 
-Puedes especificar una `template` personalizada para un solo field a través de `'template key'` del array `$attributes`, así:
+Puedes especificar una `template` personalizada para un solo campo a través de `'template key'` del array `$attributes`, así:
 
 `{!! Field::text(’name’, [’template’ => ’templates/my_template’]) !!}`
 
@@ -83,13 +83,13 @@ La ruta será relativa al directorio resources/views/
 
 ###Personalización de plantillas predeterminadas
 
-Si quieres personalizar las plantillas predeterminadas, sólo corre `php artisan vendor:publish` en la consola y todas las plantillas serán copiadas a la carpeta `resources/views/themes/[theme]/fields/`
+Si quieres personalizar las plantillas predeterminadas, sólo ejecuta `php artisan vendor:publish` en la consola y todas las plantillas serán copiadas a la carpeta `resources/views/themes/[theme]/fields/`
 
 De otra manera, el paquete usará las plantillas predeterminadas (almacenadas en `/vendor/styde/html/themes/`) y no será necesario copiar archivos adicionales dentro del proyecto.
 
 ##Atributo name
 
-Puedes usar la notación de punto como nombre del field, por ejemplo: `profile.twitter` y se transformará a `profile[twitter]`
+Puedes usar la notación de punto como nombre del campo, por ejemplo: `profile.twitter` y se transformará a `profile[twitter]`
 
 ##Atributo id
 
@@ -101,13 +101,13 @@ Puedes especificar un valor 'required' en el array de atributos:
 
 `{!! Field::text(’name’, [’required’]) !!}`
 
-O como un par clave => valor (el field será marcado como `required` si el valor se evalúa como true, es decir:
+O como un par llave => valor (el campo será marcado como `required` si el valor se evalúa como true, es decir:
 
 `$required = true;`
 
 `{!! Field::text(’name’, null, [’required’ => $required]) !!}`
 
-Las plantillas de field siempre tendrán una variable `required` por lo que pueda ser usado para imprimir clases de CSS adicionales o badges, para indicar si un field es necesario u opcional, es decir:
+Las plantillas de campo siempre tendrán una variable `required` por lo que pueda ser usado para imprimir clases de CSS adicionales o badges, para indicar si un campo es necesario u opcional, es decir:
 
 ```
     @if ($required)
@@ -117,9 +117,9 @@ Las plantillas de field siempre tendrán una variable `required` por lo que pued
 
 ##Errores:
 
-Cualquier error de sesión será cargado en el FieldBuilder a través de `HtmlServiceProvider` y se tendrá `$errors` específicos por cada field disponible en la plantilla, también se tendrá una variable `$hasErrors` en caso que el field tenga algún error y se necesite imprimir una clase de CSS adicional, etc.
+Cualquier error de sesión será cargado en el FieldBuilder a través de `HtmlServiceProvider` y se tendrá `$errors` específicos por cada campo disponible en la plantilla, también se tendrá una variable `$hasErrors` en caso que el campo tenga algún error y se necesite imprimir una clase de CSS adicional, etc.
 
-Por ejemplo, con Twitter Bootstrap se necesitará una clase `has-error` en caso que se quiera que los fields del formulario con errores sean coloreados en rojo (tema de UX).
+Por ejemplo, con Twitter Bootstrap se necesitará una clase `has-error` en caso que se quiera que los campos del formulario con errores sean coloreados en rojo (tema de UX).
 
 Este es un extracto de una plantilla personalizada para el theme Bootstrap:
 
@@ -137,7 +137,7 @@ Los inputs, selects, textareas, etc. con errores también tendrán una clase de 
                 //...
 ```
 
-Una vez más, si estás usando Twitter Bootstrap cualquier field con errores tendrá la clase `input-with-feedback`. Esto también es necesario para mostrar el input en color rojo.
+Una vez más, si estás usando Twitter Bootstrap cualquier campo con errores tendrá la clase `input-with-feedback`. Esto también es necesario para mostrar el input en color rojo.
 
 ##Options
 
@@ -168,7 +168,7 @@ Los campos select frecuentemente necesitan una opción empty (como "Selecciona u
 
 Si no se pasa el atributo `'empty'`, entonces el componente buscará uno usando el componente traslator.
 
-Primero, buscará un texto empty personalizado según el nombre del field, siguiendo esta convención: `"validation.empty_option.[field_name]"`
+Primero, buscará un texto empty personalizado según el nombre del campo, siguiendo esta convención: `"validation.empty_option.[field_name]"`
 
 Si no se encuentra ninguno, se buscará la opción empty por defecto: `"validation.empty_option.default"`
 
@@ -180,7 +180,7 @@ Para ahorrar algunas pulsaciones de teclas, puedes utilizar abreviaturas en luga
 
 ```
     /*
-     * Especifica las abreviaturas para los atributos del form field
+     * Especifica las abreviaturas para los atributos del campo del formulario
      */
     'abbreviations' => [
         'ph' => 'placeholder',
@@ -195,11 +195,11 @@ Después se podrán hacer cosas como éstas:
 
 ##Clases de CSS
 
-Se puede pasar clases de CSS personalizadas para cada field usando la clave 'class' del array de atributos, también se pueden agregar clases adicionales:
+Se puede pasar clases de CSS personalizadas para cada campo usando la llave 'class' del array de atributos, también se pueden agregar clases adicionales:
 
 ###Clases predeterminadas (por tipo)
 
-Utilizando la configuración, se puede asignar clases de CSS predeterminadas para cada field según su tipo:
+Utilizando la configuración, se puede asignar clases de CSS predeterminadas para cada campo según su tipo:
 
 ```
     'themes' => [
@@ -222,6 +222,6 @@ Si un input tiene errores, una clase de CSS adicional llamada `error` se agregar
 
 ##Control de acceso
 
-Es posible que desees ocultar algunos fields para ciertos usuarios, esto se puede hacer usando el Access Handler incluído con este componente:
+Es posible que desees ocultar algunos campos para ciertos usuarios, esto se puede hacer usando el Access Handler incluído con este componente:
 
 [Aprender más sobre el access handler](access-handler.md)
