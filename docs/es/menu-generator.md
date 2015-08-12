@@ -8,7 +8,7 @@ Para generar un menú simplemente agrega el siguiente código en la plantilla de
 
 `{!! Menu::make('items.aqui', 'clases css opcionales') !!}`
 
-`'items.aqui'` puede ser un array o una clave de configuración (que contiene un array), donde se especificarán los menu items, por ejemplo:
+`'items.aqui'` puede ser un array o una llave de configuración (que contiene un array), donde se especificarán los menu items, por ejemplo:
 
 ```
 [
@@ -18,7 +18,7 @@ Para generar un menú simplemente agrega el siguiente código en la plantilla de
 ]
 ```
 
-Cada item en el array será un menu item, la clave del array es obligatoria y será usada para generar algunas opciones predeterminadas, cada valor de un menu item necesita ser un array de opciones (todas ellas son opcionales).
+Cada item en el array será un menu item, la llave del array es obligatoria y será usada para generar algunas opciones predeterminadas, cada valor de un menu item necesita ser un array de opciones (todas ellas son opcionales).
 
 Puedes especificar las siguientes opciones para cada menu item:
 
@@ -28,17 +28,17 @@ Por supuesto, esta opción es la parte más importante de cada menu item y por t
 
 ###full_url
 
-Si pasas la clave 'full_url' dentro de la configuración del item, éste lo devolverá como la URL sin ninguna acción adicional, es decir:
+Si pasas la llave 'full_url' dentro de la configuración del item, éste lo devolverá como la URL sin ninguna acción adicional, es decir:
 
 `['full_url' => 'https://styde.net']`
 
 ###url
 
-Puedes pasar una URL relativa usando la clave 'url'. El URL resultante será generado usando el método `UrlGenerator::to`, es decir:
+Puedes pasar una URL relativa usando la llave 'url'. El URL resultante será generado usando el método `UrlGenerator::to`, es decir:
 
 `['url' => 'contact-us']`
 
-También puedes pasar una clave 'secure' para indicar si ese URL particular debe utilizar https o no. Igualmente puedes especificar un valor secure predeterminado usando el método `setDefaultSecure` (false por defecto).
+También puedes pasar una llave 'secure' para indicar si ese URL particular debe utilizar https o no. Igualmente puedes especificar un valor secure predeterminado usando el método `setDefaultSecure` (false por defecto).
 
 `['url' => 'login', 'secure' => 'true']`
 
@@ -50,7 +50,7 @@ Especifica el nombre de una ruta para un menu item:
 
 ###route con parámetros
 
-Puedes establecer una ruta con parámetros pasando un array en vez de un string como el valor de la clave 'route'.
+Puedes establecer una ruta con parámetros pasando un array en vez de un string como el valor de la llave 'route'.
 
 El primer valor será tomado como el nombre de la ruta y los otros serán los parámetros de la ruta.
 
@@ -62,7 +62,7 @@ Especifica una acción para un menu item.
 
 ###action con parámetros
 
-Puedes establecer una acción con parámetros pasando un array en vez de un string como valor de la clave 'action'.
+Puedes establecer una acción con parámetros pasando un array en vez de un string como valor de la llave 'action'.
 
 El primer valor será la acción y los otros serán los parámetros de la acción.
 
@@ -86,11 +86,11 @@ o de esta manera:
 
 ##title
 
-Especifica un título para un menu item usando la clave 'title' en el array de opciones, es decir:
+Especifica un título para un menu item usando la llave 'title' en el array de opciones, es decir:
 
 `['title' => 'Contact me']`
 
-Si el título no es definido y estás usando la opción `translate_texts`, buscará la clave de idioma para el menu item, siguiendo esta convención: `menu.[key]`, por ejemplo: 
+Si el título no es definido y estás usando la opción `translate_texts`, buscará la llave de idioma para el menu item, siguiendo esta convención: `menu.[key]`, por ejemplo: 
 
 ```
 [
@@ -98,19 +98,19 @@ Si el título no es definido y estás usando la opción `translate_texts`, busca
 ]
 ```
 
-En este caso, como title no está definido, buscará la clave de idioma para `menu.home`. 
+En este caso, como title no está definido, buscará la llave de idioma para `menu.home`. 
 
-Si no se encuentra ni la opción title o la clave de idioma, el componente generará un título basado en la clave del menu, es decir, 'home' generará 'Home', 'contact-us' generará 'Contact us', etc.
+Si no se encuentra ni la opción title o la llave de idioma, el componente generará un título basado en la llave del menu, es decir, 'home' generará 'Home', 'contact-us' generará 'Contact us', etc.
 
 [Aprender más sobre traducir textos](internationalization.md)
 
 ##id
 
-La clave del menu item será utilizada por defecto como atributo id del elemento HTML del menú. En caso de necesitar sustituir este comportamiento se puede pasar la opción 'id'.
+La llave del menu item será utilizada por defecto como atributo id del elemento HTML del menú. En caso de necesitar sustituir este comportamiento se puede pasar la opción 'id'.
 
 ##submenu
 
-Se puede especificar una clave submenu y pasar otro array de menu items, así:
+Se puede especificar una llave submenu y pasar otro array de menu items, así:
 
 ```
 [
