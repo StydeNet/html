@@ -303,7 +303,8 @@ class MenuGeneratorSpec extends ObjectBehavior
                 ],
                 'id' => 'pages',
                 'active' => true,
-                'title' => 'Pages'
+                'title' => 'Pages',
+                'url' => '#'
             ]
         ];
         $menu->getItems()->shouldReturn($items);
