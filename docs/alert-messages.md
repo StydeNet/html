@@ -13,7 +13,7 @@ This component will allow you to generate complex alert messages.
             ->button('Renew now!', '#', 'primary');
 ```
 
-The messages will be persisted in the session until they are presented to the user with:
+The messages will persist in the session until they are presented to the user with:
 
 `{!! Alert::render() !!}`
 
@@ -23,7 +23,7 @@ You can generate new alert messages with:
 
 `{!! Alert::message('This is a message', 'alert-type') !!}`
 
-The first argument is the alert message, and the second one is the alert type.
+The first argument is the text of the message, and the second one is the type of alert.
 
 For example:
 
@@ -41,19 +41,19 @@ Alert::success("It's all good now");
 
 You can specify more options by method chaining:
 
-###details
+### details
 
 You can pass a more detailed message chaining the details() method:
 
 `{!! Alert::info('Some info')->details('A more detailed explanation goes here') !!}`
 
-###call to actions
+### call to actions
 
 You can assign buttons to an alert message:
 
 `{!! Alert::info()->button('Call to action', 'some-url', 'primary') !!}`
 
-###html
+### html
 
 You can directly pass HTML to the alert message
 
@@ -61,19 +61,19 @@ You can directly pass HTML to the alert message
 
 Be careful since this won't be escaped
 
-###view
+### view
 
 You can even render a partial inside an alert message:
 
 `{!! Alert::info()->view('partials/alerts/partial') !!}`
 
-###items
+### items
 
 You can pass an array of items (maybe an error list):
 
 `{!! Alert::danger('Please fix these errors')->items($errors) !!}`
 
-##Persist alert messages
+## Persist alert messages
 
 Add the following middleware to the `$middleware` array in `app/Http/Kernel.php` **BEFORE** the `\App\Http\Middleware\EncryptCookies`: 
 
@@ -87,7 +87,7 @@ protected $middleware = [
 
 This middleware is needed to persist the alert messages after each request is completed.
 
-By default the alert messages will be persisted using the Laravel's session component. But you could also create your own implementation.
+By default the alert messages will persist using the Laravel's session component. But you could also create your own implementation.
 
 ## Translations
 

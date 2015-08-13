@@ -85,11 +85,11 @@ Read this documentation to learn more about the different configuration options 
 
 The Field Builder will allow you to render the full dynamic markup you need for each form field with only one line of code.
 
-If you have used the Laravel Collective HTML component before, you already know the basics, simply replace the alias “Form” for “Field”, for example, replace:
+If you have used the Laravel Collective HTML component before, you already know the basics, simply replace the alias “Form” with “Field”, for example, replace:
 
 `{!! Form::text(‘name’, ‘value’, $attributes) !!}`
 
-For this:
+With this:
 
 `{!! Field::text(‘name’, ‘value’, $attributes) !!}`
 
@@ -149,9 +149,9 @@ This component will allow you to generate complex alert messages.
 
 ## Menu generator
 
-Menus are not static elements, you either need to mark the active section, translate items, generate dynamic URLs or show/hide options for certain users.
+Menus are not static elements, sometimes you need to mark the current section, translate items, generate dynamic URLs or show/hide options for certain users.
 
-So instead of adding a lot of HTML and Blade boilerplate code, you can use this component to generate dynamic menus styled for your current CSS framework.
+So instead of adding a lot of HTML and Blade boilerplate code, you can use this component to generate dynamic menus styled for your preferred CSS framework.
 
 To generate a menu simply add the following code in your layout’s template:
 
@@ -165,7 +165,7 @@ This package extends the functionality of the Laravel Collective’s HTML Builde
 
 There’s only one extra method _for now_, but it’s very useful!
 
-####Generate CSS classes:
+#### Generate CSS classes:
 
 `{!! Html::classes([‘home’ => true, ‘main’, ‘dont-use-this’ => false]) !!}`
 
@@ -183,11 +183,11 @@ In addition of using the facade methods `Alert::message` and `Menu::make`, you c
 
 ## Access handler
 
-Sometimes you want to show or hide certain menu items, form fields, etc. for certain users, with this component you can do it without the need of conditionals or a lot of boiler plate code, just pass one of the following options as a field attribute or menu item value.
+Sometimes you want to show or hide certain menu items, form fields, etc. for certain users, with this component you can do it without the need of conditionals or too much extra boilerplate code, just pass one of the following options as a field attribute or menu item value.
 
 1. callback: a function that should return true if access is granted, false otherwise.
 2. logged: true: requires authenticated user, false: requires guest user.
-3. roles: true if the user has any of the required roles.
+3. roles: true if the user belongs to any of the required roles.
 
 i.e.: 
 

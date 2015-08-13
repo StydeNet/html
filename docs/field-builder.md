@@ -2,21 +2,21 @@
 
 This component will allow you to generate the entire markup for form fields with one line of code.
 
-If you have used the Laravel Collective HTML component before, you already know how to use the basics of this component; simply replace the alias “Form” for “Field”, for example, replace:
+If you have used the Laravel Collective HTML component before, you already know how to use the basics of this component; simply replace the alias “Form” with “Field”, for example, replace:
 
 `{!! Form::text(‘name’, ‘value’, $attributes) !!}`
 
-For this:
+With this:
 
 `{!! Field::text(‘name’, ‘value’, $attributes) !!}`
 
 This will generate a field including the container, the label, the control and any errors associated with it.
 
-The fields will be generated with the **Twitter Bootstrap** markup out of the box (but you can also publish and customize the templates).
+The fields will be generated with the **Bootstrap** markup out of the box (but you can also publish and customize the templates).
 
-There are also a lot of convenient options and handy fallbacks:
+There are also other convenient options and handy fallbacks:
 
-##Skip value argument
+## Skip value argument
 
 If you don't want to pass a value argument (`null`) but you want to pass the array of `$attributes`, you can  skip the second argument. i.e. this:
 
@@ -27,7 +27,7 @@ Is the same as:
 `{!! Field::text(‘name’, null, $attributes) !!}`
 
 
-##Labels:
+## Labels:
 
 You can explicitly pass a label for a field as part of the attributes array, i.e.:
 
@@ -43,7 +43,7 @@ If you skip both options, then the FieldBuilder will generate a label based on t
 
 `full_name` will show "Full name" as the default label.
 
-##Templates
+## Templates
 
 By default, the fields will be rendered with the default template, located in the [theme]/fields folder, for example, for the Bootstrap theme that would be:
 
@@ -51,7 +51,7 @@ By default, the fields will be rendered with the default template, located in th
 
 But you have options to customize the template used for a particular type or field:
 
-###Customize by type
+### Customize by type
 
 Some CSS frameworks (like Bootstrap) need different markups for different form field types, so you can use the configuration to assign a different template to a particular field type, like this:
 
@@ -69,11 +69,11 @@ Some CSS frameworks (like Bootstrap) need different markups for different form f
 
 With this configuration, the "checkbox" fields will use the `vendor/styde/html/themes/bootstrap/fields/checkbox.blade.php` template by default, while the "checkboxes" and "radios" fields will use the `vendor/styde/html/themes/bootstrap/fields/collection.blade.php` template.
 
-As you can see, the configuration for this is theme specific, as each CSS framework have different specifications.
+As you can see, the configuration for this is theme specific, as every CSS framework has different specifications.
 
-Note: you'd only have to worry for the theme you actually need, so if you don't plan to use Bootstrap, you can erase/skip the Bootstrap configuration.
+Note: you'd only have to worry about the theme you actually need, so if you don't plan to use Bootstrap, you can erase/skip the Bootstrap configuration.
 
-###Customize for a particular field
+### Customize for a particular field
 
 You can specify a custom `template` for a single field through the `'template key'` of the `$attributes` array, like this:
 
@@ -81,21 +81,21 @@ You can specify a custom `template` for a single field through the `'template ke
 
 The path will be relative to the resources/views/ directory.
 
-###Default templates customization
+### Default templates customization
 
 If you want to customize the default templates, just run: `php artisan vendor:publish` in the console, all the templates will be copied to the `resources/views/themes/[theme]/fields/` folder.
 
 Otherwise, the package will use the default templates (stored in /vendor/styde/html/themes/) so you don’t need to copy extra files into your project. 
 
-##name attribute:
+## name attribute:
 
-You can use dot syntax as the field’s name, for example: `profile.twitter` and it will be transform to `profile[twitter]`
+You can use dot syntax as the field’s name, for example: `profile.twitter` and it will be converted to `profile[twitter]`
 
-##id attribute:
+## id attribute:
 
 It will be assigned automatically to each input control, if you use dot syntax (i.e. user.name) the dots will be replaced by underscores (i.e. user_name)
 
-##required attribute:
+## required attribute:
 
 You can specify a 'required' value in the attributes array:
 
@@ -115,7 +115,7 @@ The field templates will always have a ‘required’ variable so you can use it
     @endif
 ```
 
-##Errors:
+## Errors:
 
 Any session errors will be loaded into the FieldBuilder through the `HtmlServiceProvider`, and you will have the specific `$errors` for each field available in the field's template, you will also have a `$hasErrors` variable in case you need to print an additional CSS class, etc. if the field has any errors.
 
@@ -140,7 +140,7 @@ Inputs, selects, textareas, etc. with errors will also get an extra CSS class, y
 
 And once again, if you are using Twitter Bootstrap, any field with errors will get the `input-with-feedback` class. This is also required for showing the input in red color.
 
-##Options
+## Options
 
 For selects, radios and checkboxes, you can skip the options argument or pass null:
 
@@ -161,7 +161,7 @@ class Product extends Model
     //...
 ```
 
-##Empty option
+## Empty option
 
 Select fields usually need an empty option, (like "Select something please"), you can pass it as the `'empty'` attribute, like this:
 
@@ -175,7 +175,7 @@ If none is found it will search for a default empty option: `"validation.empty_o
 
 At last if none of these options is not found, it will use an empty string as the empty option.
 
-##Abbreviations
+## Abbreviations
 
 To save some key strokes, you can use abbreviations instead of the full name of the attributes, pass them in the configuration: 
 
@@ -194,11 +194,11 @@ Then you can do things like this:
 
 `{!! Field::text('name', ['ph' => 'This will be the placeholder]) !!}`
 
-##CSS classes
+## CSS classes
 
 You can pass custom CSS classes for each field using the 'class' key of the attributes array, also some additional classes will be added:
 
-###Default classes (by type)
+### Default classes (by type)
 
 Using the configuration, you can assign default CSS class for every field according to its type:
 
@@ -215,13 +215,13 @@ Using the configuration, you can assign default CSS class for every field accord
             ],
 ```
 
-Of course this is theme specific, since it was impossible to convince all CSS framework authors to use the same classes...
+Of course this is theme specific, since it would be impossible to convince all CSS framework authors to use the same classes...
 
-###CSS class for controls with errors
+### CSS class for controls with errors
 
-If a input has errors, an additional CSS class called 'error' will be added, this can also be configured for every theme (see above).
+If an input has errors, an additional CSS class called 'error' will be added, this can also be configured for every theme (see above).
 
-##Control access
+## Control access
 
 You may want to hide some fields for certain users, you can do this using the Access Handler included with this component:
 
