@@ -17,20 +17,20 @@ Pero si tu proyecto necesita ser implementado en más de un idioma o quieres org
 
 ## Traducir mensajes de alerta
 
-Si `'translate_texts'` es definido como `true`, este componente asumirá que todos los mensajes de alerta son de hecho claves de idioma e intentará traducirlas. Es decir, puedes hacer cosas como:
+Si `'translate_texts'` es definido como `true`, este componente asumirá que todos los mensajes de alerta son de hecho llaves de idioma e intentará traducirlas. Es decir, puedes hacer cosas como:
 
 ```
 Alert::success('messages.users.updated')
 		->button('messages.users.go_to_profile', url('users/profile'))
 ```
 
-Por supuesto, si la clave de idioma no es encontrada, éste devolverá el string literal (también puesdes pasar el mensaje completo en lugar de una clave de idioma).
+Por supuesto, si la llave de idioma no es encontrada, éste devolverá el string literal (también puesdes pasar el mensaje completo en lugar de una llave de idioma).
 
 [Aprender más sobre el componente alert](alert-messages.md)
 
 ## Traducir menu items
 
-Si `'translate_texts'` es definido como `true`, pero no específicas un título explícito para un menu item; el componente buscará un clave de idioma en: `menu.[clave_menu_item]` si la clave no es encontrada, el paquete intentará convertir la clave del menu item en un formato de título. Por ejemplo:
+Si `'translate_texts'` es definido como `true`, pero no específicas un título explícito para un menu item; el componente buscará un llave de idioma en: `menu.[llave_menu_item]` si la llave no es encontrada, el paquete intentará convertir la llave del menu item en un formato de título. Por ejemplo:
 
 ```
 //resources/lang/en/menu.php
@@ -64,8 +64,8 @@ Devolverá algo así:
 
 Tomar en cuenta que:
  
-* "Homepage" es tomado desde la clave del menu "menu.home".
+* "Homepage" es tomado desde la llave del menu "menu.home".
 * "Who we are" es definido explícitamente (no se intenta traducir)
-* "Contact us" es generado desde la clave "contact-us" (debido a que la clave de idioma no está definida)
+* "Contact us" es generado desde la llave "contact-us" (debido a que la clave de idioma no está definida)
 
 [Aprender más sobre el generador de menús](menu-generator.md)

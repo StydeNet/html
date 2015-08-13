@@ -102,6 +102,8 @@ As no title is set, it will search for the `menu.home` language key
 
 If neither the title option or the menu key is found, the component will generate a title based on the menu key. i.e.: 'home' will generate 'Home', 'contact-us' will generate 'Contact us', etc.
 
+[Learn more about translate texts option](internationalization.md)
+
 ##id
 
 The menu's item key will be used as the menu's item HTML id attribute by default. In case you need to override this behaviour, you can pass an 'id' option.
@@ -154,12 +156,12 @@ You can customize these classes using:
 
 ##Render menus and custom templates
 
-The menu will be rendered automatically if you treat `Menu::make` as a string, but you call also call the render method which accepts an optional custom template as an argument, like this:
+The menu will be rendered automatically if you treat `Menu::make` as a string, but you can also call the render method which accepts an optional custom template as an argument, like this:
 
 `{!! Menu::make('menu.items')->render('custom-template') !!}`
 
 ##Access handler
 
-A lot of times is useful to show and hide options for guest, logged or users with certain roles, you can do this using the Access Handler included in this component:
+A lot of times is useful to show and hide options for guest or logged users with certain roles, you can do this using the Access Handler included in this component:
 
 [Learn more about the access handler](access-handler.md)

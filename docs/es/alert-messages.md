@@ -90,7 +90,7 @@ Por defecto, los mensajes de alerta serán persistidos usando el componente sess
 
 ## Traducciones
 
-Si la opción `'translate_texts'` está definida como true en la configuración (es true por defecto), el componente de alerta intentará traducir todos los mensajes, utilizando el valor de la clave `$message`, pero si esta clave de idioma no es encontrada, devolverá el string literal.
+Si la opción `'translate_texts'` está definida como true en la configuración (es true por defecto), el componente de alerta intentará traducir todos los mensajes, utilizando el valor de la llave `$message`, pero si esta llave de idioma no es encontrada, devolverá el string literal.
  
 Si no se necesita utilizar el componente Traductor, sólo define translate_texts como false en la configuración:
 
