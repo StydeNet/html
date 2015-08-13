@@ -38,9 +38,11 @@ This middleware is needed to make the alert messages persistent between sessions
 Please notice that the following global aliases will be automatically available (you don't need to add them):
 
 ```
-    'Alert'	=> Styde\Html\Facades\Alert,
-    'Field'	=> Styde\Html\Facades\Field,
-    'Menu'	=> Styde\Html\Facades\Menu,
+    Alert	=> Styde\Html\Facades\Alert
+    Field	=> Styde\Html\Facades\Field
+    Menu	=> Styde\Html\Facades\Menu
+    Form    => Collective\Html\FormFacade
+    Html    => Collective\Html\HtmlFacade
 ```
 
 If you plan to use the _Access Handler_ as a standalone class, you will need to add the following alias:
