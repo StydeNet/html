@@ -2,7 +2,7 @@
 
 Menus are not static elements,  it is often necessary to mark the active section, translate items, generate dynamic URLs or show/hide options only for certain users.
 
-So instead of adding a lot of HTML and Blade boilerplate code, you can use this component to generate dynamic menus styled for your current CSS framework.
+So instead of adding too much extra HTML and Blade boilerplate code, you can use this component to generate dynamic menus styled for your current CSS framework.
 
 To generate a menu simply add the following code in your layout's template:
 
@@ -18,7 +18,7 @@ To generate a menu simply add the following code in your layout's template:
 ]
 ```
 
-Each item in the array will be a menu item, the array key is required and will be used to generate some default options, each menu item value needs to be an array of options (all of them optional).
+Each item in the array will be a menu item, the array key is required and will be used to generate default options, each menu item value needs to be an array of options (all of them optional).
 
 You can specify the following options for each menu item:
 
@@ -26,13 +26,13 @@ You can specify the following options for each menu item:
 
 Of course this is the most important part of each menu item, and therefore you have several options to specify an URL:
 
-###full_url
+### full_url
 
 If you pass a 'full_url' key within the item configuration, it will return it as the URL with no additional action, i.e.:
 
 `['full_url' => 'https://styde.net']`
 
-###url
+### url
 
 You can pass a relative URL, using the 'url' key. The final URL will be generated using the method `UrlGenerator::to`, i.e.:
 
@@ -42,13 +42,13 @@ You can also pass a 'secure' key to indicate whether this particular URL should 
 
 `['url' => 'login', 'secure' => 'true']`
 
-###route
+### route
 
 You can specify a route's name for a menu item.
 
 `['route' => 'home']`
 
-###route with parameters
+### route with parameters
 
 You can specify a route with parameters if you pass an array instead of a string as the value of the 'route' key.
 
@@ -56,21 +56,21 @@ The first value will be taken as the route's name, and the others will be the ro
 
 `['route' => ['profile', 'sileence']]`
 
-###action
+### action
 
 You can specify an action for a menu item
 
-###action with parameters
+### action with parameters
 
 You can specify an action with parameters if you pass an array instead of a string as the value of the 'action' key.
 
 The first value will be the action, and the others will be the action parameters.
 
-###default placeholder
+### default placeholder
 
 If none of above options is found, then the URL will simply be a placeholder "#".
 
-###Dynamic parameters
+### Dynamic parameters
 
 Sometimes you will need to use dynamic parameters to build routes and actions, in that case, instead of a value, pass a name precede with :, for example:
 
@@ -84,7 +84,7 @@ Or this:
 
 `{!! Menu::make('config.items')->setParams(['username' => 'sileence']) !!}`
 
-##title
+## title
 
 You can specify a title for a menu item using the 'title' key in the options array, i.e.:
 
@@ -104,11 +104,11 @@ If neither the title option or the menu key is found, the component will generat
 
 [Learn more about translate texts option](internationalization.md)
 
-##id
+## id
 
 The menu's item key will be used as the menu's item HTML id attribute by default. In case you need to override this behaviour, you can pass an 'id' option.
 
-##submenu
+## submenu
 
 You can specify a sub-menu key and pass another array of menu items, like this:
 
@@ -126,7 +126,7 @@ You can specify a sub-menu key and pass another array of menu items, like this:
 
 The sub-menu items will be rendered with the same options and fallbacks as the menu items.
 
-##active option
+## active option
 
 All menu items will have the active value set to false as default, unless the URL of a menu item or sub-item has the same or partial base value than the current URL.
 
@@ -138,9 +138,9 @@ For example:
 ]
 ```
 
-Will be considered the active URL if the current URL is news/ or news/some-slug
+Will be considered the active URL if the current URL is news/ or news/some-slug.
 
-##CSS classes
+## CSS classes
 
 You can pass CSS classes for a particular menu item using the 'class' option.
 
@@ -154,14 +154,14 @@ You can customize these classes using:
         ->setDropDownClass('dropdown') !!}
 ```
 
-##Render menus and custom templates
+## Render menus and custom templates
 
 The menu will be rendered automatically if you treat `Menu::make` as a string, but you can also call the render method which accepts an optional custom template as an argument, like this:
 
 `{!! Menu::make('menu.items')->render('custom-template') !!}`
 
-##Access handler
+## Access handler
 
-A lot of times is useful to show and hide options for guest or logged users with certain roles, you can do this using the Access Handler included in this component:
+It is often useful to show or hide options for guest or logged users with certain roles, you can do this using the Access Handler included in this component:
 
 [Learn more about the access handler](access-handler.md)

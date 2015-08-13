@@ -21,7 +21,7 @@ If you want to have a specific label in a field, you can do so by passing it as 
  
  `{!! Field::text('name', ['label' => 'Full name']) !!}`
  
- But you can also define it as part of the `attributes` array in the `resources/lang/en/validation.php` file:
+But you can also define it as part of the `attributes` array in the `resources/lang/en/validation.php` file:
  
  ```
      //resources/lang/en/validation.php
@@ -43,7 +43,7 @@ If the `'translate_texts'` is set to `true`, this component will assume that all
 Alert::success('messages.users.updated')
 		->button('messages.users.go_to_profile', url('users/profile'))
 ```
-Of course is the lang key is not found, it will return the literal string (so you can also pass the full message instead of a lang key).
+Of course if the lang key is not found, it will return the literal string (so you can also pass the full message instead of a lang key).
 
 [Learn more about the alert component](alert-messages.md)
 
@@ -81,7 +81,7 @@ Will return something like:
 </ul>
 ```
 
-Notice that:
+Note that:
  
 * "Homepage" is taken from the menu key "menu.home".
 * "Who we are" is explicit defined (no translation is attempted)
