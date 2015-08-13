@@ -272,15 +272,15 @@ class Menu
 
             $values['title'] = $this->getTitle($id, $values['title']);
 
+            $values['url'] = $this->generateUrl($values);
+
+            if ($this->isActiveUrl($values)) {
+                $this->markAsActive($values, $parentItem);
+                $this->currentId = $id;
+            }
+
             if (isset($values['submenu'])) {
                 $values['submenu'] = $this->generateItems($values['submenu'], $values);
-            } else {
-                $values['url'] = $this->generateUrl($values);
-
-                if ($this->isActiveUrl($values)) {
-                    $this->markAsActive($values, $parentItem);
-                    $this->currentId = $id;
-                }
             }
 
             if ($values['active']) {

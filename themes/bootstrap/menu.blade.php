@@ -2,7 +2,7 @@
 @foreach ($items as $item)
     <li @if ($item['class']) class="{{ $item['class'] }}" @endif id="menu_{{ $item['id'] }}">
     @if ($item['submenu'])
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <a href="{{ $item['url'] }}" class="dropdown-toggle" data-toggle="dropdown">
     @else
         <a href="{{ $item['url'] }}">
     @endif
