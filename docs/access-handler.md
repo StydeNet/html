@@ -8,9 +8,9 @@ This package include a `BasicAccessHandler` class but you can build your own `Ac
 
 Just pass one of the following options as a field attribute or menu item value:
 
-1. callback: should return true if you want to grant access, false otherwise.
-2. logged: true: requires authenticated user, false: requires guest user.
-3. roles: true if the user has any of the required roles.
+1. *callback*: should return true if you want to grant access, false otherwise.
+2. *logged*: true: requires authenticated user, false: requires guest user.
+3. *roles*: true if the user has any of the required roles.
 4. If no option is passed, this will return true (the item will be rendered)
 
 *WARNING*: note this package will only deactivate the visual option, you still need to protect the backend access using middleware, etc.
@@ -35,7 +35,7 @@ return [
             'logged' => false
         ],
         'settings' => [
-            'role' => 'admin'
+            'roles' => 'admin'
         ]
     ]
 ];
@@ -62,7 +62,7 @@ If you want to use the access handler class as a standalone component, please ad
 Then you can use the facade wherever you want:
 
 ```
-@if (Access:check(['role' => ['admin, 'editor']]))
+@if (Access:check(['roles' => ['admin, 'editor']]))
     <p>
         <a href='{{ url('admin/posts', [$post->id]) }}'>
             Edit this page
@@ -83,4 +83,4 @@ return [
     //..
 ];
 ```
-By doing this, the callback, logged and role attributes will simply be ignored. 
+By doing this, the callback, logged and roles attributes will simply be ignored and all users will be able to see all items. 

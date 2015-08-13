@@ -8,9 +8,9 @@ Este paquete incluye una clase `BasicAccessHandler` pero puedes construir tu pro
 
 Sólo pasa una de las siguientes opciones como un atributo de campo o valor del menu item:
 
-1. callback: debe devolver true si se quiere dar acceso, false en caso contrario.
-2. logged: true: requiere que el usuario esté autenticado, false: requiere usuario invitado.
-3. roles: true si el usuario tiene uno de los roles requeridos.
+1. *callback*: debe devolver true si se quiere dar acceso, false en caso contrario.
+2. *logged*: true: requiere que el usuario esté autenticado, false: requiere usuario invitado.
+3. *roles*: true si el usuario tiene uno de los roles requeridos.
 4. Si ninguna opción es pasada, éste devolverá true (el item será renderizado).
 
 *WARNING*: tomar en cuenta que este paquete sólo desactivará la opción visual, aún se necesita proteger el acceso de backend usando middleware, etc.
@@ -19,7 +19,7 @@ Ejemplos:
 
 ####Form fields
 
-`{!! Field::select('user_id', null, ['role' => 'admin'])`
+`{!! Field::select('user_id', null, ['roles' => 'admin'])`
 
 ####Menu items
 
@@ -35,7 +35,7 @@ return [
             'logged' => false
         ],
         'settings' => [
-            'role' => 'admin'
+            'roles' => 'admin'
         ]
     ]
 ];
@@ -62,7 +62,7 @@ Si se quiere usar la clase del access handler como un componente independiente, 
 Luego se puede utilizar la facade donde se quiera:
 
 ```
-@if (Access:check(['role' => ['admin, 'editor']]))
+@if (Access:check(['roles' => ['admin, 'editor']]))
     <p>
         <a href='{{ url('admin/posts', [$post->id]) }}'>
             Editar esta página
@@ -84,4 +84,4 @@ return [
 ];
 ```
 
-Haciendo esto, los atributos callback, logged y role serán simplemente ignorados.
+Haciendo esto, los atributos callback, logged y roles serán simplemente ignorados, y todos los usuarios serán capaces de ver todos los items.
