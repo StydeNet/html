@@ -1,6 +1,6 @@
 # Access handler
 
-Sometimes you want to show or hide menu items, form fields, etc. for certain users, with this component you can do it without the need of conditionals or boiler plate code.
+Sometimes you want to show or hide menu items, form fields, etc. for certain users, with this component you can do it without the need of conditionals or boilerplate code.
 
 This package include a `BasicAccessHandler` class but you can build your own `AccessHandler` implementation.
 
@@ -13,15 +13,15 @@ Just pass one of the following options as a field attribute or menu item value:
 3. *roles*: true if the user has any of the required roles.
 4. If no option is passed, this will return true (the item will be rendered)
 
-*WARNING*: note this package will only deactivate the visual option, you still need to protect the backend access using middleware, etc.
+*WARNING*: note this package will only prevents the elements from appearing in the front end, you still need to protect the backend access using middleware, etc.
 
 Examples: 
 
-####Form fields
+#### Form fields
 
 `{!! Field::select('user_id', null, ['role' => 'admin'])`
 
-####Menu items
+#### Menu items
 
 ```
 // config/menu.php
@@ -71,7 +71,7 @@ Then you can use the facade wherever you want:
 @endif
 ```
 
-##Deactivate the access handler
+## Deactivate the access handler
 
 You can deactivate this component in the configuration:
 
