@@ -68,9 +68,9 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->text('name', 'value', ['ph' => $placeholder]);
     }
 
-    function it_generates_a_text_field_with_a_custom_label($form, $theme, $lang)
+    function it_generates_a_text_field_with_a_custom_label($theme, $lang)
     {
-        //Having
+        // Having
         $label = "Full name";
 
         // Expect
@@ -79,8 +79,20 @@ class FieldBuilderSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         // When
-        // Call Field::text with a custom label
         $this->text('name', 'value', ['label' => $label]);
+    }
+
+    function it_generates_a_field_with_a_custom_templates($theme)
+    {
+        // Having
+        $custom = 'custom-template-here';
+
+        // Expect
+        $theme->render($custom, Argument::any(), "fields.default")
+            ->shouldBeCalled();
+
+        // When
+        $this->text('name', 'value', ['template' => $custom]);
     }
 
     function it_generates_a_select_field($form, $theme)

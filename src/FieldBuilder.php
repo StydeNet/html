@@ -692,13 +692,14 @@ class FieldBuilder
         $id = $this->getHtmlId($name);
         $errors = $this->getControlErrors($id);
         $hasErrors = !empty($errors);
+        $customTemplate = $this->getCustomTemplate($attributes);
 
         $attributes = $this->getHtmlAttributes($type, $attributes, $errors, $id, $required);
 
         $input = $this->buildControl($type, $name, $value, $attributes, $options, $htmlName);
 
         return $this->theme->render(
-            $this->getCustomTemplate($attributes),
+            $customTemplate,
             compact('htmlName', 'id',  'label', 'input', 'errors', 'hasErrors', 'required'),
             'fields.'.$this->getDefaultTemplate($type)
         );
