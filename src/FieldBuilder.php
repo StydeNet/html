@@ -535,10 +535,10 @@ class FieldBuilder
         $label = $this->lang->get($attribute);
 
         if ($label == $attribute) {
-            return ucfirst(str_replace(['_', '.'], ' ', $name));
+            return str_replace(['_', '.'], ' ', $name);
         }
 
-        return $label;
+        return ucfirst($label);
     }
 
     /**
