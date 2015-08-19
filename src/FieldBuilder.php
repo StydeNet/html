@@ -532,10 +532,11 @@ class FieldBuilder
         }
 
         $attribute = 'validation.attributes.'.$name;
+        
         $label = $this->lang->get($attribute);
 
         if ($label == $attribute) {
-            return ucfirst(str_replace(['_', '.'], ' ', $name));
+            $label = str_replace(['_', '.'], ' ', $name);
         }
 
         return ucfirst($label);
