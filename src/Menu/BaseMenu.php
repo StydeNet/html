@@ -1,5 +1,7 @@
 <?php namespace Styde\Html\Menu;;
 
+use Styde\Html\Facades\Menu;
+
 abstract class BaseMenu
 {
 
@@ -25,6 +27,6 @@ abstract class BaseMenu
      */
     public function boot()
     {
-        return \Menu::make($this->items(), $this->class);
+        return Menu::make($this->items(), $this->class);
     }
 }
