@@ -2,25 +2,18 @@
 
 namespace Styde\Html\Access;
 
+use Illuminate\Contracts\Auth\Guard as Auth;
+
 class BasicAccessHandler implements AccessHandler {
 
     /**
-     * @var bool $loggedIn Whether the user is logged in or not
+     * @var \Illuminate\Contracts\Auth\Guard
      */
-    protected $loggedIn;
-    /**
-     * @var string $role User's role in the application
-     */
-    protected $role;
+    protected $auth;
 
-    /**
-     * @param $loggedIn
-     * @param $role
-     */
-    public function __construct($loggedIn, $role)
+    public function __construct(Auth $auth)
     {
-        $this->loggedIn = $loggedIn;
-        $this->role = $role;
+        $this->auth = $auth;
     }
 
     /**
@@ -44,7 +37,7 @@ class BasicAccessHandler implements AccessHandler {
         }
 
         if (isset($options['logged'])) {
-            return $options['logged'] === $this->loggedIn;
+            return $options['logged'] === $this->auth->check();
         }
 
         if (isset($options['roles'])) {
@@ -52,6 +45,19 @@ class BasicAccessHandler implements AccessHandler {
         }
 
         return true;
+    }
+
+    protected function getCurrentRole()
+    {
+        if (!$this->auth->check()) {
+            return null;
+        }
+
+        $user = $this->auth->user();
+
+        return method_exists($user, 'getRole')
+            ? $user->getRole()
+            : $user->role;
     }
 
     /**
@@ -66,6 +72,6 @@ class BasicAccessHandler implements AccessHandler {
             $allowed = explode('|', $allowed);
         }
 
-        return in_array($this->role, $allowed);
+        return in_array($this->getCurrentRole(), $allowed);
     }
 }
