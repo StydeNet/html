@@ -2,6 +2,7 @@
 
 namespace spec\Styde\Html\Menu;
 
+use Illuminate\Contracts\Auth\Access\Gate;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -124,6 +125,39 @@ class MenuGeneratorSpec extends ObjectBehavior
                 'id' => 'home',
                 'active' => false,
                 'title' => 'Home',
+                'url' => '#',
+            ]
+        ];
+        $menu->getItems()->shouldReturn($items);
+    }
+
+    function it_checks_access_through_the_gate(AccessHandler $access)
+    {
+        // Having
+        $this->setAccessHandler($access);
+
+        // Expect
+        $access->check(Argument::withEntry('allows', ['update-post', 1]))
+            ->shouldBeCalled()
+            ->willReturn(true);
+
+        // When
+        $menu = $this->make([
+            'edit-post' => [
+                'allows' => ['update-post', ':post']
+            ],
+        ])->setParam('post', 1);
+
+        // Expect
+        $menu->shouldReturnAnInstanceOf('Styde\Html\Menu\Menu');
+
+        $items = [
+            'edit-post' => [
+                'class' => '',
+                'submenu' => null,
+                'id' => 'edit-post',
+                'active' => false,
+                'title' => 'Edit post',
                 'url' => '#',
             ]
         ];

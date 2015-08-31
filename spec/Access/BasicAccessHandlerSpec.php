@@ -2,6 +2,7 @@
 
 namespace spec\Styde\Html\Access;
 
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Guard as Auth;
 
 use PhpSpec\ObjectBehavior;
@@ -45,6 +46,25 @@ class BasicAccessHandlerSpec extends ObjectBehavior
         };
 
         $this->check(compact('callback'))->shouldReturn(false);
+    }
+
+    function it_uses_the_authorization_gate(Gate $gate)
+    {
+        $gate->check('update-post', [])->shouldBeCalledTimes(3)->willReturn(true);
+
+        $this->setGate($gate);
+
+        $this->check(['allows' => 'update-post'])->shouldReturn(true);
+        $this->check(['check' => ['update-post']])->shouldReturn(true);
+        $this->check(['denies' => 'update-post'])->shouldReturn(false);
+    }
+
+    function it_accepts_gate_arguments(Gate $gate)
+    {
+        $gate->check('update-post', [1])->shouldBeCalled()->willReturn(true);
+        $this->setGate($gate);
+
+        $this->check(['allows' => ['update-post', 1]])->shouldReturn(true);
     }
 }
 

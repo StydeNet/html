@@ -2,6 +2,7 @@
 
 namespace Styde\Html\Access;
 
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Guard as Auth;
 
 class BasicAccessHandler implements AccessHandler {
@@ -11,9 +12,19 @@ class BasicAccessHandler implements AccessHandler {
      */
     protected $auth;
 
+    /**
+     * @var \Illuminate\Contracts\Auth\Access\Gate
+     */
+    protected $gate;
+
     public function __construct(Auth $auth)
     {
         $this->auth = $auth;
+    }
+
+    public function setGate(Gate $gate)
+    {
+        $this->gate = $gate;
     }
 
     /**
@@ -44,7 +55,38 @@ class BasicAccessHandler implements AccessHandler {
             return $this->checkRole($options['roles']);
         }
 
+        if (isset($options['allows'])) {
+            return $this->checkGate($options['allows']);
+        }
+
+        if (isset($options['check'])) {
+            return $this->checkGate($options['check']);
+        }
+
+        if (isset($options['denies'])) {
+            return !$this->checkGate($options['denies']);
+        }
+
         return true;
+    }
+
+    protected function checkGate($arguments)
+    {
+        if ($this->gate == null) {
+            throw new MissingGateException(
+                'You have to upgrade to Laravel 5.1.12 or superior'
+                .' to use the allows, checks or denies options'
+            );
+        }
+
+        if (is_array($arguments)) {
+            $ability = array_shift($arguments);
+        } else {
+            $ability = $arguments;
+            $arguments = array();
+        }
+
+        return call_user_func_array([$this->gate, 'check'], [$ability, $arguments]);
     }
 
     protected function getCurrentRole()

@@ -3,6 +3,7 @@
 namespace Styde\Html;
 
 use Collective\Html\HtmlServiceProvider as ServiceProvider;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Foundation\AliasLoader;
 use Styde\Html\Access\AccessHandler;
 use Styde\Html\Access\BasicAccessHandler;
@@ -134,7 +135,14 @@ class HtmlServiceProvider extends ServiceProvider
     protected function registerAccessHandler()
     {
         $this->app[AccessHandler::class] = $this->app->share(function ($app) {
-            return new BasicAccessHandler($app->make('auth')->driver());
+            $handler = new BasicAccessHandler($app->make('auth')->driver());
+
+            $gate = $app->make(Gate::class);
+            if ($gate) {
+                $handler->setGate($gate);
+            }
+
+            return $handler;
         });
     }
 

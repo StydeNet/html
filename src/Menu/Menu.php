@@ -11,7 +11,9 @@ use Illuminate\Translation\Translator as Lang;
 
 class Menu
 {
-    use VerifyAccess;
+    use VerifyAccess {
+        checkAccess as traitCheckAccess;
+    }
 
     /**
      * @var \Illuminate\Contracts\Routing\UrlGenerator
@@ -251,6 +253,21 @@ class Menu
         return $this->generateItems($this->items);
     }
 
+    public function checkAccess(array $options)
+    {
+        if ($this->accessHandler==null) {
+            return true;
+        }
+
+        foreach (['allows', 'check', 'denies'] as $gateOption) {
+            if (isset($options[$gateOption]) && is_array($options[$gateOption])) {
+                $options[$gateOption] = $this->replaceDynamicParameters($options[$gateOption]);
+            }
+        }
+
+        return $this->traitCheckAccess($options);
+    }
+
     /**
      * Generate the items for a menu or sub-menu.
      *
@@ -294,9 +311,9 @@ class Menu
             $values['class'] = trim($values['class']);
 
             unset(
-                $values['callback'], $values['roles'], $values['secure'],
-                $values['params'], $values['route'], $values['action'],
-                $values['full_url']
+                $values['callback'], $values['logged'], $values['roles'], $values['secure'],
+                $values['params'], $values['route'], $values['action'], $values['full_url'],
+                $values['allows'], $values['check'], $values['denies']
             );
         }
 
