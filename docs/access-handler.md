@@ -11,11 +11,14 @@ Just pass one of the following options as a field attribute or menu item value:
 1. *callback*: should return true if you want to grant access, false otherwise.
 2. *logged*: true: requires authenticated user, false: requires guest user.
 3. *roles*: true if the user has any of the required roles.
-4. If no option is passed, this will return true (the item will be rendered)
+4. *allows*: uses the Gate::allows method 
+5. *check*: uses the Gate::check method (alias of allow)
+6. *denies*: uses the Gate::denies method
+7. If no option is passed, this will return true (the item will be rendered)
 
 *WARNING*: note this package will only prevents the elements from appearing in the front end, you still need to protect the backend access using middleware, etc.
 
-Examples: 
+##Usage 
 
 #### Form fields
 
@@ -42,6 +45,38 @@ return [
 ```
      
 `{!! Menu::make('menu.items') !}}`
+
+## Gate authorization
+
+The allows, check and denies options accept a string or an array as a value.
+
+If it is an string, it will be the name of the ability with no arguments.
+
+If it is an array, the first position of the array will be the name of the ability, and the others will be the arguments 
+
+Examples:
+
+`{!! Field::text('change-password', ['allows' => 'change-password']) !!}`
+`{!! Field::select('category', $options, ['allows' => ['change-post-category', $category]]) !!}`
+
+If you are building menus, you can use dynamic parameters to pass values to the gate.
+
+For example, in the following example we will define a dynamic 'post' parameter, and pass it using setParam when building the menu:
+
+```
+// config/menu.php
+
+return [
+    'items' => [
+        'view-post' => [],
+        'edit-post' => [
+            'allows' => ['update-post', ':post']
+        ]
+    ]
+];
+```
+     
+`{!! Menu::make('menu.items')->setParam('post', $post)->render() !}}`
      
 ## Customization
 
