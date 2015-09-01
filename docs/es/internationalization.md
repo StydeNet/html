@@ -15,6 +15,26 @@ Pero si tu proyecto necesita ser implementado en más de un idioma o quieres org
 
 *Nota:* El Field Builder siempre tratará de traducir los textos.
 
+## Traducir labels (field builder)
+
+Si quieres tener un label específico en un campo, puedes hacerlo pasándolo como parte del array de atributos:
+ 
+ `{!! Field::text('name', ['label' => 'Nombre completo']) !!}`
+ 
+También puedes definirlo como parte del array `attributes`en el archivo `resources/lang/en/validation.php`:
+ 
+ ```
+     //resources/lang/en/validation.php
+     //..
+     'attributes' => [
+         'name' => 'Nombre completo'
+     ],
+```
+
+Toma en cuenta que esto también es una convención usada por el componente Laravel Validator, de esta manera puedes tener todos los textos de los labels en un mismo lugar.  
+
+[Aprender más sobre field builder](field-builder.md)
+
 ## Traducir mensajes de alerta
 
 Si `'translate_texts'` es definido como `true`, este componente asumirá que todos los mensajes de alerta son de hecho llaves de idioma e intentará traducirlas. Es decir, puedes hacer cosas como:
