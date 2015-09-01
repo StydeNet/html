@@ -23,7 +23,7 @@ Se puede generar un nuevo mensaje de alerta con:
 
 `{!! Alert::message('Este es el mensaje', 'tipo-alerta') !!}`
 
-El primer argumento es el mensaje de alerta y el segundo es el tipo de alerta.
+El primer argumento es el texto del mensaje y el segundo es el tipo de alerta.
 
 Por ejemplo:
 

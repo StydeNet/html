@@ -11,11 +11,14 @@ Sólo pasa una de las siguientes opciones como un atributo de campo o valor del 
 1. *callback*: debe devolver true si se quiere dar acceso, false en caso contrario.
 2. *logged*: true: requiere que el usuario esté autenticado, false: requiere usuario invitado.
 3. *roles*: true si el usuario tiene uno de los roles requeridos.
-4. Si ninguna opción es pasada, éste devolverá true (el item será renderizado).
+4. *allows*: usa el método Gate::allows.
+5. *check*: usa el método Gate::check (alias de allow).
+6. *denies*: usa el método Gate::denies.
+7. Si ninguna opción es pasada, éste devolverá true (el item será renderizado).
 
-*WARNING*: tomar en cuenta que este paquete sólo desactivará la opción visual, aún se necesita proteger el acceso de backend usando middleware, etc.
+*WARNING*: tomar en cuenta que este paquete sólo evitará que los elementos aparezcan en el frontend, aún se necesita proteger el acceso de backend usando middleware, etc.
 
-Ejemplos: 
+Uso: 
 
 ####Form fields
 
@@ -42,6 +45,38 @@ return [
 ```
      
 `{!! Menu::make('menu.items') !}}`
+
+## Autorización y políticas de acceso
+
+Las opciones allows, check y denies aceptan un string o un array como valor.
+
+Si es un string, será el nombre de la habilidad sin argumentos.
+
+Si es un array, la primera posición del array será el nombre de la habilidad y el resto serán los argumentos.
+
+Ejemplos:
+
+`{!! Field::text('change-password', ['allows' => 'change-password']) !!}`
+`{!! Field::select('category', $options, ['allows' => ['change-post-category', $category]]) !!}`
+
+Si estás contruyendo menús puedes usar parámetros dinámicos para pasar valores a la autorización.
+
+En el siguiente ejemplo definiremos un parámetro dinámico 'post' y pasarlo usando setParam cuando se construya el menú:
+
+```
+// config/menu.php
+
+return [
+    'items' => [
+        'view-post' => [],
+        'edit-post' => [
+            'allows' => ['update-post', ':post']
+        ]
+    ]
+];
+```
+     
+`{!! Menu::make('menu.items')->setParam('post', $post)->render() !}}`
      
 ## Personalización
 
