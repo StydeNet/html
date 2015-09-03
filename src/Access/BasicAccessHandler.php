@@ -5,8 +5,8 @@ namespace Styde\Html\Access;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Guard as Auth;
 
-class BasicAccessHandler implements AccessHandler {
-
+class BasicAccessHandler implements AccessHandler
+{
     /**
      * @var \Illuminate\Contracts\Auth\Guard
      */

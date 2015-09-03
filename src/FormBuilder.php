@@ -2,9 +2,9 @@
 
 namespace Styde\Html;
 
-use Collective\Html\FormBuilder as CollectiveFormBuilder;
-use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Support\Str;
+use Illuminate\Contracts\Routing\UrlGenerator;
+use Collective\Html\FormBuilder as CollectiveFormBuilder;
 
 class FormBuilder extends CollectiveFormBuilder
 {
@@ -138,7 +138,7 @@ class FormBuilder extends CollectiveFormBuilder
             ];
         }
 
-        unset ($attributes['inline'], $attributes['template']);
+        unset($attributes['inline'], $attributes['template']);
 
         return $this->theme->render(
             $template,
@@ -194,7 +194,7 @@ class FormBuilder extends CollectiveFormBuilder
             ];
         }
 
-        unset ($attributes['inline'], $attributes['template']);
+        unset($attributes['inline'], $attributes['template']);
 
         return $this->theme->render(
             $template,

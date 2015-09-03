@@ -2,27 +2,26 @@
 
 namespace spec\Styde\Html;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
-use Styde\Html\Access\AccessHandler;
-use Styde\Html\FormBuilder;
 use Styde\Html\Theme;
+use Prophecy\Argument;
+use PhpSpec\ObjectBehavior;
+use Styde\Html\FormBuilder;
+use Styde\Html\Access\AccessHandler;
 use Illuminate\Translation\Translator as Lang;
 
 class FieldBuilderSpec extends ObjectBehavior
 {
-    function let(FormBuilder $form, Theme $theme, Lang $lang)
+    public function let(FormBuilder $form, Theme $theme, Lang $lang)
     {
         $this->beConstructedWith($form, $theme, $lang);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Styde\Html\FieldBuilder');
     }
 
-    function it_generates_a_text_field($form, $theme, $lang)
+    public function it_generates_a_text_field($form, $theme, $lang)
     {
         // Expect
         $form->text("name", "value", ["class" => "", "id" => "name"])
@@ -47,14 +46,14 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->text('name', 'value')->shouldReturn('html');
     }
 
-    function it_checks_for_access(AccessHandler $access)
+    public function it_checks_for_access(AccessHandler $access)
     {
         $this->setAccessHandler($access);
         $access->check([])->shouldBeCalled()->willReturn(false);
         $this->text('name', 'value')->shouldReturn('');
     }
 
-    function it_generates_a_text_field_with_abbreviated_options($form, $theme, $lang)
+    public function it_generates_a_text_field_with_abbreviated_options($form, $theme, $lang)
     {
         // Having
         $this->setAbbreviations(['ph' => 'placeholder']);
@@ -68,7 +67,7 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->text('name', 'value', ['ph' => $placeholder]);
     }
 
-    function it_generates_a_text_field_with_a_custom_label($theme, $lang)
+    public function it_generates_a_text_field_with_a_custom_label($theme, $lang)
     {
         // Having
         $label = "Full name";
@@ -82,7 +81,7 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->text('name', 'value', ['label' => $label]);
     }
 
-    function it_generates_a_field_with_a_custom_templates($theme)
+    public function it_generates_a_field_with_a_custom_templates($theme)
     {
         // Having
         $custom = 'custom-template-here';
@@ -95,7 +94,7 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->text('name', 'value', ['template' => $custom]);
     }
 
-    function it_generates_a_select_field($form, $theme)
+    public function it_generates_a_select_field($form, $theme)
     {
         // Having
         $attributes = ['empty' => '', 'label' => 'Gender'];
@@ -109,7 +108,7 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->select('gender', $options, null, $attributes);
     }
 
-    function it_adds_an_empty_option_to_select_fields($form, $lang)
+    public function it_adds_an_empty_option_to_select_fields($form, $lang)
     {
         // Having
         $empty = 'Select option';
@@ -133,7 +132,7 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->select('gender', $options, 'm', ['label' => 'Gender']);
     }
 
-    function it_generates_a_text_field_with_errors($form, $theme, $lang)
+    public function it_generates_a_text_field_with_errors($form, $theme, $lang)
     {
         // Having
         $errors = ['This is really wrong'];
@@ -153,7 +152,7 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->text('name', 'value');
     }
 
-    function it_takes_select_options_from_the_model($form, User $user)
+    public function it_takes_select_options_from_the_model($form, User $user)
     {
         // Having
         $attributes = ['empty' => '', 'label' => 'Gender'];
@@ -168,11 +167,9 @@ class FieldBuilderSpec extends ObjectBehavior
         // When
         $this->select('gender', null, 'm', $attributes);
     }
-
 }
 
-interface User {
-
+interface User
+{
     public function getGenderOptions();
-
 }

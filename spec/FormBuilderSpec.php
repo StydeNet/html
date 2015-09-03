@@ -2,26 +2,25 @@
 
 namespace spec\Styde\Html;
 
+use Styde\Html\Theme;
+use Styde\Html\HtmlBuilder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument as Arg;
-
 use Illuminate\Routing\UrlGenerator;
-use Styde\Html\HtmlBuilder;
-use Styde\Html\Theme;
 
 class FormBuilderSpec extends ObjectBehavior
 {
-    function let(HtmlBuilder $html, UrlGenerator $url, Theme $theme)
+    public function let(HtmlBuilder $html, UrlGenerator $url, Theme $theme)
     {
         $this->beConstructedWith($html, $url, 'csrf_token', $theme);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Styde\Html\FormBuilder');
     }
 
-    function it_adds_a_novalidate_option($html)
+    public function it_adds_a_novalidate_option($html)
     {
         // Expect
         $html->attributes(Arg::containing('novalidate'))->shouldBeCalled();
@@ -31,7 +30,7 @@ class FormBuilderSpec extends ObjectBehavior
         $this->open(['method' => 'GET']);
     }
 
-    function it_generates_time_inputs($html)
+    public function it_generates_time_inputs($html)
     {
         // Expect
         $html->attributes(hasKeyValuePair('type', 'time'));
@@ -40,7 +39,7 @@ class FormBuilderSpec extends ObjectBehavior
         $this->time('time');
     }
 
-    function it_generate_radios($theme)
+    public function it_generate_radios($theme)
     {
         // Having
         $name = 'gender';
@@ -69,7 +68,7 @@ class FormBuilderSpec extends ObjectBehavior
         $this->radios('gender', ['m' => 'Male', 'f' => 'Female'], 'm');
     }
 
-    function it_generate_checkboxes($theme)
+    public function it_generate_checkboxes($theme)
     {
         // Having
         $name = 'tags';
@@ -113,5 +112,4 @@ class FormBuilderSpec extends ObjectBehavior
         // When
         $this->checkboxes('tags', $tags, $checked);
     }
-
 }

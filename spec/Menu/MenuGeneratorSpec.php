@@ -2,29 +2,28 @@
 
 namespace spec\Styde\Html\Menu;
 
-use Illuminate\Contracts\Auth\Access\Gate;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
-use Illuminate\Routing\UrlGenerator;
-use Illuminate\Contracts\Config\Repository as Config;
-use Styde\Html\Access\AccessHandler;
 use Styde\Html\Theme;
+use Prophecy\Argument;
+use PhpSpec\ObjectBehavior;
+use Illuminate\Routing\UrlGenerator;
+use Styde\Html\Access\AccessHandler;
+use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Translation\Translator as Lang;
+use Illuminate\Contracts\Config\Repository as Config;
 
 class MenuGeneratorSpec extends ObjectBehavior
 {
-    function let(UrlGenerator $url, Config $config, Theme $theme)
+    public function let(UrlGenerator $url, Config $config, Theme $theme)
     {
         $this->beConstructedWith($url, $config, $theme);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Styde\Html\Menu\MenuGenerator');
     }
 
-    function it_generate_menu_items($url)
+    public function it_generate_menu_items($url)
     {
         $url->current()->shouldBeCalled()->willReturn('http://example/about-us');
         $url->to('')->shouldBeCalled()->willReturn('http://example/');
@@ -71,7 +70,7 @@ class MenuGeneratorSpec extends ObjectBehavior
         $menu->getItems()->shouldReturn($items);
     }
 
-    function it_renders_menus($theme)
+    public function it_renders_menus($theme)
     {
         // Having template
         $template = 'custom.template';
@@ -100,7 +99,7 @@ class MenuGeneratorSpec extends ObjectBehavior
         $menu->render($template)->shouldReturn('<menu>');
     }
 
-    function it_checks_access(AccessHandler $access)
+    public function it_checks_access(AccessHandler $access)
     {
         // Having
         $this->setAccessHandler($access);
@@ -131,7 +130,7 @@ class MenuGeneratorSpec extends ObjectBehavior
         $menu->getItems()->shouldReturn($items);
     }
 
-    function it_checks_access_through_the_gate(AccessHandler $access)
+    public function it_checks_access_through_the_gate(AccessHandler $access)
     {
         // Having
         $this->setAccessHandler($access);
@@ -164,7 +163,7 @@ class MenuGeneratorSpec extends ObjectBehavior
         $menu->getItems()->shouldReturn($items);
     }
 
-    function it_translates_menu_items(Lang $lang)
+    public function it_translates_menu_items(Lang $lang)
     {
         $this->setLang($lang);
 
@@ -199,7 +198,7 @@ class MenuGeneratorSpec extends ObjectBehavior
         $menu->getItems()->shouldReturn($items);
     }
 
-    function it_generates_routes(UrlGenerator $url)
+    public function it_generates_routes(UrlGenerator $url)
     {
         $dashboard = 'http://example.com/admin/dashboard';
         $home = 'htpp://example.com/admin/pages/home/edit';
@@ -236,7 +235,7 @@ class MenuGeneratorSpec extends ObjectBehavior
         $menu->getItems()->shouldReturn($items);
     }
 
-    function it_implements_routes_with_dynamic_parameters(UrlGenerator $url)
+    public function it_implements_routes_with_dynamic_parameters(UrlGenerator $url)
     {
         // Having
         $user_id = 20;
@@ -292,7 +291,7 @@ class MenuGeneratorSpec extends ObjectBehavior
         $menu->getItems()->shouldReturn($items);
     }
 
-    function it_generates_submenu_items()
+    public function it_generates_submenu_items()
     {
         // Generate new menu
         $menu = $this->make([
@@ -343,6 +342,4 @@ class MenuGeneratorSpec extends ObjectBehavior
         ];
         $menu->getItems()->shouldReturn($items);
     }
-
-
 }

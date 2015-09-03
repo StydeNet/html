@@ -2,25 +2,24 @@
 
 namespace spec\Styde\Html;
 
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-
-use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
+use PhpSpec\ObjectBehavior;
+use Illuminate\Contracts\View\Factory;
 
 class ThemeSpec extends ObjectBehavior
 {
-    function let(Factory $factory)
+    public function let(Factory $factory)
     {
         $this->beConstructedWith($factory, 'theme');
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Styde\Html\Theme');
     }
 
-    function it_renders_custom_templates(Factory $factory, View $view)
+    public function it_renders_custom_templates(Factory $factory, View $view)
     {
         // Having
         $custom = 'custom.template';
@@ -38,7 +37,7 @@ class ThemeSpec extends ObjectBehavior
         $this->render($custom, $data, $template)->shouldReturn('<html>');
     }
 
-    function it_renders_published_templates(Factory $factory, View $view)
+    public function it_renders_published_templates(Factory $factory, View $view)
     {
         // Having
         $custom = null;
@@ -56,7 +55,7 @@ class ThemeSpec extends ObjectBehavior
         $this->render($custom, $data, $template)->shouldReturn('<html>');
     }
 
-    function it_renders_default_templates(Factory $factory, View $view)
+    public function it_renders_default_templates(Factory $factory, View $view)
     {
         // Having
         $custom = null;

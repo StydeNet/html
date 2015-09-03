@@ -33,5 +33,4 @@ trait VerifyAccess
     {
         return $this->accessHandler==null || $this->accessHandler->check($options);
     }
-
 }

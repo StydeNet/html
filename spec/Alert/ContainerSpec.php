@@ -2,36 +2,34 @@
 
 namespace spec\Styde\Html\Alert;
 
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-
+use Styde\Html\Theme;
+use PhpSpec\ObjectBehavior;
 use Styde\Html\Alert\Handler;
 use Styde\Html\Alert\Message;
-use Styde\Html\Theme;
 use Illuminate\Session\Store as Session;
 use Illuminate\Translation\Translator as Lang;
 
 class ContainerSpec extends ObjectBehavior
 {
-
     public function let(Handler $handler, Theme $theme)
     {
         $this->beConstructedWith($handler, $theme);
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Styde\Html\Alert\Container');
     }
 
-    function it_creates_new_messages()
+    public function it_creates_new_messages()
     {
         $this->message('This is a message', 'info')
             // Except
             ->shouldReturnAnInstanceOf(Message::class);
     }
 
-    function it_retrieves_new_messages($handler)
+    public function it_retrieves_new_messages($handler)
     {
         // When
         $handler->getPreviousMessages()->shouldBeCalled()->willReturn([]);
@@ -48,7 +46,7 @@ class ContainerSpec extends ObjectBehavior
         $this->toArray()->shouldReturn($messages);
     }
 
-    function it_uses_magic_methods($handler)
+    public function it_uses_magic_methods($handler)
     {
         $handler->getPreviousMessages()->willReturn([]);
 
@@ -63,7 +61,7 @@ class ContainerSpec extends ObjectBehavior
         $this->toArray()->shouldReturn($messages);
     }
 
-    function it_translate_the_messages($handler, Lang $lang)
+    public function it_translate_the_messages($handler, Lang $lang)
     {
         // Having
         $key = 'message.key';
@@ -85,7 +83,7 @@ class ContainerSpec extends ObjectBehavior
         $this->toArray()->shouldReturn($messages);
     }
 
-    function it_chains_methods_to_build_complex_alert_messages($handler)
+    public function it_chains_methods_to_build_complex_alert_messages($handler)
     {
         // Having
         $message = 'Your account is about to expire';
@@ -122,7 +120,7 @@ class ContainerSpec extends ObjectBehavior
         $this->toArray()->shouldReturn($messages);
     }
 
-    function it_render_the_messages($handler, $theme)
+    public function it_render_the_messages($handler, $theme)
     {
         // Having
         $message = "Success!";

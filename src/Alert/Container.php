@@ -177,7 +177,7 @@ class Container
     {
         $messages = $this->toArray();
 
-        if ( ! empty ($messages)) {
+        if (! empty($messages)) {
             $this->clearMessages();
             return $this->theme->render(
                 $custom,
@@ -211,5 +211,4 @@ class Container
 
         return $messages;
     }
-
 }
