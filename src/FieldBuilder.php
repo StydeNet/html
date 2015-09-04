@@ -160,7 +160,7 @@ class FieldBuilder
      */
     public function input($type, $name, $value = null, $attributes = array())
     {
-        $this->build($type, $name, $value, $attributes);
+        return $this->build($type, $name, $value, $attributes);
     }
 
     /**
