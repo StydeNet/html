@@ -102,7 +102,7 @@ class FieldBuilderSpec extends ObjectBehavior
         $options = ['m' => 'Male', 'f' => 'Female'];
         $result = array_merge(['' => ''], $options);
 
-        // Expectc
+        // Expect
         $form->select("gender", $result, null, ["class" => "", "id" => "gender"])->shouldBeCalled();
 
         // When
@@ -116,7 +116,7 @@ class FieldBuilderSpec extends ObjectBehavior
         $options = ['m' => 'Male', 'f' => 'Female'];
         $result = $options; //no empty option
 
-        // Expectc
+        // Expect
         $form->select("gender", $result, null, ["class" => "", "id" => "gender"])->shouldBeCalled();
 
         // When
@@ -130,7 +130,7 @@ class FieldBuilderSpec extends ObjectBehavior
         $options = ['m' => 'Male', 'f' => 'Female'];
         $result = array_merge(['' => $empty], $options);
 
-        // Expec
+        // Expect
         $lang->get("validation.empty_option.gender")
             ->shouldBeCalled()
             ->willReturn("validation.empty_option.gender");
