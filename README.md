@@ -11,16 +11,16 @@ This is an extension of the Laravel Collective [HTML package](https://github.com
 
 ## How to install
 
-1. The preferred way to install this package is through Composer. Do this by either running `composer require styde/html ~1.0` or adding `styde/html: ~1.0` to your `composer.json` file and then running `composer update`.
+1. The preferred way to install this package is through Composer. Do this by either running `composer require styde/html ~1.0` or adding `"styde/html": "~1.0"` to your `composer.json` file and then running `composer update`.
 
 2. Next, add the new provider to the `providers` array in `config/app.php`
 
 ```
-  'providers' => [
+'providers' => [
     // ...
-    'Styde\Html\HtmlServiceProvider',
+    Styde\Html\HtmlServiceProvider::class,
     // ...
-  ],
+],
 ```
 
 3. Add the following middleware to the `$middleware` array in `app/Http/Kernel.php` **BEFORE** the `EncryptCookies` middleware: 
@@ -28,7 +28,7 @@ This is an extension of the Laravel Collective [HTML package](https://github.com
 ```
 protected $middleware = [
     //...
-    \Styde\Html\Alert\Middleware::class
+    \Styde\Html\Alert\Middleware::class,
     //...
 ];
 ```
@@ -38,21 +38,21 @@ This middleware is needed to make the alert messages persistent between sessions
 Please notice that the following global aliases will be automatically available (you don't need to add them):
 
 ```
-    Alert	=> Styde\Html\Facades\Alert
-    Field	=> Styde\Html\Facades\Field
-    Menu	=> Styde\Html\Facades\Menu
-    Form    => Collective\Html\FormFacade
-    Html    => Collective\Html\HtmlFacade
+Alert => Styde\Html\Facades\Alert
+Field => Styde\Html\Facades\Field
+Menu  => Styde\Html\Facades\Menu
+Form  => Collective\Html\FormFacade
+Html  => Collective\Html\HtmlFacade
 ```
 
 If you plan to use the _Access Handler_ as a standalone class, you will need to add the following alias:
 
 ```
-  'aliases' => [
+'aliases' => [
     // ...
     'Access' => Styde\Html\Facades\Access,
     // ...
-  ],
+],
 ```
 
 Optionally, you may also run `php artisan vendor:publish --provider='Styde\Html\HtmlServiceProvider'` to publish the configuration file in `config/html.php` and review its options and values.
@@ -76,7 +76,7 @@ This package was created with configuration in mind, if you haven't used this co
 `php artisan vendor:publish --provider='Styde\Html\HtmlServiceProvider'`
 
 this will publish all the configuration options to: `config/html.php` file, where you can explore and read the comments to learn more about the configuration options and their values.
-  
+    
 *Note:* Since the default configuration will be merged with the custom configuration, you don't need to publish the entire configuration in every project; instead, just set the values you need to override.  
 
 Read this documentation to learn more about the different configuration options this package provides.
@@ -137,10 +137,10 @@ $checked = ['php'];
 This component will allow you to generate complex alert messages.
 
 ```
-        Alert::info('Your account is about to expire')
-            ->details('Renew now to learn about:')
-            ->items(['Laravel', 'PHP, 'And more!'])
-            ->button('Renew now!', url('renew'), 'primary');
+Alert::info('Your account is about to expire')
+    ->details('Renew now to learn about:')
+    ->items(['Laravel', 'PHP, 'And more!'])
+    ->button('Renew now!', url('renew'), 'primary');
 ```
 
 `{!! Alert::render() !!}`
@@ -227,9 +227,9 @@ If you don’t plan to use this feature, you can deactivate translations in the 
 ```
 //config/html.php
 return [
-  //…
-  ‘translate_texts’ => false
-  //…
+    //…
+    ‘translate_texts’ => false
+    //…
 ];
 ```
 

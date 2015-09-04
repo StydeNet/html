@@ -61,7 +61,7 @@ Examples:
 
 If you are building menus, you can use dynamic parameters to pass values to the gate.
 
-For example, in the following example we will define a dynamic 'post' parameter, and pass it using setParam when building the menu:
+In the following example we will define a dynamic 'post' parameter, and pass it using setParam when building the menu:
 
 ```
 // config/menu.php
