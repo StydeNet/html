@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 
 class String extends Str
 {
-
     /**
      * Convert camel cases, underscore and hyphen separated strings to human
      * format.

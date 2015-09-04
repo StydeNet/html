@@ -2,22 +2,22 @@
 
 namespace spec\Styde\Html;
 
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use PhpSpec\ObjectBehavior;
 
 class StringSpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Styde\Html\String');
     }
 
-    function it_converts_strings_like_field_names_to_titles()
+    public function it_converts_strings_like_field_names_to_titles()
     {
         $this->title('full_name')->shouldReturn('Full name');
     }
 
-    function it_converts_plain_text_links_to_html_links()
+    public function it_converts_plain_text_links_to_html_links()
     {
         // HTTP
         $text = 'Please visit http://styde.net';
@@ -30,7 +30,7 @@ class StringSpec extends ObjectBehavior
         $this->linkify($text)->shouldReturn($html);
     }
 
-    function it_resumes_a_string()
+    public function it_resumes_a_string()
     {
         $text = '"My name is Ozymandias, king of kings:
         Look on my works, ye Mighty, and despair!"

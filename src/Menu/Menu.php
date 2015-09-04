@@ -2,12 +2,12 @@
 
 namespace Styde\Html\Menu;
 
-use Illuminate\Contracts\Routing\UrlGenerator as Url;
-use Styde\Html\Access\AccessHandlerSetter;
-use Styde\Html\Access\VerifyAccess;
-use Styde\Html\String;
 use Styde\Html\Theme;
+use Styde\Html\String;
+use Styde\Html\Access\VerifyAccess;
+use Styde\Html\Access\AccessHandlerSetter;
 use Illuminate\Translation\Translator as Lang;
+use Illuminate\Contracts\Routing\UrlGenerator as Url;
 
 class Menu
 {
@@ -386,7 +386,7 @@ class Menu
             return $title;
         }
 
-        if(!is_null($this->lang)) {
+        if (!is_null($this->lang)) {
             return $this->translateTitle($key);
         }
 
@@ -526,5 +526,4 @@ class Menu
 
         return '#';
     }
-
 }

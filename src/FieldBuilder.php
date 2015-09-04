@@ -2,8 +2,8 @@
 
 namespace Styde\Html;
 
-use Illuminate\Translation\Translator as Lang;
 use Styde\Html\Access\VerifyAccess;
+use Illuminate\Translation\Translator as Lang;
 
 class FieldBuilder
 {
@@ -581,7 +581,7 @@ class FieldBuilder
             $classes .= ' '.$attributes['class'];
         }
 
-        if ( ! empty($errors)) {
+        if (! empty($errors)) {
             $classes .= ' '.(isset($classes['error']) ? $classes['error'] : 'error');
         }
 
@@ -754,5 +754,4 @@ class FieldBuilder
                 return $this->form->$type($htmlName, $value, $attributes);
         }
     }
-
 }

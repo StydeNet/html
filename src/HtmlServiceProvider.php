@@ -2,16 +2,16 @@
 
 namespace Styde\Html;
 
-use Collective\Html\HtmlServiceProvider as ServiceProvider;
-use Illuminate\Contracts\Auth\Access\Gate;
-use Illuminate\Foundation\AliasLoader;
-use Styde\Html\Access\AccessHandler;
-use Styde\Html\Access\BasicAccessHandler;
-use Styde\Html\Alert\Container as Alert;
-use Styde\Html\Alert\Middleware as AlertMiddleware;
-use Styde\Html\Alert\SessionHandler as AlertSessionHandler;
 use Styde\Html\Menu\Menu;
 use Styde\Html\Menu\MenuGenerator;
+use Styde\Html\Access\AccessHandler;
+use Illuminate\Foundation\AliasLoader;
+use Styde\Html\Alert\Container as Alert;
+use Styde\Html\Access\BasicAccessHandler;
+use Illuminate\Contracts\Auth\Access\Gate;
+use Styde\Html\Alert\Middleware as AlertMiddleware;
+use Collective\Html\HtmlServiceProvider as ServiceProvider;
+use Styde\Html\Alert\SessionHandler as AlertSessionHandler;
 
 class HtmlServiceProvider extends ServiceProvider
 {
@@ -85,7 +85,7 @@ class HtmlServiceProvider extends ServiceProvider
 
         $this->registerMenuGenerator();
 
-        if (!empty ($this->globalAliases)) {
+        if (!empty($this->globalAliases)) {
             $this->registerFacadeAliases();
         }
     }
@@ -98,14 +98,16 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function loadConfigurationOptions()
     {
-        if ( ! empty($this->options)) return;
+        if (! empty($this->options)) {
+            return;
+        }
 
         $this->mergeDefaultConfiguration();
 
         $this->options = $this->app->make('config')->get('html');
 
         $this->options['theme_values'] = $this->options['themes'][$this->options['theme']];
-        unset ($this->options['themes']);
+        unset($this->options['themes']);
     }
 
     /**
@@ -201,13 +203,13 @@ class HtmlServiceProvider extends ServiceProvider
 
             $fieldBuilder->setAbbreviations($this->options['abbreviations']);
 
-            if (isset ($this->options['theme_values']['field_classes'])) {
+            if (isset($this->options['theme_values']['field_classes'])) {
                 $fieldBuilder->setCssClasses(
                     $this->options['theme_values']['field_classes']
                 );
             }
 
-            if (isset ($this->options['theme_values']['field_templates'])) {
+            if (isset($this->options['theme_values']['field_templates'])) {
                 $fieldBuilder->setTemplates(
                     $this->options['theme_values']['field_templates']
                 );

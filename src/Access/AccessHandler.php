@@ -4,7 +4,6 @@ namespace Styde\Html\Access;
 
 interface AccessHandler
 {
-
     /**
      * Performs a series of checks according to the $options parameter and the
      * data assigned through the different implementations. The method should
@@ -14,5 +13,4 @@ interface AccessHandler
      * @return bool
      */
     public function check(array $options);
-
 }

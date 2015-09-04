@@ -2,11 +2,11 @@
 
 namespace Styde\Html\Menu;
 
-use Illuminate\Contracts\Routing\UrlGenerator;
-use Styde\Html\Access\VerifyAccess;
 use Styde\Html\Theme;
-use Illuminate\Contracts\Config\Repository as Config;
+use Styde\Html\Access\VerifyAccess;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Translation\Translator as Lang;
+use Illuminate\Contracts\Config\Repository as Config;
 
 class MenuGenerator
 {
