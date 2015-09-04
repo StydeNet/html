@@ -395,6 +395,10 @@ class FieldBuilder
             $text = $this->getEmptyOption($name);
         }
 
+        if ($text === false) {
+            return $options;
+        }
+
         return ['' => $text] + $options;
     }
 

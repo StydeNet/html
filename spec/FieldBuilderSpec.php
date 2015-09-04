@@ -109,6 +109,20 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->select('gender', $options, null, $attributes);
     }
 
+    function it_generates_a_select_field_without_empty_option($form, $theme)
+    {
+        // Having
+        $attributes = ['empty' => false, 'label' => 'Gender'];
+        $options = ['m' => 'Male', 'f' => 'Female'];
+        $result = $options; //no empty option
+
+        // Expectc
+        $form->select("gender", $result, null, ["class" => "", "id" => "gender"])->shouldBeCalled();
+
+        // When
+        $this->select('gender', $options, null, $attributes);
+    }
+
     function it_adds_an_empty_option_to_select_fields($form, $lang)
     {
         // Having
