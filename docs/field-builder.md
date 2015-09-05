@@ -85,7 +85,7 @@ The path will be relative to the resources/views/ directory.
 
 If you want to customize the default templates, just run: `php artisan vendor:publish` in the console, all the templates will be copied to the `resources/views/themes/[theme]/fields/` folder.
 
-Otherwise, the package will use the default templates (stored in /vendor/styde/html/themes/) so you don’t need to copy extra files into your project. 
+Otherwise, the package will use the default templates (stored in /vendor/styde/html/themes/) so you don’t need to copy extra files into your project.
 
 ## name attribute:
 
@@ -119,13 +119,13 @@ The field templates will always have a ‘required’ variable so you can use it
 
 Any session errors will be loaded into the FieldBuilder through the `HtmlServiceProvider`, and you will have the specific `$errors` for each field available in the field's template, you will also have a `$hasErrors` variable in case you need to print an additional CSS class, etc. if the field has any errors.
 
-For example, with Twitter Bootstrap you will need a `has-error` class in case you want the form fields with errors to be colored in red (UX stuff). 
+For example, with Twitter Bootstrap you will need a `has-error` class in case you want the form fields with errors to be colored in red (UX stuff).
 
 This is an extract of the fields/default template for the Bootstrap theme:
 
 `<div{!! Html::classes(['form-group', 'has-error' => $hasErrors]) !!}>`
 
-Inputs, selects, textareas, etc. with errors will also get an extra CSS class, you can configure this in: 
+Inputs, selects, textareas, etc. with errors will also get an extra CSS class, you can configure this in:
 
 
 ```
@@ -149,15 +149,15 @@ For selects, radios and checkboxes, you can skip the options argument or pass nu
 If there is a model bound to the form, then the FieldBuilder will check if there is a method called: `get[fieldName]Options` in that case, it will be called and the returned value will be used as the options, i.e.:
 
 ```
-class Product extends Model 
+class Product extends Model
 
     //...
-    
+
     public function getOsOptions()
     {
         return ['osx', 'linux', 'windows'];
     }
-    
+
     //...
 ```
 
@@ -166,6 +166,8 @@ class Product extends Model
 Select fields usually need an empty option, (like "Select something please"), you can pass it as the `'empty'` attribute, like this:
 
 `{!! Field::select('os', null, ['empty' => 'Select your favorite operative system']) !!}`
+
+If you pass a `false` attribute, `['empty' => false]` , the component don't show a empty option.
 
 If you don't pass an 'empty' attribute, then the component will search for one using the translator component.
 
@@ -177,7 +179,7 @@ At last if none of these options is not found, it will use an empty string as th
 
 ## Abbreviations
 
-To save some key strokes, you can use abbreviations instead of the full name of the attributes, pass them in the configuration: 
+To save some key strokes, you can use abbreviations instead of the full name of the attributes, pass them in the configuration:
 
 ```
     /*
@@ -226,6 +228,3 @@ If an input has errors, an additional CSS class called 'error' will be added, th
 You may want to hide some fields for certain users, you can do this using the Access Handler included with this component:
 
 [Learn more about the access handler](access-handler.md)
-
-
-
