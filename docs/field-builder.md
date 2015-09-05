@@ -167,7 +167,7 @@ Select fields usually need an empty option, (like "Select something please"), yo
 
 `{!! Field::select('os', null, ['empty' => 'Select your favorite operative system']) !!}`
 
-If you pass a `false` attribute, `['empty' => false]` , the component don't show a empty option.
+If you set the empty attribute to `false`, i.e. `['empty' => false]` , the empty option won't be rendered.
 
 If you don't pass an 'empty' attribute, then the component will search for one using the translator component.
 
