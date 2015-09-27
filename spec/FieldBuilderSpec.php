@@ -190,6 +190,19 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->text('name', 'value');
     }
 
+    function it_generates_a_text_field_with_extra_data($theme)
+    {
+        // Expect
+        $theme->render(
+            null,
+            Argument::withEntry('extra', 'extra'),
+            "fields.default"
+        )->shouldBeCalled();
+
+        // When
+        $this->text('name', 'value', [], ['extra' => 'extra']);
+    }
+
     function it_takes_select_options_from_the_model($form, User $user)
     {
         // Having

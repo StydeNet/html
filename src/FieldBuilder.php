@@ -155,12 +155,13 @@ class FieldBuilder
      * @param string $name
      * @param string $value
      * @param array  $attributes
+     * @param array  $extra
      *
      * @return string
      */
-    public function input($type, $name, $value = null, $attributes = array())
+    public function input($type, $name, $value = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build($type, $name, $value, $attributes);
+        return $this->build($type, $name, $value, $attributes, $extra);
     }
 
     /**
@@ -169,12 +170,13 @@ class FieldBuilder
      * @param string $name
      * @param string $value
      * @param array  $attributes
+     * @param array  $extra
      *
      * @return string
      */
-    public function text($name, $value = null, $attributes = array())
+    public function text($name, $value = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build('text', $name, $value, $attributes);
+        return $this->build('text', $name, $value, $attributes, $extra);
     }
 
     /**
@@ -182,12 +184,13 @@ class FieldBuilder
      *
      * @param string $name
      * @param array  $attributes
+     * @param array  $extra
      *
      * @return string
      */
-    public function password($name, $attributes = array())
+    public function password($name, array $attributes = array(), array $extra = array())
     {
-        return $this->build('password', $name, '', $attributes);
+        return $this->build('password', $name, '', $attributes, $extra);
     }
 
     /**
@@ -199,7 +202,7 @@ class FieldBuilder
      *
      * @return string
      */
-    public function hidden($name, $value = null, $attributes = array())
+    public function hidden($name, $value = null, array $attributes = array())
     {
         return $this->form->input('hidden', $name, $value, $attributes);
     }
@@ -207,56 +210,60 @@ class FieldBuilder
     /**
      * Create an e-mail input field.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $attributes
+     * @param  string $name
+     * @param  string $value
+     * @param  array  $attributes
+     * @param  array  $extra
      *
      * @return string
      */
-    public function email($name, $value = null, $attributes = array())
+    public function email($name, $value = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build('email', $name, $value, $attributes);
+        return $this->build('email', $name, $value, $attributes, $extra);
     }
 
     /**
      * Create a URL input field.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $attributes
+     * @param  string $name
+     * @param  string $value
+     * @param  array  $attributes
+     * @param  array  $extra
      *
      * @return string
      */
-    public function url($name, $value = null, $attributes = array())
+    public function url($name, $value = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build('url', $name, $value, $attributes);
+        return $this->build('url', $name, $value, $attributes, $extra);
     }
 
     /**
      * Create a file input field.
      *
-     * @param string $name
-     * @param array  $attributes
+     * @param  string $name
+     * @param  array  $attributes
+     * @param  array  $extra
      *
      * @return string
      */
-    public function file($name, $attributes = array())
+    public function file($name, array $attributes = array(), array $extra = array())
     {
-        return $this->build('file', $name, null, $attributes);
+        return $this->build('file', $name, null, $attributes, $extra);
     }
 
     /**
      * Create a textarea input field.
      *
-     * @param string $name
-     * @param string $value
-     * @param array  $attributes
+     * @param  string $name
+     * @param  string $value
+     * @param  array  $attributes
+     * @param  array  $extra
      *
      * @return string
      */
-    public function textarea($name, $value = null, $attributes = array())
+    public function textarea($name, $value = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build('textarea', $name, $value, $attributes);
+        return $this->build('textarea', $name, $value, $attributes, $extra);
     }
 
     /**
@@ -266,12 +273,13 @@ class FieldBuilder
      * @param array  $options
      * @param string $selected
      * @param array  $attributes
+     * @param array  $extra
      *
      * @return string
      */
-    public function radios($name, $options = array(), $selected = null, $attributes = array())
+    public function radios($name, $options = array(), $selected = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build('radios', $name, $selected, $attributes, $options);
+        return $this->build('radios', $name, $selected, $attributes, $extra, $options);
     }
 
     /**
@@ -281,27 +289,39 @@ class FieldBuilder
      * @param array  $options
      * @param string $selected
      * @param array  $attributes
+     * @param array  $extra
      *
      * @return string
      */
-    public function select($name, $options = array(), $selected = null, $attributes = array())
+    public function select($name, $options = array(), $selected = null, array $attributes = array(), array $extra = array())
     {
         /**
          * Swap values so programmers can skip the $value argument
          * and pass the $attributes array directly.
          */
         if (is_array($selected) && empty($attributes)) {
+            $extra = $attributes;
             $attributes = $selected;
             $selected = null;
         }
 
-        return $this->doBuild('select', $name, $selected, $attributes, $options);
+        return $this->doBuild('select', $name, $selected, $attributes, $extra, $options);
     }
 
-    public function selectMultiple($name, $options = array(), $selected = array(), array $attributes = array())
+    /**
+     * Create a multiple select field
+     *
+     * @param $name
+     * @param array $options
+     * @param array $selected
+     * @param array $attributes
+     * @param array $extra
+     * @return string
+     */
+    public function selectMultiple($name, $options = array(), $selected = null, array $attributes = array(), array $extra = array())
     {
         $attributes[] = 'multiple';
-        return $this->doBuild('select', $name, $selected, $attributes, $options);
+        return $this->doBuild('select', $name, $selected, $attributes, $extra, $options);
     }
 
     /**
@@ -311,12 +331,13 @@ class FieldBuilder
      * @param array  $options
      * @param string $selected
      * @param array  $attributes
+     * @param array  $extra
      *
      * @return string
      */
-    public function checkboxes($name, $options = array(), $selected = null, $attributes = array())
+    public function checkboxes($name, $options = array(), $selected = null, array $attributes = array(), array $extra = array())
     {
-        return $this->doBuild('checkboxes', $name, $selected, $attributes, $options);
+        return $this->doBuild('checkboxes', $name, $selected, $attributes, $extra, $options);
     }
 
     /**
@@ -326,23 +347,23 @@ class FieldBuilder
      * @param mixed  $value
      * @param null   $selected
      * @param array  $attributes
+     * @param array  $extra
      *
      * @internal param bool $checked
      *
      * @return string
      */
-    public function checkbox($name, $value = 1, $selected = null, $attributes = array())
+    public function checkbox($name, $value = 1, $selected = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build('checkbox', $name, $selected, $attributes, $value);
+        return $this->build('checkbox', $name, $selected, $attributes, $extra, $value);
     }
 
     /**
      * Get the option list for the select box or the group of radios
      *
-     * @param string $name
-     * @param array $options
+     * @param  string $name
+     * @param  array $options
      * @return array
-     * @internal param array $attributes
      */
     protected function getOptionsList($name, $options)
     {
@@ -431,9 +452,8 @@ class FieldBuilder
      *
      * You can also set a validation.empty_option.default as a fallback.
      *
-     * @param $name
+     * @param  $name
      * @return string
-     * @internal param $attributes
      */
     protected function getEmptyOption($name)
     {
@@ -457,8 +477,8 @@ class FieldBuilder
      * template is set in the configuration for a particular type,
      * the template "default" will be used
      *
-     * @param $type
-     * @return mixed
+     * @param  $type
+     * @return string
      */
     protected function getDefaultTemplate($type)
     {
@@ -474,8 +494,8 @@ class FieldBuilder
      * You can pass a custom template using the 'template' key in the attributes
      * array.
      *
-     * @param $attributes
-     * @return string|null
+     * @param  $attributes
+     * @return string
      */
     protected function getCustomTemplate($attributes)
     {
@@ -489,7 +509,7 @@ class FieldBuilder
      *
      * product.category.name will be converted to: product[category][name]
      *
-     * @param $name
+     * @param  string $name
      * @return string
      */
     protected function getHtmlName($name)
@@ -505,8 +525,8 @@ class FieldBuilder
     /**
      * Get the ID's attribute for the control
      *
-     * @param $value
-     * @return mixed
+     * @param  string $value
+     * @return string
      */
     protected function getHtmlId($value)
     {
@@ -520,7 +540,7 @@ class FieldBuilder
     /**
      * Gets whether a field is required or not
      *
-     * @param $attributes
+     * @param  array $attributes
      * @return bool
      */
     protected function getRequired($attributes)
@@ -545,8 +565,8 @@ class FieldBuilder
      *
      * If this is not found either, it'll generate a label based on the name.
      *
-     * @param string $name
-     * @param array $attributes
+     * @param  string $name
+     * @param  array $attributes
      * @return string
      */
     protected function getLabel($name, array $attributes = [])
@@ -572,7 +592,7 @@ class FieldBuilder
      * If the type is not defined it will use the 'default' key in the
      * cssClasses array, otherwise it will return an empty string.
      *
-     * @param $type
+     * @param  string $type
      * @return string
      */
     protected function getDefaultClasses($type)
@@ -592,9 +612,9 @@ class FieldBuilder
      *
      * And it will also add an extra class if the control has any errors.
      *
-     * @param string $type
-     * @param array $attributes
-     * @param string|null $errors
+     * @param  string $type
+     * @param  array $attributes
+     * @param  string|null $errors
      * @return string
      */
     protected function getClasses($type, array $attributes = [], $errors = null)
@@ -614,8 +634,9 @@ class FieldBuilder
 
     /**
      * Get the control's errors (if any)
-     * @param $name
-     * @return string|null
+     *
+     * @param  string $name
+     * @return array
      */
     protected function getControlErrors($name)
     {
@@ -628,12 +649,11 @@ class FieldBuilder
      * This will assign the CSS classes, the id attribute, normalize the
      * required attribute and unset the custom attributes like "template".
      *
-     * @param $type
-     * @param $attributes
-     * @param $errors
-     * @param $htmlId
-     * @param $required
-     *
+     * @param  string $type
+     * @param  array $attributes
+     * @param  array $errors
+     * @param  string $htmlId
+     * @param  bool $required
      * @return array
      */
     protected function getHtmlAttributes($type, $attributes, $errors, $htmlId, $required)
@@ -654,7 +674,7 @@ class FieldBuilder
     /**
      * Search for abbreviations and replace them with the right attributes
      *
-     * @param array $attributes
+     * @param  array $attributes
      * @return array
      */
     protected function replaceAttributes(array $attributes)
@@ -672,38 +692,41 @@ class FieldBuilder
     /**
      * Swap values ($value and $attributes) if necessary, then call doBuild
      *
-     * @param string $type
-     * @param string $name
-     * @param mixed|null $value
-     * @param array $attributes
-     * @param array|null $options
+     * @param  string $type
+     * @param  string $name
+     * @param  mixed|null $value
+     * @param  array $attributes
+     * @param  array|null $options
+     * @param  array $extra
      * @return string
      */
-    protected function build($type, $name, $value = null, $attributes = array(), $options = null)
+    protected function build($type, $name, $value = null, array $attributes = array(), array $extra = array(), $options = null)
     {
         /**
          * Swap values so programmers can skip the $value argument
          * and pass the $attributes array directly.
          */
         if (is_array($value)) {
+            $extra = $attributes;
             $attributes = $value;
             $value = null;
         }
 
-        return $this->doBuild($type, $name, $value, $attributes, $options);
+        return $this->doBuild($type, $name, $value, $attributes, $extra, $options);
     }
 
     /**
      * Build and render a field
      *
-     * @param string $type
-     * @param string $name
-     * @param mixed $value
-     * @param array $attributes
-     * @param array|null $options
+     * @param  string $type
+     * @param  string $name
+     * @param  mixed $value
+     * @param  array $attributes
+     * @param  array $extra
+     * @param  array|null $options
      * @return string
      */
-    protected function doBuild($type, $name, $value = null, $attributes = array(), $options = null)
+    protected function doBuild($type, $name, $value = null, array $attributes = array(), array $extra = array(), $options = null)
     {
         $attributes = $this->replaceAttributes($attributes);
 
@@ -725,7 +748,7 @@ class FieldBuilder
 
         return $this->theme->render(
             $customTemplate,
-            compact('htmlName', 'id',  'label', 'input', 'errors', 'hasErrors', 'required'),
+            array_merge($extra, compact('htmlName', 'id',  'label', 'input', 'errors', 'hasErrors', 'required')),
             'fields.'.$this->getDefaultTemplate($type)
         );
     }
