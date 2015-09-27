@@ -120,7 +120,7 @@ class HtmlServiceProvider extends ServiceProvider
     protected function getTheme()
     {
         if ($this->theme == null) {
-            $this->theme = new Theme($this->app['view'], $this->options['theme']);
+            $this->theme = new Theme($this->app['view'], $this->options['theme'], $this->options['custom']);
         }
 
         return $this->theme;

@@ -20,16 +20,25 @@ class Theme
     protected $theme;
 
     /**
+     * Directory to store the custom templates
+     *
+     * @var string
+     */
+    protected $custom;
+
+    /**
      * Creates a Theme class, used to render custom or default templates for
      * any of the classes of this component (alert, menu, form, field)
      *
      * @param View $view
-     * @param $theme
+     * @param string $theme
+     * @param string $custom Directory to store the custom templates
      */
-    public function __construct(View $view, $theme)
+    public function __construct(View $view, $theme, $custom = 'themes')
     {
         $this->view = $view;
         $this->theme = $theme;
+        $this->custom = $custom;
     }
 
     /**
@@ -61,8 +70,8 @@ class Theme
 
         $template = $this->theme.'/'.$template;
 
-        if ($this->view->exists("themes/$template")) {
-            return $this->view->make("themes/$template", $data)->render();
+        if ($this->view->exists($this->custom . '/' . $template)) {
+            return $this->view->make($this->custom . '/' . $template, $data)->render();
         }
 
         return $this->view->make('styde.html::'.$template, $data)->render();
