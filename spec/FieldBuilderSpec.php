@@ -123,6 +123,29 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->select('gender', $options, null, $attributes);
     }
 
+    function it_generates_a_multiple_select_field($form, $theme)
+    {
+        // Having
+        $attributes = ['label' => 'Tags'];
+        $selected = ['php', 'laravel'];
+        $options = [
+            'php'     => 'PHP',
+            'laravel' => 'Laravel',
+            'symfony' => 'Symfony',
+            'ruby'    => 'Ruby on Rails'
+        ];
+        $result = $options; //no empty option
+
+        // Expect
+        $form->select(
+            "tags", $result, $selected,
+            [0 => "multiple", "class" => "", "id" => "tags"]
+        )->shouldBeCalled();
+
+        // When
+        $this->selectMultiple('tags', $options, $selected, $attributes);
+    }
+
     function it_adds_an_empty_option_to_select_fields($form, $lang)
     {
         // Having

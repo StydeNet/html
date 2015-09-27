@@ -286,7 +286,22 @@ class FieldBuilder
      */
     public function select($name, $options = array(), $selected = null, $attributes = array())
     {
-        return $this->build('select', $name, $selected, $attributes, $options);
+        /**
+         * Swap values so programmers can skip the $value argument
+         * and pass the $attributes array directly.
+         */
+        if (is_array($selected) && empty($attributes)) {
+            $attributes = $selected;
+            $selected = null;
+        }
+
+        return $this->doBuild('select', $name, $selected, $attributes, $options);
+    }
+
+    public function selectMultiple($name, $options = array(), $selected = array(), array $attributes = array())
+    {
+        $attributes[] = 'multiple';
+        return $this->doBuild('select', $name, $selected, $attributes, $options);
     }
 
     /**
@@ -386,6 +401,11 @@ class FieldBuilder
     {
         if (empty($options)) {
             return [];
+        }
+
+        // Don't add an empty option if the select is "multiple"
+        if (isset($attributes['multiple']) || in_array('multiple', $attributes)) {
+            return $options;
         }
 
         if (isset($attributes['empty'])) {
