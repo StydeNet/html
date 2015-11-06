@@ -82,6 +82,19 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->text('name', 'value', ['label' => $label]);
     }
 
+    function it_generates_a_text_field_with_a_custom_id($theme, $lang)
+    {
+        // Having
+        $id = "name_new_id";
+
+        // Expect
+        $theme->render(null, Argument::withEntry('id', $id), "fields.default")
+            ->shouldBeCalled();
+
+        // When
+        $this->text('name', 'value', ['id' => $id]);
+    }
+
     function it_generates_a_field_with_a_custom_templates($theme)
     {
         // Having

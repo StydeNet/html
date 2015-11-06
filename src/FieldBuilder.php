@@ -526,10 +526,15 @@ class FieldBuilder
      * Get the ID's attribute for the control
      *
      * @param  string $value
+     * @param $attributes
      * @return string
      */
-    protected function getHtmlId($value)
+    protected function getHtmlId($value, $attributes)
     {
+        if (isset ($attributes['id'])) {
+            return $attributes['id'];
+        }
+
         if (strpos($value, '.')) {
             return str_replace('.', '_', $value);
         }
@@ -737,7 +742,7 @@ class FieldBuilder
         $required = $this->getRequired($attributes);
         $label = $this->getLabel($name, $attributes);
         $htmlName = $this->getHtmlName($name);
-        $id = $this->getHtmlId($name);
+        $id = $this->getHtmlId($name, $attributes);
         $errors = $this->getControlErrors($id);
         $hasErrors = !empty($errors);
         $customTemplate = $this->getCustomTemplate($attributes);
