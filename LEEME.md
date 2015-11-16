@@ -11,16 +11,16 @@ Este paquete contiene una colección de clases de PHP Laravel diseñado para gen
 
 ## Cómo instalar 
 
-1. La mejor forma de instalar este paquete es a través de Composer. Puedes hacerlo ya sea ejecutando desde consola `composer require styde/html ~1.0` o agregando `styde/html: ~1.0` a tu archivo `composer.json` y luego ejecutando desde la consola `composer update`.
+1. La mejor forma de instalar este paquete es a través de Composer. Puedes hacerlo ya sea ejecutando desde consola `composer require "styde/html=~1.0"` o agregando `styde/html: ~1.0` a tu archivo `composer.json` y luego ejecutando desde la consola `composer update`.
 
 2. Lo siguiente es agregar el nuevo service provider al array de `providers` en `config/app.php`
 
 ```
-  'providers' => [
+'providers' => [
     // ...
     'Styde\Html\HtmlServiceProvider',
     // ...
-  ],
+],
 ```
 
 3. Agrega el siguiente middleware al array de `$middleware` en `app/Http/Kernel.php` **ANTES** del middleware `EncryptCookies`: 
@@ -39,21 +39,21 @@ Este middleware es necesario para hacer que los mensajes de alerta persistan ent
 Tomar en cuenta que los siguientes alias globales estarán automáticamente disponible (no necesitas agregarlos):
 
 ```
-    Alert => Styde\Html\Facades\Alert
-    Field => Styde\Html\Facades\Field
-    Menu  => Styde\Html\Facades\Menu
-    Form    => Collective\Html\FormFacade
-    Html    => Collective\Html\HtmlFacade
+Alert => Styde\Html\Facades\Alert
+Field => Styde\Html\Facades\Field
+Menu  => Styde\Html\Facades\Menu
+Form    => Collective\Html\FormFacade
+Html    => Collective\Html\HtmlFacade
 ```
 
 Si planeas utilizar el _Access Handler_ como una clase independiente, necesitarás agregar el siguiente alias:
 
 ```
-  'aliases' => [
+'aliases' => [
     // ...
     'Access' => Styde\Html\Facades\Access,
     // ...
-  ],
+],
 ```
 
 Opcionalmente, también puedes ejecutar `php artisan vendor:publish --provider='Styde\Html\HtmlServiceProvider'` para publicar el archivo de configuración en `config/html.php` de esta manera ver y configurar sus opciones y valores.
@@ -77,7 +77,7 @@ Este paquete fue creado con la configuración en mente, si no has utilizado este
 `php artisan vendor:publish --provider='Styde\Html\HtmlServiceProvider'`
 
 Esto publicará todas las opciones de la configuración en el archivo `config/html.php` donde puedes explorar y leer los comentarios para aprender más sobre las opciones de configuración y sus valores.
-  
+    
 *Nota:* Debido a que la configuración por defecto se fusionará con la configuración personalizada, no es necesario publicar la configuración completa en cada proyecto; en cambio, sólo establece los valores que necesites sustituir.
 
 Lee esta documentación para aprender más sobre las diferentes opciones de configuración que este paquete proporciona. 
@@ -115,7 +115,7 @@ return [
 
 Genera una colección de radios:
 
-`{!! i.e. Form::radios('status', ['a' => 'Active', 'i' => 'Inactive']) !!}`
+i.e. `{!! Form::radios('status', ['a' => 'Active', 'i' => 'Inactive']) !!}`
 
 #### checkboxes
 
@@ -138,10 +138,10 @@ $checked = ['php'];
 Este componente permitirá generar complejas mensajes de alerta.
 
 ```
-        Alert::info('Su cuenta está a punto de caducar')
-            ->details('Renueva ahora para aprender acerca de:')
-            ->items(['Laravel', 'PHP, '¡y más!'])
-            ->button('¡Renueva ahora!', url('renew'), 'primary');
+Alert::info('Su cuenta está a punto de caducar')
+    ->details('Renueva ahora para aprender acerca de:')
+    ->items(['Laravel', 'PHP, '¡y más!'])
+    ->button('¡Renueva ahora!', url('renew'), 'primary');
 ```
 
 `{!! Alert::render() !!}`
@@ -228,9 +228,9 @@ Si no planeas usar esta característica, puedes desactivar las traducciones en l
 ```
 //config/html.php
 return [
-  //…
-  ‘translate_texts’ => false
-  //…
+    //…
+    ‘translate_texts’ => false
+    //…
 ];
 ```
 
