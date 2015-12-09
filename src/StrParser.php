@@ -4,7 +4,7 @@ namespace Styde\Html;
 
 use Illuminate\Support\Str;
 
-class String extends Str
+class StrParser extends Str
 {
 
     /**

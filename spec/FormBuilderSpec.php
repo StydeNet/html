@@ -34,7 +34,7 @@ class FormBuilderSpec extends ObjectBehavior
     function it_generates_time_inputs($html)
     {
         // Expect
-        $html->attributes(hasKeyValuePair('type', 'time'));
+        $html->attributes($this->hasKeyValuePair('input', 'time'));
 
         // When
         $this->time('time');
