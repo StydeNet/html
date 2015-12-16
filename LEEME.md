@@ -18,7 +18,7 @@ Este paquete contiene una colección de clases de PHP Laravel diseñado para gen
 ```
 'providers' => [
     // ...
-    'Styde\Html\HtmlServiceProvider',
+    Styde\Html\HtmlServiceProvider::class,
     // ...
 ],
 ```
@@ -51,7 +51,7 @@ Si planeas utilizar el _Access Handler_ como una clase independiente, necesitar�
 ```
 'aliases' => [
     // ...
-    'Access' => Styde\Html\Facades\Access,
+    'Access' => Styde\Html\Facades\Access::class,
     // ...
 ],
 ```

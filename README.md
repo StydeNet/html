@@ -50,7 +50,7 @@ If you plan to use the _Access Handler_ as a standalone class, you will need to 
 ```
 'aliases' => [
     // ...
-    'Access' => Styde\Html\Facades\Access,
+    'Access' => Styde\Html\Facades\Access::class,
     // ...
 ],
 ```
