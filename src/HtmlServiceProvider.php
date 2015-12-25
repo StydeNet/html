@@ -171,12 +171,12 @@ class HtmlServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the HTML Builder instance.
+     * Register the HTML Builder instance.singlenotsinntrntrn
      */
     protected function registerHtmlBuilder()
     {
-        $this->app->bindShared('html', function ($app) {
-            return new HtmlBuilder($app['url']);
+        $this->app->singleton('html', function ($app) {
+            return new HtmlBuilder($app['url'], $app['view']);
         });
     }
 
