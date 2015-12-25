@@ -135,7 +135,8 @@ class HtmlServiceProvider extends ServiceProvider
     protected function registerAccessHandler()
     {
         $this->app[AccessHandler::class] = $this->app->share(function ($app) {
-            $handler = new BasicAccessHandler($app->make('auth')->driver());
+            $guard = $app['config']->get('html.guard', null);
+            $handler = new BasicAccessHandler($app['auth']->guard($guard));
 
             $gate = $app->make(Gate::class);
             if ($gate) {
