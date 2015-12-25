@@ -135,7 +135,8 @@ class HtmlServiceProvider extends ServiceProvider
     protected function registerAccessHandler()
     {
         $this->app[AccessHandler::class] = $this->app->share(function ($app) {
-            $handler = new BasicAccessHandler($app->make('auth')->driver());
+            $guard = $app['config']->get('html.guard', null);
+            $handler = new BasicAccessHandler($app['auth']->guard($guard));
 
             $gate = $app->make(Gate::class);
             if ($gate) {
@@ -171,12 +172,12 @@ class HtmlServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the HTML Builder instance.
+     * Register the HTML Builder instance.singlenotsinntrntrn
      */
     protected function registerHtmlBuilder()
     {
-        $this->app->bindShared('html', function ($app) {
-            return new HtmlBuilder($app['url']);
+        $this->app->singleton('html', function ($app) {
+            return new HtmlBuilder($app['url'], $app['view']);
         });
     }
 
@@ -244,7 +245,7 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerAlertContainer()
     {
-        $this->app->bindShared('alert', function ($app) {
+        $this->app->singleton('alert', function ($app) {
             $this->loadConfigurationOptions();
 
             $alert = new Alert(
@@ -265,7 +266,7 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerAlertMiddleware()
     {
-        $this->app->bindShared(AlertMiddleware::class, function ($app) {
+        $this->app->singleton(AlertMiddleware::class, function ($app) {
             return new AlertMiddleware($app['alert']);
         });
     }
