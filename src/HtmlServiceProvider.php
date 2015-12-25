@@ -244,7 +244,7 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerAlertContainer()
     {
-        $this->app->bindShared('alert', function ($app) {
+        $this->app->singleton('alert', function ($app) {
             $this->loadConfigurationOptions();
 
             $alert = new Alert(
@@ -265,7 +265,7 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerAlertMiddleware()
     {
-        $this->app->bindShared(AlertMiddleware::class, function ($app) {
+        $this->app->singleton(AlertMiddleware::class, function ($app) {
             return new AlertMiddleware($app['alert']);
         });
     }
