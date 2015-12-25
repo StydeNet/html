@@ -5,7 +5,7 @@ namespace Styde\Html\Menu;
 use Illuminate\Contracts\Routing\UrlGenerator as Url;
 use Styde\Html\Access\AccessHandlerSetter;
 use Styde\Html\Access\VerifyAccess;
-use Styde\Html\String;
+use Styde\Html\Str;
 use Styde\Html\Theme;
 use Illuminate\Translation\Translator as Lang;
 
@@ -390,7 +390,7 @@ class Menu
             return $this->translateTitle($key);
         }
 
-        return String::title($key);
+        return Str::title($key);
     }
 
     /**
@@ -411,7 +411,7 @@ class Menu
             return $translation;
         }
 
-        return String::title($key);
+        return Str::title($key);
     }
 
     /**

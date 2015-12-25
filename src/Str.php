@@ -2,9 +2,7 @@
 
 namespace Styde\Html;
 
-use Illuminate\Support\Str;
-
-class String extends Str
+class Str extends \Illuminate\Support\Str
 {
 
     /**

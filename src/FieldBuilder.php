@@ -396,7 +396,7 @@ class FieldBuilder
             return array();
         }
 
-        $method = 'get'.String::studly($name).'Options';
+        $method = 'get'.Str::studly($name).'Options';
 
         if (method_exists($model, $method)) {
             return $model->$method();

@@ -5,11 +5,11 @@ namespace spec\Styde\Html;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class StringSpec extends ObjectBehavior
+class StrSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Styde\Html\String');
+        $this->shouldHaveType('Styde\Html\Str');
     }
 
     function it_converts_strings_like_field_names_to_titles()
