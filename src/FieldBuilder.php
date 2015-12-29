@@ -161,7 +161,7 @@ class FieldBuilder
      */
     public function input($type, $name, $value = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build($type, $name, $value, $attributes, $extra);
+        return $this->swapAndBuild($type, $name, $value, $attributes, $extra);
     }
 
     /**
@@ -176,7 +176,7 @@ class FieldBuilder
      */
     public function text($name, $value = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build('text', $name, $value, $attributes, $extra);
+        return $this->swapAndBuild('text', $name, $value, $attributes, $extra);
     }
 
     /**
@@ -219,7 +219,7 @@ class FieldBuilder
      */
     public function email($name, $value = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build('email', $name, $value, $attributes, $extra);
+        return $this->swapAndBuild('email', $name, $value, $attributes, $extra);
     }
 
     /**
@@ -234,7 +234,7 @@ class FieldBuilder
      */
     public function url($name, $value = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build('url', $name, $value, $attributes, $extra);
+        return $this->swapAndBuild('url', $name, $value, $attributes, $extra);
     }
 
     /**
@@ -263,7 +263,7 @@ class FieldBuilder
      */
     public function textarea($name, $value = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build('textarea', $name, $value, $attributes, $extra);
+        return $this->swapAndBuild('textarea', $name, $value, $attributes, $extra);
     }
 
     /**
@@ -279,7 +279,7 @@ class FieldBuilder
      */
     public function radios($name, $options = array(), $selected = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build('radios', $name, $selected, $attributes, $extra, $options);
+        return $this->swapAndBuild('radios', $name, $selected, $attributes, $extra, $options);
     }
 
     /**
@@ -305,7 +305,7 @@ class FieldBuilder
             $selected = null;
         }
 
-        return $this->doBuild('select', $name, $selected, $attributes, $extra, $options);
+        return $this->build('select', $name, $selected, $attributes, $extra, $options);
     }
 
     /**
@@ -321,7 +321,7 @@ class FieldBuilder
     public function selectMultiple($name, $options = array(), $selected = null, array $attributes = array(), array $extra = array())
     {
         $attributes[] = 'multiple';
-        return $this->doBuild('select', $name, $selected, $attributes, $extra, $options);
+        return $this->build('select', $name, $selected, $attributes, $extra, $options);
     }
 
     /**
@@ -337,7 +337,7 @@ class FieldBuilder
      */
     public function checkboxes($name, $options = array(), $selected = null, array $attributes = array(), array $extra = array())
     {
-        return $this->doBuild('checkboxes', $name, $selected, $attributes, $extra, $options);
+        return $this->build('checkboxes', $name, $selected, $attributes, $extra, $options);
     }
 
     /**
@@ -355,7 +355,45 @@ class FieldBuilder
      */
     public function checkbox($name, $value = 1, $selected = null, array $attributes = array(), array $extra = array())
     {
-        return $this->build('checkbox', $name, $selected, $attributes, $extra, $value);
+        return $this->swapAndBuild('checkbox', $name, $selected, $attributes, $extra, $value);
+    }
+
+    /**
+     * Build and render a field
+     *
+     * @param  string $type
+     * @param  string $name
+     * @param  mixed $value
+     * @param  array $attributes
+     * @param  array $extra
+     * @param  array|null $options
+     * @return string
+     */
+    public function build($type, $name, $value = null, array $attributes = array(), array $extra = array(), $options = null)
+    {
+        $attributes = $this->replaceAttributes($attributes);
+
+        if (!$this->checkAccess($attributes)) {
+            return '';
+        }
+
+        $required = $this->getRequired($attributes);
+        $label = $this->getLabel($name, $attributes);
+        $htmlName = $this->getHtmlName($name);
+        $id = $this->getHtmlId($name, $attributes);
+        $errors = $this->getControlErrors($id);
+        $hasErrors = !empty($errors);
+        $customTemplate = $this->getCustomTemplate($attributes);
+
+        $attributes = $this->getHtmlAttributes($type, $attributes, $errors, $id, $required);
+
+        $input = $this->buildControl($type, $name, $value, $attributes, $options, $htmlName);
+
+        return $this->theme->render(
+            $customTemplate,
+            array_merge($extra, compact('htmlName', 'id',  'label', 'input', 'errors', 'hasErrors', 'required')),
+            'fields.'.$this->getDefaultTemplate($type)
+        );
     }
 
     /**
@@ -695,7 +733,7 @@ class FieldBuilder
     }
 
     /**
-     * Swap values ($value and $attributes) if necessary, then call doBuild
+     * Swap values ($value and $attributes) if necessary, then call build
      *
      * @param  string $type
      * @param  string $name
@@ -705,7 +743,7 @@ class FieldBuilder
      * @param  array $extra
      * @return string
      */
-    protected function build($type, $name, $value = null, array $attributes = array(), array $extra = array(), $options = null)
+    protected function swapAndBuild($type, $name, $value = null, array $attributes = array(), array $extra = array(), $options = null)
     {
         /**
          * Swap values so programmers can skip the $value argument
@@ -717,45 +755,7 @@ class FieldBuilder
             $value = null;
         }
 
-        return $this->doBuild($type, $name, $value, $attributes, $extra, $options);
-    }
-
-    /**
-     * Build and render a field
-     *
-     * @param  string $type
-     * @param  string $name
-     * @param  mixed $value
-     * @param  array $attributes
-     * @param  array $extra
-     * @param  array|null $options
-     * @return string
-     */
-    protected function doBuild($type, $name, $value = null, array $attributes = array(), array $extra = array(), $options = null)
-    {
-        $attributes = $this->replaceAttributes($attributes);
-
-        if (!$this->checkAccess($attributes)) {
-            return '';
-        }
-
-        $required = $this->getRequired($attributes);
-        $label = $this->getLabel($name, $attributes);
-        $htmlName = $this->getHtmlName($name);
-        $id = $this->getHtmlId($name, $attributes);
-        $errors = $this->getControlErrors($id);
-        $hasErrors = !empty($errors);
-        $customTemplate = $this->getCustomTemplate($attributes);
-
-        $attributes = $this->getHtmlAttributes($type, $attributes, $errors, $id, $required);
-
-        $input = $this->buildControl($type, $name, $value, $attributes, $options, $htmlName);
-
-        return $this->theme->render(
-            $customTemplate,
-            array_merge($extra, compact('htmlName', 'id',  'label', 'input', 'errors', 'hasErrors', 'required')),
-            'fields.'.$this->getDefaultTemplate($type)
-        );
+        return $this->build($type, $name, $value, $attributes, $extra, $options);
     }
 
     /**
