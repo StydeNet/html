@@ -1,0 +1,8 @@
+<?php
+
+namespace DummyRootNamespaceHttp\Forms;
+
+abstract class Form extends \Styde\Html\FormModel\Form
+{
+
+}

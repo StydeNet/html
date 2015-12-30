@@ -7,17 +7,17 @@ trait HasAttributes
 
     public function id($id)
     {
-        $this->attributes['id'] = $id;
+        return $this->attributes('id', $id);
     }
 
     public function classes($classes)
     {
-        $this->attributes['class'] = $classes;
+        return $this->attributes('class', $classes);
     }
 
     public function attr($attributes, $value = null)
     {
-        $this->attributes($attributes, $value);
+        return $this->attributes($attributes, $value);
     }
 
     public function attributes($attributes, $value = null)
@@ -27,6 +27,7 @@ trait HasAttributes
         } else {
             $this->attributes[$attributes] = $value;
         }
+        return $this;
     }
 
 }

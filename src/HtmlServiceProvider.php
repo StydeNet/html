@@ -12,6 +12,7 @@ use Styde\Html\Alert\Middleware as AlertMiddleware;
 use Styde\Html\Alert\SessionHandler as AlertSessionHandler;
 use Styde\Html\Menu\Menu;
 use Styde\Html\Menu\MenuGenerator;
+use Styde\Html\FormModel\FormMakeCommand;
 
 class HtmlServiceProvider extends ServiceProvider
 {
@@ -79,6 +80,8 @@ class HtmlServiceProvider extends ServiceProvider
         $this->registerAccessHandler();
 
         $this->registerFieldBuilder();
+
+        $this->registerMakeFormCommand();
 
         $this->registerAlertContainer();
         $this->registerAlertMiddleware();
@@ -222,6 +225,11 @@ class HtmlServiceProvider extends ServiceProvider
 
             return $fieldBuilder;
         });
+    }
+
+    public function registerMakeFormCommand()
+    {
+        $this->commands(FormMakeCommand::class);
     }
 
     /**

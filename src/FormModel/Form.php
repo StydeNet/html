@@ -18,6 +18,10 @@ class Form
      */
     protected $theme;
     /**
+     * @var array|\Illuminate\Database\Eloquent\Model
+     */
+    protected $model;
+    /**
      * @var array
      */
     protected $attributes = [];
@@ -70,36 +74,44 @@ class Form
         return $this->fieldCollection->add($name, $type);
     }
 
+    public function model($model)
+    {
+        $this->model = $model;
+        return $this;
+    }
+
     public function route()
     {
-        $this->attributes['route'] = func_get_args();
+        return $this->attributes('route', func_get_args());
     }
 
     public function url($url)
     {
-        $this->attributes['url'] = $url;
+        return $this->attributes('url', $url);
     }
 
     public function method($method)
     {
-        $this->attributes['method'] = $method;
+        return $this->attributes('method', $method);
     }
 
     public function classes($classes)
     {
-        $this->attributes['class'] = $classes;
+        return $this->attributes('class', $classes);
     }
 
     public function withFiles()
     {
-        $this->attributes['enctype'] = 'multipart/form-data';
+        return $this->attributes('enctype', 'multipart/form-data');
     }
 
     public function open($extraAttributes = array())
     {
-        return $this->formBuilder->open(
-            array_merge($this->attributes, $extraAttributes)
-        );
+        $attributes = array_merge($this->attributes, $extraAttributes);
+
+        return $this->model == null ?
+            $this->formBuilder->open($attributes)
+            : $this->formBuilder->model($this->model, $attributes);
     }
 
     public function close()

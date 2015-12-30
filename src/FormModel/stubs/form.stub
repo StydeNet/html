@@ -1,0 +1,18 @@
+<?php
+
+namespace DummyRootNamespaceHttp\Forms;
+
+class DummyClass extends Form
+{
+
+    /**
+     * Use this method to add fields and buttons to your form model
+     *
+     * @param  \Styde\Html\FieldCollection  $fields
+     * @param  \Styde\Html\ButtonCollection $buttons
+     */
+    protected function setup($fields, $buttons)
+    {
+    }
+
+}
