@@ -94,6 +94,7 @@ class Field
     public function options(array $options = array())
     {
         $this->options = $options;
+        return $this;
     }
 
     public function render()

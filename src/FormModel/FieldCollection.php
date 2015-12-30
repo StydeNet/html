@@ -30,6 +30,41 @@ class FieldCollection
         return $this->fields[$name];
     }
 
+    public function text($name)
+    {
+        return $this->add($name, 'text');
+    }
+
+    public function email($name)
+    {
+        return $this->add($name, 'email');
+    }
+
+    public function password($name)
+    {
+        return $this->add($name, 'password');
+    }
+
+    public function checkbox($name, $value = 1)
+    {
+        return $this->add($name, 'checkbox')->options($value);
+    }
+
+    public function select($name, array $options = array())
+    {
+        return $this->add($name, 'select')->options($options);
+    }
+
+    public function radios($name, array $options = array())
+    {
+        return $this->add($name, 'radios')->options($options);
+    }
+
+    public function checkboxes($name, array $options = array())
+    {
+        return $this->add($name, 'checkboxes')->options($options);
+    }
+
     public function add($name, $type = 'text')
     {
         return $this->fields[$name] = new Field($this->fieldBuilder, $name, $type);

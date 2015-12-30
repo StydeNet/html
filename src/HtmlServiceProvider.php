@@ -79,6 +79,8 @@ class HtmlServiceProvider extends ServiceProvider
 
         $this->registerAccessHandler();
 
+        $this->registerThemeClass();
+
         $this->registerFieldBuilder();
 
         $this->registerMakeFormCommand();
@@ -112,21 +114,15 @@ class HtmlServiceProvider extends ServiceProvider
     }
 
     /**
-     * Instantiate and return the Theme object
-     *
-     * Only one theme is necessary, and the theme object will be used internally
-     * by the other classes of this component. So we don't need to add it to the
-     * IoC container.
+     * Register the Theme object into the IoC container
      *
      * @return \Styde\Html\Theme
      */
-    protected function getTheme()
+    protected function registerThemeClass()
     {
-        if ($this->theme == null) {
-            $this->theme = new Theme($this->app['view'], $this->options['theme'], $this->options['custom']);
-        }
-
-        return $this->theme;
+       $this->app[Theme::class] = $this->app->share(function ($app) {
+            return new Theme($this->app['view'], $this->options['theme'], $this->options['custom']);
+        });
     }
 
     /**
@@ -163,7 +159,7 @@ class HtmlServiceProvider extends ServiceProvider
                 $app['html'],
                 $app['url'],
                 $app['session.store']->getToken(),
-                $this->getTheme()
+                $app->make(Theme::class)
             );
 
             $form->novalidate(
@@ -172,6 +168,8 @@ class HtmlServiceProvider extends ServiceProvider
 
             return $form->setSessionStore($app['session.store']);
         });
+
+        $this->app->alias('form', FormBuilder::class);
     }
 
     /**
@@ -195,7 +193,7 @@ class HtmlServiceProvider extends ServiceProvider
 
             $fieldBuilder = new FieldBuilder(
                 $app['form'],
-                $this->theme,
+                $app->make(Theme::class),
                 $app['translator']
             );
 
@@ -225,6 +223,8 @@ class HtmlServiceProvider extends ServiceProvider
 
             return $fieldBuilder;
         });
+
+        $this->app->alias('field', FieldBuilder::class);
     }
 
     public function registerMakeFormCommand()
@@ -258,7 +258,7 @@ class HtmlServiceProvider extends ServiceProvider
 
             $alert = new Alert(
                 $this->getAlertHandler(),
-                $this->getTheme()
+                $app->make(Theme::class)
             );
 
             if ($this->options['translate_texts']) {
@@ -291,7 +291,7 @@ class HtmlServiceProvider extends ServiceProvider
             $menu = new MenuGenerator(
                 $app['url'],
                 $app['config'],
-                $this->getTheme()
+                $app->make(Theme::class)
             );
 
             if ($this->options['control_access']) {

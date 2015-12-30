@@ -20,7 +20,7 @@ trait HasAttributes
         return $this->attributes($attributes, $value);
     }
 
-    public function attributes($attributes, $value = null)
+    public function attributes($attributes, $value = true)
     {
         if (is_array($attributes)) {
             $this->attributes = array_merge($this->attributes, $attributes);
