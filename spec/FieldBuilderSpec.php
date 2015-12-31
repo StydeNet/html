@@ -44,14 +44,14 @@ class FieldBuilderSpec extends ObjectBehavior
         ], "fields.default")->shouldBeCalled()->willReturn('html');
 
         // When
-        $this->text('name', 'value')->shouldReturn('html');
+        $this->text('name', 'value')->render()->shouldReturn('html');
     }
 
     function it_checks_for_access(AccessHandler $access)
     {
         $this->setAccessHandler($access);
         $access->check([])->shouldBeCalled()->willReturn(false);
-        $this->text('name', 'value')->shouldReturn('');
+        $this->text('name', 'value')->render()->shouldReturn('');
     }
 
     function it_generates_a_text_field_with_abbreviated_options($form, $theme, $lang)
@@ -65,7 +65,7 @@ class FieldBuilderSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         // When
-        $this->text('name', 'value', ['ph' => $placeholder]);
+        $this->text('name', 'value', ['ph' => $placeholder])->render();
     }
 
     function it_generates_a_text_field_with_a_custom_label($theme, $lang)
@@ -79,7 +79,7 @@ class FieldBuilderSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         // When
-        $this->text('name', 'value', ['label' => $label]);
+        $this->text('name', 'value', ['label' => $label])->render();
     }
 
     function it_generates_a_text_field_with_a_custom_id($theme, $lang)
@@ -92,7 +92,7 @@ class FieldBuilderSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         // When
-        $this->text('name', 'value', ['id' => $id]);
+        $this->text('name', 'value', ['id' => $id])->render();
     }
 
     function it_generates_a_field_with_a_custom_templates($theme)
@@ -105,7 +105,7 @@ class FieldBuilderSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         // When
-        $this->text('name', 'value', ['template' => $custom]);
+        $this->text('name', 'value', ['template' => $custom])->render();
     }
 
     function it_generates_a_select_field($form, $theme)
@@ -119,7 +119,7 @@ class FieldBuilderSpec extends ObjectBehavior
         $form->select("gender", $result, null, ["class" => "", "id" => "gender"])->shouldBeCalled();
 
         // When
-        $this->select('gender', $options, null, $attributes);
+        $this->select('gender', $options, null, $attributes)->render();
     }
 
     function it_generates_a_select_field_without_empty_option($form, $theme)
@@ -133,7 +133,7 @@ class FieldBuilderSpec extends ObjectBehavior
         $form->select("gender", $result, null, ["class" => "", "id" => "gender"])->shouldBeCalled();
 
         // When
-        $this->select('gender', $options, null, $attributes);
+        $this->select('gender', $options, null, $attributes)->render();
     }
 
     function it_generates_a_multiple_select_field($form, $theme)
@@ -156,7 +156,7 @@ class FieldBuilderSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         // When
-        $this->selectMultiple('tags', $options, $selected, $attributes);
+        $this->selectMultiple('tags', $options, $selected, $attributes)->render();
     }
 
     function it_adds_an_empty_option_to_select_fields($form, $lang)
@@ -180,7 +180,7 @@ class FieldBuilderSpec extends ObjectBehavior
             ->willReturn('<select>');
 
         // When
-        $this->select('gender', $options, 'm', ['label' => 'Gender']);
+        $this->select('gender', $options, 'm', ['label' => 'Gender'])->render();
     }
 
     function it_generates_a_text_field_with_errors($form, $theme, $lang)
@@ -200,7 +200,7 @@ class FieldBuilderSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         // When
-        $this->text('name', 'value');
+        $this->text('name', 'value')->render();
     }
 
     function it_generates_a_text_field_with_extra_data($theme)
@@ -213,7 +213,7 @@ class FieldBuilderSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         // When
-        $this->text('name', 'value', [], ['extra' => 'extra']);
+        $this->text('name', 'value', [], ['extra' => 'extra'])->render();
     }
 
     function it_takes_select_options_from_the_model($form, User $user)
@@ -229,7 +229,7 @@ class FieldBuilderSpec extends ObjectBehavior
         $form->select("gender", $result, "m", ["class" => "", "id" => "gender"])->shouldBeCalled();
 
         // When
-        $this->select('gender', null, 'm', $attributes);
+        $this->select('gender', null, 'm', $attributes)->render();
     }
 
 }

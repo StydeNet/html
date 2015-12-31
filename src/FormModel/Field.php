@@ -58,11 +58,6 @@ class Field
         return $this->render();
     }
 
-    public function __get($name)
-    {
-        return $this->$name;
-    }
-
     public function required($required = true)
     {
         if ($required) {
@@ -75,7 +70,8 @@ class Field
 
     public function label($label)
     {
-        return $this->attributes('label', $label);
+        $this->label = $label;
+        return $this;
     }
 
     public function value($value)
@@ -86,7 +82,8 @@ class Field
 
     public function template($template)
     {
-        $this->attributes['template'] = $template;
+        $this->template = $template;
+        return $this;
     }
 
     public function extra(array $values, $value = null)

@@ -29,16 +29,17 @@ class FieldCollectionSpec extends ObjectBehavior
     {
         $roles = ['admin' => 'Admin' , 'user' => 'User'];
 
-        $fieldBuilder->build('text', 'name', null, ['label' => 'Full name'], [], [])
+        $fieldName = $this->add('name')->label('Full name');
+        $fieldRole = $this->add('role', 'select')->options($roles);
+
+        $fieldBuilder->render($fieldName)
             ->shouldBeCalled()
             ->willReturn('<input>');
 
-        $fieldBuilder->build('select', 'role', null, [], [], $roles)
+        $fieldBuilder->render($fieldRole)
             ->shouldBeCalled()
             ->willReturn('<select>');
 
-        $this->add('name')->label('Full name');
-        $this->add('role', 'select')->options($roles);
         $this->render()->shouldReturn('<input><select>');
     }
 
