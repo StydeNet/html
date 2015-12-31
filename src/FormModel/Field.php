@@ -6,6 +6,8 @@ use Styde\Html\FieldBuilder;
 
 class Field
 {
+    use HasAttributes;
+
     /**
      * @var \Styde\Html\FieldBuilder
      */
@@ -18,6 +20,18 @@ class Field
      * @var string
      */
     protected $type;
+    /**
+     * @var mixed
+     */
+    protected $value;
+    /**
+     * @var string
+     */
+    protected $label;
+    /**
+     * @var template
+     */
+    protected $template;
     /**
      * @var array
      */
@@ -39,6 +53,11 @@ class Field
         $this->type = $type;
     }
 
+    public function __toString()
+    {
+        return $this->render();
+    }
+
     public function __get($name)
     {
         return $this->$name;
@@ -51,35 +70,23 @@ class Field
         } else {
             unset($this->attributes['required']);
         }
+        return $this;
     }
 
     public function label($label)
     {
-        $this->attributes['label'] = $label;
+        return $this->attributes('label', $label);
     }
 
-    public function classes($classes)
+    public function value($value)
     {
-        $this->attributes['class'] = $classes;
+        $this->value = $value;
+        return $this;
     }
 
     public function template($template)
     {
         $this->attributes['template'] = $template;
-    }
-
-    public function attr($attributes, $value = null)
-    {
-        $this->attributes($attributes, $value);
-    }
-
-    public function attributes($attributes, $value = null)
-    {
-        if (is_array($attributes)) {
-            $this->attributes = array_merge($this->attributes, $attributes);
-        } else {
-            $this->attributes[$attributes] = $value;
-        }
     }
 
     public function extra(array $values, $value = null)
@@ -89,24 +96,58 @@ class Field
         } else {
             $this->extra[$values] = $value;
         }
+        return $this;
     }
 
-    public function options(array $options = array())
+    public function options($options)
     {
         $this->options = $options;
         return $this;
     }
 
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    public function getExtra()
+    {
+        return $this->extra;
+    }
+
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
     public function render()
     {
-        return $this->fieldBuilder->build(
-            $this->type,
-            $this->name,
-            null,
-            $this->attributes,
-            $this->extra,
-            $this->options
-        );
+        return $this->fieldBuilder->render($this);
     }
 
 }

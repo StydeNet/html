@@ -4,6 +4,7 @@ namespace Styde\Html;
 
 use Illuminate\Translation\Translator as Lang;
 use Styde\Html\Access\VerifyAccess;
+use Styde\Html\FormModel\Field;
 
 class FieldBuilder
 {
@@ -371,27 +372,63 @@ class FieldBuilder
      */
     public function build($type, $name, $value = null, array $attributes = array(), array $extra = array(), $options = null)
     {
+        $field = new Field($this, $name, $type);
+
         $attributes = $this->replaceAttributes($attributes);
 
-        if (!$this->checkAccess($attributes)) {
+        if (isset ($attributes['label'])) {
+            $field->label($attributes['label']);
+            unset($attributes['label']);
+        }
+
+        if (isset ($attributes['template'])) {
+            $field->template($attributes['template']);
+            unset($attributes['template']);
+        }
+
+        $field->value($value)
+            ->attributes($attributes)
+            ->extra($extra)
+            ->options($options);
+
+        return $field;
+    }
+
+    public function render(Field $field)
+    {
+        $attributes = $field->getAttributes();
+
+        if (! $this->checkAccess($attributes)) {
             return '';
         }
 
+        $name = $field->getName();
+
         $required = $this->getRequired($attributes);
-        $label = $this->getLabel($name, $attributes);
+
+        $label = $field->getLabel();
+        if ($label == null) {
+            $label = $this->getDefaultLabel($name);
+        }
+
         $htmlName = $this->getHtmlName($name);
         $id = $this->getHtmlId($name, $attributes);
+
         $errors = $this->getControlErrors($id);
         $hasErrors = !empty($errors);
-        $customTemplate = $this->getCustomTemplate($attributes);
+
+        $type = $field->getType();
 
         $attributes = $this->getHtmlAttributes($type, $attributes, $errors, $id, $required);
 
-        $input = $this->buildControl($type, $name, $value, $attributes, $options, $htmlName);
+        $input = $this->buildControl($type, $name, $field->getValue(), $attributes, $field->getOptions(), $htmlName);
 
         return $this->theme->render(
-            $customTemplate,
-            array_merge($extra, compact('htmlName', 'id',  'label', 'input', 'errors', 'hasErrors', 'required')),
+            $field->getTemplate(),
+            array_merge(
+                $field->getExtra(),
+                compact('htmlName', 'id',  'label', 'input', 'errors', 'hasErrors', 'required')
+            ),
             'fields.'.$this->getDefaultTemplate($type)
         );
     }
@@ -600,24 +637,17 @@ class FieldBuilder
     }
 
     /**
-     * Get the field's label: it can be set in the attributes array with the key
-     * 'label'. If the 'label' key is not found, then we will use the translator
-     * component to search for a translation:
+     * Use the translator component to search for a translation
      *
      * i.e. name => validation.attributes.name.
      *
-     * If this is not found either, it'll generate a label based on the name.
+     * If this is not found, generate a label based on the field's name.
      *
      * @param  string $name
-     * @param  array $attributes
      * @return string
      */
-    protected function getLabel($name, array $attributes = [])
+    protected function getDefaultLabel($name)
     {
-        if (isset($attributes['label'])) {
-            return $attributes['label'];
-        }
-
         $attribute = 'validation.attributes.'.$name;
         
         $label = $this->lang->get($attribute);
@@ -702,15 +732,7 @@ class FieldBuilder
     protected function getHtmlAttributes($type, $attributes, $errors, $htmlId, $required)
     {
         $attributes['class'] = $this->getClasses($type, $attributes, $errors);
-
         $attributes['id'] = $htmlId;
-
-        if ($required && !in_array('required', $attributes)) {
-            $attributes[] = 'required';
-        }
-
-        unset($attributes['template'], $attributes['required'], $attributes['label']);
-
         return $attributes;
     }
 
