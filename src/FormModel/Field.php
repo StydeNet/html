@@ -86,7 +86,7 @@ class Field
         return $this;
     }
 
-    public function extra(array $values, $value = null)
+    public function extra($values, $value = true)
     {
         if (is_array($values)) {
             $this->extra = array_merge($this->extra, $values);

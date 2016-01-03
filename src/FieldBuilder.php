@@ -394,6 +394,13 @@ class FieldBuilder
         return $field;
     }
 
+    /**
+     * Render a Field object. Field objects can be built using the build function on this class.
+     * Or through a FieldCollection in a FormModel.
+     *
+     * @param  Field $field
+     * @return string
+     */
     public function render(Field $field)
     {
         $attributes = $field->getAttributes();

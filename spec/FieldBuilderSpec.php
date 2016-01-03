@@ -216,6 +216,42 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->text('name', 'value', [], ['extra' => 'extra'])->render();
     }
 
+    function it_generates_a_fields_using_method_chaining($form, $theme)
+    {
+        // Expect
+        $form->text(
+            "name",
+            "value",
+            ["required" => true, "class" => "input", "id" => "my_field"]
+        )->shouldBeCalled()->willReturn('<input>');
+
+        $theme->render(
+            'custom_template',
+            [
+                "extra" => "extra",
+                "htmlName" => "name",
+                "id" => "my_field",
+                "label" => "My field",
+                "input" => '<input>',
+                "errors" => [],
+                "hasErrors" => false,
+                "required" => true
+            ],
+            "fields.default"
+        )->shouldBeCalled();
+
+        // When
+        $this->text('name')
+            ->value('value')
+            ->required()
+            ->classes('input')
+            ->id('my_field')
+            ->label('My field')
+            ->template('custom_template')
+            ->extra('extra', 'extra')
+            ->render();
+    }
+
     function it_takes_select_options_from_the_model($form, User $user)
     {
         // Having

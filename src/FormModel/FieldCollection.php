@@ -20,6 +20,11 @@ class FieldCollection
         $this->fieldBuilder = $fieldBuilder;
     }
 
+    public function __call($method, $params)
+    {
+        return $this->add($params[0], $method);
+    }
+
     public function __toString()
     {
         return $this->render();
