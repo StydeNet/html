@@ -19,7 +19,7 @@ trait HasAttributes
         return $this->attributes('class', $classes);
     }
 
-    public function attr($attributes, $value = null)
+    public function attr($attributes, $value = true)
     {
         if (is_array($attributes)) {
             $this->attributes = array_merge($this->attributes, $attributes);
