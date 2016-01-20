@@ -14,5 +14,4 @@ interface AccessHandler
      * @return bool
      */
     public function check(array $options);
-
 }

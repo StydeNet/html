@@ -82,7 +82,7 @@ class Container
      * @param array $args
      * @return \Styde\Html\Alert\Message
      */
-    public function message($message = '', $type = 'success', array $args = [])
+    public function message($message = '', $type = 'success', array $args = [ ])
     {
         return new Message($this, $message, $type, $args);
     }
@@ -177,7 +177,7 @@ class Container
     {
         $messages = $this->toArray();
 
-        if ( ! empty ($messages)) {
+        if (!empty($messages)) {
             $this->clearMessages();
             return $this->theme->render(
                 $custom,
@@ -211,5 +211,4 @@ class Container
 
         return $messages;
     }
-
 }

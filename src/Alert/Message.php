@@ -35,7 +35,7 @@ class Message
         Container $container,
         $message = '',
         $type = 'success',
-        array $args = []
+        array $args = [ ]
     ) {
         $this->container = $container;
         $this->message = [

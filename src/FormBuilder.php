@@ -138,7 +138,7 @@ class FormBuilder extends CollectiveFormBuilder
             ];
         }
 
-        unset ($attributes['inline'], $attributes['template']);
+        unset($attributes['inline'], $attributes['template']);
 
         return $this->theme->render(
             $template,
@@ -194,7 +194,7 @@ class FormBuilder extends CollectiveFormBuilder
             ];
         }
 
-        unset ($attributes['inline'], $attributes['template']);
+        unset($attributes['inline'], $attributes['template']);
 
         return $this->theme->render(
             $template,

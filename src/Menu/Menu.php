@@ -294,8 +294,12 @@ class Menu
             $values['class'] = trim($values['class']);
 
             unset(
-                $values['callback'], $values['roles'], $values['secure'],
-                $values['params'], $values['route'], $values['action'],
+                $values['callback'],
+                $values['roles'],
+                $values['secure'],
+                $values['params'],
+                $values['route'],
+                $values['action'],
                 $values['full_url']
             );
         }
@@ -369,7 +373,7 @@ class Menu
             return $title;
         }
 
-        if(!is_null($this->lang)) {
+        if (!is_null($this->lang)) {
             return $this->translateTitle($key);
         }
 
@@ -509,5 +513,4 @@ class Menu
 
         return '#';
     }
-
 }

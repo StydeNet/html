@@ -64,7 +64,8 @@ class HtmlServiceProvider extends ServiceProvider
     protected function mergeDefaultConfiguration()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config.php', 'html'
+            __DIR__.'/../config.php',
+            'html'
         );
     }
 
@@ -84,7 +85,7 @@ class HtmlServiceProvider extends ServiceProvider
 
         $this->registerMenuGenerator();
 
-        if (!empty ($this->globalAliases)) {
+        if (!empty($this->globalAliases)) {
             $this->registerFacadeAliases();
         }
     }
@@ -97,14 +98,16 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function loadConfigurationOptions()
     {
-        if ( ! empty($this->options)) return;
+        if (!empty($this->options)) {
+            return;
+        }
 
         $this->mergeDefaultConfiguration();
 
         $this->options = $this->app->make('config')->get('html');
 
         $this->options['theme_values'] = $this->options['themes'][$this->options['theme']];
-        unset ($this->options['themes']);
+        unset($this->options['themes']);
     }
 
     /**
@@ -206,13 +209,13 @@ class HtmlServiceProvider extends ServiceProvider
 
             $fieldBuilder->setAbbreviations($this->options['abbreviations']);
 
-            if (isset ($this->options['theme_values']['field_classes'])) {
+            if (isset($this->options['theme_values']['field_classes'])) {
                 $fieldBuilder->setCssClasses(
                     $this->options['theme_values']['field_classes']
                 );
             }
 
-            if (isset ($this->options['theme_values']['field_templates'])) {
+            if (isset($this->options['theme_values']['field_templates'])) {
                 $fieldBuilder->setTemplates(
                     $this->options['theme_values']['field_templates']
                 );

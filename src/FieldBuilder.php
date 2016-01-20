@@ -572,7 +572,7 @@ class FieldBuilder
      * @param string|null $errors
      * @return string
      */
-    protected function getClasses($type, array $attributes = [], $errors = null)
+    protected function getClasses($type, array $attributes = [ ], $errors = null)
     {
         $classes = $this->getDefaultClasses($type);
 
@@ -580,7 +580,7 @@ class FieldBuilder
             $classes .= ' '.$attributes['class'];
         }
 
-        if ( ! empty($errors)) {
+        if (!empty($errors)) {
             $classes .= ' '.(isset($classes['error']) ? $classes['error'] : 'error');
         }
 
@@ -700,7 +700,7 @@ class FieldBuilder
 
         return $this->theme->render(
             $customTemplate,
-            compact('htmlName', 'id',  'label', 'input', 'errors', 'hasErrors', 'required'),
+            compact('htmlName', 'id', 'label', 'input', 'errors', 'hasErrors', 'required'),
             'fields.'.$this->getDefaultTemplate($type)
         );
     }

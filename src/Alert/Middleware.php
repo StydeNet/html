@@ -45,5 +45,4 @@ class Middleware {
     {
         $this->alert->push();
     }
-
 }

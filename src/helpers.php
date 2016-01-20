@@ -13,12 +13,13 @@ if (!function_exists('alert')) {
      * @param array $args
      * @return string
      */
-    function alert($message = '', $type = 'success', $args = []) {
+    function alert($message = '', $type = 'success', $args = [])
+    {
         return App::make('alert')->message($message, $type, $args);
     }
 }
 
-if(!function_exists('menu')) {
+if (!function_exists('menu')) {
     /**
      * Generates a new menu (alias of Menu::make)
      *
@@ -26,7 +27,8 @@ if(!function_exists('menu')) {
      * @param string|null $classes
      * @return string
      */
-    function menu($items, $classes = null) {
+    function menu($items, $classes = null)
+    {
         return App::make('menu')->make($items, $classes);
     }
 }
