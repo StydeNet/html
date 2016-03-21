@@ -604,9 +604,9 @@ class FieldBuilder
     {
         return isset($this->cssClasses[$type])
             ? $this->cssClasses[$type]
-            : isset($this->cssClasses['default'])
+            : (isset($this->cssClasses['default'])
                 ? $this->cssClasses['default']
-                : '';
+                : '');
     }
 
     /**
