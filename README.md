@@ -15,6 +15,10 @@ This is an extension of the Laravel Collective [HTML package](https://github.com
 
 1. The preferred way to install this package is through Composer:
 
+**Laravel 5.3 users**:
+
+Install by running `composer require "styde/html=~1.2"` or adding `"styde/html": "~1.2"` to your `composer.json` file and then running `composer update`.
+
 **Laravel 5.2 users**:
 
 Install by running `composer require "styde/html=~1.1"` or adding `"styde/html": "~1.1"` to your `composer.json` file and then running `composer update`.
