@@ -52,6 +52,16 @@ class Theme
     }
 
     /**
+     * Get the underlying view contract
+     *
+     * @return \Illuminate\Contracts\View\Factory
+     */
+    public function getView()
+    {
+        return $this->view;
+    }
+
+    /**
      * Renders a custom template or one of the default templates.
      *
      * The default template could be published (into resources/views/themes/)

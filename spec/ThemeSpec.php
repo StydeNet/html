@@ -2,11 +2,9 @@
 
 namespace spec\Styde\Html;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
-use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
+use PhpSpec\ObjectBehavior;
+use Illuminate\Contracts\View\Factory;
 
 class ThemeSpec extends ObjectBehavior
 {
@@ -72,5 +70,10 @@ class ThemeSpec extends ObjectBehavior
 
         // When
         $this->render($custom, $data, $template)->shouldReturn('<html>');
+    }
+
+    function it_can_retrieve_the_view_object(Factory $view)
+    {
+        $this->getView()->shouldReturnAnInstanceOf(Factory::class);
     }
 }
