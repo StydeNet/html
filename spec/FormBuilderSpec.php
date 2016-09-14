@@ -63,6 +63,8 @@ class FormBuilderSpec extends ObjectBehavior
                 "id" => "gender_f"
             ]
         ];
+
+        $theme->getView()->shouldBeCalled();
         $theme->render(null, compact('name', 'radios', 'attributes'), "forms.radios")->shouldBeCalled();
 
         // When
@@ -108,6 +110,7 @@ class FormBuilderSpec extends ObjectBehavior
                 "id" => "tags_ruby"
             ]
         ];
+        $theme->getView()->shouldBeCalled();
         $theme->render(null, compact('name', 'checkboxes', 'attributes'), "forms.checkboxes")->shouldBeCalled();
 
         // When

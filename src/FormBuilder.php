@@ -37,6 +37,7 @@ class FormBuilder extends CollectiveFormBuilder
         $this->html = $html;
         $this->csrfToken = $csrfToken;
         $this->theme = $theme;
+        $this->view = $theme->getView();
     }
 
     /**
