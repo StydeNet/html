@@ -232,6 +232,44 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->select('gender', null, 'm', $attributes);
     }
 
+    function it_generates_fields_with_default_css_classes_by_type($form)
+    {
+        // When
+        $this->setCssClasses([
+            'text' => 'text-field',
+            'default' => 'deafult-field'
+        ]);
+
+        // Expect
+        $form->text('name', null, ['class' => 'text-field', 'id' => 'name'])->shouldBeCalled();
+
+        // When
+        $this->text('name');
+    }
+
+    function it_generates_fields_with_default_css_classes($form)
+    {
+        // When
+        $this->setCssClasses([
+            'text' => 'text-field',
+            'default' => 'default-field'
+        ]);
+
+        // Expect
+        $form->textarea('content', null, ['class' => 'default-field', 'id' => 'content'])->shouldBeCalled();
+
+        // When
+        $this->textarea('content');
+    }
+
+    function it_uses_a_macros()
+    {
+        $this->macro('myMacro', function () {
+             return '<macro>';
+        });
+
+        $this->myMacro()->shouldReturn('<macro>');
+    }
 }
 
 interface User {
