@@ -2,12 +2,15 @@
 
 namespace Styde\Html;
 
-use Illuminate\Translation\Translator as Lang;
 use Styde\Html\Access\VerifyAccess;
+use Illuminate\Support\Traits\Macroable;
+use Illuminate\Translation\Translator as Lang;
 
 class FieldBuilder
 {
-    use VerifyAccess;
+    use VerifyAccess, Macroable {
+        Macroable::__call as macroCall;
+    }
 
     /**
      * The FormBuilder class required to generate controls
@@ -142,6 +145,10 @@ class FieldBuilder
      */
     public function __call($method, $parameters)
     {
+        if ($this->hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         return call_user_func_array(
             [$this, 'build'],
             array_merge([$method], $parameters)
@@ -602,11 +609,15 @@ class FieldBuilder
      */
     protected function getDefaultClasses($type)
     {
-        return isset($this->cssClasses[$type])
-            ? $this->cssClasses[$type]
-            : (isset($this->cssClasses['default'])
-                ? $this->cssClasses['default']
-                : '');
+        if (isset($this->cssClasses[$type])) {
+            return $this->cssClasses[$type];
+        }
+
+        if (isset($this->cssClasses['default'])) {
+            return $this->cssClasses['default'];
+        }
+
+        return '';
     }
 
     /**
