@@ -33,7 +33,7 @@ class FormBuilder extends CollectiveFormBuilder
      */
     public function __construct(HtmlBuilder $html, UrlGenerator $url, $csrfToken, Theme $theme)
     {
-        parent::__construct($html, $url, $theme->getView(), $csrfToken);
+        parent::__construct($html, $url, $csrfToken);
 
         $this->theme = $theme;
     }

@@ -14,8 +14,6 @@ class FormBuilderSpec extends ObjectBehavior
 {
     function let(HtmlBuilder $html, UrlGenerator $url, Theme $theme, Factory $view)
     {
-        $theme->getView()->shouldBeCalled()->willReturn($view);
-
         $this->beConstructedWith($html, $url, 'csrf_token', $theme);
     }
 
