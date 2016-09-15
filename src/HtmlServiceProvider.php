@@ -2,16 +2,16 @@
 
 namespace Styde\Html;
 
-use Collective\Html\HtmlServiceProvider as ServiceProvider;
-use Illuminate\Contracts\Auth\Access\Gate;
-use Illuminate\Foundation\AliasLoader;
-use Styde\Html\Access\AccessHandler;
-use Styde\Html\Access\BasicAccessHandler;
-use Styde\Html\Alert\Container as Alert;
-use Styde\Html\Alert\Middleware as AlertMiddleware;
-use Styde\Html\Alert\SessionHandler as AlertSessionHandler;
 use Styde\Html\Menu\Menu;
 use Styde\Html\Menu\MenuGenerator;
+use Styde\Html\Access\AccessHandler;
+use Illuminate\Foundation\AliasLoader;
+use Styde\Html\Alert\Container as Alert;
+use Styde\Html\Access\BasicAccessHandler;
+use Illuminate\Contracts\Auth\Access\Gate;
+use Styde\Html\Alert\Middleware as AlertMiddleware;
+use Styde\Html\Alert\SessionHandler as AlertSessionHandler;
+use Collective\Html\HtmlServiceProvider as ServiceProvider;
 
 class HtmlServiceProvider extends ServiceProvider
 {
@@ -134,16 +134,17 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerAccessHandler()
     {
-        $this->app[AccessHandler::class] = $this->app->share(function ($app) {
+        $this->app['access'] = $this->app->share(function ($app) {
             $handler = new BasicAccessHandler($app->make('auth')->driver());
 
-            $gate = $app->make(Gate::class);
-            if ($gate) {
+            if ($gate = $app->make(Gate::class)) {
                 $handler->setGate($gate);
             }
 
             return $handler;
         });
+
+        $this->app->alias('access', AccessHandler::class);
     }
 
     /**
@@ -258,6 +259,8 @@ class HtmlServiceProvider extends ServiceProvider
 
             return $alert;
         });
+
+        $this->app->alias('alert', Alert::class);
     }
 
     /**
