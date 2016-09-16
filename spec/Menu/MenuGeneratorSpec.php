@@ -344,5 +344,35 @@ class MenuGeneratorSpec extends ObjectBehavior
         $menu->getItems()->shouldReturn($items);
     }
 
+    function it_allows_you_to_set_a_custom_active_url_resolver()
+    {
+        $this->setActiveUrlResolver(function ($values) {
+            return $values['id'] == 'contact-us';
+        });
+
+        $menu = $this->make([
+            'home' => [],
+            'contact' => ['id' => 'contact-us'],
+        ]);
+
+        $menu->getItems()->shouldReturn([
+            'home' => [
+                'class' => '',
+                'submenu' => null,
+                'id' => 'home',
+                'active' => false,
+                'title' => 'Home',
+                'url' => '#',
+            ],
+            'contact' => [
+                'class' => 'active',
+                'submenu' => null,
+                'id' => 'contact-us',
+                'active' => true,
+                'title' => 'Contact',
+                'url' => '#',
+            ]
+        ]);
+    }
 
 }

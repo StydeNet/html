@@ -2,12 +2,13 @@
 
 namespace Styde\Html\Menu;
 
-use Illuminate\Contracts\Routing\UrlGenerator as Url;
-use Styde\Html\Access\AccessHandlerSetter;
-use Styde\Html\Access\VerifyAccess;
+use Closure;
 use Styde\Html\Str;
 use Styde\Html\Theme;
+use Styde\Html\Access\VerifyAccess;
+use Styde\Html\Access\AccessHandlerSetter;
 use Illuminate\Translation\Translator as Lang;
+use Illuminate\Contracts\Routing\UrlGenerator as Url;
 
 class Menu
 {
@@ -76,6 +77,13 @@ class Menu
      * @var array
      */
     protected $params = array();
+
+    /**
+     * Store an optional custom active URL resolver.
+     *
+     * @var \Closure
+     */
+    protected $activeUrlResolver;
 
     /**
      * Creates a new menu.
@@ -192,6 +200,16 @@ class Menu
     {
         $this->defaultSecure = $value;
         return $this;
+    }
+
+    /**
+     * Set a custom callback to resolve the logic to determine if a URL is active or not.
+     *
+     * @param Closure $closure
+     */
+    public function setActiveUrlResolver(Closure $closure)
+    {
+        $this->activeUrlResolver = $closure;
     }
 
     /**
@@ -345,6 +363,12 @@ class Menu
      */
     protected function isActiveUrl(array $values)
     {
+        // Do we have a custom resolver? If so, use it:
+        if($activeUrlResolver = $this->activeUrlResolver) {
+            return $activeUrlResolver($values);
+        }
+
+        // Otherwise use the default resolver:
         if ($values['url'] != $this->baseUrl) {
             return strpos($this->activeUrl, $values['url']) === 0;
         }

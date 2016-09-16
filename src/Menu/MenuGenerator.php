@@ -2,11 +2,12 @@
 
 namespace Styde\Html\Menu;
 
-use Illuminate\Contracts\Routing\UrlGenerator;
-use Styde\Html\Access\VerifyAccess;
+use Closure;
 use Styde\Html\Theme;
-use Illuminate\Contracts\Config\Repository as Config;
+use Styde\Html\Access\VerifyAccess;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Translation\Translator as Lang;
+use Illuminate\Contracts\Config\Repository as Config;
 
 class MenuGenerator
 {
@@ -41,6 +42,13 @@ class MenuGenerator
     protected $lang;
 
     /**
+     * Store an optional custom active URL resolver.
+     *
+     * @var \Closure
+     */
+    protected $activeUrlResolver;
+
+    /**
      * Creates a new menu generator object.
      * This class is a factory that will allow us to generate different menus.
      *
@@ -63,6 +71,16 @@ class MenuGenerator
     public function setLang(Lang $lang)
     {
         $this->lang = $lang;
+    }
+
+    /**
+     * Set a custom callback to resolve the logic to determine if a URL is active or not.
+     *
+     * @param Closure $closure
+     */
+    public function setActiveUrlResolver(Closure $closure)
+    {
+        $this->activeUrlResolver = $closure;
     }
 
     /**
@@ -94,6 +112,10 @@ class MenuGenerator
 
         if ($classes != null) {
             $menu->setClass($classes);
+        }
+
+        if ($this->activeUrlResolver != null) {
+            $menu->setActiveUrlResolver($this->activeUrlResolver);
         }
 
         return $menu;
