@@ -9,8 +9,8 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "laravelcollective/html": "5.2.*",
-        "laravel/framework": "5.2.*"
+        "laravelcollective/html": "5.3.*",
+        "laravel/framework": "5.3.*"
     },
     "require-dev": {
         "phpspec/phpspec": "~2.1"
