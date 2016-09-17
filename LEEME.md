@@ -11,7 +11,19 @@ Este paquete contiene una colección de clases de PHP Laravel diseñado para gen
 
 ## Cómo instalar 
 
-1. La mejor forma de instalar este paquete es a través de Composer. Puedes hacerlo ya sea ejecutando desde consola `composer require "styde/html=~1.0"` o agregando `styde/html: ~1.0` a tu archivo `composer.json` y luego ejecutando desde la consola `composer update`.
+1. La mejor forma de instalar este paquete es a través de Composer. 
+
+**Laravel 5.3**:
+
+Puedes hacerlo ya sea ejecutando desde consola `composer require "styde/html=~1.2"` o agregando `styde/html: ~1.2` a tu archivo `composer.json` y luego ejecutando desde la consola `composer update`.
+
+**Laravel 5.2**:
+
+Puedes hacerlo ya sea ejecutando desde consola `composer require "styde/html=~1.1"` o agregando `styde/html: ~1.1` a tu archivo `composer.json` y luego ejecutando desde la consola `composer update`.
+
+**Laravel 5.1**:
+
+Puedes hacerlo ya sea ejecutando desde consola `composer require "styde/html=~1.0"` o agregando `styde/html: ~1.0` a tu archivo `composer.json` y luego ejecutando desde la consola `composer update`.
 
 2. Lo siguiente es agregar el nuevo service provider al array de `providers` en `config/app.php`
 
