@@ -2,9 +2,8 @@
 
 namespace Styde\Html;
 
-use Collective\Html\FormBuilder as CollectiveFormBuilder;
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Support\Str;
+use Collective\Html\FormBuilder as CollectiveFormBuilder;
 
 class FormBuilder extends CollectiveFormBuilder
 {
