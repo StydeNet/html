@@ -2,6 +2,8 @@
 
 namespace spec\Styde\Html;
 
+use Illuminate\Session\SessionInterface;
+use Illuminate\Support\MessageBag;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -183,19 +185,20 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->select('gender', $options, 'm', ['label' => 'Gender']);
     }
 
-    function it_generates_a_text_field_with_errors($form, $theme, $lang)
+    function it_generates_a_text_field_with_errors($form, $theme, $lang, SessionInterface $session)
     {
         // Having
-        $errors = ['This is really wrong'];
-        $this->setErrors([
-            'name' => $errors
-        ]);
+        $session->get('errors')->willReturn(new MessageBag([
+            'name' => ['This is wrong']
+        ]));
+
+        $this->setSessionStore($session);
 
         // Expect
         $form->text("name", "value", ["class" => "error", "id" => "name"])->shouldBeCalled();
         $theme->render(
             null,
-            Argument::withEntry('errors', $errors),
+            Argument::withEntry('errors', ['This is wrong']),
             "fields.default"
         )->shouldBeCalled();
 
