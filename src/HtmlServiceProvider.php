@@ -216,9 +216,7 @@ class HtmlServiceProvider extends ServiceProvider
                 );
             }
 
-            if ($app['session.store']->has('errors')) {
-                $fieldBuilder->setSessionStore($app['session.store']);
-            }
+            $fieldBuilder->setSessionStore($app['session.store']);
 
             return $fieldBuilder;
         });

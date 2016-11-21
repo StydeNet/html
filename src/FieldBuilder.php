@@ -648,7 +648,9 @@ class FieldBuilder
     protected function getControlErrors($name)
     {
         if ($this->session) {
-            return $this->session->get('errors')->get($name, []);
+            if ($errors = $this->session->get('errors')) {
+                return $errors->get($name, []);
+            }
         }
 
         return [];
