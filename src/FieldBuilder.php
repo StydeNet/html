@@ -759,7 +759,7 @@ class FieldBuilder
         $label = $this->getLabel($name, $attributes);
         $htmlName = $this->getHtmlName($name);
         $id = $this->getHtmlId($name, $attributes);
-        $errors = $this->getControlErrors($id);
+        $errors = $this->getControlErrors($name);
         $hasErrors = !empty($errors);
         $customTemplate = $this->getCustomTemplate($attributes);
 
