@@ -579,7 +579,7 @@ class FieldBuilder
         }
 
         $attribute = 'validation.attributes.'.$name;
-        
+
         $label = $this->lang->get($attribute);
 
         if ($label == $attribute) {
@@ -649,6 +649,14 @@ class FieldBuilder
     {
         if ($this->session) {
             if ($errors = $this->session->get('errors')) {
+                if (strpos($name, '[')) {
+                    $name = collect(explode('[', $name));
+
+                    $name = $name->map(function ($item) {
+                        return trim($item, ']');
+                    })->implode('.');
+                }
+
                 return $errors->get($name, []);
             }
         }
