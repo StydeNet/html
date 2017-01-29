@@ -42,8 +42,8 @@ Tomar en cuenta que los siguientes alias globales estarán automáticamente disp
 Alert => Styde\Html\Facades\Alert
 Field => Styde\Html\Facades\Field
 Menu  => Styde\Html\Facades\Menu
-Form    => Collective\Html\FormFacade
-Html    => Collective\Html\HtmlFacade
+Form  => Collective\Html\FormFacade
+Html  => Collective\Html\HtmlFacade
 ```
 
 Si planeas utilizar el _Access Handler_ como una clase independiente, necesitarás agregar el siguiente alias:
