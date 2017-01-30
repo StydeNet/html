@@ -134,7 +134,7 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerAccessHandler()
     {
-        $this->app['access'] = $this->app->share(function ($app) {
+        $this->app->singleton('access', function ($app) {
             $guard = $app['config']->get('html.guard', null);
             $handler = new BasicAccessHandler($app['auth']->guard($guard));
 
@@ -154,14 +154,13 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerFormBuilder()
     {
-        $this->app['form'] = $this->app->share(function ($app) {
-
+        $this->app->singleton('form', function ($app) {
             $this->loadConfigurationOptions();
 
             $form = new FormBuilder(
                 $app['html'],
                 $app['url'],
-                $app['session.store']->getToken(),
+                $app['session.store']->token(),
                 $this->getTheme()
             );
 

@@ -4,7 +4,7 @@ namespace Styde\Html;
 
 use Styde\Html\Access\VerifyAccess;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\Session\SessionInterface;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Translation\Translator as Lang;
 
 class FieldBuilder
@@ -58,7 +58,7 @@ class FieldBuilder
     /**
      * Current session.
      *
-     * @var SessionInterface
+     * @var \Illuminate\Contracts\Session\Session
      */
     protected $session;
 
@@ -119,7 +119,7 @@ class FieldBuilder
     /**
      * Set the current session
      */
-    public function setSessionStore(SessionInterface $session)
+    public function setSessionStore(Session $session)
     {
         $this->session = $session;
     }

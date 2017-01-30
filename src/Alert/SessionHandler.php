@@ -52,7 +52,7 @@ class SessionHandler implements Handler
      */
     public function push(array $messages)
     {
-        $this->session->set($this->key, $messages);
+        $this->session->put($this->key, $messages);
     }
 
     /**
@@ -61,7 +61,7 @@ class SessionHandler implements Handler
      */
     public function clean()
     {
-        $this->session->set($this->key, null);
+        $this->session->put($this->key, null);
     }
 
 }

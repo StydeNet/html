@@ -2,14 +2,13 @@
 
 namespace spec\Styde\Html;
 
-use Illuminate\Session\SessionInterface;
-use Illuminate\Support\MessageBag;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
-use Styde\Html\Access\AccessHandler;
-use Styde\Html\FormBuilder;
 use Styde\Html\Theme;
+use Prophecy\Argument;
+use Styde\Html\FormBuilder;
+use PhpSpec\ObjectBehavior;
+use Illuminate\Support\MessageBag;
+use Styde\Html\Access\AccessHandler;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Translation\Translator as Lang;
 
 class FieldBuilderSpec extends ObjectBehavior
@@ -185,7 +184,7 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->select('gender', $options, 'm', ['label' => 'Gender']);
     }
 
-    function it_generates_a_text_field_with_errors($form, $theme, $lang, SessionInterface $session)
+    function it_generates_a_text_field_with_errors($form, $theme, $lang, Session $session)
     {
         // Having
         $session->get('errors')->willReturn(new MessageBag([
