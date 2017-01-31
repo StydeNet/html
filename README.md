@@ -110,13 +110,13 @@ The Field Builder will allow you to render the full dynamic markup you need for 
 If you have used the Laravel Collective HTML component before, you already know the basics, simply replace the alias “Form” with “Field”, for example, replace:
 
 ```blade
-{!! Form::text(‘name’, ‘value’, $attributes) !!}
+{!! Form::text('name', 'value', $attributes) !!}
 ```
 
 With this:
 
 ```blade
-{!! Field::text(‘name’, ‘value’, $attributes) !!}
+{!! Field::text('name', 'value', $attributes) !!}
 ```
 
 [Learn more about the field builder](docs/field-builder.md)
@@ -188,7 +188,7 @@ So instead of adding a lot of HTML and Blade boilerplate code, you can use this 
 To generate a menu simply add the following code in your layout’s template:
 
 ```blade
-{!! Menu::make(‘items.here’) !!}
+{!! Menu::make('items.here') !!}
 ```
 
 [Learn more about the menu generator](docs/menu-generator.md)
@@ -202,10 +202,10 @@ There’s only one extra method _for now_, but it’s very useful!
 #### Generate CSS classes:
 
 ```blade
-{!! Html::classes([‘home’ => true, ‘main’, ‘dont-use-this’ => false]) !!}
+{!! Html::classes(['home' => true, 'main', 'dont-use-this' => false]) !!}
 ```
 
-Returns: `class=“home main”`
+Returns: `class="home main"`
 
 [Learn more about the HTML builder](docs/html-builder.md)
 
@@ -214,7 +214,7 @@ Returns: `class=“home main”`
 In addition of using the facade methods `Alert::message` and `Menu::make`, you can use:
 
 ```php
-alert(‘this is the message’, ‘type-of-message’)
+alert('this is the message', 'type-of-message')
 ```
 
 `menu($items, $classes)`
@@ -230,7 +230,7 @@ Sometimes you want to show or hide certain menu items, form fields, etc. for cer
 i.e.: 
 
 ```blade
-{!! Field::select(‘user_id’, null, [‘roles’ => ‘admin’])
+{!! Field::select('user_id', null, ['roles' => 'admin']) !!}
 ```
 
 [Learn more about the access handler](docs/access-handler.md)
@@ -252,7 +252,7 @@ Then go to `config/html.php` and change the theme value:
 ```php
 //config/html.php
 return [
-    ‘theme’ => ‘your-theme-here’
+    'theme' => 'your-theme-here'
 ];
 ```
 
@@ -270,12 +270,12 @@ If you don’t plan to use this feature, you can deactivate translations in the 
 //config/html.php
 return [
     //…
-    ‘translate_texts’ => false
+    'translate_texts' => false
     //…
 ];
 ```
 
-But if your project needs to implement more than one language or you want to organize all the texts in `resources/lang/` instead of hard coding them in the controllers, views, etc. set `’translate_texts’` to `true`.
+But if your project needs to implement more than one language or you want to organize all the texts in `resources/lang/` instead of hard coding them in the controllers, views, etc. set `'translate_texts'` to `true`.
 
 [Learn more about the internationalization](docs/internationalization.md)
 
