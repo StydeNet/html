@@ -2,7 +2,7 @@
 
 Este paquete fue creado teniendo en cuenta que hay un montón de frameworks de CSS por ahí (de todo tipo) y aunque *Twitter Bootstrap* sea incluido por defecto, se planea agregar más themes en el futuro (te invitamos a colaborar). También puedes crear themes propios, publicarlos y personalizarlos, si es necesario.
 
-Para cambiar o personalizar un theme, smplemente corre: 
+Para cambiar o personalizar un theme, simplemente ejecuta: 
 
 `php artisan vendor:publish`
 
