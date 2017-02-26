@@ -97,6 +97,10 @@ class BasicAccessHandler implements AccessHandler {
 
         $user = $this->auth->user();
 
+        if(method_exists($user, 'getRoles')){
+            return $user->getRoles();
+        }
+
         return method_exists($user, 'getRole')
             ? $user->getRole()
             : $user->role;
@@ -114,6 +118,15 @@ class BasicAccessHandler implements AccessHandler {
             $allowed = explode('|', $allowed);
         }
 
-        return in_array($this->getCurrentRole(), $allowed);
+        $roles = $this->getCurrentRole();
+        if(is_array($roles)){
+            foreach($roles as $role){
+                if(in_array($role, $allowed)){
+                    return  true;
+                }
+            }
+        }
+
+        return in_array($roles, $allowed);
     }
 }
