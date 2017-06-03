@@ -2,9 +2,8 @@
 
 namespace Styde\Html;
 
-use Collective\Html\FormBuilder as CollectiveFormBuilder;
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Support\Str;
+use Collective\Html\FormBuilder as CollectiveFormBuilder;
 
 class FormBuilder extends CollectiveFormBuilder
 {
@@ -33,9 +32,8 @@ class FormBuilder extends CollectiveFormBuilder
      */
     public function __construct(HtmlBuilder $html, UrlGenerator $url, $csrfToken, Theme $theme)
     {
-        $this->url = $url;
-        $this->html = $html;
-        $this->csrfToken = $csrfToken;
+        parent::__construct($html, $url, $theme->getView(), $csrfToken);
+
         $this->theme = $theme;
         $this->view = $theme->getView();
     }

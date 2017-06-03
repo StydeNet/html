@@ -2,13 +2,17 @@
 
 namespace Styde\Html;
 
-use Illuminate\Translation\Translator as Lang;
-use Styde\Html\Access\VerifyAccess;
 use Styde\Html\FormModel\Field;
+use Styde\Html\Access\VerifyAccess;
+use Illuminate\Support\Traits\Macroable;
+use Illuminate\Contracts\Session\Session;
+use Illuminate\Translation\Translator as Lang;
 
 class FieldBuilder
 {
-    use VerifyAccess;
+    use VerifyAccess, Macroable {
+        Macroable::__call as macroCall;
+    }
 
     /**
      * The FormBuilder class required to generate controls
@@ -53,12 +57,11 @@ class FieldBuilder
      */
     protected $templates = [];
     /**
-     * Current session errors. If a field contains errors, they'll be render as
-     * part of the field's template.
+     * Current session.
      *
-     * @var array
+     * @var \Illuminate\Contracts\Session\Session
      */
-    protected $errors = [];
+    protected $session;
 
     /**
      * Creates a new Field Builder.
@@ -115,20 +118,11 @@ class FieldBuilder
     }
 
     /**
-     * Set the current session errors. If a field contains errors,
-     * they'll be render as part of the field's template.
-     * You must set them as an associative array of arrays, i.e.:
-     *
-     * [
-     *   'email' => ['Invalid email']
-     *   'password' => ['Needs upper case', 'Needs lower case', 'Needs klingon']
-     * ]
-     *
-     * @param array $errors
+     * Set the current session
      */
-    public function setErrors(array $errors)
+    public function setSessionStore(Session $session)
     {
-        $this->errors = $errors;
+        $this->session = $session;
     }
 
     /**
@@ -143,6 +137,10 @@ class FieldBuilder
      */
     public function __call($method, $parameters)
     {
+        if ($this->hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         return call_user_func_array(
             [$this, 'build'],
             array_merge([$method], $parameters)
@@ -426,7 +424,7 @@ class FieldBuilder
 
         $type = $field->getType();
 
-        $attributes = $this->getHtmlAttributes($type, $attributes, $errors, $id, $required);
+        $attributes = $this->getHtmlAttributes($type, $attributes, $errors, $id);
 
         $input = $this->buildControl($type, $name, $field->getValue(), $attributes, $field->getOptions(), $htmlName);
 
@@ -677,11 +675,15 @@ class FieldBuilder
      */
     protected function getDefaultClasses($type)
     {
-        return isset($this->cssClasses[$type])
-            ? $this->cssClasses[$type]
-            : isset($this->cssClasses['default'])
-                ? $this->cssClasses['default']
-                : '';
+        if (isset($this->cssClasses[$type])) {
+            return $this->cssClasses[$type];
+        }
+
+        if (isset($this->cssClasses['default'])) {
+            return $this->cssClasses['default'];
+        }
+
+        return '';
     }
 
     /**
@@ -705,7 +707,7 @@ class FieldBuilder
             $classes .= ' '.$attributes['class'];
         }
 
-        if ( ! empty($errors)) {
+        if (! empty($errors)) {
             $classes .= ' '.(isset($classes['error']) ? $classes['error'] : 'error');
         }
 
@@ -720,14 +722,19 @@ class FieldBuilder
      */
     protected function getControlErrors($name)
     {
-        return isset($this->errors[$name]) ? $this->errors[$name] : [];
+        if ($this->session) {
+            if ($errors = $this->session->get('errors')) {
+                return $errors->get($name, []);
+            }
+        }
+
+        return [];
     }
 
     /**
      * Get the HTML attributes for a control (input, select, etc.)
      *
-     * This will assign the CSS classes, the id attribute, normalize the
-     * required attribute and unset the custom attributes like "template".
+     * This will assign the CSS classes and the id attribute.
      *
      * @param  string $type
      * @param  array $attributes
@@ -736,7 +743,7 @@ class FieldBuilder
      * @param  bool $required
      * @return array
      */
-    protected function getHtmlAttributes($type, $attributes, $errors, $htmlId, $required)
+    protected function getHtmlAttributes($type, $attributes, $errors, $htmlId)
     {
         $attributes['class'] = $this->getClasses($type, $attributes, $errors);
         $attributes['id'] = $htmlId;

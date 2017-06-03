@@ -2,12 +2,13 @@
 
 namespace spec\Styde\Html;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
-use Styde\Html\Access\AccessHandler;
-use Styde\Html\FormBuilder;
 use Styde\Html\Theme;
+use Prophecy\Argument;
+use Styde\Html\FormBuilder;
+use PhpSpec\ObjectBehavior;
+use Illuminate\Support\MessageBag;
+use Styde\Html\Access\AccessHandler;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Translation\Translator as Lang;
 
 class FieldBuilderSpec extends ObjectBehavior
@@ -183,19 +184,20 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->select('gender', $options, 'm', ['label' => 'Gender'])->render();
     }
 
-    function it_generates_a_text_field_with_errors($form, $theme, $lang)
+    function it_generates_a_text_field_with_errors($form, $theme, $lang, Session $session)
     {
         // Having
-        $errors = ['This is really wrong'];
-        $this->setErrors([
-            'name' => $errors
-        ]);
+        $session->get('errors')->willReturn(new MessageBag([
+            'name' => ['This is wrong']
+        ]));
+
+        $this->setSessionStore($session);
 
         // Expect
         $form->text("name", "value", ["class" => "error", "id" => "name"])->shouldBeCalled();
         $theme->render(
             null,
-            Argument::withEntry('errors', $errors),
+            Argument::withEntry('errors', ['This is wrong']),
             "fields.default"
         )->shouldBeCalled();
 
@@ -268,6 +270,46 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->select('gender', null, 'm', $attributes)->render();
     }
 
+    function it_generates_fields_with_default_css_classes_by_type($form)
+    {
+        // When
+        $this->setCssClasses([
+            'text' => 'text-field',
+            'default' => 'deafult-field'
+        ]);
+
+        // Expect
+        $form->text('name', null, ['class' => 'text-field', 'id' => 'name'])
+            ->shouldBeCalled();
+
+        // When
+        $this->text('name')->render();
+    }
+
+    function it_generates_fields_with_default_css_classes($form)
+    {
+        // When
+        $this->setCssClasses([
+            'text' => 'text-field',
+            'default' => 'default-field'
+        ]);
+
+        // Expect
+        $form->textarea('content', null, ['class' => 'default-field', 'id' => 'content'])
+            ->shouldBeCalled();
+
+        // When
+        $this->textarea('content')->render();
+    }
+
+    function it_uses_a_macros()
+    {
+        $this->macro('myMacro', function () {
+             return '<macro>';
+        });
+
+        $this->myMacro()->shouldReturn('<macro>');
+    }
 }
 
 interface User {

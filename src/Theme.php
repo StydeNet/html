@@ -54,7 +54,7 @@ class Theme
     /**
      * Get the current view object
      *
-     * @return Illuminate\Contracts\View\Factory
+     * @return \Illuminate\Contracts\View\Factory
      */
     public function getView()
     {
@@ -64,8 +64,8 @@ class Theme
     /**
      * Renders a custom template or one of the default templates.
      *
-     * The default template could be published (into resources/views/themes/)
-     * or be located inside the components directory (vendor/styde/html/themes/)
+     * You can publish and customize the default template (resources/views/themes/)
+     * or be located inside the components directory (vendor/styde/html/themes/).
      *
      * @param string $custom
      * @param array $data
@@ -80,8 +80,8 @@ class Theme
 
         $template = $this->theme.'/'.$template;
 
-        if ($this->view->exists($this->custom . '/' . $template)) {
-            return $this->view->make($this->custom . '/' . $template, $data)->render();
+        if ($this->view->exists($this->custom.'/'.$template)) {
+            return $this->view->make($this->custom.'/'.$template, $data)->render();
         }
 
         return $this->view->make('styde.html::'.$template, $data)->render();

@@ -2,6 +2,7 @@
 
 namespace spec\Styde\Html;
 
+use Illuminate\Contracts\View\Factory;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument as Arg;
 
@@ -11,8 +12,10 @@ use Styde\Html\Theme;
 
 class FormBuilderSpec extends ObjectBehavior
 {
-    function let(HtmlBuilder $html, UrlGenerator $url, Theme $theme)
+    function let(HtmlBuilder $html, UrlGenerator $url, Theme $theme, Factory $view)
     {
+        $theme->getView()->shouldBeCalled()->willReturn($view);
+
         $this->beConstructedWith($html, $url, 'csrf_token', $theme);
     }
 

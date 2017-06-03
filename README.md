@@ -15,6 +15,14 @@ This is an extension of the Laravel Collective [HTML package](https://github.com
 
 1. The preferred way to install this package is through Composer:
 
+**Laravel 5.4 users**:
+
+Install by running `composer require "styde/html=~1.3"` or adding `"styde/html": "~1.3"` to your `composer.json` file and then running `composer update`.
+
+**Laravel 5.3 users**:
+
+Install by running `composer require "styde/html=~1.2"` or adding `"styde/html": "~1.2"` to your `composer.json` file and then running `composer update`.
+
 **Laravel 5.2 users**:
 
 Install by running `composer require "styde/html=~1.1"` or adding `"styde/html": "~1.1"` to your `composer.json` file and then running `composer update`.
@@ -25,7 +33,7 @@ Install by running `composer require "styde/html=~1.0"` or adding `"styde/html":
 
 2. Next, add the new provider to the `providers` array in `config/app.php`
 
-```
+```php
 'providers' => [
     // ...
     Styde\Html\HtmlServiceProvider::class,
@@ -33,9 +41,16 @@ Install by running `composer require "styde/html=~1.0"` or adding `"styde/html":
 ],
 ```
 
-3. Add the following middleware to the `$middleware` array in `app/Http/Kernel.php` **BEFORE** the `EncryptCookies` middleware: 
+3. Also, you need to register in the `app/Http/Kernel.php` file the `\Styde\Html\Alert\Middleware::class` middleware **BEFORE** the `EncryptCookies` middleware. For Laravel 5.4, it's in the `$middlewareGroups` array and for previous versions (Laravel 5.3, 5.2, 5.1) it's in the `$middleware` array:
 
-```
+```php
+// For Laravel 5.4
+protected $middlewareGroups = [
+    \Styde\Html\Alert\Middleware::class,
+    //...
+];
+
+// For Laravel 5.3, 5.2, 5.1
 protected $middleware = [
     //...
     \Styde\Html\Alert\Middleware::class,
@@ -47,7 +62,7 @@ This middleware is needed to make the alert messages persistent between sessions
 
 Please notice that the following global aliases will be automatically available (you don't need to add them):
 
-```
+```php
 Alert => Styde\Html\Facades\Alert
 Field => Styde\Html\Facades\Field
 Menu  => Styde\Html\Facades\Menu
@@ -57,7 +72,7 @@ Html  => Collective\Html\HtmlFacade
 
 If you plan to use the _Access Handler_ as a standalone class, you will need to add the following alias:
 
-```
+```php
 'aliases' => [
     // ...
     'Access' => Styde\Html\Facades\Access::class,
@@ -85,7 +100,9 @@ You can review those examples and tests as another way to learn more about what 
 
 This package was created with configuration in mind, if you haven't used this component before, you can simply run:
 
-`php artisan vendor:publish --provider='Styde\Html\HtmlServiceProvider'`
+```zsh
+php artisan vendor:publish --provider='Styde\Html\HtmlServiceProvider'
+```
 
 this will publish all the configuration options to: `config/html.php` file, where you can explore and read the comments to learn more about the configuration options and their values.
     
@@ -99,11 +116,15 @@ The Field Builder will allow you to render the full dynamic markup you need for 
 
 If you have used the Laravel Collective HTML component before, you already know the basics, simply replace the alias “Form” with “Field”, for example, replace:
 
-`{!! Form::text(‘name’, ‘value’, $attributes) !!}`
+```blade
+{!! Form::text('name', 'value', $attributes) !!}
+```
 
 With this:
 
-`{!! Field::text(‘name’, ‘value’, $attributes) !!}`
+```blade
+{!! Field::text('name', 'value', $attributes) !!}
+```
 
 [Learn more about the field builder](docs/field-builder.md)
 
@@ -115,7 +136,7 @@ This package adds the following functionality to the Laravel Collective's Form B
 
 Deactivate the HTML5 validation, ideal for local or development environments
 
-```
+```php
 //config/html.php
 return [
     'novalidate' => true
@@ -125,14 +146,16 @@ return [
 #### radios
 
 Generate a collection of radios:
-
-`{!! i.e. Form::radios('status', ['a' => 'Active', 'i' => 'Inactive']) !!}`
+i.e.:
+```blade
+{!! Form::radios('status', ['a' => 'Active', 'i' => 'Inactive']) !!}
+```
 
 #### checkboxes
 
 Generate a collection of checkboxes
 
-```
+```php
 $options = [
     'php' => 'PHP',
     'js' => 'JS'
@@ -140,7 +163,9 @@ $options = [
 $checked = ['php'];
 ```
 
-`{!! Form::checkboxes('tags', $options, $checked) !!}`
+```blade
+{!! Form::checkboxes('tags', $options, $checked) !!}
+```
 
 [Learn more about the form builder](docs/form-builder.md)
 
@@ -148,14 +173,16 @@ $checked = ['php'];
 
 This component will allow you to generate complex alert messages.
 
-```
+```php
 Alert::info('Your account is about to expire')
     ->details('Renew now to learn about:')
     ->items(['Laravel', 'PHP, 'And more!'])
     ->button('Renew now!', url('renew'), 'primary');
 ```
 
-`{!! Alert::render() !!}`
+```blade
+{!! Alert::render() !!}
+```
 
 [Learn more about the alert component](docs/alert-messages.md)
 
@@ -167,7 +194,9 @@ So instead of adding a lot of HTML and Blade boilerplate code, you can use this 
 
 To generate a menu simply add the following code in your layout’s template:
 
-`{!! Menu::make(‘items.here’) !!}`
+```blade
+{!! Menu::make('items.here') !!}
+```
 
 [Learn more about the menu generator](docs/menu-generator.md)
 
@@ -179,9 +208,11 @@ There’s only one extra method _for now_, but it’s very useful!
 
 #### Generate CSS classes:
 
-`{!! Html::classes([‘home’ => true, ‘main’, ‘dont-use-this’ => false]) !!}`
+```blade
+{!! Html::classes(['home' => true, 'main', 'dont-use-this' => false]) !!}
+```
 
-Returns: ` class=“home main”`.
+Returns: `class="home main"`
 
 [Learn more about the HTML builder](docs/html-builder.md)
 
@@ -189,7 +220,9 @@ Returns: ` class=“home main”`.
 
 In addition of using the facade methods `Alert::message` and `Menu::make`, you can use:
 
-`alert(‘this is the message’, ‘type-of-message’)`
+```php
+alert('this is the message', 'type-of-message')
+```
 
 `menu($items, $classes)`
 
@@ -203,7 +236,9 @@ Sometimes you want to show or hide certain menu items, form fields, etc. for cer
 
 i.e.: 
 
-`{!! Field::select(‘user_id’, null, [‘roles’ => ‘admin’])`
+```blade
+{!! Field::select('user_id', null, ['roles' => 'admin']) !!}
+```
 
 [Learn more about the access handler](docs/access-handler.md)
 
@@ -215,14 +250,16 @@ But you can also create your own themes with ease, or modify the existing one:
 
 To change and / or customize the theme, simply run: 
 
-`php artisan vendor:publish`
+```zsh
+php artisan vendor:publish
+```
 
 Then go to `config/html.php` and change the theme value:
 
-```
+```php
 //config/html.php
 return [
-    ‘theme’ => ‘your-theme-here’
+    'theme' => 'your-theme-here'
 ];
 ```
 
@@ -236,16 +273,16 @@ This package was also created with internationalization in mind.
 
 If you don’t plan to use this feature, you can deactivate translations in the configuration
 
-```
+```php
 //config/html.php
 return [
     //…
-    ‘translate_texts’ => false
+    'translate_texts' => false
     //…
 ];
 ```
 
-But if your project needs to implement more than one language or you want to organize all the texts in `resources/lang/` instead of hard coding them in the controllers, views, etc. set `’translate_texts’` to `true`.
+But if your project needs to implement more than one language or you want to organize all the texts in `resources/lang/` instead of hard coding them in the controllers, views, etc. set `'translate_texts'` to `true`.
 
 [Learn more about the internationalization](docs/internationalization.md)
 
@@ -254,3 +291,7 @@ But if your project needs to implement more than one language or you want to org
 You can find a lot of comments if you dig into the source code, as well as unit tests in the spec/ directory, you can also clone the [integration tests repository](https://github.com/StydeNet/html-integration-tests).
 
 If you have additional questions, feel free to contact me on Twitter ([@Sileence](https://twitter.com/sileence)) or send me an email to [admin@styde.net](mailto:admin@styde.net).
+
+## License
+
+The Styde\Html package is open-sourced software licensed under the MIT license.
