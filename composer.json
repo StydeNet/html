@@ -1,6 +1,7 @@
 {
     "name": "styde/html",
     "description": "Build form fields, menus, alert messages and other view components quickly",
+    "license": "MIT",
     "authors": [
         {
             "name": "Duilio Palacios",

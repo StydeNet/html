@@ -291,3 +291,7 @@ But if your project needs to implement more than one language or you want to org
 You can find a lot of comments if you dig into the source code, as well as unit tests in the spec/ directory, you can also clone the [integration tests repository](https://github.com/StydeNet/html-integration-tests).
 
 If you have additional questions, feel free to contact me on Twitter ([@Sileence](https://twitter.com/sileence)) or send me an email to [admin@styde.net](mailto:admin@styde.net).
+
+## License
+
+The Styde\Html package is open-sourced software licensed under the MIT license.
