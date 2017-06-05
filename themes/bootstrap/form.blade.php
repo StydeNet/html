@@ -1,3 +1,4 @@
 {!! $form->open() !!}
-{!! $fields !!}
+{!! $fields->render() !!}
+{!! $buttons->render() !!}
 {!! $form->close() !!}
