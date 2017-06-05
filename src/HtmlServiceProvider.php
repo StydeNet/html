@@ -120,7 +120,7 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerThemeClass()
     {
-       $this->app[Theme::class] = $this->app->share(function ($app) {
+       $this->app->singleton(Theme::class, function ($app) {
             return new Theme($this->app['view'], $this->options['theme'], $this->options['custom']);
         });
     }
