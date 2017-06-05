@@ -2,13 +2,12 @@
 
 namespace spec\Styde\Html;
 
-use Illuminate\Contracts\View\Factory;
+use Styde\Html\Theme;
+use Styde\Html\HtmlBuilder;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument as Arg;
-
 use Illuminate\Routing\UrlGenerator;
-use Styde\Html\HtmlBuilder;
-use Styde\Html\Theme;
+use Illuminate\Contracts\View\Factory;
 
 class FormBuilderSpec extends ObjectBehavior
 {

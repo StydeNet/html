@@ -310,6 +310,38 @@ class FieldBuilderSpec extends ObjectBehavior
 
         $this->myMacro()->shouldReturn('<macro>');
     }
+
+    function it_builds_fields_with_fluent_interface($form, $theme)
+    {
+        $formAttributes = [
+            'required' => true,
+            'placeholder' => 'Write your full name',
+            'class' => '',
+            'id' => 'name',
+        ];
+
+        $form->text('name', 'Duilio Palacios', $formAttributes)->shouldBeCalled();
+
+        $templateData = [
+            "htmlName" => "name",
+            "id" => "name",
+            "label" => "Full name",
+            "input" => null,
+            "errors" => [],
+            "hasErrors" => false,
+            "required" => true,
+        ];
+
+        $theme->render('custom-template', $templateData, 'fields.default')->shouldBeCalled();
+
+        $this->text('name')
+            ->value('Duilio Palacios')
+            ->label('Full name')
+            ->required()
+            ->template('custom-template')
+            ->placeholder('Write your full name')
+            ->render();
+    }
 }
 
 interface User {
