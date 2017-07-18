@@ -2,34 +2,39 @@
 
 namespace Styde\Html;
 
-use Collective\Html\HtmlBuilder as CollectiveHtmlBuilder;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\Routing\UrlGenerator;
 
-class HtmlBuilder extends CollectiveHtmlBuilder
+class HtmlBuilder
 {
     /**
+     * The URL generator instance.
+     *
+     * @var \Illuminate\Contracts\Routing\UrlGenerator
+     */
+    protected $url;
+
+    /**
+     * The View Factory instance.
+     *
+     * @var \Illuminate\Contracts\View\Factory
+     */
+    protected $view;
+
+    /**
+     * Create a new HTML builder instance.
+     *
+     * @param \Illuminate\Contracts\Routing\UrlGenerator $url
+     * @param \Illuminate\Contracts\View\Factory $view
+     */
+    public function __construct(UrlGenerator $url = null, Factory $view)
+    {
+        $this->url = $url;
+        $this->view = $view;
+    }
+
+    /**
      * Builds an HTML class attribute dynamically.
-     * This method is similar to the ng-class attribute of AngularJS
-     *
-     * You can specify one or more CSS classes as a key and a condition as a
-     * value. If the condition is true the class(es) will be used, otherwise
-     * they will be skipped. You can also set the static class(es) (those which
-     * we'll always be used) as a value.
-     *
-     * Example:
-     *
-     * {!! Html::classes(['home' => true, 'main', 'dont-use-this' => false]) !!}
-     *
-     * Returns:
-     *
-     *  class="home main".
-     *
-     * Notice that this function returns an empty space before the class
-     * attribute. So you have to do this:
-     *
-     * <p{!! classes(..) !!}> and not this: <p {{!! classes(..) !!}>
-     *
-     * If no classes are evaluated as TRUE then this function will return an
-     * empty string.
      *
      * @param array $classes
      *
@@ -55,5 +60,29 @@ class HtmlBuilder extends CollectiveHtmlBuilder
         }
 
         return '';
+    }
+
+    /**
+     * Generate an html tag.
+     *
+     * @param string $tag
+     * @param string|array $content
+     * @param array $attributes
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function tag($tag, $content = '', array $attributes = [])
+    {
+        if (is_array($content)) {
+            $attributes = $content;
+            $content = '';
+        }
+
+        return new HtmlElement($tag, $content, $attributes);
+    }
+
+    public function __call($method, array $parameters)
+    {
+        return $this->tag($method, $parameters[0] ?? '', $parameters[1] ?? []);
     }
 }

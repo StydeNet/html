@@ -19,6 +19,18 @@ class HtmlBuilderSpec extends ObjectBehavior
         $this->shouldHaveType('Styde\Html\HtmlBuilder');
     }
 
+    public function it_generates_html_tags()
+    {
+        $this->tag('span', 'This is a span', ['id' => 'my-span'])
+            ->render()->shouldReturn('<span id="my-span">This is a span</span>');
+    }
+
+    public function it_generates_html_tags_with_dynamic_methods()
+    {
+        $this->span('This is a span')->id('my-span')
+            ->render()->shouldReturn('<span id="my-span">This is a span</span>');
+    }
+
     function it_generate_the_html_class_attribute()
     {
         $this->classes([
