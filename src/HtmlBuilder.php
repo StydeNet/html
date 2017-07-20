@@ -63,6 +63,23 @@ class HtmlBuilder
     }
 
     /**
+     * Generate a HTML link.
+     *
+     * @param string $url
+     * @param string $title
+     * @param array $attributes
+     * @param bool $secure
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function link($url, $title = null, $attributes = [], $secure = null)
+    {
+        $attributes['url'] = $this->url->to($url, [], $secure);
+
+        return new HtmlElement('a', $title ?: $url, $attributes);
+    }
+
+    /**
      * Generate an html tag.
      *
      * @param string $tag

@@ -11,11 +11,11 @@ use Illuminate\Contracts\View\Factory;
 
 class FormBuilderSpec extends ObjectBehavior
 {
-    function let(HtmlBuilder $html, UrlGenerator $url, Theme $theme, Factory $view)
+    function let(UrlGenerator $url, Theme $theme, Factory $view)
     {
         $theme->getView()->shouldBeCalled()->willReturn($view);
 
-        $this->beConstructedWith($html, $url, 'csrf_token', $theme);
+        $this->beConstructedWith($url, 'csrf_token', $theme);
     }
 
     function it_is_initializable()
@@ -23,23 +23,16 @@ class FormBuilderSpec extends ObjectBehavior
         $this->shouldHaveType('Styde\Html\FormBuilder');
     }
 
-    function it_adds_a_novalidate_option($html)
+    function it_adds_the_novalidate_attribute_to_all_forms($html)
     {
-        // Expect
-        $html->attributes(Arg::containing('novalidate'))->shouldBeCalled();
-
-        // When
         $this->novalidate(true);
-        $this->open(['method' => 'GET']);
+
+        $this->open(['method' => 'GET'])->shouldReturn('<form method="GET" novalidate>');
     }
 
     function it_generates_time_inputs($html)
     {
-        // Expect
-        $html->attributes(Arg::withEntry('type', 'time'));
-
-        // When
-        $this->time('time');
+        $this->time('time')->render()->shouldReturn('<input type="time" name="time" value="">');
     }
 
     function it_generate_radios($theme)

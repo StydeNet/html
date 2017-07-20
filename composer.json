@@ -14,7 +14,9 @@
         "laravel/framework": "5.4.*"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.1"
+        "phpspec/phpspec": "~2.1",
+        "phpunit/phpunit": "^6.2",
+        "mockery/mockery": "^0.9.9"
     },
     "autoload": {
         "psr-4": {
@@ -23,6 +25,11 @@
         "files": [
           "src/helpers.php"
         ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Styde\\Html\\Tests\\": "tests/"
+        }
     },
     "minimum-stability": "stable"
 }

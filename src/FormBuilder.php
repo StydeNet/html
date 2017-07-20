@@ -3,9 +3,8 @@
 namespace Styde\Html;
 
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Collective\Html\FormBuilder as CollectiveFormBuilder;
 
-class FormBuilder extends CollectiveFormBuilder
+class FormBuilder
 {
     /**
      * Whether to deactivate or not the HTML5 validation (in order to test
@@ -14,6 +13,14 @@ class FormBuilder extends CollectiveFormBuilder
      * @var bool $novalidate
      */
     protected $novalidate = false;
+
+    /**
+     * The CSRF token used by the form builder.
+     *
+     * @var string
+     */
+    protected $csrfToken;
+
     /**
      * The Theme object in charge of rendering the right view for this theme
      *
@@ -25,34 +32,28 @@ class FormBuilder extends CollectiveFormBuilder
      * Creates a new Form Builder class. This extends from the Collective
      * Form Builder but adds a couple of extra functions.
      *
-     * @param \Styde\Html\HtmlBuilder $html
      * @param \Illuminate\Contracts\Routing\UrlGenerator $url
      * @param string $csrfToken
      * @param \Styde\Html\Theme $theme
      */
-    public function __construct(HtmlBuilder $html, UrlGenerator $url, $csrfToken, Theme $theme)
+    public function __construct(UrlGenerator $url, $csrfToken, Theme $theme)
     {
-        parent::__construct($html, $url, $theme->getView(), $csrfToken);
-
         $this->theme = $theme;
+        $this->csrfToken = $csrfToken;
         $this->view = $theme->getView();
     }
 
     /**
      * Allows user to set the novalidate option for every form generated with
-     * the form open method, so developers can skin HTML5 validation, in order
+     * the form open method, so developers can skip HTML5 validation, in order
      * to test backend validation in a local or development environment.
      *
-     * @param null $value
-     * @return bool|null
+     * @param boolean $value
+     * @return null
      */
-    public function novalidate($value = null)
+    public function novalidate($value = true)
     {
-        if ($value !== null) {
-            $this->novalidate = $value;
-        }
-
-        return $this->novalidate;
+        $this->novalidate = $value;
     }
 
     /**
@@ -60,17 +61,17 @@ class FormBuilder extends CollectiveFormBuilder
      * This methods relies on the original Form::open method of the Laravel
      * Collective component.
      *
-     * @param array $options
+     * @param array $attributes
      *
      * @return string
      */
-    public function open(array $options = array())
+    public function open(array $attributes = array())
     {
-        if ($this->novalidate()) {
-            $options[] = 'novalidate';
+        if ($this->novalidate) {
+            $attributes['novalidate'] = true;
         }
 
-        return parent::open($options);
+        return (new HtmlElement('form', '', $attributes))->open();
     }
 
     /**
@@ -81,6 +82,66 @@ class FormBuilder extends CollectiveFormBuilder
         return $this->model;
     }
 
+
+    /**
+     * Create a text input field.
+     *
+     * @param  string $name
+     * @param  string $value
+     * @param  array  $attributes
+     *
+     * @return \Styde\Html\HtmlElement
+     */
+    public function text(string $name, $value = null, $attributes = [])
+    {
+        return $this->input('text', $name, $value, $attributes);
+    }
+
+    /**
+     * Create a form input field.
+     *
+     * @param string $type
+     * @param string $name
+     * @param string $value
+     * @param array  $attributes
+     *
+     * @return \Styde\Html\HtmlElement
+     */
+    public function input($type, $name, $value = null, $attributes = [])
+    {
+        return new HtmlElement('input', false, array_merge(compact('type', 'name', 'value'), $attributes));
+    }
+
+    /**
+     * Create a textarea input field.
+     *
+     * @param string $type
+     * @param string $name
+     * @param string $value
+     * @param array  $attributes
+     *
+     * @return \Styde\Html\HtmlElement
+     */
+    public function textarea($type, $name, $value = null, $attributes = [])
+    {
+        return new HtmlElement('input', false, array_merge(compact('type', 'name', 'value'), $attributes));
+    }
+
+    /**
+     * Create a select box field.
+     *
+     * @param string $name
+     * @param array $list
+     * @param string $selected
+     * @param array $attributes
+     *
+     * @return \Styde\Html\HtmlElement
+     */
+    public function select($name, $list = [], $selected = null, array $attributes = [])
+    {
+        return new HtmlElement('select', '', array_merge(compact('name'), $attributes));
+    }
+
     /**
      * Create a time input field.
      *
@@ -88,7 +149,7 @@ class FormBuilder extends CollectiveFormBuilder
      * @param string $value
      * @param array  $options
      *
-     * @return string
+     * @return \Styde\Html\HtmlElement
      */
     public function time($name, $value = null, $options = array())
     {
@@ -96,15 +157,20 @@ class FormBuilder extends CollectiveFormBuilder
     }
 
     /**
+     * Create a button element.
+     *
+     * @param string $text
+     * @param array $attributes
+     *
+     * @return \Styde\Html\HtmlElement
+     */
+    public function button($text = null, $attributes = [])
+    {
+        return new HtmlElement('button', $text, array_merge(['type' => 'button'], $attributes));
+    }
+
+    /**
      * Create a list of radios.
-     *
-     * This function is very similar to Form::select but it generates a
-     * collection of radios instead of options.
-     *
-     * i.e. Form::radios('status', ['a' => 'Active', 'i' => 'Inactive'])
-     *
-     * You can pass 'inline' as a value of the attribute's array, to set the
-     * radios as inline (they'll be rendered with the 'radios-inline' template).
      *
      * @param string $name
      * @param array  $options
@@ -149,15 +215,6 @@ class FormBuilder extends CollectiveFormBuilder
     /**
      * Create a list of checkboxes.
      *
-     * This function is similar to Form::select, but it generates a collection
-     * of checkboxes instead of options.
-     *
-     * i.e. Form::checkboxes('status', ['a' => 'Active', 'i' => 'Inactive']);
-     *
-     * You can pass 'inline' as a value of the attribute's array, to set the
-     * checkboxes as inline (they'll be rendered using the 'checkboxes-inline'
-     * template).
-     *
      * @param string $name
      * @param array  $options
      * @param string $selected
@@ -200,5 +257,10 @@ class FormBuilder extends CollectiveFormBuilder
             compact('name', 'checkboxes', 'attributes'),
             $defaultTemplate
         );
+    }
+
+    public function getValueAttribute($name, $value)
+    {
+        return $value;
     }
 }

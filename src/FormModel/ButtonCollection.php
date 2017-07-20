@@ -4,6 +4,7 @@ namespace Styde\Html\FormModel;
 
 use Styde\Html\HtmlBuilder;
 use Styde\Html\FormBuilder;
+use Styde\Html\HtmlElement;
 
 class ButtonCollection
 {
@@ -78,7 +79,11 @@ class ButtonCollection
      */
     public function add($type, $text, array $attributes = array())
     {
-        return $this->buttons[] = new Button($this->formBuilder, $type, $text, $attributes);
+        $attributes['type'] = $type;
+
+        $this->buttons[] = $button = $this->formBuilder->button($text, $attributes);
+
+        return $button;
     }
 
     /**
@@ -92,7 +97,7 @@ class ButtonCollection
      */
     public function link($url, $title, array $attributes = array(), $secure = false)
     {
-        return $this->buttons[] = new Link($this->htmlBuilder, $url, $title, $attributes, $secure);
+        return $this->buttons[] = $this->htmlBuilder->link($url, $title, $attributes, $secure);
     }
 
     /**

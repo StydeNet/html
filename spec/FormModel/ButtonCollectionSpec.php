@@ -2,10 +2,10 @@
 
 namespace spec\Styde\Html\FormModel;
 
+use Styde\Html\Theme;
+use Styde\Html\{HtmlBuilder, FormBuilder};
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Styde\Html\FormBuilder;
-use Styde\Html\HtmlBuilder;
+use Illuminate\Contracts\Routing\UrlGenerator;
 
 class ButtonCollectionSpec extends ObjectBehavior
 {
@@ -19,29 +19,20 @@ class ButtonCollectionSpec extends ObjectBehavior
         $this->shouldHaveType('Styde\Html\FormModel\ButtonCollection');
     }
 
-    function it_renders_buttons($formBuilder, $htmlBuilder)
+    function it_renders_buttons($formBuilder)
     {
-        $formBuilder->button('Submit', ['type' => 'submit', 'class' => 'btn-primary'])
-            ->shouldBeCalled()
-            ->willReturn('<submit>');
+        $formBuilder->button();
 
-        $formBuilder->button('Reset', ['type' => 'reset'])
-            ->shouldBeCalled()
-            ->willReturn('<reset>');
-
-        $formBuilder->button('Button', ['type' => 'button'])
-            ->shouldBeCalled()
-            ->willReturn('<button>');
-
-        $htmlBuilder->link('Link', 'link', [], false)
-            ->shouldBeCalled()
-            ->willReturn('<a>');
-
-        $this->submit('Submit')->classes('btn-primary');
+        $this->submit('Submit')->class('btn-primary');
         $this->reset('Reset');
         $this->button('Button');
         $this->link('Link', 'link');
 
-        $this->render()->shouldReturn('<submit><reset><button><a>');
+        $this->render()->shouldReturn(
+             '<button type="submit" class="btn-primary">Submit</button>'
+            .'<button type="reset">Reset</button>'
+            .'<button type="button">Button</button>'
+            .'<a href="link">Link</a>'
+        );
     }
 }

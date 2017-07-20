@@ -60,7 +60,23 @@ class HtmlElement
      */
     public function render()
     {
-        return '<'.$this->tag.$this->renderAttributes().'>'.$this->content.'</'.$this->tag.'>';
+        // Render a single tag.
+        if ($this->content === false) {
+            return $this->open();
+        }
+
+        // Render a paired tag.
+        return $this->open().$this->renderText($this->content).$this->close();
+    }
+
+    public function open()
+    {
+        return '<'.$this->tag.$this->renderAttributes().'>';
+    }
+
+    public function close()
+    {
+        return '</'.$this->tag.'>';
     }
 
     /**
@@ -72,27 +88,39 @@ class HtmlElement
 
         foreach ($this->attributes as $name => $value)
         {
-            $result .= $this->renderAttribute($name, $value);
+            if ($attribute = $this->renderAttribute($name, $value)) {
+                $result .= " $attribute";
+            }
         }
 
         return $result;
     }
 
+    /**
+     * Render an individual attribute.
+     *
+     * @param mixed $name
+     * @param mixed $value
+     * @return string|null
+     */
     protected function renderAttribute($name, $value)
     {
         if (is_numeric($name)) {
-            return ' '.$value;
+            return $value;
         }
 
         if ($value === true) {
-            return ' '.$name;
+            return $name;
         }
 
-        if ($value === false) {
-            return '';
+        if ($value !== false) {
+            return $name.'="'.$this->renderText($value).'"';
         }
+    }
 
-        return ' '.$name.'="'.e($value).'"';
+    public function renderText($value)
+    {
+        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
     }
 
     public function __call($method, array $parameters)

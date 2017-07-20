@@ -35,7 +35,7 @@ class FieldBuilderSpec extends ObjectBehavior
             ->willReturn('validation.attributes.name');
 
         $theme->render(null, [
-            "htmlName" => "name",
+        "htmlName" => "name",
             "id" => "name",
             "label" => "Name",
             "input" => "<input>",
