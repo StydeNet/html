@@ -2,17 +2,17 @@
 
 namespace spec\Styde\Html;
 
-use Illuminate\Contracts\View\Factory;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument as Arg;
-
-use Illuminate\Routing\UrlGenerator;
-use Styde\Html\HtmlBuilder;
 use Styde\Html\Theme;
+use PhpSpec\ObjectBehavior;
+use Styde\Html\HtmlBuilder;
+use Prophecy\Argument as Arg;
+use Illuminate\Routing\UrlGenerator;
+use \Illuminate\Contracts\Http\Kernel;
+use Illuminate\Contracts\View\Factory;
 
 class FormBuilderSpec extends ObjectBehavior
 {
-    function let(HtmlBuilder $html, UrlGenerator $url, Theme $theme, Factory $view)
+    function let(HtmlBuilder $html, UrlGenerator $url, Theme $theme, Factory $view, Kernel $kernel)
     {
         $theme->getView()->shouldBeCalled()->willReturn($view);
 
