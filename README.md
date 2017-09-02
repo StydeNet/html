@@ -1,6 +1,9 @@
 # StydeNet Html package
 
 [![Build Status](https://travis-ci.org/StydeNet/html.svg?branch=master)](https://travis-ci.org/StydeNet/html)
+[![Downloads](https://img.shields.io/packagist/dt/styde/html.svg)](https://packagist.org/packages/styde/html)
+[![Version](https://img.shields.io/packagist/v/styde/html.svg)](https://packagist.org/packages/styde/html)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 
 This package contains a collection of Laravel PHP classes designed to generate common HTML components, such as:
 
