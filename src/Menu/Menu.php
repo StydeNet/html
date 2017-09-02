@@ -331,7 +331,7 @@ class Menu
             unset(
                 $values['callback'], $values['logged'], $values['roles'], $values['secure'],
                 $values['params'], $values['route'], $values['action'], $values['full_url'],
-                $values['allows'], $values['check'], $values['denies']
+                $values['allows'], $values['check'], $values['denies'], $values['exact']
             );
         }
 
@@ -368,12 +368,13 @@ class Menu
             return $activeUrlResolver($values);
         }
 
-        // Otherwise use the default resolver:
-        if ($values['url'] != $this->baseUrl) {
-            return strpos($this->activeUrl, $values['url']) === 0;
+        // If the current URL is the base URL or the exact attribute is set to true, then check for the exact URL
+        if ($values['exact'] ?? false || $values['url'] == $this->baseUrl) {
+            return $this->activeUrl === $values['url'];
         }
 
-        return $this->activeUrl === $this->baseUrl;
+        // Otherwise use the default resolver:
+        return strpos($this->activeUrl, $values['url']) === 0;
     }
 
     /**

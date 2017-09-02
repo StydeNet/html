@@ -344,6 +344,39 @@ class MenuGeneratorSpec extends ObjectBehavior
         $menu->getItems()->shouldReturn($items);
     }
 
+    function it_supports_the_exact_option_to_set_active_menu_items($url)
+    {
+        $url->current()->shouldBeCalled()->willReturn('http://example/contact/london');
+        $url->to('')->shouldBeCalled()->willReturn('http://example/');
+
+        $url->to('contact', [], false)->shouldBeCalled()->willReturn('http://example/contact');
+        $url->to('contact/london', [], false)->shouldBeCalled()->willReturn('http://example/contact/london');
+
+        $menu = $this->make([
+            'contact' => ['url' => 'contact', 'exact' => true],
+            'contact-london' => ['url' => 'contact/london'],
+        ]);
+
+        $menu->getItems()->shouldReturn([
+            'contact' => [
+                'class' => '',
+                'submenu' => null,
+                'id' => 'contact',
+                'active' => false,
+                'url' => 'http://example/contact',
+                'title' => 'Contact',
+            ],
+            'contact-london' => [
+                'class' => 'active',
+                'submenu' => null,
+                'id' => 'contact-london',
+                'active' => true,
+                'url' => 'http://example/contact/london',
+                'title' => 'Contact london',
+            ]
+        ]);
+    }
+
     function it_allows_you_to_set_a_custom_active_url_resolver()
     {
         $this->setActiveUrlResolver(function ($values) {
