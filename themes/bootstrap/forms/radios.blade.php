@@ -1,12 +1,8 @@
-@foreach($radios as $radio)
+@foreach($labels as $label)
     <div class="radio">
-        <label>
-            {!! Form::radio(
-                $radio['name'],
-                $radio['value'],
-                $radio['selected'],
-                ['id' => $radio['id']]) !!}
-            {{ $radio['label'] }}
-        </label>
+        {{ $label->open() }}
+            {{ $label->radio->render() }}
+            {{ $label->text }}
+        {{ $label->close() }}
     </div>
 @endforeach

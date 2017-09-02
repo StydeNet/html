@@ -2,6 +2,7 @@
 
 namespace Styde\Html;
 
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Contracts\Routing\UrlGenerator;
 
 class FormBuilder
@@ -36,11 +37,33 @@ class FormBuilder
      * @param string $csrfToken
      * @param \Styde\Html\Theme $theme
      */
-    public function __construct(UrlGenerator $url, $csrfToken, Theme $theme)
+    public function __construct(UrlGenerator $url, Theme $theme, $csrfToken)
     {
         $this->theme = $theme;
         $this->csrfToken = $csrfToken;
         $this->view = $theme->getView();
+    }
+
+    /**
+     * Set the session store implementation.
+     *
+     * @param \Illuminate\Contracts\Session\Session $session
+     *
+     * @return $this
+     */
+    public function setSessionStore(Session $session)
+    {
+        $this->session = $session;
+
+        return $this;
+    }
+
+    /**
+     * Get the protected model attribute
+     */
+    public function getModel()
+    {
+        return $this->model;
     }
 
     /**
@@ -75,13 +98,22 @@ class FormBuilder
     }
 
     /**
-     * Get the protected model attribute
+     * Create a form label element.
+     *
+     * @param string $name
+     * @param string $content
+     * @param array $attributes
+     *
+     * @return \Styde\Html\HtmlElement
      */
-    public function getModel()
+    public function label($name, $content = '', $attributes = [])
     {
-        return $this->model;
-    }
+        if (empty ($content)) {
+            $content = ucwords(str_replace('_', ' ', $name));
+        }
 
+        return new HtmlElement('label', $content, $attributes);
+    }
 
     /**
      * Create a text input field.
@@ -170,46 +202,80 @@ class FormBuilder
     }
 
     /**
+     * Create a radio button input field.
+     *
+     * @param  string $name
+     * @param  mixed  $value
+     * @param  bool   $checked
+     * @param  array  $attributes
+     *
+     * @return \Styde\Html\HtmlElement
+     */
+    public function radio($name, $value = null, $checked = false, $attributes = [])
+    {
+        $attributes = array_merge([
+            'type' => 'radio',
+            'name' => $name,
+            'value' => $value,
+            'checked' => $checked,
+        ], $attributes);
+
+        return new HtmlElement('input', false, $attributes);
+    }
+
+    /**
+     * Create a checkbox input field.
+     *
+     * @param  string $name
+     * @param  mixed  $value
+     * @param  bool   $checked
+     * @param  array  $attributes
+     *
+     * @return \Styde\Html\HtmlElement
+     */
+    public function checkbox($name, $value = 1, $checked = null, $attributes = [])
+    {
+        $attributes = array_merge([
+            'type' => 'checkbox',
+            'name' => $name,
+            'value' => $value,
+            'checked' => $checked,
+        ], $attributes);
+
+        return new HtmlElement('input', false, $attributes);
+    }
+
+    /**
      * Create a list of radios.
      *
      * @param string $name
      * @param array  $options
-     * @param string $selected
+     * @param string $checked
      * @param array  $attributes
      *
      * @return string
      */
-    public function radios($name, $options = array(), $selected = null, $attributes = array())
+    public function radios($name, $options = array(), $checked = null, $attributes = array())
     {
-        $selected = $this->getValueAttribute($name, $selected);
+        $checked = $this->getValueAttribute($name, $checked);
 
-        $defaultTemplate = in_array('inline', $attributes)
-            ? 'forms.radios-inline'
-            : 'forms.radios';
+        $defaultTemplate = in_array('inline', $attributes) ? 'forms.radios-inline' : 'forms.radios';
 
-        $template = isset($attributes['template'])
-            ? $attributes['template']
-            : null;
-
-        $radios = [];
-
-        foreach ($options as $value => $label) {
-            $radios[] = [
-                'name'     => $name,
-                'value'    => $value,
-                'label'    => $label,
-                'selected' => $selected == $value,
-                'id'       => $name.'_'.Str::slug($value)
-            ];
-        }
+        $template = $attributes['template'] ?? null;
 
         unset ($attributes['inline'], $attributes['template']);
 
-        return $this->theme->render(
-            $template,
-            compact('name', 'radios', 'attributes'),
-            $defaultTemplate
-        );
+        $labels = [];
+
+        foreach ($options as $value => $text) {
+            $id = $name.'_'.Str::slug($value);
+
+            $radio = $this->radio($name, $value, $checked == $value, compact('id'));
+
+            $labels[] = new HtmlElement('label', compact('text', 'radio'));
+        }
+
+        return $this->theme->render($template, compact('name', 'labels'), $defaultTemplate);
     }
 
     /**

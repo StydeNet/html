@@ -67,12 +67,12 @@ class Theme
      * You can publish and customize the default template (resources/views/themes/)
      * or be located inside the components directory (vendor/styde/html/themes/).
      *
-     * @param string $custom
+     * @param string|null $custom
      * @param array $data
-     * @param null $template
+     * @param string|null $template
      * @return string
      */
-    public function render($custom, $data = array(), $template = null)
+    public function render($custom = null, $data = array(), $template = null)
     {
         if ($custom != null) {
             return $this->view->make($custom, $data)->render();
