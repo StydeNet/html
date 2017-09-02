@@ -292,10 +292,9 @@ class Menu
      * This method will called itself if an item has a 'submenu' key.
      *
      * @param array $items
-     * @param array|null $parentItem
      * @return array
      */
-    protected function generateItems($items, &$parentItem = null)
+    protected function generateItems($items)
     {
         foreach ($items as $id => &$values) {
             $values = $this->setDefaultValues($id, $values);
@@ -309,13 +308,22 @@ class Menu
 
             $values['url'] = $this->generateUrl($values);
 
-            if ($this->isActiveUrl($values)) {
-                $this->markAsActive($values, $parentItem);
-                $this->currentId = $id;
+            if (isset($values['submenu'])) {
+                $values['submenu'] = $this->generateItems($values['submenu']);
             }
 
-            if (isset($values['submenu'])) {
-                $values['submenu'] = $this->generateItems($values['submenu'], $values);
+            if ($this->isActiveUrl($values)) {
+                $values['active'] = true;
+                $this->currentId = $id;
+            } elseif (isset ($values['submenu'])) {
+                // Check if there is an active item in the submenu, if
+                // so it'll mark the current item as active as well.
+                foreach ($values['submenu'] as $subitem) {
+                    if ($subitem['active']) {
+                        $values['active'] = true;
+                        break;
+                    }
+                }
             }
 
             if ($values['active']) {
@@ -375,22 +383,6 @@ class Menu
 
         // Otherwise use the default resolver:
         return strpos($this->activeUrl, $values['url']) === 0;
-    }
-
-    /**
-     * Marks an item an it's optional parent item as active
-     *
-     * @param array $values
-     * @param array|null $parentItem
-     */
-    protected function markAsActive(&$values, &$parentItem = null)
-    {
-        // Set this item as active
-        $values['active'] = true;
-        // If this is a submenu, set the parent's item as active as well
-        if ($parentItem != null) {
-            $parentItem['active'] = true;
-        }
     }
 
     /**

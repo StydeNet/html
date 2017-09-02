@@ -344,6 +344,62 @@ class MenuGeneratorSpec extends ObjectBehavior
         $menu->getItems()->shouldReturn($items);
     }
 
+    function it_generates_nested_submenu_items_with_active_classes()
+    {
+        // Generate new menu
+        $menu = $this->make([
+            'home' => [],
+            'pages' => [
+                'submenu' => [
+                    'about' => [
+                        'submenu' => [
+                            'company' => ['url' => 'company']
+                        ]
+                    ]
+                ]
+            ]
+        ]);
+
+        $items = [
+            'home' => [
+                'class' => '',
+                'submenu' => null,
+                'id' => 'home',
+                'active' => false,
+                'title' => 'Home',
+                'url' => '#'
+            ],
+            'pages' => [
+                'class' => 'active dropdown',
+                'submenu' =>[
+                    'about' => [
+                        'class' => 'active dropdown',
+                        'submenu' => [
+                            'company' => [
+                                'class' => 'active',
+                                'submenu' => null,
+                                'id' => 'company',
+                                'active' => true,
+                                'url' => null,
+                                'title' => 'Company'
+                            ],
+                        ],
+                        'id' => 'about',
+                        'active' => true,
+                        'title' => 'About',
+                        'url' => '#',
+                        'id'  => 'about'
+                    ],
+                ],
+                'id' => 'pages',
+                'active' => true,
+                'title' => 'Pages',
+                'url' => '#'
+            ]
+        ];
+        $menu->getItems()->shouldReturn($items);
+    }
+
     function it_supports_the_exact_option_to_set_active_menu_items($url)
     {
         $url->current()->shouldBeCalled()->willReturn('http://example/contact/london');
