@@ -24,5 +24,22 @@
           "src/helpers.php"
         ]
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+
+            ],
+            "aliases": {
+                "Field": "Styde\\Html\\Facades\\Field",
+                "Alert": "Styde\\Html\\Facades\\Alert",
+                "Menu": "Styde\\Html\\Facades\\Menu",
+                "Form": "Collective\\Html\\FormFacade",
+                "Html": "Collective\\Html\\HtmlFacade"
+            },
+            "dont-discover": [
+                "laravelcollective/html"
+            ]
+        }
+    }
 }
