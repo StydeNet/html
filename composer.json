@@ -28,7 +28,7 @@
     "extra": {
         "laravel": {
             "providers": [
-
+                "Styde\\Html\\HtmlServiceProvider"
             ],
             "aliases": {
                 "Field": "Styde\\Html\\Facades\\Field",
