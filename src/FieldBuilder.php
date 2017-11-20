@@ -548,14 +548,12 @@ class FieldBuilder
      */
     protected function getRequired($attributes)
     {
-        if (in_array('required', $attributes)) {
+        if (!array_key_exists('required', $attributes)) {
             return true;
         }
-
         if (isset($attributes['required'])) {
             return $attributes['required'];
         }
-
         return false;
     }
 
@@ -672,18 +670,13 @@ class FieldBuilder
     protected function getHtmlAttributes($type, $attributes, $errors, $htmlId, $required)
     {
         $attributes['class'] = $this->getClasses($type, $attributes, $errors);
-
         $attributes['id'] = $htmlId;
-
-        if ($required && !in_array('required', $attributes)) {
+        if ($required && !array_key_exists('required', $attributes)) {
             $attributes[] = 'required';
         }
-
-        unset($attributes['template'], $attributes['required'], $attributes['label']);
-
+        unset($attributes['template'], $attributes['label']);
         return $attributes;
     }
-
     /**
      * Search for abbreviations and replace them with the right attributes
      *
