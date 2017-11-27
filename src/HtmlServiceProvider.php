@@ -89,7 +89,8 @@ class HtmlServiceProvider extends ServiceProvider
 
         $this->options = $this->app->make('config')->get('html');
 
-        $this->options['theme_values'] = $this->options['themes'][$this->options['theme']];
+        $this->options['theme_values'] = array_get($this->options['themes'], $this->options['theme']);
+
         unset ($this->options['themes']);
     }
 

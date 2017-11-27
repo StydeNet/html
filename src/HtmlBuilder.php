@@ -31,12 +31,16 @@ class HtmlBuilder extends CollectiveHtmlBuilder
      * If no classes are evaluated as TRUE then this function will return an
      * empty string.
      *
-     * @param array $classes
+     * @param array|mixed $classes
      *
      * @return string
      */
-    public function classes(array $classes)
+    public function classes($classes)
     {
+        if (! is_array($classes)) {
+            $classes = func_get_args();
+        }
+
         $html = '';
 
         foreach ($classes as $name => $bool) {

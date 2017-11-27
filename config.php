@@ -51,9 +51,33 @@ return [
      */
     'themes' => [
         /**
-         * Default configuration for the Twitter Bootstrap framework
+         * Default configuration for Bootstrap v3
          */
         'bootstrap' => [
+            /*
+             * Set a specific HTML template for a field type if the
+             * type is not set, the default template will be used
+             */
+            'field_templates' => [
+                // type => template
+                'checkbox' => 'checkbox',
+                'checkboxes' => 'collections',
+                'radios' => 'collections'
+            ],
+            /*
+             * Set the default classes for each field type
+             */
+            'field_classes' => [
+                // type => class or classes
+                'default' => 'form-control',
+                'checkbox' => '',
+                'error' => 'input-with-feedback'
+            ],
+        ],
+        /**
+         * Default configuration for Bootstrap v4
+         */
+        'bootstrap4' => [
             /*
              * Set a specific HTML template for a field type if the
              * type is not set, the default template will be used
