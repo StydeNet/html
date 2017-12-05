@@ -29,7 +29,7 @@ Instala ejecutando `composer require "styde/html=~1.1"` o agregando `"styde/html
 
 Instala ejecutando `composer require "styde/html=~1.0"` o agregando `"styde/html": "~1.0"` a tu archivo `composer.json` y luego ejecuta `composer update`..
 
-2. Lo siguiente es agregar el nuevo service provider al array de `providers` en `config/app.php`
+2. Lo siguiente, es agregar el nuevo service provider al array de `providers` en `config/app.php`
 
 ```php
 'providers' => [
