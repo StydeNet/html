@@ -1,11 +1,19 @@
+@php
+    $classes = 'form-check-input';
+    if ($hasErrors) {
+        $classes .= ' is-invalid';
+    }
+@endphp
 @foreach($checkboxes as $checkbox)
-    <label class="checkbox-inline">
+    <div class="form-check form-check-inline">
         {!! Form::checkbox(
             $checkbox['name'],
             $checkbox['value'],
             $checkbox['checked'],
-            ['id' => $checkbox['id']]
+            ['class' => $classes, 'id' => $checkbox['id']]
         ) !!}
-        {{ $checkbox['label'] }}
-    </label>
+        <label class="form-check-label" for="{{ $checkbox['id'] }}">
+            {{ $checkbox['label'] }}
+        </label>
+    </div>
 @endforeach

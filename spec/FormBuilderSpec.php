@@ -48,6 +48,7 @@ class FormBuilderSpec extends ObjectBehavior
         // Having
         $name = 'gender';
         $attributes = [];
+        $hasErrors = false;
 
         // Expect
         $radios = [
@@ -66,7 +67,7 @@ class FormBuilderSpec extends ObjectBehavior
                 "id" => "gender_f"
             ]
         ];
-        $theme->render(null, compact('name', 'radios', 'attributes'), "forms.radios")->shouldBeCalled();
+        $theme->render(null, compact('name', 'radios', 'attributes', 'hasErrors'), "forms.radios")->shouldBeCalled();
 
         // When
         $this->radios('gender', ['m' => 'Male', 'f' => 'Female'], 'm');
@@ -79,6 +80,7 @@ class FormBuilderSpec extends ObjectBehavior
         $tags = ['php' => 'PHP', 'python' => 'Python', 'js' => 'JS', 'ruby' => 'Ruby on Rails'];
         $checked = ['php', 'js'];
         $attributes = [];
+        $hasErrors = false;
 
         // Expect
         $checkboxes = [
@@ -111,7 +113,7 @@ class FormBuilderSpec extends ObjectBehavior
                 "id" => "tags_ruby"
             ]
         ];
-        $theme->render(null, compact('name', 'checkboxes', 'attributes'), "forms.checkboxes")->shouldBeCalled();
+        $theme->render(null, compact('name', 'checkboxes', 'attributes', 'hasErrors'), "forms.checkboxes")->shouldBeCalled();
 
         // When
         $this->checkboxes('tags', $tags, $checked);

@@ -1,13 +1,12 @@
-<h4>{{ $label }}</h4>
-
-{!! $input !!}
-
-@if ( ! empty($errors))
-    <div class="controls">
-        @foreach ($errors as $error)
-            <p class="help-block">{{ $error }}</p>
-        @endforeach
-    </div>
+<h4{!! Html::classes(['text-danger' => $hasErrors]) !!}>
+    {{ $label }}
+@if ($required)
+    <span class="badge badge-info">Required</span>
 @endif
+</h4>
+{!! $input !!}
+@foreach ($errors as $error)
+    <p class="text-danger">{{ $error }}</p>
+@endforeach
 
-<hr>
+<br>

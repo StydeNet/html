@@ -109,10 +109,11 @@ class FormBuilder extends CollectiveFormBuilder
      * @param array  $options
      * @param string $selected
      * @param array  $attributes
+     * @param bool   $hasErrors
      *
      * @return string
      */
-    public function radios($name, $options = array(), $selected = null, $attributes = array())
+    public function radios($name, $options = array(), $selected = null, $attributes = array(), $hasErrors = false)
     {
         $selected = $this->getValueAttribute($name, $selected);
 
@@ -132,7 +133,7 @@ class FormBuilder extends CollectiveFormBuilder
                 'value'    => $value,
                 'label'    => $label,
                 'selected' => $selected == $value,
-                'id'       => $name.'_'.Str::slug($value)
+                'id'       => $name.'_'.Str::slug($value),
             ];
         }
 
@@ -140,7 +141,7 @@ class FormBuilder extends CollectiveFormBuilder
 
         return $this->theme->render(
             $template,
-            compact('name', 'radios', 'attributes'),
+            compact('name', 'radios', 'attributes', 'classes', 'hasErrors'),
             $defaultTemplate
         );
     }
@@ -161,10 +162,11 @@ class FormBuilder extends CollectiveFormBuilder
      * @param array  $options
      * @param string $selected
      * @param array  $attributes
+     * @param bool   $hasErrors
      *
      * @return string
      */
-    public function checkboxes($name, $options = array(), $selected = null, $attributes = array())
+    public function checkboxes($name, $options = array(), $selected = null, $attributes = array(), $hasErrors = false)
     {
         $selected = $this->getValueAttribute($name, $selected);
 
@@ -196,7 +198,7 @@ class FormBuilder extends CollectiveFormBuilder
 
         return $this->theme->render(
             $template,
-            compact('name', 'checkboxes', 'attributes'),
+            compact('name', 'checkboxes', 'attributes', 'hasErrors'),
             $defaultTemplate
         );
     }

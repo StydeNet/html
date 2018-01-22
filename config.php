@@ -71,7 +71,7 @@ return [
                 // type => class or classes
                 'default' => 'form-control',
                 'checkbox' => '',
-                'error' => 'input-with-feedback'
+                'error' => 'error'
             ],
         ],
         /**
@@ -94,8 +94,8 @@ return [
             'field_classes' => [
                 // type => class or classes
                 'default' => 'form-control',
-                'checkbox' => '',
-                'error' => 'input-with-feedback'
+                'checkbox' => 'form-check-input',
+                'error' => 'is-invalid'
             ],
         ]
     ]

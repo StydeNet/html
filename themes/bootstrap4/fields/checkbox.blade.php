@@ -1,18 +1,12 @@
-<div id="field_{{ $id }}"{!! Html::classes(['checkbox', 'error' => $hasErrors]) !!}>
-    <label>
-        {!! $input !!}
+<div id="field_{{ $id }}" class="form-check">
+    {!! $input !!}
+    <label class="form-check-label" for="{{ $id }}">
         {{ $label }}
+@if ($required)
+        <span class="badge badge-info">Required</span>
+@endif
     </label>
-    
-    @if ($required)
-        <span class="label label-info">Required</span>
-    @endif
-    
-    @if (!empty($errors))
-        <div class="controls">
-            @foreach ($errors as $error)
-                <p class="help-block">{{ $error }}</p>
-            @endforeach
-        </div>
-    @endif
+@foreach ($errors as $error)
+    <div class="invalid-feedback">{{ $error }}</div>
+@endforeach
 </div>
