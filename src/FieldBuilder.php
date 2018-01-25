@@ -548,15 +548,7 @@ class FieldBuilder
      */
     protected function getRequired($attributes)
     {
-        if (in_array('required', $attributes)) {
-            return true;
-        }
-
-        if (isset($attributes['required'])) {
-            return $attributes['required'];
-        }
-
-        return false;
+        return in_array('required', $attributes);
     }
 
     /**
@@ -666,20 +658,15 @@ class FieldBuilder
      * @param  array $attributes
      * @param  array $errors
      * @param  string $htmlId
-     * @param  bool $required
      * @return array
      */
-    protected function getHtmlAttributes($type, $attributes, $errors, $htmlId, $required)
+    protected function getHtmlAttributes($type, $attributes, $errors, $htmlId)
     {
         $attributes['class'] = $this->getClasses($type, $attributes, $errors);
 
         $attributes['id'] = $htmlId;
 
-        if ($required && !in_array('required', $attributes)) {
-            $attributes[] = 'required';
-        }
-
-        unset($attributes['template'], $attributes['required'], $attributes['label']);
+        unset($attributes['template'], $attributes['label']);
 
         return $attributes;
     }
@@ -755,7 +742,7 @@ class FieldBuilder
         $hasErrors = !empty($errors);
         $customTemplate = $this->getCustomTemplate($attributes);
 
-        $attributes = $this->getHtmlAttributes($type, $attributes, $errors, $id, $required);
+        $attributes = $this->getHtmlAttributes($type, $attributes, $errors, $id);
 
         $input = $this->buildControl($type, $name, $value, $attributes, $options, $htmlName, $hasErrors);
 
