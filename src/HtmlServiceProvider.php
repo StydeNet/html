@@ -6,13 +6,13 @@ use Styde\Html\Menu\Menu;
 use Styde\Html\Menu\MenuGenerator;
 use Styde\Html\Access\AccessHandler;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\ServiceProvider;
 use Styde\Html\Alert\Container as Alert;
 use Styde\Html\Access\BasicAccessHandler;
 use Styde\Html\FormModel\FormMakeCommand;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Styde\Html\Alert\Middleware as AlertMiddleware;
 use Styde\Html\Alert\SessionHandler as AlertSessionHandler;
-use Collective\Html\HtmlServiceProvider as ServiceProvider;
 
 class HtmlServiceProvider extends ServiceProvider
 {
@@ -75,7 +75,9 @@ class HtmlServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        parent::register();
+        $this->registerHtmlBuilder();
+
+        $this->registerFormBuilder();
 
         $this->registerAccessHandler();
 
@@ -174,6 +176,8 @@ class HtmlServiceProvider extends ServiceProvider
         $this->app->singleton('html', function ($app) {
             return new HtmlBuilder($app['url'], $app['view']);
         });
+
+        $this->app->alias('html', HtmlBuilder::class);
     }
 
     /**

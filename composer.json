@@ -9,14 +9,11 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "laravelcollective/html": "5.4.*",
-        "laravel/framework": "5.4.*"
+        "php": ">=7.0",
+        "laravel/framework": "5.5.*"
     },
     "require-dev": {
-        "phpspec/phpspec": "~2.1",
         "phpunit/phpunit": "^6.2",
-        "mockery/mockery": "^0.9.9",
         "orchestra/testbench": "~3.0"
     },
     "autoload": {
