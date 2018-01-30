@@ -6,7 +6,7 @@ return [
      * Set the HTML theme for the components
      * like alerts, form fields, menus, etc.
      */
-    'theme'  => 'bootstrap',
+    'theme'  => 'bootstrap4',
 
     /*
      * Set the folder to store the custom templates
@@ -38,22 +38,13 @@ return [
     'novalidate' => false,
 
     /*
-     * Specify abbreviations for the form field attributes
-     */
-    'abbreviations' => [
-        'ph' => 'placeholder',
-        'max' => 'maxlength',
-        'tpl' => 'template'
-    ],
-
-    /*
      * Set the configuration for each theme
      */
     'themes' => [
         /**
-         * Default configuration for the Twitter Bootstrap framework
+         * Default configuration for Bootstrap v4
          */
-        'bootstrap' => [
+        'bootstrap4' => [
             /*
              * Set a specific HTML template for a field type if the
              * type is not set, the default template will be used
@@ -63,16 +54,7 @@ return [
                 'checkbox' => 'checkbox',
                 'checkboxes' => 'collections',
                 'radios' => 'collections'
-            ],
-            /*
-             * Set the default classes for each field type
-             */
-            'field_classes' => [
-                // type => class or classes
-                'default' => 'form-control',
-                'checkbox' => '',
-                'error' => 'input-with-feedback'
-            ],
+            ]
         ]
     ]
 

@@ -57,6 +57,10 @@ class HtmlElement implements Htmlable
         return $this;
     }
 
+    public function classes($classes)
+    {
+        return $this->attr('class', app(HtmlBuilder::class)->classes((array) $classes, false));
+    }
     /**
      * Render the HTML element.
      *
@@ -157,7 +161,7 @@ class HtmlElement implements Htmlable
 
     public function __toString()
     {
-        return $this->render();
+        return $this->toHtml();
     }
 
     /**
@@ -167,6 +171,6 @@ class HtmlElement implements Htmlable
      */
     public function toHtml()
     {
-        return $this->render();
+        return (string) $this->render();
     }
 }

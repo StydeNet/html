@@ -2,6 +2,7 @@
 
 namespace Styde\Html\Alert;
 
+use Illuminate\Support\HtmlString;
 use Styde\Html\Theme;
 use Illuminate\Translation\Translator as Lang;
 
@@ -177,16 +178,15 @@ class Container
     {
         $messages = $this->toArray();
 
-        if ( ! empty ($messages)) {
-            $this->clearMessages();
-            return $this->theme->render(
-                $custom,
-                ['messages' => $this->withDefaults($messages)],
-                'alert'
-            );
+        if (empty ($messages)) {
+            return '';
         }
 
-        return '';
+        $this->clearMessages();
+
+        return new HtmlString($this->theme->render(
+            $custom, ['messages' => $this->withDefaults($messages)], 'alert'
+        ));
     }
 
     /**

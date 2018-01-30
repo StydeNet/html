@@ -23,30 +23,30 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->shouldHaveType('Styde\Html\FieldBuilder');
     }
 
-    function it_generates_a_text_field($form, $theme, $lang)
-    {
-        // Expect
-        $form->text("name", "value", ["class" => "", "id" => "name"])
-            ->shouldBeCalled()
-            ->willReturn('<input>');
-
-        $lang->get('validation.attributes.name')
-            ->shouldBeCalled()
-            ->willReturn('validation.attributes.name');
-
-        $theme->render(null, [
-        "htmlName" => "name",
-            "id" => "name",
-            "label" => "Name",
-            "input" => "<input>",
-            "errors" => [],
-            "hasErrors" => false,
-            "required" => false
-        ], "fields.default")->shouldBeCalled()->willReturn('html');
-
-        // When
-        $this->text('name', 'value')->render()->shouldReturn('html');
-    }
+//    function it_generates_a_text_field($form, $theme, $lang)
+//    {
+//        // Expect
+//        $form->text("name", "value", ["class" => "", "id" => "name"])
+//            ->shouldBeCalled()
+//            ->willReturn('<input>');
+//
+//        $lang->get('validation.attributes.name')
+//            ->shouldBeCalled()
+//            ->willReturn('validation.attributes.name');
+//
+//        $theme->render(null, [
+//        "htmlName" => "name",
+//            "id" => "name",
+//            "label" => "Name",
+//            "input" => "<input>",
+//            "errors" => [],
+//            "hasErrors" => false,
+//            "required" => false
+//        ], "fields.default")->shouldBeCalled()->willReturn('html');
+//
+//        // When
+//        $this->text('name', 'value')->render()->shouldReturn('html');
+//    }
 
     function it_checks_for_access(AccessHandler $access)
     {
@@ -182,27 +182,6 @@ class FieldBuilderSpec extends ObjectBehavior
 
         // When
         $this->select('gender', $options, 'm', ['label' => 'Gender'])->render();
-    }
-
-    function it_generates_a_text_field_with_errors($form, $theme, $lang, Session $session)
-    {
-        // Having
-        $session->get('errors')->willReturn(new MessageBag([
-            'name' => ['This is wrong']
-        ]));
-
-        $this->setSessionStore($session);
-
-        // Expect
-        $form->text("name", "value", ["class" => "error", "id" => "name"])->shouldBeCalled();
-        $theme->render(
-            null,
-            Argument::withEntry('errors', ['This is wrong']),
-            "fields.default"
-        )->shouldBeCalled();
-
-        // When
-        $this->text('name', 'value')->render();
     }
 
     function it_generates_a_text_field_with_extra_data($theme)

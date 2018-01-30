@@ -46,8 +46,8 @@ class HtmlServiceProvider extends ServiceProvider
         'Field' => \Styde\Html\Facades\Field::class,
         'Alert' => \Styde\Html\Facades\Alert::class,
         'Menu'  => \Styde\Html\Facades\Menu::class,
-        'Form'  => \Collective\Html\FormFacade::class,
-        'Html'  => \Collective\Html\HtmlFacade::class
+        'Form'  => \Styde\Html\Facades\Form::class,
+        'Html'  => \Styde\Html\Facades\Html::class,
     ];
 
     public function boot()
@@ -193,14 +193,6 @@ class HtmlServiceProvider extends ServiceProvider
 
             if ($this->options['control_access']) {
                 $fieldBuilder->setAccessHandler($app[AccessHandler::class]);
-            }
-
-            $fieldBuilder->setAbbreviations($this->options['abbreviations']);
-
-            if (isset ($this->options['theme_values']['field_classes'])) {
-                $fieldBuilder->setCssClasses(
-                    $this->options['theme_values']['field_classes']
-                );
             }
 
             if (isset ($this->options['theme_values']['field_templates'])) {

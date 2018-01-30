@@ -2,16 +2,14 @@
 
 namespace Styde\Html\Tests;
 
-use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Mockery;
-use Styde\Html\FormBuilder;
-use Styde\Html\HtmlBuilder;
-use Styde\Html\Theme;
+use Styde\Html\HtmlServiceProvider;
+use Styde\Html\{FormBuilder, HtmlBuilder};
+use Orchestra\Testbench\TestCase as OrchestraTestCase;
 
-class TestCase extends \PHPUnit\Framework\TestCase
+class TestCase extends OrchestraTestCase
 {
+    use TestHelpers;
+
     /**
      * @var \Mockery\MockInterface
      */
@@ -24,36 +22,16 @@ class TestCase extends \PHPUnit\Framework\TestCase
 
     protected function newHtmlBuilder()
     {
-        return new HtmlBuilder($this->mockUrlGenerator(), $this->mockViewFactory());
+        return app(HtmlBuilder::class);
     }
 
     protected function newFormBuilder()
     {
-        return new FormBuilder($this->mockUrlGenerator(), $this->newTheme(), 'csrf_token_value');
+        return app(FormBuilder::class);
     }
 
-    protected function newTheme()
+    protected function getPackageProviders($app)
     {
-        return new Theme($this->mockViewFactory(), 'bootstrap');
-    }
-
-    protected function mockViewFactory()
-    {
-        return $this->viewFactory = Mockery::mock(Factory::class);
-    }
-
-    protected function mockUrlGenerator()
-    {
-        return $this->urlGenerator = Mockery::mock(UrlGenerator::class);
-    }
-
-    protected function mockView()
-    {
-        return Mockery::mock(View::class);
-    }
-
-    protected function tearDown()
-    {
-        Mockery::close();
+        return [HtmlServiceProvider::class];
     }
 }

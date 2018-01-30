@@ -3,6 +3,7 @@
 namespace Styde\Html\Menu;
 
 use Closure;
+use Illuminate\Contracts\Support\Htmlable;
 use Styde\Html\Str;
 use Styde\Html\Theme;
 use Styde\Html\Access\VerifyAccess;
@@ -10,7 +11,7 @@ use Styde\Html\Access\AccessHandlerSetter;
 use Illuminate\Translation\Translator as Lang;
 use Illuminate\Contracts\Routing\UrlGenerator as Url;
 
-class Menu
+class Menu implements Htmlable
 {
     use VerifyAccess {
         checkAccess as traitCheckAccess;
@@ -242,23 +243,6 @@ class Menu
     public function getCurrentId()
     {
         return $this->currentId;
-    }
-
-    /**
-     * Renders a new menu
-     *
-     * @param string|null $customTemplate
-     * @return string the menu's HTML
-     */
-    public function render($customTemplate = null)
-    {
-        $items = $this->generateItems($this->items);
-
-        return $this->theme->render(
-            $customTemplate,
-            ['items' => $items, 'class' => $this->class],
-            'menu'
-        );
     }
 
     /**
@@ -551,4 +535,30 @@ class Menu
         return '#';
     }
 
+    /**
+     * Renders a new menu
+     *
+     * @param string|null $customTemplate
+     * @return string the menu's HTML
+     */
+    public function render($customTemplate = null)
+    {
+        $items = $this->generateItems($this->items);
+
+        return $this->theme->render(
+            $customTemplate,
+            ['items' => $items, 'class' => $this->class],
+            'menu'
+        );
+    }
+
+    /**
+     * Get content as a string of HTML.
+     *
+     * @return string
+     */
+    public function toHtml()
+    {
+        return $this->render();
+    }
 }

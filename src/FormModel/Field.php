@@ -3,8 +3,9 @@
 namespace Styde\Html\FormModel;
 
 use Styde\Html\FieldBuilder;
+use Illuminate\Contracts\Support\Htmlable;
 
-class Field
+class Field implements Htmlable
 {
     use HasAttributes;
 
@@ -35,15 +36,15 @@ class Field
     /**
      * @var array
      */
-    protected $attributes = array();
+    protected $attributes = [];
     /**
      * @var array
      */
-    protected $extra = array();
+    protected $extra = [];
     /**
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     public function __construct(FieldBuilder $fieldBuilder, $name, $type = 'text')
     {
@@ -145,6 +146,11 @@ class Field
     public function render()
     {
         return $this->fieldBuilder->render($this);
+    }
+
+    public function toHtml()
+    {
+        return $this->render();
     }
 
 }

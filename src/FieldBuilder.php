@@ -34,21 +34,7 @@ class FieldBuilder
      * @var \Illuminate\Translation\Translator
      */
     protected $lang;
-    /**
-     * Set convenient abbreviations for the HTML attributes
-     * i.e. "ph" instead of "placeholder", etc.
-     * You can set the abbreviations in the configuration file (config/html.php)
-     *
-     * @var array
-     */
-    protected $abbreviations = [];
-    /**
-     * Default CSS classes for each input type.
-     * You can set these in the config file.
-     *
-     * @var array
-     */
-    protected $cssClasses = [];
+
     /**
      * Default templates for each input type
      * You can set these in the config file.
@@ -81,30 +67,6 @@ class FieldBuilder
     }
 
     // Setters
-
-    /**
-     * Set the attribute abbreviation options i.e.:
-     * ['ph' => 'placeholder', 'req' => 'required']
-     *
-     * You can set these values in the config file
-     *
-     * @param array $abbreviations
-     */
-    public function setAbbreviations(array $abbreviations)
-    {
-        $this->abbreviations = $abbreviations;
-    }
-
-    /**
-     * Set the default CSS classes for each input type.
-     * You can set these values in the config file.
-     *
-     * @param array $cssClasses
-     */
-    public function setCssClasses(array $cssClasses)
-    {
-        $this->cssClasses = $cssClasses;
-    }
 
     /**
      * Set the default templates for each input type.
@@ -368,11 +330,9 @@ class FieldBuilder
      * @param  array|null $options
      * @return string
      */
-    public function build($type, $name, $value = null, array $attributes = array(), array $extra = array(), $options = null)
+    public function build($type, $name, $value = null, array $attributes = [], array $extra = [], $options = null)
     {
         $field = new Field($this, $name, $type);
-
-        $attributes = $this->replaceAttributes($attributes);
 
         if (isset ($attributes['label'])) {
             $field->label($attributes['label']);
@@ -423,8 +383,6 @@ class FieldBuilder
         $hasErrors = !empty($errors);
 
         $type = $field->getType();
-
-        $attributes = $this->getHtmlAttributes($type, $attributes, $errors, $id);
 
         $input = $this->buildControl($type, $name, $field->getValue(), $attributes, $field->getOptions(), $htmlName);
 
@@ -665,56 +623,6 @@ class FieldBuilder
     }
 
     /**
-     * Get the default HTML classes for a particular type.
-     *
-     * If the type is not defined it will use the 'default' key in the
-     * cssClasses array, otherwise it will return an empty string.
-     *
-     * @param  string $type
-     * @return string
-     */
-    protected function getDefaultClasses($type)
-    {
-        if (isset($this->cssClasses[$type])) {
-            return $this->cssClasses[$type];
-        }
-
-        if (isset($this->cssClasses['default'])) {
-            return $this->cssClasses['default'];
-        }
-
-        return '';
-    }
-
-    /**
-     * Get the HTML classes for a particular field.
-     *
-     * It concatenates the default CSS classes plus the custom classes (passed
-     * as the class key in the $attributes array).
-     *
-     * And it will also add an extra class if the control has any errors.
-     *
-     * @param  string $type
-     * @param  array $attributes
-     * @param  string|null $errors
-     * @return string
-     */
-    protected function getClasses($type, array $attributes = [], $errors = null)
-    {
-        $classes = $this->getDefaultClasses($type);
-
-        if (isset($attributes['class'])) {
-            $classes .= ' '.$attributes['class'];
-        }
-
-        if (! empty($errors)) {
-            $classes .= ' '.(isset($classes['error']) ? $classes['error'] : 'error');
-        }
-
-        return trim($classes);
-    }
-
-    /**
      * Get the control's errors (if any)
      *
      * @param  string $name
@@ -729,43 +637,6 @@ class FieldBuilder
         }
 
         return [];
-    }
-
-    /**
-     * Get the HTML attributes for a control (input, select, etc.)
-     *
-     * This will assign the CSS classes and the id attribute.
-     *
-     * @param  string $type
-     * @param  array $attributes
-     * @param  array $errors
-     * @param  string $htmlId
-     * @param  bool $required
-     * @return array
-     */
-    protected function getHtmlAttributes($type, $attributes, $errors, $htmlId)
-    {
-        $attributes['class'] = $this->getClasses($type, $attributes, $errors);
-        $attributes['id'] = $htmlId;
-        return $attributes;
-    }
-
-    /**
-     * Search for abbreviations and replace them with the right attributes
-     *
-     * @param  array $attributes
-     * @return array
-     */
-    protected function replaceAttributes(array $attributes)
-    {
-        foreach ($this->abbreviations as $abbreviation => $attribute) {
-            if (isset($attributes[$abbreviation])) {
-                $attributes[$attribute] = $attributes[$abbreviation];
-                unset($attributes[$abbreviation]);
-            }
-        }
-
-        return $attributes;
     }
 
     /**

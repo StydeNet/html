@@ -6,8 +6,7 @@ class Str extends \Illuminate\Support\Str
 {
 
     /**
-     * Convert camel cases, underscore and hyphen separated strings to human
-     * format.
+     * Convert camel cases, underscore and hyphen separated strings to human format.
      *
      * @param $string
      * @return string
@@ -35,8 +34,7 @@ class Str extends \Illuminate\Support\Str
     }
 
     /**
-     * Cuts a string but without leaving incomplete words and adding a $end
-     * string if necessary.
+     * Cuts a string but without leaving incomplete words and adding a $end string if necessary.
      *
      * @param $value
      * @param $length

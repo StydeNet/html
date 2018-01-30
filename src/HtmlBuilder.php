@@ -37,29 +37,33 @@ class HtmlBuilder
      * Builds an HTML class attribute dynamically.
      *
      * @param array $classes
-     *
+     * @param bool $addClassAttribute
      * @return string
      */
-    public function classes(array $classes)
+    public function classes(array $classes, $addClassAttribute = true)
     {
         $html = '';
 
         foreach ($classes as $name => $bool) {
             if (is_int($name)) {
-                $name = $bool;
-                $bool = true;
+                $html .= "{$bool} ";
+                continue;
             }
 
             if ($bool) {
-                $html .= $name.' ';
+                $html .= "{$name} ";
             }
         }
 
-        if (!empty($html)) {
-            return ' class="'.trim($html).'"';
+        if (empty($html)) {
+            return '';
         }
 
-        return '';
+        if ($addClassAttribute) {
+            return ' class="'.trim($html).'"';
+        } else {
+            return trim($html);
+        }
     }
 
     /**

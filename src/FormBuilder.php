@@ -4,6 +4,7 @@ namespace Styde\Html;
 
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Support\HtmlString;
 
 class FormBuilder
 {
@@ -100,18 +101,13 @@ class FormBuilder
     /**
      * Create a form label element.
      *
-     * @param string $name
      * @param string $content
      * @param array $attributes
      *
      * @return \Styde\Html\HtmlElement
      */
-    public function label($name, $content = '', $attributes = [])
+    public function label($content, $attributes = [])
     {
-        if (empty ($content)) {
-            $content = ucwords(str_replace('_', ' ', $name));
-        }
-
         return new HtmlElement('label', $content, $attributes);
     }
 
@@ -171,7 +167,63 @@ class FormBuilder
      */
     public function select($name, $list = [], $selected = null, array $attributes = [])
     {
-        return new HtmlElement('select', '', array_merge(compact('name'), $attributes));
+        return new HtmlElement('select', $this->options($list, $selected), array_merge(compact('name'), $attributes));
+    }
+
+    public function options($list, $selected, array $attributes = [])
+    {
+        $options = [];
+
+        foreach ($list as $value => $text) {
+            if (is_array($text)) {
+                $options[] = $this->optionGroup($value, $text, $selected, $attributes);
+            } else {
+                $options[] = $this->option($text, $value, $selected, $attributes);
+            }
+        }
+
+        return $options;
+    }
+
+    /**
+     * Create an option group form element.
+     *
+     * @param  array  $list
+     * @param  string $label
+     * @param  string $selected
+     * @param  array  $attributes
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    protected function optionGroup($label, $list, $selected, array $attributes = [])
+    {
+        $options = [];
+
+        foreach ($list as $value => $text) {
+            $options[] = $this->option($text, $value, $selected, $attributes);
+        }
+
+        return new HtmlElement('optgroup', $options, compact('label') + $attributes);
+    }
+
+    /**
+     * Create an option element
+     * @param string $text
+     * @param mixed $value
+     * @param bool $selected
+     * @param array $attributes
+     *
+     * @return \Styde\Html\HtmlElement
+     */
+    public function option($text, $value, $selected, array $attributes = [])
+    {
+        if (is_array($selected)) {
+            $isSelected = in_array($value, $selected);
+        } else {
+            $isSelected = $value == $selected;
+        }
+
+        return new HtmlElement('option', $text, ['value' => $value, 'selected' => $isSelected] + $attributes);
     }
 
     /**
@@ -263,19 +315,20 @@ class FormBuilder
 
         $template = $attributes['template'] ?? null;
 
-        unset ($attributes['inline'], $attributes['template']);
-
-        $labels = [];
+        $radios = [];
 
         foreach ($options as $value => $text) {
-            $id = $name.'_'.Str::slug($value);
+            $id = $name.'_'.str_slug($value,'_');
 
-            $radio = $this->radio($name, $value, $checked == $value, compact('id'));
-
-            $labels[] = new HtmlElement('label', compact('text', 'radio'));
+            $radios[] = [
+                $this->radio($name, $value, $checked == $value, ['id' => $id]),
+                $this->label($text, ['for' => $id]),
+            ];
         }
 
-        return $this->theme->render($template, compact('name', 'labels'), $defaultTemplate);
+        return new HtmlString(
+            $this->theme->render($template, compact('name', 'radios'), $defaultTemplate)
+        );
     }
 
     /**
@@ -307,21 +360,16 @@ class FormBuilder
         $checkboxes = [];
 
         foreach ($options as $value => $label) {
+            $id = $name.'_'.str_slug($value,'_');
+
             $checkboxes[] = [
-                'name'    => $name.'[]',
-                'value'   => $value,
-                'label'   => $label,
-                'checked' => is_array($selected) && in_array($value, $selected),
-                'id'      => $name.'_'.Str::slug($value)
+                $this->checkbox($name.'[]', $value, in_array($value, $selected), ['id' => $id]),
+                $this->label($label, ['for' => $id]),
             ];
         }
 
-        unset ($attributes['inline'], $attributes['template']);
-
-        return $this->theme->render(
-            $template,
-            compact('name', 'checkboxes', 'attributes'),
-            $defaultTemplate
+        return new HtmlString(
+            $this->theme->render($template, compact('name', 'checkboxes', 'attributes'), $defaultTemplate)
         );
     }
 
