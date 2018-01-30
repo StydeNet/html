@@ -97,7 +97,7 @@ class ButtonCollection
      */
     public function link($url, $title, array $attributes = array(), $secure = false)
     {
-        return $this->buttons[] = $this->htmlBuilder->link($url, $title, $attributes, $secure);
+        return $this->buttons[] = Html::link($url, $title, $attributes, $secure);
     }
 
     /**

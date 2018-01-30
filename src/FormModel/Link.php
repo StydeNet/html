@@ -45,7 +45,7 @@ class Link
      */
     public function render()
     {
-        return $this->htmlBuilder->link($this->url, $this->title, $this->attributes, $this->secure);
+        return Html::link($this->url, $this->title, $this->attributes, $this->secure);
     }
 
 }

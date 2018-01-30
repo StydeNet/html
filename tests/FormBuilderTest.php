@@ -2,27 +2,17 @@
 
 namespace Styde\Html\Tests;
 
+use Styde\Html\Facades\Form;
+
 class FormBuilderTest extends TestCase
 {
-    /**
-     * @var \Styde\Html\FormBuilder
-     */
-    protected $formBuilder;
-
-    function setUp()
-    {
-        parent::setUp();
-
-        $this->formBuilder = $this->newFormBuilder();
-    }
-
     /** @test */
     function it_adds_the_novalidate_attribute_to_all_forms()
     {
-        $this->formBuilder->novalidate(true);
+        Form::novalidate(true);
 
         $this->assertHtmlEquals(
-            '<form method="GET" novalidate>', $this->formBuilder->open(['method' => 'GET'])
+            '<form method="GET" novalidate>', Form::open(['method' => 'GET'])
         );
     }
 
@@ -30,7 +20,7 @@ class FormBuilderTest extends TestCase
     function it_generates_time_inputs()
     {
         $this->assertHtmlEquals(
-            '<input type="time" name="time">', $this->formBuilder->time('time')
+            '<input type="time" name="time">', Form::time('time')
         );
     }
 
@@ -38,7 +28,7 @@ class FormBuilderTest extends TestCase
     function it_generate_radios()
     {
         $this->assertTemplateMatches(
-            'form/radios', $this->formBuilder->radios('gender', ['m' => 'Male', 'f' => 'Female'], 'm')
+            'form/radios', Form::radios('gender', ['m' => 'Male', 'f' => 'Female'], 'm')
         );
     }
 
@@ -49,7 +39,7 @@ class FormBuilderTest extends TestCase
         $checked = ['php', 'js'];
 
         $this->assertTemplateMatches(
-            'form/checkboxes', $this->formBuilder->checkboxes('tags', $tags, $checked)
+            'form/checkboxes', Form::checkboxes('tags', $tags, $checked)
         );
     }
 }
