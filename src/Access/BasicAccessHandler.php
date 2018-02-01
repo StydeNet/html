@@ -72,13 +72,6 @@ class BasicAccessHandler implements AccessHandler {
 
     protected function checkGate($arguments)
     {
-        if ($this->gate == null) {
-            throw new MissingGateException(
-                'You have to upgrade to Laravel 5.1.12 or superior'
-                .' to use the allows, checks or denies options'
-            );
-        }
-
         if (is_array($arguments)) {
             $ability = array_shift($arguments);
         } else {

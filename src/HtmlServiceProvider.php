@@ -276,18 +276,10 @@ class HtmlServiceProvider extends ServiceProvider
 
             $this->loadConfigurationOptions();
 
-            $menu = new MenuGenerator(
-                $app['url'],
-                $app['config'],
-                $app->make(Theme::class)
-            );
+            $menu = new MenuGenerator($app['url'], $app[Theme::class]);
 
             if ($this->options['control_access']) {
                 $menu->setAccessHandler($app[AccessHandler::class]);
-            }
-
-            if ($this->options['translate_texts']) {
-                $menu->setLang($app['translator']);
             }
 
             return $menu;

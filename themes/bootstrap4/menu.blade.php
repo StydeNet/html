@@ -1,19 +1,19 @@
 <ul class="{{ $class }}">
 @foreach ($items as $item)
-    @if (empty($item['submenu']))
-        <li id="menu_{{ $item['id'] }}" {!! Html::classes(['nav-item', $item['class']]) !!}>
-            <a href="{{ $item['url'] }}" class="nav-link">
-                {{ $item['title'] }}
+    @if (empty ($item->items))
+        <li{!! Html::classes(['nav-item', $item->class, 'active' => $item->active]) !!}>
+            <a href="{{ $item->url() }}" class="nav-link">
+                {{ $item->text }}
             </a>
         </li>
     @else
-        <li id="menu_{{ $item['id'] }}" {!! Html::classes(['nav-item', $item['class']]) !!}>
-            <a href="{{ $item['url'] }}" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                {{ $item['title'] }}
+        <li{!! Html::classes(['nav-item', 'dropdown', $item->class, 'active' => $item->active]) !!}>
+            <a href="{{ $item->url() }}" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                {{ $item->text }}
             </a>
             <div class="dropdown-menu">
-                @foreach ($item['submenu'] as $subitem)
-                    <a href="{{ $subitem['url'] }}" class="dropdown-item">{{ $subitem['title'] }}</a>
+                @foreach ($item->items as $subitem)
+                    <a href="{{ $subitem->url() }}" class="dropdown-item">{{ $subitem->text }}</a>
                 @endforeach
             </div>
         </li>

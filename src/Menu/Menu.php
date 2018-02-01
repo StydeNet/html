@@ -48,11 +48,11 @@ class Menu implements Htmlable
      */
     protected $dropDownClass = 'dropdown';
     /**
-     * List of menu items
+     * Menu configuration callback.
      *
-     * @var array
+     * @var \Closure
      */
-    protected $items;
+    protected $config;
     /**
      * Current item's id (active menu item), it will be obtained after the menu
      * is rendered.
@@ -67,11 +67,11 @@ class Menu implements Htmlable
      */
     protected $defaultSecure = false;
     /**
-     * Active URL (this will be taken from the Url::current method by default)
+     * Current URL (this will be taken from the Url::current method by default)
      *
      * @var string
      */
-    protected $activeUrl;
+    protected $currentUrl;
     /**
      * Allow dynamic parameters for routes and actions.
      *
@@ -94,14 +94,14 @@ class Menu implements Htmlable
      *
      * @param Url $url
      * @param Theme $theme
-     * @param $items
+     * @param $config
      */
-    public function __construct(URL $url, Theme $theme, $items)
+    public function __construct(URL $url, Theme $theme, $config)
     {
         $this->url = $url;
         $this->theme = $theme;
-        $this->items = $items;
-        $this->activeUrl = $this->url->current();
+        $this->config = $config;
+        $this->currentUrl = $this->url->current();
         $this->baseUrl = $this->url->to('');
     }
 
@@ -218,9 +218,9 @@ class Menu implements Htmlable
      *
      * @param $value
      */
-    public function setActiveUrl($value)
+    public function setCurrentUrl($value)
     {
-        $this->activeUrl = $value;
+        $this->currentUrl = $value;
     }
 
     /**
@@ -252,7 +252,7 @@ class Menu implements Htmlable
      */
     public function getItems()
     {
-        return $this->generateItems($this->items);
+        return $this->buildItems($this->config);
     }
 
     public function checkAccess(array $options)
@@ -275,264 +275,70 @@ class Menu implements Htmlable
      *
      * This method will called itself if an item has a 'submenu' key.
      *
-     * @param array $items
-     * @param array|null $parentItem
+     * @param Closure $config
+     * @param \Styde\Html\Menu\Item|null $parentItem
      * @return array
      */
-    protected function generateItems($items, &$parentItem = null)
+    protected function buildItems($config, $parentItem = null)
     {
-        foreach ($items as $id => &$values) {
-            $values = $this->setDefaultValues($id, $values);
+        $items = new ItemCollection($this->defaultSecure);
 
-            if (!$this->checkAccess($values)) {
-                unset($items[$id]);
-                continue;
+        $config($items);
+
+        //@TODO: add access handler back
+//            if (!$this->checkAccess($values)) {
+//                unset($items[$id]);
+//                continue;
+//            }
+
+        foreach ($items as $item) {
+            if ($this->isActive($item)) {
+                $this->markAsActive($item, $parentItem);
+                $this->currentId = $item->id;
             }
 
-            $values['title'] = $this->getTitle($id, $values['title']);
-
-            $values['url'] = $this->generateUrl($values);
-
-            if ($this->isActiveUrl($values)) {
-                $this->markAsActive($values, $parentItem);
-                $this->currentId = $id;
+            if ($item->submenu != null) {
+                $item->items = $this->buildItems($item->submenu, $item);
             }
-
-            if (isset($values['submenu'])) {
-                $values['submenu'] = $this->generateItems($values['submenu'], $values);
-            }
-
-            if ($values['active']) {
-                $values['class'] .= ' '.$this->activeClass;
-            }
-
-            if ($values['submenu']) {
-                $values['class'] .= ' '.$this->dropDownClass;
-            }
-
-            $values['class'] = trim($values['class']);
-
-            unset(
-                $values['callback'], $values['logged'], $values['roles'], $values['secure'],
-                $values['params'], $values['route'], $values['action'], $values['full_url'],
-                $values['allows'], $values['check'], $values['denies']
-            );
         }
 
         return $items;
     }
 
     /**
-     * Merge the default values for a menu item
-     *
-     * @param $id
-     * @param array $values
-     * @return array
-     */
-    protected function setDefaultValues($id, array $values)
-    {
-        return array_merge([
-            'class'   => '',
-            'submenu' => null,
-            'id'      => $id,
-            'active'  => false
-        ], $values);
-    }
-
-    /**
      * Checks whether this is the current URL or not
      *
-     * @param array $values
+     * @param \Styde\Html\Menu\Item $item
      * @return bool
      */
-    protected function isActiveUrl(array $values)
+    protected function isActive($item)
     {
         // Do we have a custom resolver? If so, use it:
         if($activeUrlResolver = $this->activeUrlResolver) {
-            return $activeUrlResolver($values);
+            return $activeUrlResolver($item);
         }
 
         // Otherwise use the default resolver:
-        if ($values['url'] != $this->baseUrl) {
-            return strpos($this->activeUrl, $values['url']) === 0;
+        if ($item->url() != $this->baseUrl) {
+            return strpos($this->currentUrl, $item->url()) === 0;
         }
 
-        return $this->activeUrl === $this->baseUrl;
+        return $this->currentUrl === $this->baseUrl;
     }
 
     /**
-     * Marks an item an it's optional parent item as active
+     * Mark an item an it's optional parent item as active.
      *
-     * @param array $values
-     * @param array|null $parentItem
+     * @param \Styde\Html\Menu\Item $item
+     * @param \Styde\Html\Menu\Item|null $parent
      */
-    protected function markAsActive(&$values, &$parentItem = null)
+    protected function markAsActive($item, $parent = null)
     {
-        // Set this item as active
-        $values['active'] = true;
-        // If this is a submenu, set the parent's item as active as well
-        if ($parentItem != null) {
-            $parentItem['active'] = true;
+        $item->active(true);
+
+        if ($parent != null) {
+            $parent->active(true);
         }
-    }
-
-    /**
-     * Returns the menu's title. The title is determined following this order:
-     *
-     * 1. If a title is set then it will be returned and used as the menu title.
-     * 2. If a translator is set this function will rely on the translateTitle
-     * method (see below).
-     * 3. Otherwise it will transform the item $key string to title format.
-     *
-     * @param $key
-     * @param $title
-     * @return string
-     */
-    protected function getTitle($key, &$title)
-    {
-        if (isset($title)) {
-            return $title;
-        }
-
-        if(!is_null($this->lang)) {
-            return $this->translateTitle($key);
-        }
-
-        return Str::title($key);
-    }
-
-    /**
-     * Translates and return a title for a menu item.
-     *
-     * This method will attempt to find a "menu.key_item" through the translator
-     * component. If no translation is found for this item, it will attempt to
-     * transform the item $key string to a title readable format.
-     *
-     * @param $key
-     * @return string
-     */
-    protected function translateTitle($key)
-    {
-        $translation = $this->lang->get('menu.'.$key);
-
-        if ($translation != 'menu.'.$key) {
-            return $translation;
-        }
-
-        return Str::title($key);
-    }
-
-    /**
-     * Retrieve a route or action name and its parameters
-     *
-     * If $params is a string, then it returns it as the name of the route or
-     * action and the parameters will be an empty array.
-     *
-     * If it is an array then it takes the first element as the name of the
-     * route or action and the other elements as the parameters.
-     *
-     * Then it will try to replace any dynamic parameters (relying on the
-     * replaceDynamicParameters method, see below)
-     *
-     * Finally it will return an array where the first value will be the name of
-     * the route or action and the second value will be the array of parameters.
-     *
-     * @param $params
-     * @return array
-     */
-    protected function getRouteAndParameters($params)
-    {
-        if (is_string($params)) {
-            return [$params, []];
-        }
-
-        return [
-            // The first position in the array is the route or action name
-            array_shift($params),
-            // After that they are parameters and they could be dynamic
-            $this->replaceDynamicParameters($params)
-        ];
-    }
-
-    /**
-     * Allows variable or dynamic parameters for all the menu's routes and URLs
-     *
-     * Just precede the parameter's name with ":"
-     * For example: :user_id
-     *
-     * This method will cycle through all the parameters and replace the dynamic
-     * ones with their corresponding values stored through the setParams and
-     * setParam methods,
-     *
-     * If a dynamic value is not found the literal value will be returned.
-     *
-     * @param array $params
-     * @return array
-     */
-    protected function replaceDynamicParameters(array $params)
-    {
-        foreach ($params as &$param) {
-            if (strpos($param, ':') !== 0) {
-                continue;
-            }
-            $name = substr($param, 1);
-            if (isset($this->params[$name])) {
-                $param = $this->params[$name];
-            }
-        }
-
-        return $params;
-    }
-
-    /**
-     * Generates the menu item URL, using any of the following options, in order:
-     *
-     * If you pass a 'full_url' key within the item configuration, in that case
-     * it will return it as the URL with no additional action.
-     *
-     * If you pass a 'url' key then it will call the Url::to method to complete
-     * the base URL, you can also specify a 'secure' key to indicate whether
-     * this URL should be secure or not. Otherwise the defaultSecure option will
-     * be used.
-     *
-     * If you pass a 'route' key then it will call Url::route
-     *
-     * If you pass an 'action' it will call the Url::action method instead.
-     *
-     * If you need to pass parameters for the url, route or action, just specify
-     * an array where the first position will be the url, route or action name
-     * and the rest of the array will contain the parameters. You can specify
-     * dynamic parameters (see methods above).
-     *
-     * If none of these options are found then this function will simple return
-     * a placeholder (#).
-     *
-     * @param $values
-     * @return mixed
-     */
-    protected function generateUrl($values)
-    {
-        if (isset($values['full_url'])) {
-            return $values['full_url'];
-        }
-
-        if (isset($values['url'])) {
-            list($url, $params) = $this->getRouteAndParameters($values['url']);
-            $secure = isset($values['secure']) ? $values['secure'] : $this->defaultSecure;
-            return $this->url->to($url, $params, $secure);
-        }
-
-        if (isset($values['route'])) {
-            list($route, $params) = $this->getRouteAndParameters($values['route']);
-            return $this->url->route($route, $params);
-        }
-
-        if (isset($values['action'])) {
-            list($route, $params) = $this->getRouteAndParameters($values['action']);
-            return $this->url->action($route, $params);
-        }
-
-        return '#';
     }
 
     /**
@@ -543,13 +349,10 @@ class Menu implements Htmlable
      */
     public function render($customTemplate = null)
     {
-        $items = $this->generateItems($this->items);
-
-        return $this->theme->render(
-            $customTemplate,
-            ['items' => $items, 'class' => $this->class],
-            'menu'
-        );
+        return $this->theme->render($customTemplate, [
+            'items' => $this->getItems(),
+            'class' => $this->class
+        ], 'menu');
     }
 
     /**
