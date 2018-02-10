@@ -60,8 +60,6 @@ class MenuGeneratorTest extends TestCase
     /** @test */
     function it_checks_for_access_using_the_access_handler_and_the_gate()
     {
-        $this->markTestIncomplete();
-
         $fakeUser = new class extends Model implements AuthenticatableInterface {
             use Authenticatable;
         };
@@ -78,21 +76,19 @@ class MenuGeneratorTest extends TestCase
             return false;
         });
 
-        $items = array(
-            'view-post' => [
-            ],
-            'edit-post' => [
-                'allows' => ['update-post', ':post']
-            ],
-            'review-post' => [
-                'denies' => ['update-post', ':post']
-            ],
-            'delete-post' => [
-                'allows' => 'delete-post'
-            ]
-        );
+        $menu = Menu::make(function ($items) use ($fakePost) {
+            $items->url('view-post');
 
-        $menu = Menu::make($items)->setParam('post', $fakePost);
+            $items->url('edit-post')->ifCan('update', $fakePost);
+
+            $items->url('review-post')->ifCan('update', $fakePost);
+
+            $items->url('delete-post')->ifIs('admin');
+
+            $items->route('logout')->ifAuth();
+
+            $items->route('sign-in')->ifGuest();
+        });
 
         $this->assertTemplateMatches('menu/access-handler', $menu);
     }
