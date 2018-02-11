@@ -6,7 +6,7 @@ return [
      * Set the HTML theme for the components
      * like alerts, form fields, menus, etc.
      */
-    'theme'  => 'bootstrap',
+    'theme'  => 'bootstrap4',
 
     /*
      * Set the folder to store the custom templates
