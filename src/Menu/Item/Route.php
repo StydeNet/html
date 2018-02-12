@@ -10,17 +10,24 @@ class Route extends Item
     public $route;
     public $text;
     public $parameters;
-    public $secure;
 
     public function __construct(string $route, string $text, array $parameters = [])
     {
-        $this->route = $route;
+        parent::__construct($text);
 
-        parent::__construct($text, $parameters);
+        $this->route = $route;
+        $this->parameters = $parameters;
+    }
+
+    public function parameters(array $value)
+    {
+        $this->parameters = $value;
+
+        return $this;
     }
 
     public function url()
     {
-        return app(UrlGenerator::class)->route($this->route, $this->parameters, true);
+        return app(UrlGenerator::class)->route($this->route, $this->parameters);
     }
 }

@@ -11,9 +11,9 @@ class RawUrl extends Item
 
     public function __construct(string $url, string $text)
     {
-        $this->url = $url;
-
         parent::__construct($text);
+
+        $this->url = $url;
     }
 
     public function url()

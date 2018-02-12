@@ -21,38 +21,45 @@ class Menu implements Htmlable
      * @var \Illuminate\Contracts\Routing\UrlGenerator
      */
     protected $url;
+
     /**
      * @var \Styde\Html\Theme
      */
     protected $theme;
+
     /**
      * @var \Illuminate\Translation\Translator
      */
     protected $lang;
+
     /**
      * Default CSS class(es) for the menu
      *
      * @var string
      */
     protected $class = 'nav';
+
     /**
      * Default CSS class(es) for the active item(s)
      *
      * @var string
      */
     protected $activeClass = 'active';
+
     /**
      * Default CSS class(es) for the sub-menus
      *
      * @var string
      */
     protected $dropDownClass = 'dropdown';
+
     /**
      * Menu configuration callback.
      *
      * @var \Closure
      */
     protected $config;
+
     /**
      * Current item's id (active menu item), it will be obtained after the menu
      * is rendered.
@@ -60,18 +67,14 @@ class Menu implements Htmlable
      * @var string
      */
     protected $currentId;
-    /**
-     * Whether all URLs should be secure (https) or not (http) by default
-     *
-     * @var bool
-     */
-    protected $defaultSecure = false;
+
     /**
      * Current URL (this will be taken from the Url::current method by default)
      *
      * @var string
      */
     protected $currentUrl;
+
     /**
      * Allow dynamic parameters for routes and actions.
      *
@@ -192,18 +195,6 @@ class Menu implements Htmlable
     }
 
     /**
-     * Set whether all URLs should be secure (https) by default or not (http)
-     *
-     * @param $value
-     * @return \Styde\Html\Menu\Menu $this
-     */
-    public function setDefaultSecure($value)
-    {
-        $this->defaultSecure = $value;
-        return $this;
-    }
-
-    /**
      * Set a custom callback to resolve the logic to determine if a URL is active or not.
      *
      * @param Closure $closure
@@ -281,7 +272,7 @@ class Menu implements Htmlable
      */
     protected function buildItems($config, $parentItem = null)
     {
-        $items = new ItemCollection($config, $this->defaultSecure);
+        $items = new ItemCollection($config);
 
         foreach ($items as $item) {
             if ($this->isActive($item)) {

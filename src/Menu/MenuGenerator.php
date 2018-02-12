@@ -75,7 +75,7 @@ class MenuGenerator
             $menu->setClass($classes);
         }
 
-        if (!is_null($this->accessHandler)) {
+        if ($this->accessHandler != null) {
             $menu->setAccessHandler($this->accessHandler);
         }
 

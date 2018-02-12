@@ -10,12 +10,9 @@ use Styde\Html\Menu\Item\{Action, RawUrl, Route, Url};
 class ItemCollection implements IteratorAggregate
 {
     public $items = [];
-    public $defaultSecure;
 
-    public function __construct($config, bool $defaultSecure = true)
+    public function __construct($config)
     {
-        $this->defaultSecure = $defaultSecure;
-
         $config($this);
 
         $this->removeExcluded();
@@ -51,7 +48,7 @@ class ItemCollection implements IteratorAggregate
 
     public function url(string $url, $text, $parameters = [])
     {
-        return $this->add(new Url($url, $text, $parameters, $this->defaultSecure));
+        return $this->add(new Url($url, $text, $parameters));
     }
 
     public function route(string $url, $text, $parameters = [])
@@ -61,7 +58,7 @@ class ItemCollection implements IteratorAggregate
 
     public function action(string $url, $text, $parameters = [])
     {
-        return $this->add(new Action($url, $text, $parameters, $this->defaultSecure));
+        return $this->add(new Action($url, $text, $parameters));
     }
 
     public function placeholder($text)

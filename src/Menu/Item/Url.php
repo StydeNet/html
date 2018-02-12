@@ -8,16 +8,16 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 class Url extends Item
 {
     public $path;
-    public $text;
     public $parameters;
     public $secure;
 
-    public function __construct(string $path, string $text, array $parameters, bool $secure)
+    public function __construct(string $path, string $text, array $parameters = [], $secure = null)
     {
+        parent::__construct($text);
+
         $this->path = $path;
-        $this->text = $text;
-        $this->parameters = $parameters;
         $this->secure = $secure;
+        $this->parameters = $parameters;
     }
 
     public function parameters(array $value)
@@ -25,7 +25,7 @@ class Url extends Item
         $this->parameters = $value;
     }
 
-    public function secure(bool $value = true)
+    public function secure($value = true)
     {
         $this->secure = $value;
     }

@@ -10,7 +10,6 @@ use Styde\Html\Facades\Html;
 abstract class Item
 {
     public $text;
-    public $parameters;
     public $secure;
     public $id;
     public $class = '';
@@ -19,28 +18,12 @@ abstract class Item
     public $items = [];
     public $included = true;
 
-    public function __construct(string $text, array $parameters = [], bool $secure = true)
+    public function __construct(string $text)
     {
         $this->text = $text;
-        $this->parameters = $parameters;
-        $this->secure = $secure;
     }
 
     public abstract function url();
-
-    public function parameters(array $value)
-    {
-        $this->parameters = $value;
-
-        return $this;
-    }
-
-    public function secure(bool $value = true)
-    {
-        $this->secure = $value;
-
-        return $this;
-    }
 
     public function classes($classes)
     {

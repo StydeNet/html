@@ -8,12 +8,30 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 class Action extends Item
 {
     public $action;
+    public $parameters;
+    public $secure;
 
-    public function __construct(string $action, string $text, array $parameters = [], bool $secure = true)
+    public function __construct(string $action, string $text, array $parameters = [], $secure = null)
     {
-        $this->action = $action;
+        parent::__construct($text);
 
-        parent::__construct($text, $parameters, $secure);
+        $this->action = $action;
+        $this->parameters = $parameters;
+        $this->secure = $secure;
+    }
+
+    public function parameters(array $value)
+    {
+        $this->parameters = $value;
+
+        return $this;
+    }
+
+    public function secure($value = true)
+    {
+        $this->secure = $value;
+
+        return $this;
     }
 
     public function url()
