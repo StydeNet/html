@@ -281,15 +281,7 @@ class Menu implements Htmlable
      */
     protected function buildItems($config, $parentItem = null)
     {
-        $items = new ItemCollection($this->defaultSecure);
-
-        $config($items);
-
-        //@TODO: add access handler back
-//            if (!$this->checkAccess($values)) {
-//                unset($items[$id]);
-//                continue;
-//            }
+        $items = new ItemCollection($config, $this->defaultSecure);
 
         foreach ($items as $item) {
             if ($this->isActive($item)) {

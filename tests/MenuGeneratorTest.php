@@ -58,10 +58,18 @@ class MenuGeneratorTest extends TestCase
     }
 
     /** @test */
-    function it_checks_for_access_using_the_access_handler_and_the_gate()
+    function it_can_exclude_items_based_on_permissions()
     {
+        Route::get('/login', ['as' => 'login']);
+        Route::get('/logout', ['as' => 'logout']);
+
         $fakeUser = new class extends Model implements AuthenticatableInterface {
             use Authenticatable;
+
+            public function isA($role)
+            {
+                return $role == 'admin';
+            }
         };
 
         $fakePost = new class { public $id = 1; };
@@ -77,17 +85,23 @@ class MenuGeneratorTest extends TestCase
         });
 
         $menu = Menu::make(function ($items) use ($fakePost) {
-            $items->url('view-post');
+            // Should be included always.
+            $items->url('posts/1', 'View post');
 
-            $items->url('edit-post')->ifCan('update', $fakePost);
+            // Should be included.
+            $items->url('posts/1/edit', 'Edit post')->ifCan('update-post', $fakePost);
 
-            $items->url('review-post')->ifCan('update', $fakePost);
+            // Should be excluded.
+            $items->url('posts/1/suggest-changes', 'Suggest changes')->ifCannot('update-post', $fakePost);
 
-            $items->url('delete-post')->ifIs('admin');
+            // Should be included: the fake user is an admin.
+            $items->url('posts/1/publish', 'Publish post')->ifIs('admin');
 
-            $items->route('logout')->ifAuth();
+            // Should be included: the user is authenticated.
+            $items->route('logout', 'Logout')->ifAuth();
 
-            $items->route('sign-in')->ifGuest();
+            // Should be excluded: the user is not a guest.
+            $items->route('login', 'Sign in')->ifGuest();
         });
 
         $this->assertTemplateMatches('menu/access-handler', $menu);

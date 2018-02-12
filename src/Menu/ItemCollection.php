@@ -12,9 +12,23 @@ class ItemCollection implements IteratorAggregate
     public $items = [];
     public $defaultSecure;
 
-    public function __construct(bool $defaultSecure = true)
+    public function __construct($config, bool $defaultSecure = true)
     {
         $this->defaultSecure = $defaultSecure;
+
+        $config($this);
+
+        $this->removeExcluded();
+    }
+
+    /**
+     * Remove the excluded items.
+     */
+    public function removeExcluded()
+    {
+        $this->items = array_filter($this->items, function ($item) {
+            return $item->included;
+        });
     }
     
     /**
