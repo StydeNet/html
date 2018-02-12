@@ -1,13 +1,13 @@
 <ul class="{{ $class }}">
 @foreach ($items as $item)
     @if (empty ($item->items))
-        <li{!! Html::classes(['nav-item', $item->class, 'active' => $item->active]) !!}>
+        <li{!! html_classes(['nav-item', $item->class, 'active' => $item->active]) !!}>
             <a href="{{ $item->url() }}" class="nav-link">
                 {{ $item->text }}
             </a>
         </li>
     @else
-        <li{!! Html::classes(['nav-item', 'dropdown', $item->class, 'active' => $item->active]) !!}>
+        <li{!! html_classes(['nav-item', 'dropdown', $item->class, 'active' => $item->active]) !!}>
             <a href="{{ $item->url() }}" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 {{ $item->text }}
             </a>

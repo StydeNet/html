@@ -29,5 +29,19 @@
             "Styde\\Html\\Tests\\": "tests/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Styde\\Html\\HtmlServiceProvider"
+            ],
+            "aliases": {
+                "Field": "Styde\\Html\\Facades\\Field",
+                "Alert": "Styde\\Html\\Facades\\Alert",
+                "Menu": "Styde\\Html\\Facades\\Menu",
+                "Form": "Styde\\Html\\Facades\\Form",
+                "Html": "Styde\\Html\\Facades\\Html"
+            }
+        }
+    },
     "minimum-stability": "stable"
 }

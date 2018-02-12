@@ -1,4 +1,4 @@
-<h4{!! Html::classes(['text-danger' => $hasErrors]) !!}>
+<h4{!! html_classes(['text-danger' => $hasErrors]) !!}>
     {{ $label }}
     @if ($required)
         <span class="badge badge-info">Required</span>

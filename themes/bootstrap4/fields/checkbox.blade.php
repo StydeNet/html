@@ -1,6 +1,6 @@
 <div id="field_{{ $id }}" class="form-check">
     {{ $input->classes(['form-check-input', 'is-invalid' => $hasErrors]) }}
-    <label{!! Html::classes([form-check-label, 'text-danger' => $hasErrors]) !!} for="{{ $id }}">
+    <label{!! html_classes([form-check-label, 'text-danger' => $hasErrors]) !!} for="{{ $id }}">
         {{ $label }}
         @if ($required)
             <span class="badge badge-info">Required</span>

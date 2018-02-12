@@ -5,7 +5,6 @@ namespace Styde\Html;
 use Styde\Html\Menu\Menu;
 use Styde\Html\Menu\MenuGenerator;
 use Styde\Html\Access\AccessHandler;
-use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Styde\Html\Alert\Container as Alert;
 use Styde\Html\Access\BasicAccessHandler;
@@ -38,17 +37,6 @@ class HtmlServiceProvider extends ServiceProvider
      * @var bool
      */
     protected $defer = false;
-    /**
-     * Automatically assign the global aliases for the component's facades
-     * @var bool
-     */
-    protected $globalAliases = [
-        'Field' => \Styde\Html\Facades\Field::class,
-        'Alert' => \Styde\Html\Facades\Alert::class,
-        'Menu'  => \Styde\Html\Facades\Menu::class,
-        'Form'  => \Styde\Html\Facades\Form::class,
-        'Html'  => \Styde\Html\Facades\Html::class,
-    ];
 
     public function boot()
     {
@@ -91,10 +79,6 @@ class HtmlServiceProvider extends ServiceProvider
         $this->registerAlertMiddleware();
 
         $this->registerMenuGenerator();
-
-        if (!empty ($this->globalAliases)) {
-            $this->registerFacadeAliases();
-        }
     }
 
     /**
@@ -283,19 +267,6 @@ class HtmlServiceProvider extends ServiceProvider
             }
 
             return $menu;
-        });
-    }
-
-    /**
-     * Register the facade aliases for this component
-     */
-    protected function registerFacadeAliases()
-    {
-        $this->app->booting(function () {
-            $loader = AliasLoader::getInstance();
-            foreach ($this->globalAliases as $alias => $facade) {
-                $loader->alias($alias, $facade);
-            }
         });
     }
 

@@ -1,5 +1,5 @@
 <div id="field_{{ $id }}" class="form-group">
-    <label for="{{ $id }}"{!! Html::classes(['text-danger' => $hasErrors]) !!}>
+    <label for="{{ $id }}"{!! html_classes(['text-danger' => $hasErrors]) !!}>
         {{ $label }}
 @if ($required)
         <span class="badge badge-info">Required</span>

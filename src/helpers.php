@@ -4,7 +4,7 @@
  * Convenient helpers in case you prefer to use them instead of the facades
  */
 
-if (!function_exists('alert')) {
+if (! function_exists('alert')) {
     /**
      * Creates a new alert message (alias of Alert::make)
      *
@@ -18,7 +18,7 @@ if (!function_exists('alert')) {
     }
 }
 
-if(!function_exists('menu')) {
+if(! function_exists('menu')) {
     /**
      * Generates a new menu (alias of Menu::make)
      *
@@ -28,5 +28,19 @@ if(!function_exists('menu')) {
      */
     function menu($items, $classes = null) {
         return App::make('menu')->make($items, $classes);
+    }
+}
+
+if(! function_exists('html_classes')) {
+    /**
+     * Builds an HTML class attribute dynamically.
+     *
+     * @param array $classes
+     * @param bool $addClassAttribute
+     * @return string
+     */
+    function html_classes(array $classes, $addClassAttribute = true)
+    {
+        return app('html')->classes($classes, $addClassAttribute);
     }
 }
