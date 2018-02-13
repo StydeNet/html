@@ -2,17 +2,104 @@
 
 namespace Styde\Html\Tests;
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\HtmlString;
 use Styde\Html\Facades\Form;
 
 class FormBuilderTest extends TestCase
 {
+    /** @test */
+    function it_opens_a_form()
+    {
+        $this->assertHtmlEquals(
+            '<form method="get">', Form::open()
+        );
+    }
+
+    /**
+     * @test
+     */
+    function it_opens_a_post_form()
+    {
+        $this->assertHtmlEquals(
+            '<form method="post">', Form::post()->open()
+        );
+    }
+
+    /**
+     * @test
+     */
+    function it_opens_a_put_form()
+    {
+        $this->assertHtmlEquals(
+            '<form method="post">', Form::put()->open()
+        );
+    }
+
+    /** @test */
+    function it_opens_a_delete_form()
+    {
+        $this->assertHtmlEquals(
+            '<form method="post">', Form::delete()->open()
+        );
+    }
+
+    /** @test */
+    function it_renders_forms()
+    {
+        $this->assertTemplateMatches(
+            'form/get-method', Form::get()->render()
+        );
+    }
+    
+    /** @test */
+    function it_assign_a_route_to_the_action_attribute()
+    {
+        Route::post('the-url/{param1}/{param2}', ['as' => 'the-route']);
+
+        $this->assertTemplateMatches(
+            'form/route', Form::post()->route('the-route', ['with', 'parameters'])
+        );
+    }
+
+    /** @test */
+    function it_renders_a_csrf_token_field_with_post_forms()
+    {
+        Session::put('_token', 'random_token_here');
+
+        $this->assertTemplateMatches(
+            'form/csrf-field', Form::post()->render()
+        );
+    }
+
+    /** @test */
+    function it_renders_a_method_field_with_put_forms()
+    {
+        Session::put('_token', 'random_token_here');
+
+        $this->assertTemplateMatches(
+            'form/put-method', Form::put()->render()
+        );
+    }
+
+    /** @test */
+    function it_renders_hidden_fields()
+    {
+        Session::put('_token', 'random_token_here');
+
+        $this->assertTemplateMatches(
+            'form/hidden-fields', Form::delete()->renderHiddenFields()
+        );
+    }
+    
     /** @test */
     function it_adds_the_novalidate_attribute_to_all_forms()
     {
         Form::novalidate(true);
 
         $this->assertHtmlEquals(
-            '<form method="GET" novalidate>', Form::open(['method' => 'GET'])
+            '<form novalidate method="get">', Form::get()->open()
         );
     }
 
@@ -41,5 +128,15 @@ class FormBuilderTest extends TestCase
         $this->assertTemplateMatches(
             'form/checkboxes', Form::checkboxes('tags', $tags, $checked)
         );
+    }
+
+    /** @test */
+    function it_is_macroable()
+    {
+        Form::macro('myCustomMethod', function () {
+            return 'my-custom-tag';
+        });
+
+        $this->assertSame('my-custom-tag', Form::myCustomMethod());
     }
 }

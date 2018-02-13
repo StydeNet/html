@@ -174,9 +174,7 @@ class HtmlServiceProvider extends ServiceProvider
             $this->loadConfigurationOptions();
 
             $fieldBuilder = new FieldBuilder(
-                $app['form'],
-                $app->make(Theme::class),
-                $app['translator']
+                $app['form'], $app->make(Theme::class), $app['translator']
             );
 
             if ($this->options['control_access']) {

@@ -17,7 +17,7 @@ class HtmlBuilderTest extends TestCase
 
         $this->assertEquals(
             '<input type="text" readonly>',
-            Html::tag('input', false, ['type' => 'text', 'readonly'])->render()
+            Html::tag('input', ['type' => 'text', 'readonly'])->render()
         );
     }
 

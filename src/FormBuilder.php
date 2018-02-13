@@ -5,9 +5,14 @@ namespace Styde\Html;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Traits\Macroable;
+use Styde\Html\Form\HiddenInput;
+use Styde\Html\Form\Input;
 
 class FormBuilder
 {
+    use Macroable;
+
     /**
      * Whether to deactivate or not the HTML5 validation (in order to test
      * backend validation).
@@ -81,9 +86,73 @@ class FormBuilder
     }
 
     /**
-     * Open up a new HTML form and pass the optional novalidate option.
-     * This methods relies on the original Form::open method of the Laravel
-     * Collective component.
+     * Makes a new Form Element.
+     *
+     * @param $method
+     * @param array $attributes
+     *
+     * @return \Styde\Html\FormElement
+     */
+    public function make($method, $attributes = [])
+    {
+        if ($this->novalidate) {
+            $attributes['novalidate'] = true;
+        }
+
+        return new FormElement($method, $attributes);
+    }
+
+    /**
+     * Makes a new Form Element.
+     *
+     * @param array $attributes
+     *
+     * @return \Styde\Html\FormElement
+     */
+    public function get(array $attributes = [])
+    {
+        return $this->make('get', $attributes);
+    }
+
+    /**
+     * Makes a new Form Element.
+     *
+     * @param array $attributes
+     *
+     * @return \Styde\Html\FormElement
+     */
+
+    public function post(array $attributes = [])
+    {
+        return $this->make('post', $attributes);
+    }
+
+    /**
+     * Makes a new Form Element.
+     *
+     * @param array $attributes
+     *
+     * @return \Styde\Html\FormElement
+     */
+    public function put(array $attributes = [])
+    {
+        return $this->make('put', $attributes);
+    }
+
+    /**
+     * Makes a new Form Element.
+     *
+     * @param array $attributes
+     *
+     * @return \Styde\Html\FormElement
+     */
+    public function delete(array $attributes = [])
+    {
+        return $this->make('delete', $attributes);
+    }
+
+    /**
+     * Makes a new form and renders the open tag.
      *
      * @param array $attributes
      *
@@ -91,11 +160,7 @@ class FormBuilder
      */
     public function open(array $attributes = array())
     {
-        if ($this->novalidate) {
-            $attributes['novalidate'] = true;
-        }
-
-        return (new HtmlElement('form', '', $attributes))->open();
+        return $this->make('get', $attributes)->open();
     }
 
     /**
@@ -109,6 +174,21 @@ class FormBuilder
     public function label($content, $attributes = [])
     {
         return new HtmlElement('label', $content, $attributes);
+    }
+
+    /**
+     * Create a form input field.
+     *
+     * @param string $type
+     * @param string $name
+     * @param string $value
+     * @param array  $attributes
+     *
+     * @return \Styde\Html\HtmlElement
+     */
+    public function input($type, $name, $value = null, $attributes = [])
+    {
+        return new Input($type, $name, $value, $attributes);
     }
 
     /**
@@ -126,18 +206,17 @@ class FormBuilder
     }
 
     /**
-     * Create a form input field.
+     * Create a hidden input field.
      *
-     * @param string $type
      * @param string $name
      * @param string $value
      * @param array  $attributes
      *
      * @return \Styde\Html\HtmlElement
      */
-    public function input($type, $name, $value = null, $attributes = [])
+    public function hidden($name, $value = null, $attributes = [])
     {
-        return new HtmlElement('input', false, array_merge(compact('type', 'name', 'value'), $attributes));
+        return new HiddenInput($name, $value, $attributes);
     }
 
     /**
@@ -152,7 +231,7 @@ class FormBuilder
      */
     public function textarea($type, $name, $value = null, $attributes = [])
     {
-        return new HtmlElement('input', false, array_merge(compact('type', 'name', 'value'), $attributes));
+        return new HtmlElement('textarea', $value, array_merge(compact('type', 'name'), $attributes));
     }
 
     /**
@@ -265,14 +344,9 @@ class FormBuilder
      */
     public function radio($name, $value = null, $checked = false, $attributes = [])
     {
-        $attributes = array_merge([
-            'type' => 'radio',
-            'name' => $name,
-            'value' => $value,
-            'checked' => $checked,
-        ], $attributes);
+        $attributes = array_merge(['checked' => $checked], $attributes);
 
-        return new HtmlElement('input', false, $attributes);
+        return new Input('radio', $name, $value, $attributes);
     }
 
     /**
@@ -287,14 +361,9 @@ class FormBuilder
      */
     public function checkbox($name, $value = 1, $checked = null, $attributes = [])
     {
-        $attributes = array_merge([
-            'type' => 'checkbox',
-            'name' => $name,
-            'value' => $value,
-            'checked' => $checked,
-        ], $attributes);
+        $attributes = array_merge(['checked' => $checked], $attributes);
 
-        return new HtmlElement('input', false, $attributes);
+        return new Input('checkbox', $name, $value, $attributes);
     }
 
     /**

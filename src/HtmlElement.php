@@ -6,28 +6,14 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\Support\Htmlable;
 
-class HtmlElement implements Htmlable
+class HtmlElement extends VoidElement
 {
-    /**
-     * The name of the HTML tag.
-     *
-     * @var string
-     */
-    protected $tag;
-
     /**
      * The content of the HTML element.
      *
      * @var string
      */
-    protected $content;
-
-    /**
-     * The HTML attributes.
-     *
-     * @var array
-     */
-    protected $attributes;
+    protected $content = [];
 
     /**
      * HtmlElement constructor.
@@ -38,9 +24,20 @@ class HtmlElement implements Htmlable
      */
     public function __construct($tag, $content = '', array $attributes = [])
     {
-        $this->tag = $tag;
+        parent::__construct($tag, $attributes);
+
         $this->content = $content;
-        $this->attributes = $attributes;
+    }
+
+    /**
+     * Add a child to the HTML element.
+     *
+     * @param  \Styde\Html\HtmlElement $child
+     * @return $this
+     */
+    public function add(HtmlElement $child)
+    {
+        $this->content[] = $child;
     }
 
     /**
@@ -61,6 +58,7 @@ class HtmlElement implements Htmlable
     {
         return $this->attr('class', app(HtmlBuilder::class)->classes((array) $classes, false));
     }
+
     /**
      * Render the HTML element.
      *
@@ -68,13 +66,8 @@ class HtmlElement implements Htmlable
      */
     public function render()
     {
-        // Render a single tag.
-        if ($this->content === false) {
-            return $this->open();
-        }
-
         // Render a paired tag.
-        return new HtmlString($this->renderOpenTag().$this->renderContent().$this->renderCloseTag());
+        return new HtmlString($this->renderOpenTag() . $this->renderContent() . $this->renderCloseTag());
     }
 
     public function open()
@@ -92,43 +85,6 @@ class HtmlElement implements Htmlable
         return '<'.$this->tag.$this->renderAttributes().'>';
     }
 
-    public function renderAttributes()
-    {
-        $result = '';
-
-        foreach ($this->attributes as $name => $value) {
-            if ($attribute = $this->renderAttribute($name)) {
-                $result .= " {$attribute}";
-            }
-        }
-
-        return $result;
-    }
-
-    protected function renderAttribute($name)
-    {
-        $value = $this->attributes[$name];
-
-        if (is_numeric($name)) {
-            return $value;
-        }
-
-        if ($value === true) {
-            return $name;
-        }
-
-        if ($value) {
-            return $name.'="'.$this->escape($value).'"';
-        }
-
-        return '';
-    }
-
-    public function escape($value)
-    {
-        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8', false);
-    }
-
     public function renderContent()
     {
         $result = '';
@@ -143,34 +99,5 @@ class HtmlElement implements Htmlable
     protected function renderCloseTag()
     {
         return '</'.$this->tag.'>';
-    }
-
-    public function __call($method, array $parameters)
-    {
-        return $this->attr($method, $parameters[0] ?? true);
-    }
-
-    public function __get($name)
-    {
-        if (isset ($this->content[$name])) {
-            return $this->content[$name];
-        }
-
-        throw new \InvalidArgumentException("The property $name does not exist in this [{$this->tag}] element");
-    }
-
-    public function __toString()
-    {
-        return $this->toHtml();
-    }
-
-    /**
-     * Get content as a string of HTML.
-     *
-     * @return string
-     */
-    public function toHtml()
-    {
-        return (string) $this->render();
     }
 }

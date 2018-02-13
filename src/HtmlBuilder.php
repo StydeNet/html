@@ -99,7 +99,19 @@ class HtmlBuilder
             $content = '';
         }
 
-        return new HtmlElement($tag, $content, $attributes);
+        if ($this->isVoidElement($tag)) {
+            return new VoidElement($tag, $attributes);
+        } else {
+            return new HtmlElement($tag, $content, $attributes);
+        }
+    }
+
+    public function isVoidElement($tag)
+    {
+        return in_array($tag, [
+            'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input',
+            'keygen', 'link', 'menuitem', 'meta', 'param', 'source', 'track', 'wbr'
+        ]);
     }
 
     public function __call($method, array $parameters)
