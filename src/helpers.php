@@ -4,6 +4,13 @@
  * Convenient helpers in case you prefer to use them instead of the facades
  */
 
+if (! function_exists('html')) {
+    function html()
+    {
+        return app('html');
+    }
+}
+
 if (! function_exists('alert')) {
     /**
      * Creates a new alert message (alias of Alert::make)
@@ -14,7 +21,7 @@ if (! function_exists('alert')) {
      * @return string
      */
     function alert($message = '', $type = 'success', $args = []) {
-        return App::make('alert')->message($message, $type, $args);
+        return app('alert')->message($message, $type, $args);
     }
 }
 
@@ -27,7 +34,7 @@ if(! function_exists('menu')) {
      * @return string
      */
     function menu($items, $classes = null) {
-        return App::make('menu')->make($items, $classes);
+        return app('menu')->make($items, $classes);
     }
 }
 

@@ -58,4 +58,10 @@ class HtmlBuilderTest extends TestCase
 
         $this->assertEquals(' class="home main"', $html);
     }
+
+    /** @test */
+    function it_has_a_helper()
+    {
+        return $this->assertSame(app('html'), html());
+    }
 }
