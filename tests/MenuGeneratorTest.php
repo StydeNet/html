@@ -7,6 +7,7 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\{Auth, Gate, Route};
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
+use Styde\Html\Menu\Item\Url;
 
 class MenuGeneratorTest extends TestCase
 {
@@ -126,4 +127,13 @@ class MenuGeneratorTest extends TestCase
         $this->assertTemplateMatches('menu/submenu', $menu);
     }
 
+    /** @test */
+    function menu_items_can_have_extra_attributes()
+    {
+        $item = new Url('path', 'text');
+
+        $item->target('_blank');
+
+        return $this->assertSame('_blank', $item->target);
+    }
 }

@@ -17,6 +17,7 @@ abstract class Item
     public $submenu;
     public $items = [];
     public $included = true;
+    public $extra = [];
 
     public function __construct(string $text)
     {
@@ -78,5 +79,15 @@ abstract class Item
         $user = Auth::user();
 
         return $this->include($user && $user->isA($role));
+    }
+
+    public function __call($method, array $parameters)
+    {
+        $this->extra[$method] = $parameters[0] ?? true;
+    }
+
+    public function __get($name)
+    {
+        return $this->extra[$name] ?? null;
     }
 }
