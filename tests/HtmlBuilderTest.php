@@ -46,6 +46,15 @@ class HtmlBuilderTest extends TestCase
             Html::span('This is a span')->id('my-span')
         );
     }
+    
+    /** @test */
+    function it_generates_links()
+    {
+        $this->assertHtmlEquals(
+            '<a href="http://localhost/url">Text</a>',
+            Html::link('url', 'Text')
+        );
+    }
 
     /** @test */
     function it_generate_the_html_class_attribute()

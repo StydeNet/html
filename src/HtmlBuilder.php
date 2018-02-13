@@ -78,7 +78,7 @@ class HtmlBuilder
      */
     public function link($url, $title = null, $attributes = [], $secure = null)
     {
-        $attributes['url'] = $this->url->to($url, [], $secure);
+        $attributes['href'] = $this->url->to($url, [], $secure);
 
         return new HtmlElement('a', $title ?: $url, $attributes);
     }
