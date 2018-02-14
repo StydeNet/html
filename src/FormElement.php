@@ -33,15 +33,14 @@ class FormElement extends HtmlElement
         parent::__construct('form', $children, $attributes);
     }
 
-    /**
-     * @param $name
-     * @param array $parameters
-     * @param bool $absolute
-     * @return $this
-     */
     public function route($name, $parameters = [], $absolute = true)
     {
         return $this->attr('action', app('url')->route($name, $parameters, $absolute));
+    }
+
+    public function withFiles()
+    {
+        return $this->attr('enctype', 'multipart/form-data');
     }
 
     public function renderHiddenFields()

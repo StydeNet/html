@@ -2,6 +2,7 @@
 
 namespace Styde\Html\FormModel;
 
+use Illuminate\Support\HtmlString;
 use Styde\Html\FieldBuilder;
 
 class FieldCollection
@@ -222,7 +223,6 @@ class FieldCollection
             $html .= $field->render();
         }
 
-        return $html;
+        return new HtmlString($html)    ;
     }
-
 }

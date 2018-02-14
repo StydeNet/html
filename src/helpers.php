@@ -11,6 +11,20 @@ if (! function_exists('html')) {
     }
 }
 
+if (! function_exists('form')) {
+    function form()
+    {
+        return app('form');
+    }
+}
+
+if (! function_exists('field')) {
+    function field()
+    {
+        return app('field');
+    }
+}
+
 if (! function_exists('alert')) {
     /**
      * Creates a new alert message (alias of Alert::make)

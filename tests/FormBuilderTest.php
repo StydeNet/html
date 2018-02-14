@@ -17,9 +17,7 @@ class FormBuilderTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     function it_opens_a_post_form()
     {
         $this->assertHtmlEquals(
@@ -27,9 +25,7 @@ class FormBuilderTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     function it_opens_a_put_form()
     {
         $this->assertHtmlEquals(
@@ -50,6 +46,15 @@ class FormBuilderTest extends TestCase
     {
         $this->assertTemplateMatches(
             'form/get-method', Form::get()->render()
+        );
+    }
+    
+    /** @test */
+    function it_can_accept_files()
+    {
+        $this->assertHtmlEquals(
+            '<form method="post" enctype="multipart/form-data">',
+            Form::post()->withFiles()->open()
         );
     }
     

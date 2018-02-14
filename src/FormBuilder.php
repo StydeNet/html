@@ -11,7 +11,9 @@ use Styde\Html\Form\Input;
 
 class FormBuilder
 {
-    use Macroable;
+    use Macroable {
+        __call as macroCall;
+    }
 
     /**
      * Whether to deactivate or not the HTML5 validation (in order to test
@@ -445,5 +447,14 @@ class FormBuilder
     public function getValueAttribute($name, $value)
     {
         return $value;
+    }
+
+    public function __call($method, $parameters)
+    {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
+        return $this->input($method, $parameters[0], $parameters[1] ?? null, $parameters[2] ?? []);
     }
 }

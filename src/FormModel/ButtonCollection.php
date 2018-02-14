@@ -2,9 +2,9 @@
 
 namespace Styde\Html\FormModel;
 
+use Illuminate\Support\HtmlString;
 use Styde\Html\HtmlBuilder;
 use Styde\Html\FormBuilder;
-use Styde\Html\HtmlElement;
 
 class ButtonCollection
 {
@@ -95,9 +95,9 @@ class ButtonCollection
      * @param  bool  $secure
      * @return Link
      */
-    public function link($url, $title, array $attributes = array(), $secure = false)
+    public function link($url, $title = null, array $attributes = array(), $secure = false)
     {
-        return $this->buttons[] = Html::link($url, $title, $attributes, $secure);
+        return $this->buttons[] = $this->htmlBuilder->link($url, $title, $attributes, $secure);
     }
 
     /**
@@ -113,7 +113,7 @@ class ButtonCollection
             $html .= $button->render();
         }
 
-        return $html;
+        return new HtmlString($html);
     }
 
 }

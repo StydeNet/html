@@ -22,11 +22,13 @@ class FormSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Styde\Html\FormModel\Form');
+        $this->shouldHaveType('Styde\Html\FormModel\FormModel');
     }
 
     function it_opens_a_form($formBuilder)
     {
+
+
         $formBuilder->open([
             'route'  => ['user.update', 1],
             'method' => 'PUT',
