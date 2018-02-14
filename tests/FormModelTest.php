@@ -24,9 +24,7 @@ class LoginForm extends FormModel
 
     public function setup()
     {
-        $this->form->route('login')
-            ->method('POST')
-            ->attr('role', 'form');
+        $this->form->route('login')->role('form');
 
         $this->fields->email('email');
         $this->fields->password('password');
