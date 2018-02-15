@@ -68,7 +68,7 @@ abstract class FormModel implements Htmlable
      */
     abstract public function setup();
 
-    public function useTemplate($template)
+    public function template($template)
     {
         $this->customTemplate = $template;
 

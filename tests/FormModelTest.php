@@ -23,7 +23,7 @@ class FormModelTest extends TestCase
     {
         View::addLocation(__DIR__.'/views');
 
-        $formModel = app(CustomTemplateForm::class)->useTemplate('custom-templates/form-model');
+        $formModel = app(CustomTemplateForm::class)->template('custom-templates/form-model');
 
         $this->assertHtmlEquals('<p>Custom template</p>', $formModel);
     }
