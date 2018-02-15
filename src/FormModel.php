@@ -41,6 +41,8 @@ abstract class FormModel implements Htmlable
 
     public $method = 'post';
 
+    public $customTemplate;
+
     public function __construct(FormBuilder $formBuilder, FieldCollection $fields, ButtonCollection $buttons, Theme $theme)
     {
         $this->formBuilder = $formBuilder;
@@ -66,6 +68,13 @@ abstract class FormModel implements Htmlable
      */
     abstract public function setup();
 
+    public function useTemplate($template)
+    {
+        $this->customTemplate = $template;
+
+        return $this;
+    }
+
     public function model($model)
     {
         $this->model = $model;
@@ -79,10 +88,10 @@ abstract class FormModel implements Htmlable
 
     public function render($customTemplate = null)
     {
-        return new HtmlString($this->theme->render($customTemplate, [
+        return $this->theme->render($customTemplate ?: $this->customTemplate, [
             'form'    => $this->form,
             'fields'  => $this->fields,
             'buttons' => $this->buttons,
-        ], 'form'));
+        ], 'form');
     }
 }
