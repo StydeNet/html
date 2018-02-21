@@ -18,6 +18,7 @@ abstract class Item
     public $items = [];
     public $included = true;
     public $extra = [];
+    public $parent;
 
     public function __construct(string $text)
     {
@@ -33,9 +34,13 @@ abstract class Item
         return $this;
     }
 
-    public function active(bool $value = true)
+    public function markAsActive(bool $value = true)
     {
         $this->active = $value;
+
+        if ($this->parent) {
+            $this->parent->markAsActive($value);
+        }
 
         return $this;
     }

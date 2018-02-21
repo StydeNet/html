@@ -10,9 +10,12 @@ use Styde\Html\Menu\Item\{Action, RawUrl, Route, Url};
 class ItemCollection implements IteratorAggregate
 {
     public $items = [];
+    public $parent;
 
-    public function __construct($config)
+    public function __construct($config, $parent = null)
     {
+        $this->parent = $parent;
+
         $config($this);
 
         $this->removeExcluded();
@@ -37,6 +40,8 @@ class ItemCollection implements IteratorAggregate
     public function add(Item $item): Item
     {
         $this->items[] = $item;
+
+        $item->parent = $this->parent;
 
         return $item;
     }

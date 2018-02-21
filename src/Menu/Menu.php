@@ -272,11 +272,12 @@ class Menu implements Htmlable
      */
     protected function buildItems($config, $parentItem = null)
     {
-        $items = new ItemCollection($config);
+        $items = new ItemCollection($config, $parentItem);
 
         foreach ($items as $item) {
             if ($this->isActive($item)) {
-                $this->markAsActive($item, $parentItem);
+                $item->markAsActive();
+
                 $this->currentId = $item->id;
             }
 
@@ -307,21 +308,6 @@ class Menu implements Htmlable
         }
 
         return $this->currentUrl === $this->baseUrl;
-    }
-
-    /**
-     * Mark an item an it's optional parent item as active.
-     *
-     * @param \Styde\Html\Menu\Item $item
-     * @param \Styde\Html\Menu\Item|null $parent
-     */
-    protected function markAsActive($item, $parent = null)
-    {
-        $item->active(true);
-
-        if ($parent != null) {
-            $parent->active(true);
-        }
     }
 
     /**
