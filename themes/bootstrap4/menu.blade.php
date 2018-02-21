@@ -13,7 +13,7 @@
             </a>
             <div class="dropdown-menu">
                 @foreach ($item->items as $subitem)
-                    <a href="{{ $subitem->url() }}" class="dropdown-item">{{ $subitem->text }}</a>
+                    <a href="{{ $subitem->url() }}"{!! html_classes(['dropdown-item', 'active' => $subitem->active]) !!}>{{ $subitem->text }}</a>
                 @endforeach
             </div>
         </li>

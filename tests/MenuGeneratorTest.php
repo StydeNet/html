@@ -128,6 +128,27 @@ class MenuGeneratorTest extends TestCase
     }
 
     /** @test */
+    function it_generates_submenus_with_an_active_subsection()
+    {
+        $menu = Menu::make(function ($items) {
+            $items->url('/', 'Home');
+
+            $items->submenu('About us', function ($items) {
+                $items->placeholder('Team');
+                $items->url('careers', 'Work with us');
+            });
+
+            $items->url('projects', 'Our projects');
+
+            $items->url('contact-us', 'Contact us');
+        });
+
+        $menu->setCurrentUrl(url('careers'));
+
+        $this->assertTemplateMatches('menu/submenu-active', $menu);
+    }
+
+    /** @test */
     function menu_items_can_have_extra_attributes()
     {
         $item = new Url('path', 'text');
