@@ -59,6 +59,78 @@ class MenuGeneratorTest extends TestCase
     }
 
     /** @test */
+    function it_generates_links_from_actions()
+    {
+        Route::get('dashboard', ['uses' => 'DashboardController@index']);
+        Route::get('edit/{page}', ['uses' => 'PageController@edit']);
+
+        $menu = Menu::make(function ($items) {
+            $items->action('DashboardController@index', 'Dashboard');
+            $items->action('PageController@edit', 'Edit home', ['home']);
+        });
+
+        $this->assertTemplateMatches('menu/routes', $menu);
+    }
+
+    /** @test */
+    function it_generates_links_from_actions_with_parameters()
+    {
+        Route::get('account/{user_id}', ['uses' => 'AccountController@show']);
+        Route::get('calendar/{year}/{month}/{day}', ['uses' => 'CalendarController@show']);
+
+        // If you have external parameters, just pass them to the Closure and build the actions there.
+        $user_id = 20;
+        $year = 2015;
+        $month = 7;
+        $day = 11;
+
+        $menu = Menu::make(function ($items) use ($user_id, $year, $month, $day) {
+            $items->action('AccountController@show', 'Account')->parameters(compact('user_id'));
+            $items->action('CalendarController@show', 'Calendar')->parameters(compact('year', 'month', 'day'));
+        });
+
+        $this->assertTemplateMatches('menu/parameters', $menu);
+    }
+
+    /** @test */
+    function it_generates_links_from_url_with_parameters()
+    {
+        $user_id = 20;
+        $year = 2015;
+        $month = 7;
+        $day = 11;
+
+        $menu = Menu::make(function ($items) use ($user_id, $year, $month, $day) {
+            $items->url('account', 'Account')->parameters(['user_id' => $user_id]);
+            $items->url('calendar', 'Calendar')->parameters(compact('year', 'month', 'day'));
+        });
+
+        $this->assertTemplateMatches('menu/parameters', $menu);
+    }
+
+    /** @test */
+    function it_render_menus_with_secure_urls()
+    {
+        $menu = Menu::make(function ($items) {
+            $items->url('/', 'Home')->secure();
+            $items->url('login', 'Log in', [], true);
+        });
+
+        $this->assertTemplateMatches('menu/secure-urls', $menu);
+    }
+
+    /** @test */
+    function it_render_menus_with_raw_urls()
+    {
+        $menu = Menu::make(function ($items) {
+            $items->raw('https://laravel.com', 'Laravel');
+            $items->raw('https://github.com', 'Github');
+        });
+
+        $this->assertTemplateMatches('menu/raw-urls', $menu);
+    }
+
+    /** @test */
     function it_can_exclude_items_based_on_permissions()
     {
         Route::get('/login', ['as' => 'login']);
@@ -156,5 +228,15 @@ class MenuGeneratorTest extends TestCase
         $item->target('_blank');
 
         return $this->assertSame('_blank', $item->target);
+    }
+
+    /** @test */
+    function menu_items_can_have_extra_classes()
+    {
+        $item = new Url('path', 'text');
+
+        $item->classes(['font-weight-bold', 'text-primary']);
+
+        return $this->assertSame('font-weight-bold text-primary', $item->class);
     }
 }

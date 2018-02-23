@@ -6,9 +6,19 @@ use Styde\Html\Menu\Item;
 
 class RawUrl extends Item
 {
+    /**
+     * Absolute Path URL
+     *
+     * @var string
+     */
     public $url;
-    public $text;
 
+    /**
+     * Create a raw URL menu item
+     *
+     * @param string $url
+     * @param string $text
+     */
     public function __construct(string $url, string $text)
     {
         parent::__construct($text);
@@ -16,6 +26,11 @@ class RawUrl extends Item
         $this->url = $url;
     }
 
+    /**
+     * Get the URL item
+     *
+     * @return string
+     */
     public function url()
     {
         return $this->url;

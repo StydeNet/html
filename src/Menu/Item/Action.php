@@ -7,19 +7,41 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 
 class Action extends Item
 {
+    /**
+     * The controller action name for generate the URL
+     *
+     * @var string
+     */
     public $action;
-    public $parameters;
-    public $secure;
 
-    public function __construct(string $action, string $text, array $parameters = [], $secure = null)
+    /**
+     * Dynamic parameters for the controller action when needed
+     *
+     * @var array
+     */
+    public $parameters;
+
+    /**
+     * Create a new menu item for a controller action
+     *
+     * @param string $action
+     * @param string $text
+     * @param array  $parameters
+     */
+    public function __construct(string $action, string $text, array $parameters = [])
     {
         parent::__construct($text);
 
         $this->action = $action;
         $this->parameters = $parameters;
-        $this->secure = $secure;
     }
 
+    /**
+     * Add parameters to the controller action menu item
+     *
+     * @param  array
+     * @return \Styde\Html\Menu\Item\Action $this
+     */
     public function parameters(array $value)
     {
         $this->parameters = $value;
@@ -27,15 +49,13 @@ class Action extends Item
         return $this;
     }
 
-    public function secure($value = true)
-    {
-        $this->secure = $value;
-
-        return $this;
-    }
-
+    /**
+     * Get the URL for the controller action item
+     *
+     * @return \Illuminate\Routing\UrlGenerator
+     */
     public function url()
     {
-        return app(UrlGenerator::class)->action($this->action, $this->parameters, $this->secure);
+        return app(UrlGenerator::class)->action($this->action, $this->parameters);
     }
 }
