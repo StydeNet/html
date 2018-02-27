@@ -23,7 +23,7 @@ abstract class FormModel implements Htmlable
     protected $model;
 
     /**
-     * @var \Styde\Html\FormElement
+     * @var \Styde\Html\Form
      */
     public $form;
 
@@ -64,12 +64,12 @@ abstract class FormModel implements Htmlable
     /**
      * Setup the form attributes, fields and buttons.
      *
-     * @param \Styde\Html\FormElement $form
+     * @param \Styde\Html\Form $form
      * @param \Styde\Html\FormModel\FieldCollection $fields
      * @param \Styde\Html\FormModel\ButtonCollection $buttons
      * @return void
      */
-    abstract public function setup(FormElement $form, FieldCollection $fields, ButtonCollection $buttons);
+    abstract public function setup(Form $form, FieldCollection $fields, ButtonCollection $buttons);
 
     public function template($template)
     {

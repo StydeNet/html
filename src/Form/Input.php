@@ -2,9 +2,9 @@
 
 namespace Styde\Html\Form;
 
-use Styde\Html\VoidElement;
+use Styde\Html\VoidTag;
 
-class Input extends VoidElement
+class Input extends VoidTag
 {
     public function __construct($type, $name, $value = null, array $attributes = [])
     {

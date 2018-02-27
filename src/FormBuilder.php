@@ -93,7 +93,7 @@ class FormBuilder
      * @param $method
      * @param array $attributes
      *
-     * @return \Styde\Html\FormElement
+     * @return \Styde\Html\Form
      */
     public function make($method, $attributes = [])
     {
@@ -101,7 +101,21 @@ class FormBuilder
             $attributes['novalidate'] = true;
         }
 
-        return new FormElement($method, $attributes);
+        $children = [];
+
+        if ($method != 'get') {
+            $children['_token'] = $this->hidden('_token', csrf_token());
+        }
+
+        if (in_array($method, ['put', 'patch', 'delete'])) {
+            $children['_method'] = $this->hidden('_method', $method);
+
+            $method = 'post';
+        }
+
+        $attributes['method'] = $method;
+
+        return new Form($method, $children, $attributes);
     }
 
     /**
@@ -109,7 +123,7 @@ class FormBuilder
      *
      * @param array $attributes
      *
-     * @return \Styde\Html\FormElement
+     * @return \Styde\Html\Form
      */
     public function get(array $attributes = [])
     {
@@ -121,7 +135,7 @@ class FormBuilder
      *
      * @param array $attributes
      *
-     * @return \Styde\Html\FormElement
+     * @return \Styde\Html\Form
      */
 
     public function post(array $attributes = [])
@@ -134,7 +148,7 @@ class FormBuilder
      *
      * @param array $attributes
      *
-     * @return \Styde\Html\FormElement
+     * @return \Styde\Html\Form
      */
     public function put(array $attributes = [])
     {
@@ -146,7 +160,7 @@ class FormBuilder
      *
      * @param array $attributes
      *
-     * @return \Styde\Html\FormElement
+     * @return \Styde\Html\Form
      */
     public function delete(array $attributes = [])
     {
@@ -171,11 +185,11 @@ class FormBuilder
      * @param string $content
      * @param array $attributes
      *
-     * @return \Styde\Html\HtmlElement
+     * @return \Styde\Html\Htmltag
      */
     public function label($content, $attributes = [])
     {
-        return new HtmlElement('label', $content, $attributes);
+        return new Htmltag('label', $content, $attributes);
     }
 
     /**
@@ -186,7 +200,7 @@ class FormBuilder
      * @param string $value
      * @param array  $attributes
      *
-     * @return \Styde\Html\HtmlElement
+     * @return \Styde\Html\Htmltag
      */
     public function input($type, $name, $value = null, $attributes = [])
     {
@@ -200,7 +214,7 @@ class FormBuilder
      * @param  string $value
      * @param  array  $attributes
      *
-     * @return \Styde\Html\HtmlElement
+     * @return \Styde\Html\Htmltag
      */
     public function text(string $name, $value = null, $attributes = [])
     {
@@ -214,7 +228,7 @@ class FormBuilder
      * @param string $value
      * @param array  $attributes
      *
-     * @return \Styde\Html\HtmlElement
+     * @return \Styde\Html\Htmltag
      */
     public function hidden($name, $value = null, $attributes = [])
     {
@@ -229,11 +243,11 @@ class FormBuilder
      * @param string $value
      * @param array  $attributes
      *
-     * @return \Styde\Html\HtmlElement
+     * @return \Styde\Html\Htmltag
      */
     public function textarea($type, $name, $value = null, $attributes = [])
     {
-        return new HtmlElement('textarea', $value, array_merge(compact('type', 'name'), $attributes));
+        return new Htmltag('textarea', $value, array_merge(compact('type', 'name'), $attributes));
     }
 
     /**
@@ -244,11 +258,11 @@ class FormBuilder
      * @param string $selected
      * @param array $attributes
      *
-     * @return \Styde\Html\HtmlElement
+     * @return \Styde\Html\Htmltag
      */
     public function select($name, $list = [], $selected = null, array $attributes = [])
     {
-        return new HtmlElement('select', $this->options($list, $selected), array_merge(compact('name'), $attributes));
+        return new Htmltag('select', $this->options($list, $selected), array_merge(compact('name'), $attributes));
     }
 
     public function options($list, $selected, array $attributes = [])
@@ -284,7 +298,7 @@ class FormBuilder
             $options[] = $this->option($text, $value, $selected, $attributes);
         }
 
-        return new HtmlElement('optgroup', $options, compact('label') + $attributes);
+        return new Htmltag('optgroup', $options, compact('label') + $attributes);
     }
 
     /**
@@ -294,7 +308,7 @@ class FormBuilder
      * @param bool $selected
      * @param array $attributes
      *
-     * @return \Styde\Html\HtmlElement
+     * @return \Styde\Html\Htmltag
      */
     public function option($text, $value, $selected, array $attributes = [])
     {
@@ -304,7 +318,7 @@ class FormBuilder
             $isSelected = $value == $selected;
         }
 
-        return new HtmlElement('option', $text, ['value' => $value, 'selected' => $isSelected] + $attributes);
+        return new Htmltag('option', $text, ['value' => $value, 'selected' => $isSelected] + $attributes);
     }
 
     /**
@@ -314,7 +328,7 @@ class FormBuilder
      * @param string $value
      * @param array  $options
      *
-     * @return \Styde\Html\HtmlElement
+     * @return \Styde\Html\Htmltag
      */
     public function time($name, $value = null, $options = array())
     {
@@ -327,11 +341,11 @@ class FormBuilder
      * @param string $text
      * @param array $attributes
      *
-     * @return \Styde\Html\HtmlElement
+     * @return \Styde\Html\Htmltag
      */
     public function button($text = null, $attributes = [])
     {
-        return new HtmlElement('button', $text, array_merge(['type' => 'button'], $attributes));
+        return new Htmltag('button', $text, array_merge(['type' => 'button'], $attributes));
     }
 
     /**
@@ -342,7 +356,7 @@ class FormBuilder
      * @param  bool   $checked
      * @param  array  $attributes
      *
-     * @return \Styde\Html\HtmlElement
+     * @return \Styde\Html\Htmltag
      */
     public function radio($name, $value = null, $checked = false, $attributes = [])
     {
@@ -359,7 +373,7 @@ class FormBuilder
      * @param  bool   $checked
      * @param  array  $attributes
      *
-     * @return \Styde\Html\HtmlElement
+     * @return \Styde\Html\Htmltag
      */
     public function checkbox($name, $value = 1, $checked = null, $attributes = [])
     {

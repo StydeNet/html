@@ -2,7 +2,7 @@
 
 namespace Styde\Html\Tests;
 
-use Styde\Html\{FormElement, FormModel};
+use Styde\Html\{Form, FormModel};
 use Illuminate\Support\Facades\{View, Route};
 use Styde\Html\FormModel\{FieldCollection, ButtonCollection};
 
@@ -36,12 +36,12 @@ class LoginForm extends FormModel
     /**
      * Setup the form attributes, fields and buttons.
      *
-     * @param \Styde\Html\FormElement $form
+     * @param \Styde\Html\Form $form
      * @param \Styde\Html\FormModel\FieldCollection $fields
      * @param \Styde\Html\FormModel\ButtonCollection $buttons
      * @return void
      */
-    public function setup(FormElement $form, FieldCollection $fields, ButtonCollection $buttons)
+    public function setup(Form $form, FieldCollection $fields, ButtonCollection $buttons)
     {
         $form->route('login')->role('form');
 
@@ -58,12 +58,12 @@ class CustomTemplateForm extends FormModel {
     /**
      * Setup the form attributes, fields and buttons.
      *
-     * @param \Styde\Html\FormElement $form
+     * @param \Styde\Html\Form $form
      * @param \Styde\Html\FormModel\FieldCollection $fields
      * @param \Styde\Html\FormModel\ButtonCollection $buttons
      * @return void
      */
-    public function setup(FormElement $form, FieldCollection $fields, ButtonCollection $buttons)
+    public function setup(Form $form, FieldCollection $fields, ButtonCollection $buttons)
     {
         // TODO: Implement setup() method.
     }

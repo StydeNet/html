@@ -2,7 +2,7 @@
 
 namespace Styde\Html\Tests;
 
-use Styde\Html\HtmlElement;
+use Styde\Html\Htmltag;
 use Styde\Html\Facades\Html;
 
 class HtmlBuilderTest extends TestCase
@@ -24,7 +24,7 @@ class HtmlBuilderTest extends TestCase
     /** @test */
     function it_closes_html_tags()
     {
-        $htmlElement = new HtmlElement('span');
+        $htmlElement = new Htmltag('span');
 
         $this->assertEquals('</span>', (string) $htmlElement->close());
     }

@@ -2,34 +2,13 @@
 
 namespace Styde\Html;
 
-use Illuminate\Support\HtmlString;
-use Styde\Html\Facades\Form;
 use Styde\Html\Form\HiddenInput;
+use Illuminate\Support\HtmlString;
 
-class FormElement extends HtmlElement
+class Form extends Htmltag
 {
-    /**
-     * FormElement constructor.
-     *
-     * @param string $method
-     * @param array $attributes
-     */
-    public function __construct($method, array $attributes = [])
+    public function __construct($tag, $children = [], array $attributes = [])
     {
-        $children = [];
-
-        if ($method != 'get') {
-            $children['_token'] = Form::hidden('_token', csrf_token());
-        }
-
-        if (in_array($method, ['put', 'patch', 'delete'])) {
-            $children['_method'] = Form::hidden('_method', $method);
-
-            $method = 'post';
-        }
-
-        $attributes['method'] = $method;
-
         parent::__construct('form', $children, $attributes);
     }
 

@@ -80,7 +80,7 @@ class HtmlBuilder
     {
         $attributes['href'] = $this->url->to($url, [], $secure);
 
-        return new HtmlElement('a', $title ?: $url, $attributes);
+        return new Htmltag('a', $title ?: $url, $attributes);
     }
 
     /**
@@ -100,9 +100,9 @@ class HtmlBuilder
         }
 
         if ($this->isVoidElement($tag)) {
-            return new VoidElement($tag, $attributes);
+            return new VoidTag($tag, $attributes);
         } else {
-            return new HtmlElement($tag, $content, $attributes);
+            return new Htmltag($tag, $content, $attributes);
         }
     }
 

@@ -2,24 +2,12 @@
 
 namespace Styde\Html;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\Support\Htmlable;
 
-class VoidElement implements Htmlable
+abstract class BaseTag implements Htmlable
 {
-    /**
-     * The name of the HTML tag.
-     *
-     * @var string
-     */
     protected $tag;
 
-    /**
-     * The HTML attributes.
-     *
-     * @var array
-     */
     protected $attributes;
 
     /**
@@ -34,13 +22,7 @@ class VoidElement implements Htmlable
         $this->attributes = $attributes;
     }
 
-    /**
-     * Assign an attribute to the HTML element.
-     *
-     * @param string $name
-     * @param mixed $value
-     * @return $this
-     */
+
     public function attr($name, $value = true)
     {
         $this->attributes[$name] = $value;
@@ -51,16 +33,6 @@ class VoidElement implements Htmlable
     public function classes($classes)
     {
         return $this->attr('class', app(HtmlBuilder::class)->classes((array) $classes, false));
-    }
-
-    /**
-     * Render the HTML element.
-     *
-     * @return string
-     */
-    public function render()
-    {
-        return new HtmlString('<'.$this->tag.$this->renderAttributes().'>');
     }
 
     public function renderAttributes()
@@ -105,27 +77,15 @@ class VoidElement implements Htmlable
         return $this->attr($method, $parameters[0] ?? true);
     }
 
-    public function __get($name)
+    public function toHtml()
     {
-        if (isset ($this->content[$name])) {
-            return $this->content[$name];
-        }
-
-        throw new \InvalidArgumentException("The property $name does not exist in this [{$this->tag}] element");
+        return (string) $this->render();
     }
+
+    abstract public function render();
 
     public function __toString()
     {
         return $this->toHtml();
-    }
-
-    /**
-     * Get content as a string of HTML.
-     *
-     * @return string
-     */
-    public function toHtml()
-    {
-        return (string) $this->render();
     }
 }
