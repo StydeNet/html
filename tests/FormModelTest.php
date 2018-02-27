@@ -2,9 +2,9 @@
 
 namespace Styde\Html\Tests;
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\View;
-use Styde\Html\FormModel;
+use Styde\Html\{FormElement, FormModel};
+use Illuminate\Support\Facades\{View, Route};
+use Styde\Html\FormModel\{FieldCollection, ButtonCollection};
 
 class FormModelTest extends TestCase
 {
@@ -33,24 +33,38 @@ class LoginForm extends FormModel
 {
     public $method = 'post';
 
-    public function setup()
+    /**
+     * Setup the form attributes, fields and buttons.
+     *
+     * @param \Styde\Html\FormElement $form
+     * @param \Styde\Html\FormModel\FieldCollection $fields
+     * @param \Styde\Html\FormModel\ButtonCollection $buttons
+     * @return void
+     */
+    public function setup(FormElement $form, FieldCollection $fields, ButtonCollection $buttons)
     {
-        $this->form->route('login')->role('form');
+        $form->route('login')->role('form');
 
-        $this->fields->email('email');
-        $this->fields->password('password');
-        $this->fields->checkbox('remember_me');
+        $fields->email('email');
+        $fields->password('password');
+        $fields->checkbox('remember_me');
 
-        $this->buttons->submit(trans('auth.login_action'))->classes('btn btn-primary');
-        $this->buttons->link(url('password/email'), trans('auth.forgot_link'));
+        $buttons->submit(trans('auth.login_action'))->classes('btn btn-primary');
+        $buttons->link(url('password/email'), trans('auth.forgot_link'));
     }
 }
 
 class CustomTemplateForm extends FormModel {
     /**
-     * Setup the form attributes, adds the fields and buttons.
+     * Setup the form attributes, fields and buttons.
+     *
+     * @param \Styde\Html\FormElement $form
+     * @param \Styde\Html\FormModel\FieldCollection $fields
+     * @param \Styde\Html\FormModel\ButtonCollection $buttons
+     * @return void
      */
-    public function setup()
+    public function setup(FormElement $form, FieldCollection $fields, ButtonCollection $buttons)
     {
+        // TODO: Implement setup() method.
     }
 }

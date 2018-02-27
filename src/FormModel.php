@@ -2,10 +2,8 @@
 
 namespace Styde\Html;
 
-use Illuminate\Support\HtmlString;
-use Styde\Html\FormModel\FieldCollection;
-use Styde\Html\FormModel\ButtonCollection;
 use Illuminate\Contracts\Support\Htmlable;
+use Styde\Html\FormModel\{FieldCollection, ButtonCollection};
 
 abstract class FormModel implements Htmlable
 {
@@ -52,7 +50,7 @@ abstract class FormModel implements Htmlable
         $this->fields = $fields;
         $this->buttons = $buttons;
 
-        app()->call([$this, 'setup']);
+        $this->setup($this->form, $this->fields, $this->buttons);
     }
 
     /**
@@ -64,9 +62,14 @@ abstract class FormModel implements Htmlable
     }
 
     /**
-     * Setup the form attributes, adds the fields and buttons.
+     * Setup the form attributes, fields and buttons.
+     *
+     * @param \Styde\Html\FormElement $form
+     * @param \Styde\Html\FormModel\FieldCollection $fields
+     * @param \Styde\Html\FormModel\ButtonCollection $buttons
+     * @return void
      */
-    abstract public function setup();
+    abstract public function setup(FormElement $form, FieldCollection $fields, ButtonCollection $buttons);
 
     public function template($template)
     {
