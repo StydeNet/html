@@ -2,6 +2,7 @@
 
 namespace Styde\Html;
 
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Htmlable;
 use Styde\Html\FormModel\{FieldCollection, ButtonCollection};
 
@@ -96,5 +97,21 @@ abstract class FormModel implements Htmlable
             'fields'  => $this->fields,
             'buttons' => $this->buttons,
         ], 'form');
+    }
+
+    public function validate(Request $request)
+    {
+        return $request->validate($this->getValidationRules());
+    }
+
+    public function getValidationRules()
+    {
+        $rules = [];
+
+        foreach ($this->fields->all() as $name => $field) {
+            $rules[$name] = $field->getValidationRules();
+        }
+
+        return $rules;
     }
 }

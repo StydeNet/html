@@ -204,11 +204,11 @@ class FieldCollection
     }
 
     /**
-     * Get all the fields.
+     * Get the fields array.
      *
      * @return array
      */
-    public function getFields()
+    public function all()
     {
         return $this->fields;
     }
@@ -222,10 +222,10 @@ class FieldCollection
     {
         $html = '';
 
-        foreach ($this->getFields() as $field) {
+        foreach ($this->all() as $field) {
             $html .= $field->render();
         }
 
-        return new HtmlString($html)    ;
+        return new HtmlString($html);
     }
 }

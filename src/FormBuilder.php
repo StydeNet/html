@@ -8,6 +8,7 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Support\Traits\Macroable;
 use Styde\Html\Form\HiddenInput;
 use Styde\Html\Form\Input;
+use Styde\Html\FormModel\FieldCollection;
 
 class FormBuilder
 {

@@ -29,6 +29,11 @@ trait HasAttributes
         return $this;
     }
 
+    public function hasAttribute($name)
+    {
+        return ! empty($this->attributes[$name]);
+    }
+
     public function attributes($attributes, $value = true)
     {
         return $this->attr($attributes, $value);

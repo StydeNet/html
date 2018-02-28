@@ -153,4 +153,18 @@ class Field implements Htmlable
         return $this->render();
     }
 
+    public function getValidationRules()
+    {
+        $rules = [];
+
+        if ($this->hasAttribute('required')) {
+            $rules[] = 'required';
+        }
+
+        if (in_array($this->getType(), ['email', 'url'])) {
+            $rules[] = $this->getType();
+        }
+
+        return $rules;
+    }
 }

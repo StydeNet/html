@@ -1,4 +1,5 @@
-{!! $form->open() !!}
-{!! $fields->render() !!}
-{!! $buttons->render() !!}
-{!! $form->close() !!}
+{{ $form->open() }}
+{{ $form->renderHiddenFields() }}
+{{ $fields->render() }}
+{{ $buttons->render() }}
+{{ $form->close() }}
