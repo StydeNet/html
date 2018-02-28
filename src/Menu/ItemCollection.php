@@ -51,9 +51,9 @@ class ItemCollection implements IteratorAggregate
         return $this->add(new RawUrl($url, $text));
     }
 
-    public function url(string $url, $text, $parameters = [])
+    public function url(string $url, $text, $parameters = [], $secure = false)
     {
-        return $this->add(new Url($url, $text, $parameters));
+        return $this->add(new Url($url, $text, $parameters, $secure));
     }
 
     public function route(string $url, $text, $parameters = [])
