@@ -2,11 +2,14 @@
 
 namespace Styde\Html\FormModel;
 
-use Illuminate\Support\HtmlString;
 use Styde\Html\FieldBuilder;
+use Illuminate\Support\HtmlString;
+use Illuminate\Support\Traits\Macroable;
 
 class FieldCollection
 {
+    use Macroable;
+
     /**
      * @var \Styde\Html\FieldBuilder
      */

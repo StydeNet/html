@@ -3,11 +3,13 @@
 namespace Styde\Html\FormModel;
 
 use Illuminate\Support\HtmlString;
-use Styde\Html\HtmlBuilder;
-use Styde\Html\FormBuilder;
+use Illuminate\Support\Traits\Macroable;
+use Styde\Html\{HtmlBuilder, FormBuilder};
 
 class ButtonCollection
 {
+    use Macroable;
+
     /**
      * @var  \Styde\Html\FormBuilder
      */
