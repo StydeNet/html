@@ -161,6 +161,20 @@ class FormBuilderTest extends TestCase
     }
 
     /** @test */
+    function display_textarea_content_from_the_current_model()
+    {
+        $post = new class extends Model {
+            protected $attributes = ['content' => 'The content.'];
+        };
+
+        Form::setCurrentModel($post);
+
+        $this->assertHtmlEquals(
+            '<textarea name="content">The content.</textarea>', Form::textarea('content')
+        );
+    }
+
+    /** @test */
     function it_is_macroable()
     {
         Form::macro('myCustomMethod', function () {

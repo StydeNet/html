@@ -240,18 +240,17 @@ class FormBuilder
     }
 
     /**
-     * Create a textarea input field.
+     * Create a textarea form field.
      *
-     * @param string $type
      * @param string $name
      * @param string $value
      * @param array  $attributes
      *
      * @return \Styde\Html\Htmltag
      */
-    public function textarea($type, $name, $value = null, $attributes = [])
+    public function textarea($name, $value = null, $attributes = [])
     {
-        return new Htmltag('textarea', $value, array_merge(compact('type', 'name'), $attributes));
+        return new Htmltag('textarea', $this->getValueAttribute($name, $value), array_merge(compact('type', 'name'), $attributes));
     }
 
     /**
