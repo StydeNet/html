@@ -2,6 +2,7 @@
 
 namespace Styde\Html\Tests;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\HtmlString;
@@ -132,6 +133,30 @@ class FormBuilderTest extends TestCase
 
         $this->assertTemplateMatches(
             'form/checkboxes', Form::checkboxes('tags', $tags, $checked)
+        );
+    }
+    
+    /** @test */
+    function display_input_values_from_the_users_session()
+    {
+        Session::put('_old_input', ['name' => 'Duilio Palacios']);
+
+        $this->assertHtmlEquals(
+            '<input type="text" name="name" value="Duilio Palacios">', Form::text('name')
+        );
+    }
+
+    /** @test */
+    function display_input_values_from_the_current_model()
+    {
+        $user = new class extends Model {
+            protected $attributes = ['name' => 'Duilio'];
+        };
+
+        Form::setCurrentModel($user);
+
+        $this->assertHtmlEquals(
+            '<input type="text" name="name" value="Duilio">', Form::text('name')
         );
     }
 

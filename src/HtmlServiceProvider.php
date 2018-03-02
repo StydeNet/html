@@ -142,11 +142,11 @@ class HtmlServiceProvider extends ServiceProvider
         $this->app->singleton('form', function ($app) {
             $this->loadConfigurationOptions();
 
-            $form = new FormBuilder($app['url'], $app->make(Theme::class), $app['session.store']->token());
+            $form = new FormBuilder($app['url'], $app->make(Theme::class), $app['session.store']);
 
             $form->novalidate($app['config']->get('html.novalidate', false));
 
-            return $form->setSessionStore($app['session.store']);
+            return $form;
         });
 
         $this->app->alias('form', FormBuilder::class);

@@ -2,19 +2,22 @@
 
 namespace Styde\Html;
 
-use Illuminate\Contracts\Session\Session;
-use Illuminate\Contracts\Routing\UrlGenerator;
+use Styde\Html\Form\Input;
+use Styde\Html\Form\HiddenInput;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Traits\Macroable;
-use Styde\Html\Form\HiddenInput;
-use Styde\Html\Form\Input;
-use Styde\Html\FormModel\FieldCollection;
+use Illuminate\Contracts\Session\Session;
+use Illuminate\Contracts\Routing\UrlGenerator;
 
 class FormBuilder
 {
     use Macroable {
         __call as macroCall;
     }
+
+    protected $currentModel;
+
+    protected $currentForm;
 
     /**
      * Whether to deactivate or not the HTML5 validation (in order to test
@@ -25,46 +28,26 @@ class FormBuilder
     protected $novalidate = false;
 
     /**
-     * The CSRF token used by the form builder.
-     *
-     * @var string
-     */
-    protected $csrfToken;
-
-    /**
      * The Theme object in charge of rendering the right view for this theme
      *
      * @var \Styde\Html\Theme
      */
     protected $theme;
 
+    protected $session;
+
     /**
-     * Creates a new Form Builder class. This extends from the Collective
-     * Form Builder but adds a couple of extra functions.
+     * Creates a new Form Builder class.
      *
      * @param \Illuminate\Contracts\Routing\UrlGenerator $url
-     * @param string $csrfToken
      * @param \Styde\Html\Theme $theme
+     * @param \Illuminate\Contracts\Session\Session $session
      */
-    public function __construct(UrlGenerator $url, Theme $theme, $csrfToken)
+    public function __construct(UrlGenerator $url, Theme $theme, $session)
     {
         $this->theme = $theme;
-        $this->csrfToken = $csrfToken;
-        $this->view = $theme->getView();
-    }
-
-    /**
-     * Set the session store implementation.
-     *
-     * @param \Illuminate\Contracts\Session\Session $session
-     *
-     * @return $this
-     */
-    public function setSessionStore(Session $session)
-    {
         $this->session = $session;
-
-        return $this;
+        $this->view = $theme->getView();
     }
 
     /**
@@ -105,7 +88,7 @@ class FormBuilder
         $children = [];
 
         if ($method != 'get') {
-            $children['_token'] = $this->hidden('_token', csrf_token());
+            $children['_token'] = $this->hidden('_token', $this->session->token());
         }
 
         if (in_array($method, ['put', 'patch', 'delete'])) {
@@ -116,7 +99,7 @@ class FormBuilder
 
         $attributes['method'] = $method;
 
-        return new Form($method, $children, $attributes);
+        return $this->currentForm = new Form($method, $children, $attributes);
     }
 
     /**
@@ -168,8 +151,18 @@ class FormBuilder
         return $this->make('delete', $attributes);
     }
 
+    public function setCurrentModel($model)
+    {
+        $this->currentModel = $model;
+    }
+
+    public function clearCurrentModel()
+    {
+        $this->currentModel = null;
+    }
+
     /**
-     * Makes a new form and renders the open tag.
+     * Make a new form and render the open tag.
      *
      * @param array $attributes
      *
@@ -178,6 +171,16 @@ class FormBuilder
     public function open(array $attributes = array())
     {
         return $this->make('get', $attributes)->open();
+    }
+
+    /**
+     * Close the current form.
+     *
+     * @return string
+     */
+    public function close()
+    {
+        return $this->currentForm->close();
     }
 
     /**
@@ -205,7 +208,7 @@ class FormBuilder
      */
     public function input($type, $name, $value = null, $attributes = [])
     {
-        return new Input($type, $name, $value, $attributes);
+        return new Input($type, $name, $this->getValueAttribute($name, $value), $attributes);
     }
 
     /**
@@ -459,9 +462,19 @@ class FormBuilder
         );
     }
 
-    public function getValueAttribute($name, $value)
+    public function getValueAttribute($name, $value = null)
     {
-        return $value;
+        $old = $this->session->getOldInput($name);
+
+        if ($old !== null) {
+            return $old;
+        }
+
+        if ($value !== null) {
+            return $value;
+        }
+
+        return $this->currentModel[$name] ?? null;
     }
 
     public function __call($method, $parameters)
