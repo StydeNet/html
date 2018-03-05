@@ -2,6 +2,7 @@
 
 namespace Styde\Html\FormModel;
 
+use Illuminate\Validation\Rule;
 use Styde\Html\FieldBuilder;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -163,6 +164,14 @@ class Field implements Htmlable
 
         if (in_array($this->getType(), ['email', 'url'])) {
             $rules[] = $this->getType();
+        }
+
+        if (! empty ($this->options)) {
+            $rules[] = Rule::in(array_keys($this->options));
+
+            if (! in_array('required', $rules)) {
+                $rules[] = 'nullable';
+            }
         }
 
         return $rules;

@@ -265,7 +265,11 @@ class FormBuilder
      */
     public function select($name, $list = [], $selected = null, array $attributes = [])
     {
-        return new Htmltag('select', $this->options($list, $selected), array_merge(compact('name'), $attributes));
+        return new Htmltag(
+            'select',
+            $this->options($list, $this->getValueAttribute($name, $selected)),
+            array_merge(compact('name'), $attributes)
+        );
     }
 
     public function options($list, $selected, array $attributes = [])

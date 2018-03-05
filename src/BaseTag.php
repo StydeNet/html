@@ -64,6 +64,10 @@ abstract class BaseTag implements Htmlable
             return $name.'="'.$this->escape($value).'"';
         }
 
+        if ($name == 'value' && $this->tag == 'option') {
+            return $name.'=""';
+        }
+
         return '';
     }
 

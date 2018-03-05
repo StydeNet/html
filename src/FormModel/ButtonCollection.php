@@ -21,7 +21,7 @@ class ButtonCollection
     /**
      * @var  array
      */
-    protected $buttons;
+    protected $buttons = [];
 
     /**
      * ButtonCollection constructor.
