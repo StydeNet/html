@@ -99,9 +99,9 @@ abstract class FormModel implements Htmlable
         ], 'form');
     }
 
-    public function validate(Request $request)
+    public function validate(Request $request = null)
     {
-        return $request->validate($this->getValidationRules());
+        return ($request ?: request())->validate($this->getValidationRules());
     }
 
     public function getValidationRules()
