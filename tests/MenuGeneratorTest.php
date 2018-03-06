@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\{Auth, Gate, Route};
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Styde\Html\Menu\Item\Url;
+use Styde\Html\Menu\ItemCollection;
+use Styde\Html\Menu\MenuComposer;
 
 class MenuGeneratorTest extends TestCase
 {
@@ -237,6 +239,22 @@ class MenuGeneratorTest extends TestCase
 
         $item->classes(['font-weight-bold', 'text-primary']);
 
-        return $this->assertSame('font-weight-bold text-primary', $item->class);
+        return $this->assertSame('font-weight-bold text-primary', $item->class->toHtml());
+    }
+
+    /** @test */
+    function can_create_menus_using_a_menu_composer()
+    {
+        $menu = new class extends MenuComposer {
+            public function compose(ItemCollection $items)
+            {
+                $items->url('/', 'Home');
+                $items->placeholder('About us');
+                $items->url('projects', 'Our projects');
+                $items->url('contact-us', 'Contact us');
+            }
+        };
+
+        $this->assertTemplateMatches('menu/menu', $menu);
     }
 }
