@@ -361,38 +361,34 @@ class FieldBuilder
      */
     public function render(Field $field)
     {
-        $attributes = $field->getAttributes();
-
-        if (! $this->checkAccess($attributes)) {
+        if (! $this->checkAccess($field->attributes)) {
             return '';
         }
 
-        $name = $field->getName();
+        $required = $this->getRequired($field->attributes);
 
-        $required = $this->getRequired($attributes);
-
-        $label = $field->getLabel();
+        $label = $field->label;
         if ($label == null) {
-            $label = $this->getDefaultLabel($name);
+            $label = $this->getDefaultLabel($field->name);
         }
 
-        $htmlName = $this->getHtmlName($name);
-        $id = $this->getHtmlId($name, $attributes);
+        $htmlName = $this->getHtmlName($field->name);
+        $id = $this->getHtmlId($field->name, $field->attributes);
 
         $errors = $this->getControlErrors($id);
         $hasErrors = !empty($errors);
 
-        $type = $field->getType();
-
-        $input = $this->buildControl($type, $name, $field->getValue(), $attributes, $field->getOptions(), $htmlName);
+        $input = $this->buildControl(
+            $field->type, $field->name, $field->value, $field->attributes, $field->getOptions(), $htmlName
+        );
 
         return $this->theme->render(
-            $field->getTemplate(),
+            $field->template,
             array_merge(
-                $field->getExtra(),
+                $field->extra,
                 compact('htmlName', 'id',  'label', 'input', 'errors', 'hasErrors', 'required')
             ),
-            'fields.'.$this->getDefaultTemplate($type)
+            'fields.'.$this->getDefaultTemplate($field->type)
         );
     }
 

@@ -4,6 +4,7 @@ namespace Styde\Html;
 
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Support\HtmlString;
 
 class HtmlBuilder
 {
@@ -59,11 +60,13 @@ class HtmlBuilder
             return '';
         }
 
+        $html = trim($html);
+
         if ($addClassAttribute) {
-            return ' class="'.trim($html).'"';
-        } else {
-            return trim($html);
+            $html = ' class="'.$html.'"';
         }
+
+        return new HtmlString($html);
     }
 
     /**

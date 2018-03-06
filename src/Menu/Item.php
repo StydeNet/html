@@ -3,12 +3,13 @@
 namespace Styde\Html\Menu;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Styde\Html\Facades\Html;
+use Styde\Html\HandlesAccess;
 
 abstract class Item
 {
+    use HandlesAccess;
+
     public $text;
     public $secure;
     public $id;
@@ -16,7 +17,6 @@ abstract class Item
     public $active = false;
     public $submenu;
     public $items = [];
-    public $included = true;
     public $extra = [];
     public $parent;
 
@@ -50,40 +50,6 @@ abstract class Item
         $this->submenu = $setup;
 
         return $this;
-    }
-
-    public function include(bool $value = true)
-    {
-        $this->included = $value;
-
-        return $this;
-    }
-
-    public function ifAuth()
-    {
-        return $this->include(Auth::check());
-    }
-
-    public function ifGuest()
-    {
-        return $this->include(Auth::guest());
-    }
-
-    public function ifCan($ability, $arguments = [])
-    {
-        return $this->include(Gate::allows($ability, $arguments));
-    }
-
-    public function ifCannot($ability, $arguments = [])
-    {
-        return $this->include(Gate::denies($ability, $arguments));
-    }
-
-    public function ifIs($role)
-    {
-        $user = Auth::user();
-
-        return $this->include($user && $user->isA($role));
     }
 
     public function __call($method, array $parameters)

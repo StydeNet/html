@@ -2,13 +2,15 @@
 
 namespace Styde\Html\FormModel;
 
-use Illuminate\Validation\Rule;
 use Styde\Html\FieldBuilder;
+use Styde\Html\HandlesAccess;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Support\Htmlable;
 
 class Field implements Htmlable
 {
-    use HasAttributes;
+    use HasAttributes, HandlesAccess;
 
     /**
      * @var \Styde\Html\FieldBuilder
@@ -17,35 +19,43 @@ class Field implements Htmlable
     /**
      * @var string
      */
-    protected $name;
+    public $name;
     /**
      * @var string
      */
-    protected $type;
+    public $type;
     /**
      * @var mixed
      */
-    protected $value;
+    public $value;
     /**
      * @var string
      */
-    protected $label;
+    public $label;
     /**
      * @var template
      */
-    protected $template;
+    public $template;
     /**
      * @var array
      */
-    protected $attributes = [];
+    public $attributes = [];
     /**
      * @var array
      */
-    protected $extra = [];
+    public $extra = [];
     /**
      * @var array
      */
     protected $options = [];
+
+    protected $table;
+
+    protected $tableText;
+
+    protected $tableId;
+
+    protected $query;
 
     public function __construct(FieldBuilder $fieldBuilder, $name, $type = 'text')
     {
@@ -104,49 +114,36 @@ class Field implements Htmlable
         return $this;
     }
 
-    public function getType()
+    public function from($table, $text, $id = 'id', $query = null)
     {
-        return $this->type;
-    }
+        $this->table = $table;
+        $this->tableText = $text;
+        $this->tableId = $id;
+        $this->query = $query;
 
-    public function getName()
-    {
-        return $this->name;
+        return $this;
     }
-
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    public function getExtra()
-    {
-        return $this->extra;
-    }
-
+    
     public function getOptions()
     {
+        if ($this->table) {
+            $query = DB::table($this->table);
+
+            if ($this->query) {
+                call_user_func($this->query, $query);
+            }
+
+            return $query->pluck($this->tableText, $this->tableId)->all();
+        }
+
         return $this->options;
-    }
-
-    public function getTemplate()
-    {
-        return $this->template;
-    }
-
-    public function getLabel()
-    {
-        return $this->label;
     }
 
     public function render()
     {
-        return $this->fieldBuilder->render($this);
+        if ($this->included) {
+            return $this->fieldBuilder->render($this);
+        }
     }
 
     public function toHtml()
@@ -172,6 +169,10 @@ class Field implements Htmlable
             if (! in_array('required', $rules)) {
                 $rules[] = 'nullable';
             }
+        }
+
+        if ($this->table) {
+            $rules[] = Rule::exists($this->table, $this->tableId)->where($this->query);
         }
 
         return $rules;

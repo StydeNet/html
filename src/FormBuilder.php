@@ -55,7 +55,7 @@ class FormBuilder
      */
     public function getModel()
     {
-        return $this->model;
+        return $this->currentModel;
     }
 
     /**
