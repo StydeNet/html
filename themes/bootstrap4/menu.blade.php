@@ -1,8 +1,8 @@
 <ul class="{{ $class }}">
 @foreach ($items as $item)
     @if (empty ($item->items))
-        <li{!! html_classes(['nav-item', $item->class, 'active' => $item->active]) !!}>
-            <a href="{{ $item->url() }}" class="nav-link">
+        <li{{ html_classes(['nav-item', $item->class]) }}>
+            <a href="{{ $item->url() }}"{{ html_classes(['nav-link', 'active' => $item->active]) }}>
                 {{ $item->text }}
             </a>
         </li>
