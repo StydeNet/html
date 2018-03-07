@@ -157,6 +157,8 @@ class Field implements Htmlable
 
         if ($this->hasAttribute('required')) {
             $rules[] = 'required';
+        } else {
+            $rules[] = 'nullable';
         }
 
         if (in_array($this->getType(), ['email', 'url'])) {
@@ -165,10 +167,6 @@ class Field implements Htmlable
 
         if (! empty ($this->options)) {
             $rules[] = Rule::in(array_keys($this->options));
-
-            if (! in_array('required', $rules)) {
-                $rules[] = 'nullable';
-            }
         }
 
         if ($this->table) {
