@@ -205,6 +205,27 @@ class FieldBuilderSpec extends ObjectBehavior
         $this->text('name', 'value');
     }
 
+    function it_generates_an_array_of_inputs_with_errors($form, $theme, $lang, Session $session)
+    {
+        // Having
+        $session->get('errors')->willReturn(new MessageBag([
+            'group.name' => ['This is wrong']
+        ]));
+
+        $this->setSessionStore($session);
+
+        // Expect
+        $form->text("group[name]", "value", ["class" => "error", "id" => "group_name"])->shouldBeCalled();
+        $theme->render(
+            null,
+            Argument::withEntry('errors', ['This is wrong']),
+            "fields.default"
+        )->shouldBeCalled();
+
+        // When
+        $this->text('group[name]', 'value');
+    }
+
     function it_generates_a_text_field_with_extra_data($theme)
     {
         // Expect
