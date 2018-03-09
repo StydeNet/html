@@ -640,9 +640,7 @@ class FieldBuilder
             if ($errors = $this->session->get('errors')) {
 
                 // Replaces to get errors on nested fields
-                if (strpos($name, "[")) {
-                    $name = str_replace(['[', ']'], ['.', ''], $name);
-                }
+                $name = str_replace(['[', ']'], ['.', ''], $name);
 
                 return $errors->get($name, []);
             }
