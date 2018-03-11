@@ -73,4 +73,14 @@ class HtmlBuilderTest extends TestCase
     {
         return $this->assertSame(app('html'), html());
     }
+
+    /** @test */
+    function it_is_macroable()
+    {
+        Html::macro('myCustomMethod', function () {
+            return 'my-custom-tag';
+        });
+
+        $this->assertSame('my-custom-tag', Html::myCustomMethod());
+    }
 }

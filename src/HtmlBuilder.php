@@ -5,9 +5,14 @@ namespace Styde\Html;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Traits\Macroable;
 
 class HtmlBuilder
 {
+    use Macroable {
+        __call as macroCall;
+    }
+
     /**
      * The URL generator instance.
      *
@@ -119,6 +124,10 @@ class HtmlBuilder
 
     public function __call($method, array $parameters)
     {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $parameters);
+        }
+
         return $this->tag($method, $parameters[0] ?? '', $parameters[1] ?? []);
     }
 }
