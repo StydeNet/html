@@ -36,7 +36,10 @@ class Form extends Htmltag
             FormBuilder::setCurrentModel($this->model);
         }
 
-        return new HtmlString('<'.$this->tag.$this->renderAttributes().'>');
+        return new HtmlString(
+            '<'.$this->tag.$this->renderAttributes().'>'
+            .$this->renderHiddenFields()
+        );
     }
 
     public function close()
@@ -48,7 +51,7 @@ class Form extends Htmltag
         return parent::close();
     }
 
-    public function renderHiddenFields()
+    protected function renderHiddenFields()
     {
         $html = '';
 
@@ -58,6 +61,6 @@ class Form extends Htmltag
             }
         }
 
-        return new HtmlString($html);
+        return $html;
     }
 }

@@ -21,25 +21,33 @@ class FormBuilderTest extends TestCase
     /** @test */
     function it_opens_a_post_form()
     {
-        $this->assertHtmlEquals(
-            '<form method="post">', Form::post()->open()
-        );
+        $expected =
+            '<form method="post">'.
+                '<input type="hidden" name="_token">';
+
+        $this->assertHtmlEquals($expected, Form::post()->open());
     }
 
     /** @test */
     function it_opens_a_put_form()
     {
-        $this->assertHtmlEquals(
-            '<form method="post">', Form::put()->open()
-        );
+        $expected =
+            '<form method="post">'.
+                '<input type="hidden" name="_token">'.
+                '<input type="hidden" name="_method" value="put">';
+
+        $this->assertHtmlEquals($expected, Form::put()->open());
     }
 
     /** @test */
     function it_opens_a_delete_form()
     {
-        $this->assertHtmlEquals(
-            '<form method="post">', Form::delete()->open()
-        );
+        $expected =
+            '<form method="post">'.
+                '<input type="hidden" name="_token">'.
+                '<input type="hidden" name="_method" value="delete">';
+
+        $this->assertHtmlEquals($expected, Form::delete()->open());
     }
 
     /** @test */
@@ -53,10 +61,11 @@ class FormBuilderTest extends TestCase
     /** @test */
     function it_can_accept_files()
     {
-        $this->assertHtmlEquals(
-            '<form method="post" enctype="multipart/form-data">',
-            Form::post()->withFiles()->open()
-        );
+        $expected =
+            '<form method="post" enctype="multipart/form-data">'
+                .'<input type="hidden" name="_token">';
+
+        $this->assertHtmlEquals($expected, Form::post()->withFiles()->open());
     }
     
     /** @test */
@@ -86,16 +95,6 @@ class FormBuilderTest extends TestCase
 
         $this->assertTemplateMatches(
             'form/put-method', Form::put()->render()
-        );
-    }
-
-    /** @test */
-    function it_renders_hidden_fields()
-    {
-        Session::put('_token', 'random_token_here');
-
-        $this->assertTemplateMatches(
-            'form/hidden-fields', Form::delete()->renderHiddenFields()
         );
     }
     
