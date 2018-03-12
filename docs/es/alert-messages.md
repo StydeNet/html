@@ -2,89 +2,104 @@
 
 Este componente permitirá generar mensajes de alerta complejos.
 
- ```
-        Alert::info('Su cuenta está a punto de caducar')
-            ->details('Renueva ahora para aprender acerca de:')
-            ->items([
-                'Laravel',
-                'PHP,
-                'y más',
-            ])
-            ->button('¡Renueva ahora!', '#', 'primary');
+```php
+Alert::info('Su cuenta está a punto de caducar')
+    ->details('Renueva ahora para aprender acerca de:')
+    ->items([
+        'Laravel',
+        'PHP',
+        'y más',
+    ])
+    ->button('¡Renueva ahora!', '#', 'primary');
 ```
 
-Los mensajes serán persistentes en el sesión hasta que sean presentados al usuario con:
+Los mensajes serán persistentes en la sesión hasta que sean presentados al usuario con:
 
-`{!! Alert::render() !!}`
+```blade
+{!! Alert::render() !!}
+```
 
 ## Crear un nuevo mensaje de alerta
 
 Se puede generar un nuevo mensaje de alerta con: 
 
-`{!! Alert::message('Este es el mensaje', 'tipo-alerta') !!}`
+```blade
+{!! Alert::message('Este es el mensaje', 'tipo-alerta') !!}
+```
 
 El primer argumento es el texto del mensaje y el segundo es el tipo de alerta.
 
 Por ejemplo:
 
-```
-Alert::message('El final está cerca', 'danger');
+```blade
+{!! Alert::message('El final está cerca', 'danger') !!}
 ```
 
 También se puede usar métodos mágicos, el nombre del método se convierte en el tipo de alerta:
 
-```
-Alert::success("Está todo bien ahora");
+```blade
+{!! Alert::success("Está todo bien ahora") !!}
 ```
 
 ## Encadenamiento de métodos
 
 Se puede especificar más opciones por encadenamiento de métodos:
 
-###details
+### Detalles
 
 Se puede pasar uno o más mensajes detallados encadenando el método details():
 
-`{!! Alert::info('Algo de información')->details('Una explicación más detallada va aquí') !!}`
+```blade
+{!! Alert::info('Algo de información')->details('Una explicación más detallada va aquí') !!}
+```
 
-###Llamadas de acción
+### Llamadas de acción
 
 Se puede asignar botones a un mensaje de alerta: 
 
-`{!! Alert::info()->button('Llamada de acción', 'alguna-url', 'primary') !!}`
+```blade
+{!! Alert::info()->button('Llamada de acción', 'alguna-url', 'primary') !!}
+```
 
-###html
+### HTML
 
-Se puede directamente pasar HTML a un mensaje de alerta: 
+Se puede pasar HTML directamente a un mensaje de alerta: 
 
-`{!! Alert::info()->html('<strong>El HTML va aquí</strong>') !!}`
+```blade
+{!! Alert::info()->html('<strong>El HTML va aquí</strong>') !!}
+```
 
 Tenga cuidado ya que esto no será escapado.
 
-###view
+### Vista
 
 Se puede incluso renderizar una vista dentro de un mensaje de alerta:
 
-`{!! Alert::info()->view('partials/alerts/partial') !!}`
+```blade
+{!! Alert::info()->view('partials/alerts/partial') !!}
+```
 
-###items
+### Elementos
 
-Se puede pasar un array de items (tal vez una lista de errores):
+Se puede pasar un array de elementos (tal vez una lista de errores):
 
-`{!! Alert::danger('Por favor corrija los siguientes errores')->items($errors) !!}`
+```blade
+{!! Alert::danger('Por favor corrija los siguientes errores')->items($errors) !!}
+```
 
-##Persistir los mensajes de alerta
+## Persistir los mensajes de alerta
 
 Agrega el siguiente middleware al array `$middleware` en `app/Http/Kernel.php` **ANTES** de `\App\Http\Middleware\EncryptCookies`: 
 
-```
+```php
 protected $middleware = [
     //...
     \Styde\Html\Alert\Middleware::class
     //...
 ];
 ```
-Se necesita este middleware para persistir los mensajes de alerta después de que se complete cada request. 
+
+Se necesita este middleware para persistir los mensajes de alerta después de que se complete cada petición. 
 
 Por defecto, los mensajes de alerta serán persistidos usando el componente session de Laravel. Pero también se puede crear una implementación propia. 
 
@@ -94,7 +109,7 @@ Si la opción `'translate_texts'` está definida como true en la configuración 
  
 Si no se necesita utilizar el componente Traductor, sólo define translate_texts como false en la configuración:
 
-```
+```php
 //config/html.php
 return [
     //...
@@ -103,12 +118,15 @@ return [
 ];
 ```
 
-## Themes
+## Temas
 
-Por defecto, los mensajes de alerta serán renderizados con la plantilla predeterminada, localizada en themes/[theme]/alert, por ejemplo, para el tema de Bootstrap theme que sería:
+Por defecto, los mensajes de alerta serán renderizados con la plantilla predeterminada, localizada en themes/[nombre-del-tema]/alert, por ejemplo, para el tema de Bootstrap sería:
 
 `vendor/styde/html/themes/bootstrap/alert.blade.php`
 
-Se puede pasar un plantilla personalizada como el primer argumento del método render(), es decir:
+Se puede pasar una plantilla personalizada como el primer argumento del método render(), es decir:
 
-`{!! Alert::render('partials/custom-alert-template') !!}`
+```blade
+{!! Alert::render('partials/custom-alert-template') !!}
+```
+
