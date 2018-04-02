@@ -7,8 +7,10 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\{Auth, Gate, Route};
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
+use Styde\Html\Menu\Builder\UrlBuilder;
 use Styde\Html\Menu\Item\Url;
-use Styde\Html\Menu\ItemCollection;
+use Styde\Html\Menu\ItemBuilder;
+use Styde\Html\Menu\MenuBuilder;
 use Styde\Html\Menu\MenuComposer;
 
 class MenuGeneratorTest extends TestCase
@@ -23,6 +25,7 @@ class MenuGeneratorTest extends TestCase
             $items->url('contact-us', 'Contact us');
         });
 
+        $this->assertInstanceOf(\Styde\Html\Menu\Menu::class, $menu);
         $this->assertTemplateMatches('menu/menu', $menu);
     }
 
@@ -53,8 +56,8 @@ class MenuGeneratorTest extends TestCase
         $day = 11;
 
         $menu = Menu::make(function ($items) use ($user_id, $year, $month, $day) {
-            $items->route('account', 'Account')->parameters(compact('user_id'));
-            $items->route('calendar', 'Calendar')->parameters(compact('year', 'month', 'day'));
+            $items->route('account', 'Account', compact('user_id'));
+            $items->route('calendar', 'Calendar', compact('year', 'month', 'day'));
         });
 
         $this->assertTemplateMatches('menu/parameters', $menu);
@@ -87,8 +90,8 @@ class MenuGeneratorTest extends TestCase
         $day = 11;
 
         $menu = Menu::make(function ($items) use ($user_id, $year, $month, $day) {
-            $items->action('AccountController@show', 'Account')->parameters(compact('user_id'));
-            $items->action('CalendarController@show', 'Calendar')->parameters(compact('year', 'month', 'day'));
+            $items->action('AccountController@show', 'Account', compact('user_id'));
+            $items->action('CalendarController@show', 'Calendar', compact('year', 'month', 'day'));
         });
 
         $this->assertTemplateMatches('menu/parameters', $menu);
@@ -103,8 +106,8 @@ class MenuGeneratorTest extends TestCase
         $day = 11;
 
         $menu = Menu::make(function ($items) use ($user_id, $year, $month, $day) {
-            $items->url('account', 'Account')->parameters(['user_id' => $user_id]);
-            $items->url('calendar', 'Calendar')->parameters(compact('year', 'month', 'day'));
+            $items->url('account', 'Account', ['user_id' => $user_id]);
+            $items->url('calendar', 'Calendar', compact('year', 'month', 'day'));
         });
 
         $this->assertTemplateMatches('menu/parameters', $menu);
@@ -114,7 +117,7 @@ class MenuGeneratorTest extends TestCase
     function it_render_menus_with_secure_urls()
     {
         $menu = Menu::make(function ($items) {
-            $items->url('/', 'Home')->secure();
+            $items->secureUrl('/', 'Home');
             $items->url('login', 'Log in', [], true);
         });
 
@@ -204,6 +207,8 @@ class MenuGeneratorTest extends TestCase
     /** @test */
     function it_generates_submenus_with_an_active_subsection()
     {
+        $this->app->request->server->set('REQUEST_URI', '/careers');
+
         $menu = Menu::make(function ($items) {
             $items->url('/', 'Home');
 
@@ -217,36 +222,34 @@ class MenuGeneratorTest extends TestCase
             $items->url('contact-us', 'Contact us');
         });
 
-        $menu->setCurrentUrl(url('careers'));
-
         $this->assertTemplateMatches('menu/submenu-active', $menu);
     }
 
     /** @test */
     function menu_items_can_have_extra_attributes()
     {
-        $item = new Url('path', 'text');
+        $builder = new ItemBuilder('path', 'text');
 
-        $item->target('_blank');
+        $builder->target('_blank');
 
-        return $this->assertSame('_blank', $item->target);
+        return $this->assertSame('_blank', $builder->getItem()->target);
     }
 
     /** @test */
     function menu_items_can_have_extra_classes()
     {
-        $item = new Url('path', 'text');
+        $builder = new ItemBuilder('path', 'text');
 
-        $item->classes(['font-weight-bold', 'text-primary']);
+        $builder->classes(['font-weight-bold', 'text-primary']);
 
-        return $this->assertSame('font-weight-bold text-primary', $item->class->toHtml());
+        return $this->assertSame('font-weight-bold text-primary', $builder->getItem()->class->toHtml());
     }
 
     /** @test */
     function can_create_menus_using_a_menu_composer()
     {
         $menu = new class extends MenuComposer {
-            public function compose(ItemCollection $items)
+            public function compose(MenuBuilder $items)
             {
                 $items->url('/', 'Home');
                 $items->placeholder('About us');

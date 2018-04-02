@@ -255,14 +255,9 @@ class HtmlServiceProvider extends ServiceProvider
     protected function registerMenuGenerator()
     {
         $this->app->bind('menu', function ($app) {
-
             $this->loadConfigurationOptions();
 
             $menu = new MenuGenerator($app['url'], $app[Theme::class]);
-
-            if ($this->options['control_access']) {
-                $menu->setAccessHandler($app[AccessHandler::class]);
-            }
 
             return $menu;
         });

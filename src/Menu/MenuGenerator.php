@@ -4,15 +4,10 @@ namespace Styde\Html\Menu;
 
 use Closure;
 use Styde\Html\Theme;
-use Styde\Html\Access\VerifyAccess;
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Translation\Translator as Lang;
-use Illuminate\Contracts\Config\Repository as Config;
 
 class MenuGenerator
 {
-    use VerifyAccess;
-
     /**
      * Laravel or custom implementation to generate the URLs and routes
      *
@@ -45,6 +40,14 @@ class MenuGenerator
     {
         $this->url = $url;
         $this->theme = $theme;
+
+        $this->activeUrlResolver = function (Item $item) {
+            if ($item->url != $this->url->to('')) {
+                return strpos($this->url->current(), $item->url) === 0;
+            }
+
+            return $this->url->current() === $this->url->to('');
+        };
     }
 
     /**
@@ -69,20 +72,12 @@ class MenuGenerator
      */
     public function make(Closure $config, $classes = '')
     {
-        $menu = new Menu($this->url, $this->theme, $config);
+        $menu = new MenuBuilder($this->url, $this->theme, $this->activeUrlResolver);
 
         if ($classes != '') {
             $menu->setClass($classes);
         }
 
-        if ($this->accessHandler != null) {
-            $menu->setAccessHandler($this->accessHandler);
-        }
-
-        if ($this->activeUrlResolver != null) {
-            $menu->setActiveUrlResolver($this->activeUrlResolver);
-        }
-
-        return $menu;
+        return $menu->build($config);
     }
 }

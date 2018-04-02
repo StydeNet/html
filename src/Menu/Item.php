@@ -2,16 +2,10 @@
 
 namespace Styde\Html\Menu;
 
-use Closure;
-use Styde\Html\Facades\Html;
-use Styde\Html\HandlesAccess;
-
-abstract class Item
+class Item
 {
-    use HandlesAccess;
-
     public $text;
-    public $secure;
+    public $url;
     public $id;
     public $class = '';
     public $active = false;
@@ -20,18 +14,10 @@ abstract class Item
     public $extra = [];
     public $parent;
 
-    public function __construct(string $text)
+    public function __construct($url, $text)
     {
         $this->text = $text;
-    }
-
-    public abstract function url();
-
-    public function classes($classes)
-    {
-        $this->class = Html::classes((array) $classes, false);
-
-        return $this;
+        $this->url = $url;
     }
 
     public function markAsActive(bool $value = true)
@@ -41,20 +27,6 @@ abstract class Item
         if ($this->parent) {
             $this->parent->markAsActive($value);
         }
-
-        return $this;
-    }
-
-    public function submenu(Closure $setup)
-    {
-        $this->submenu = $setup;
-
-        return $this;
-    }
-
-    public function __call($method, array $parameters)
-    {
-        $this->extra[$method] = $parameters[0] ?? true;
     }
 
     public function __get($name)

@@ -11,14 +11,14 @@ abstract class MenuComposer implements Htmlable
 
     public function render()
     {
-        $menu = Menu::make(function (ItemCollection $items) {
+        $menu = Menu::make(function (MenuBuilder $items) {
             $this->compose($items);
         });
 
         return $menu->render($this->template);
     }
 
-    abstract public function compose(ItemCollection $items);
+    abstract public function compose(MenuBuilder $items);
 
     public function toHtml()
     {
