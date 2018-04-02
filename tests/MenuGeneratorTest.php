@@ -5,13 +5,9 @@ namespace Styde\Html\Tests;
 use Styde\Html\Facades\Menu;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\{Auth, Gate, Route};
+use Illuminate\Support\Facades\{Auth, Gate, Route, View};
+use Styde\Html\Menu\{ItemBuilder, MenuBuilder, MenuComposer};
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
-use Styde\Html\Menu\Builder\UrlBuilder;
-use Styde\Html\Menu\Item\Url;
-use Styde\Html\Menu\ItemBuilder;
-use Styde\Html\Menu\MenuBuilder;
-use Styde\Html\Menu\MenuComposer;
 
 class MenuGeneratorTest extends TestCase
 {
@@ -243,6 +239,19 @@ class MenuGeneratorTest extends TestCase
         $builder->classes(['font-weight-bold', 'text-primary']);
 
         return $this->assertSame('font-weight-bold text-primary', $builder->getItem()->class->toHtml());
+    }
+
+    /** @test */
+    function can_customize_the_template()
+    {
+        View::addLocation(__DIR__.'/views');
+
+        $menu = Menu::make(function ($items) {
+            $items->url('/', 'Home');
+        })->template('custom-templates/menu');
+
+        $this->assertInstanceOf(\Styde\Html\Menu\Menu::class, $menu);
+        $this->assertTemplateMatches('menu/custom-template', $menu);
     }
 
     /** @test */

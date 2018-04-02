@@ -9,19 +9,16 @@ abstract class MenuComposer implements Htmlable
 {
     protected $template = null;
 
-    public function render()
+    public function toHtml()
     {
         $menu = Menu::make(function (MenuBuilder $items) {
             $this->compose($items);
         });
 
-        return $menu->render($this->template);
+        $menu->template($this->template);
+
+        return $menu->toHtml();
     }
 
     abstract public function compose(MenuBuilder $items);
-
-    public function toHtml()
-    {
-        return $this->render();
-    }
 }

@@ -16,40 +16,41 @@ class Menu implements Htmlable
      */
     public $items;
 
+    /**
+     * @var string
+     */
+    public $template;
+
     public function __construct($theme, array $items = [])
     {
         $this->theme = $theme;
         $this->items = $items;
     }
-//
-//    public function setTemplate($template)
-//    {
-//        return $this->template = $template;
-//    }
 
     /**
-     * Renders a new menu
+     * Set a custom template.
      *
-     * @param string|null $customTemplate
-     * @return string the menu's HTML
+     * @param string $template
+     * @return $this
      */
-    public function render($customTemplate = null)
+    public function template($template)
+    {
+        $this->template = $template;
+        return $this;
+    }
+
+    /**
+     * Renders the menu as an HTML string.
+     *
+     * @return string
+     */
+    public function toHtml()
     {
         $data = [
             'items' => $this->items,
             'class' => 'nav',
         ];
 
-        return $this->theme->render($customTemplate, $data, 'menu');
-    }
-
-    /**
-     * Get content as a string of HTML.
-     *
-     * @return string
-     */
-    public function toHtml()
-    {
-        return $this->render();
+        return $this->theme->render($this->template, $data, 'menu');
     }
 }
