@@ -103,22 +103,15 @@ class MenuBuilder implements Htmlable
      *
      * @param string $url
      * @param string $text
-     * @return ItemBuilder
+     * @return Item
      */
-    public function add(string $url, string $text): ItemBuilder
+    public function add(string $url, string $text): Item
     {
-        $itemBuilder = $this->newItemBuilder($url, $text);
+        $this->items[] = $item = new Item($url, $text);
 
-        $this->items[] = $itemBuilder;
+        $item->parent = $this->parent;
 
-        $itemBuilder->item->parent = $this->parent;
-
-        return $itemBuilder;
-    }
-
-    public function newItemBuilder(string $url, string $text)
-    {
-        return new ItemBuilder($url, $text);
+        return $item;
     }
 
     /**
@@ -142,24 +135,24 @@ class MenuBuilder implements Htmlable
     {
         $result = [];
 
-        foreach ($this->items as $builder) {
-            if (! $builder->included) {
+        foreach ($this->items as $item) {
+            if (! $item->included) {
                 continue;
             }
 
-            if ($this->isActive($builder->item)) {
-                $builder->item->markAsActive();
+            if ($this->isActive($item)) {
+                $item->markAsActive();
             }
 
-            if ($builder->submenu != null) {
+            if ($item->submenu != null) {
                 $menuBuilder = new static($this->url, $this->theme, $this->activeUrlResolver);
 
-                $menuBuilder->build($builder->submenu, $builder->item);
+                $menuBuilder->build($item->submenu, $item);
 
-                $builder->item->items = $menuBuilder->getItems();
+                $item->items = $menuBuilder->getItems();
             }
 
-            $result[] = $builder->getItem();
+            $result[] = $item;
         }
 
         return $result;
