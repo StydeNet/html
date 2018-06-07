@@ -31,7 +31,7 @@ trait HasAttributes
 
     public function hasAttribute($name)
     {
-        return ! empty($this->attributes[$name]);
+        return in_array($name, $this->attributes);
     }
 
     public function attributes($attributes, $value = true)
