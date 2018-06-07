@@ -139,6 +139,11 @@ class Field implements Htmlable
         return $this->options;
     }
 
+    public function getType()
+    {
+        return $this->type;
+    }
+
     public function render()
     {
         if ($this->included) {
