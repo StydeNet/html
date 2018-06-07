@@ -8,7 +8,7 @@ use Illuminate\Validation\Rules\Exists;
 class FieldAttributesValidationTest extends TestCase
 {
     /** @test */
-    function it_validate_that_the_required_attribute_generates_the_required_rule()
+    function the_required_attribute_generates_the_required_rule()
     {
         $field = Field::text('name', ['required' => true]);
 
@@ -16,15 +16,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_not_generate_the_required_rule_if_the_attribute_is_not_present()
-    {
-        $field = Field::text('name');
-
-        $this->assertNotSame(['required'], $field->getValidationRules());
-    }
-
-    /** @test */
-    function it_validate_the_existence_of_the_nullable_rule()
+    function it_adds_the_nullable_rule_when_the_required_attribute_is_not_present()
     {
         $field = Field::text('name');
 
@@ -32,7 +24,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_validate_the_existence_of_the_email_rule()
+    function it_returns_the_email_rule_for_email_fields()
     {
         $field = Field::email('email', ['required' => true]);
 
@@ -40,15 +32,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_validate_that_the_email_rule_does_not_exist()
-    {
-        $field = Field::text('name', ['required' => false]);
-
-        $this->assertNotEquals(['email'], $field->getValidationRules());
-    }
-
-    /** @test */
-    function it_validate_the_existence_of_the_url_rule()
+    function it_returns_the_url_rule_when_the_type_of_the_field_is_url()
     {
         $field = Field::url('link', ['required' => true]);
 
@@ -56,15 +40,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_validate_that_the_url_rule_does_not_exist()
-    {
-        $field = Field::text('name', ['required' => true]);
-
-        $this->assertNotEquals(['required', 'url'], $field->getValidationRules());
-    }
-
-    /** @test */
-    function it_there_are_multiples_rules()
+    function it_returns_multiple_rules()
     {
         $field = Field::email('email', ['required']);
 
@@ -72,7 +48,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_select_field_has_the_required_rule_and_options()
+    function it_returns_multiple_options_in_the_rules_with_options_method_in_select_field()
     {
         $field = Field::select('visibility', null, ['required'])->options([
             'public' => 'Everyone',
@@ -81,34 +57,20 @@ class FieldAttributesValidationTest extends TestCase
             'guest' => 'Guest users only',
         ]);
 
-        $this->assertContains('required', $field->getValidationRules());
-
         $this->assertSame('in:"public","admin","auth","guest"', (string) $field->getValidationRules()[1]);
-    }
-
-    /** @test */
-    function it_select_field_no_have_rule_if_not_specific_option()
-    {
-        $field = Field::select('visibility')->options([
-            'public' => 'Everyone',
-            'admin' => 'Admin only',
-            'auth' => 'Authenticated users only',
-            'guest' => 'Guest users only',
-        ]);
-
-        $this->assertNotSame('in:"public","admin","auth","guest","moderator"', (string) $field->getValidationRules()[0]);
     }
 
     /** @test */
     function it_select_field_have_rule_exists()
     {
         $field = Field::select('parent_id')
-            ->from('menu_items', 'label', 'id', function ($query) {
+            ->from('table_name', 'label', 'id', function ($query) {
                 $query->whereNull('parent_id')
                     ->orderBy('label', 'ASC');
             })
             ->label('Parent');
 
+        $this->assertSame('exists:table_name,id', (string) $field->getValidationRules()[1]);
         $this->assertInstanceOf(Exists::class, $field->getValidationRules()[1]);
     }
 }
