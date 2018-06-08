@@ -61,7 +61,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_builds_the_exists_rule_when_options_come_from_a_table() // Pending
+    function it_builds_the_exists_rule_when_options_come_from_a_table()
     {
         $field = Field::select('parent_id')
             ->from('table_name', 'label', 'id', function ($query) {
