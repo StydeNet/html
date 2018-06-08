@@ -10,7 +10,7 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function the_required_attribute_generates_the_required_rule()
     {
-        $field = Field::text('name', ['required' => true]);
+        $field = Field::text('name', ['required']);
 
         $this->assertSame(['required'], $field->getValidationRules());
     }
@@ -48,7 +48,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_multiple_options_in_the_rules_with_options_method_in_select_field()
+    function it_builds_the_in_rule_when_the_field_includes_static_options()
     {
         $field = Field::select('visibility', null, ['required'])->options([
             'public' => 'Everyone',
@@ -61,7 +61,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_select_field_have_rule_exists()
+    function it_builds_the_exists_rule_when_options_come_from_a_table() // Pending
     {
         $field = Field::select('parent_id')
             ->from('table_name', 'label', 'id', function ($query) {
