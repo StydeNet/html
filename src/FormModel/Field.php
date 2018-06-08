@@ -4,13 +4,12 @@ namespace Styde\Html\FormModel;
 
 use Styde\Html\FieldBuilder;
 use Styde\Html\HandlesAccess;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Support\Htmlable;
 
 class Field implements Htmlable
 {
-    use HasAttributes, HandlesAccess;
+    use HasAttributes, HandlesAccess, ValidationRules;
 
     /**
      * @var \Styde\Html\FieldBuilder
@@ -63,21 +62,14 @@ class Field implements Htmlable
 
         $this->name = $name;
         $this->type = $type;
+
+        $this->addRuleByFieldType($type);
+        $this->nullable();
     }
 
     public function __toString()
     {
         return $this->render();
-    }
-
-    public function required($required = true)
-    {
-        if ($required) {
-            $this->attributes['required'] = true;
-        } else {
-            unset($this->attributes['required']);
-        }
-        return $this;
     }
 
     public function label($label)
@@ -123,7 +115,7 @@ class Field implements Htmlable
 
         return $this;
     }
-    
+
     public function getOptions()
     {
         if ($this->table) {
@@ -154,30 +146,5 @@ class Field implements Htmlable
     public function toHtml()
     {
         return $this->render();
-    }
-
-    public function getValidationRules()
-    {
-        $rules = [];
-
-        if ($this->hasAttribute('required')) {
-            $rules[] = 'required';
-        } else {
-            $rules[] = 'nullable';
-        }
-
-        if (in_array($this->getType(), ['email', 'url'])) {
-            $rules[] = $this->getType();
-        }
-
-        if (! empty ($this->options)) {
-            $rules[] = Rule::in(array_keys($this->options));
-        }
-
-        if ($this->table) {
-            $rules[] = Rule::exists($this->table, $this->tableId)->where($this->query);
-        }
-
-        return $rules;
     }
 }

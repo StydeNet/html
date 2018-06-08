@@ -28,7 +28,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $field = Field::email('email', ['required' => true]);
 
-        $this->assertEquals(['required', 'email'], $field->getValidationRules());
+        $this->assertEquals(['email', 'required'], $field->getValidationRules());
     }
 
     /** @test */
@@ -36,7 +36,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $field = Field::url('link', ['required' => true]);
 
-        $this->assertEquals(['required', 'url'], $field->getValidationRules());
+        $this->assertEquals(['url', 'required'], $field->getValidationRules());
     }
 
     /** @test */
@@ -44,7 +44,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $field = Field::email('email', ['required']);
 
-        $this->assertEquals(['required', 'email'], $field->getValidationRules());
+        $this->assertEquals(['email', 'required'], $field->getValidationRules());
     }
 
     /** @test */
@@ -72,5 +72,11 @@ class FieldAttributesValidationTest extends TestCase
 
         $this->assertSame('exists:table_name,id', (string) $field->getValidationRules()[1]);
         $this->assertInstanceOf(Exists::class, $field->getValidationRules()[1]);
+    }
+
+    /** @test */
+    function it_returns_the_max_rule_when_the_maxlength_attribute_is_present()
+    {
+        $field = Field::number('name')->min(10)->addRule('unique:users,id')->disableRules('unique');
     }
 }
