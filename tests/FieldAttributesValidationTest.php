@@ -81,4 +81,28 @@ class FieldAttributesValidationTest extends TestCase
 
         $this->assertEquals(['nullable', 'max:10'], $field->getValidationRules());
     }
+
+    /** @test */
+    function it_returns_the_file_rule_for_file_fields()
+    {
+        $field = Field::file('avatar');
+
+        $this->assertEquals(['file', 'nullable'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_the_date_rule_for_date_fields()
+    {
+        $field = Field::date('time');
+
+        $this->assertEquals(['date', 'nullable'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_the_numeric_rule_for_number_fields()
+    {
+        $field = Field::number('field')->required();
+
+        $this->assertEquals(['numeric', 'required'], $field->getValidationRules());
+    }
 }
