@@ -75,8 +75,10 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_the_max_rule_when_the_maxlength_attribute_is_present()
+    function it_returns_the_max_rule_when_call_method_max()
     {
-        $field = Field::number('name')->min(10)->addRule('unique:users,id')->disableRules('unique');
+        $field = Field::text('name')->max(10);
+
+        $this->assertEquals(['nullable', 'max:10'], $field->getValidationRules());
     }
 }

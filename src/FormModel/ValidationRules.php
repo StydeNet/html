@@ -32,19 +32,20 @@ trait ValidationRules
     }
 
     public function getValidationRules()
-    {
-        $this->loadRuleIn();
-
-        if ($this->table) {
-            $this->setRule(Rule::exists($this->table, $this->tableId)->where($this->query));
-        }
+    {   
+        $this->setRuleIn();
 
         return $this->rules;
     }
 
-    protected function loadRuleIn()
+    protected function setRuleIn()
     {
         return empty($this->options) ?: $this->setRule(Rule::in(array_keys($this->options)));
+    }
+
+    protected function setRuleExists()
+    {
+        return (! $this->table) ?: $this->setRule(Rule::exists($this->table, $this->tableId)->where($this->query));
     }
 
     protected function addRuleByFieldType($type)

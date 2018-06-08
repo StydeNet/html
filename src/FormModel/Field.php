@@ -59,7 +59,6 @@ class Field implements Htmlable
     public function __construct(FieldBuilder $fieldBuilder, $name, $type = 'text')
     {
         $this->fieldBuilder = $fieldBuilder;
-
         $this->name = $name;
         $this->type = $type;
 
@@ -103,6 +102,7 @@ class Field implements Htmlable
     public function options($options)
     {
         $this->options = $options;
+
         return $this;
     }
 
@@ -112,6 +112,8 @@ class Field implements Htmlable
         $this->tableText = $text;
         $this->tableId = $id;
         $this->query = $query;
+
+        $this->setRuleExists();
 
         return $this;
     }
