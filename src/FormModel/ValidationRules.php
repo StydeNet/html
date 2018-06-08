@@ -24,13 +24,6 @@ trait ValidationRules
         'number' => 'numeric'
     ];
 
-    public function setRule($rule) 
-    {
-        $this->rules[] = $rule;
-
-        return $this;
-    }
-
     public function getValidationRules()
     {   
         $this->setRuleIn();
@@ -38,14 +31,32 @@ trait ValidationRules
         return $this->rules;
     }
 
+    public function setRule($rule) 
+    {
+        $this->rules[] = $rule;
+
+        return $this;
+    }
+
     protected function setRuleIn()
     {
-        return empty($this->options) ?: $this->setRule(Rule::in(array_keys($this->options)));
+        empty($this->options) ?: $this->setRule(Rule::in(array_keys($this->options)));
     }
 
     protected function setRuleExists()
     {
-        return (! $this->table) ?: $this->setRule(Rule::exists($this->table, $this->tableId)->where($this->query));
+        (! $this->table) ?: $this->setRule(Rule::exists($this->table, $this->tableId)->where($this->query));
+    }
+
+    protected function setAttribute($name, $value = null)
+    {
+        if (! in_array($name, $this->attributes)) {
+            if (! $value) {
+                $this->attributes[] = $name;
+            } else {
+                $this->attributes[$name] = $value;
+            }
+        }
     }
 
     protected function addRuleByFieldType($type)
@@ -92,21 +103,29 @@ trait ValidationRules
 
     public function min($value)
     {
+        $this->setAttribute('min', $value);
+
         return $this->setRule("min:$value");
     }
 
     public function max($value)
     {
+        $this->setAttribute('max', $value);
+
         return $this->setRule("max:$value");
     }
 
     public function size($value)
     {
+        $this->setAttribute('size', $value);
+        
         return $this->setRule("size:$value");
     }
 
     public function required()
     {
+        $this->setAttribute('required');
+
         $this->disableRules('nullable');
 
         return $this->setRule('required');
