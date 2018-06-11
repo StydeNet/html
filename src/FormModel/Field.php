@@ -73,18 +73,21 @@ class Field implements Htmlable
     public function label($label)
     {
         $this->label = $label;
+
         return $this;
     }
 
     public function value($value)
     {
         $this->value = $value;
+
         return $this;
     }
 
     public function template($template)
     {
         $this->template = $template;
+
         return $this;
     }
 
@@ -142,6 +145,13 @@ class Field implements Htmlable
         if ($this->included) {
             return $this->fieldBuilder->render($this);
         }
+    }
+
+    public function placeholder($value)
+    {
+        $this->setAttribute('placeholder', $value);
+
+        return $this;
     }
 
     public function minlength($value)

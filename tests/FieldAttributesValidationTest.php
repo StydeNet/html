@@ -161,4 +161,20 @@ class FieldAttributesValidationTest extends TestCase
 
         $this->assertSame(['regex:/.{6,}/'], $field->getValidationRules());
     }
+
+    /** @test */
+    function it_returns_placeholder_attribute_when_use_placeholder_method()
+    {
+        $field = Field::text('name')->placeholder('Foo Bar');
+
+        $this->assertSame(['placeholder' => 'Foo Bar'], $field->attributes);
+    }
+
+    /** @test */
+    function it_returns_value_attribute_when_use_value_method()
+    {
+        $field = Field::text('name')->value('Foo Bar');
+
+        $this->assertSame('Foo Bar', $field->value);
+    }
 }

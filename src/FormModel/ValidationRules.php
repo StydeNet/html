@@ -24,7 +24,7 @@ trait ValidationRules
     ];
 
     public function getValidationRules()
-    {   
+    {
         $this->setRuleIn();
 
         return $this->rules;
