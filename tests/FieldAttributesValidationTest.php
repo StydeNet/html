@@ -97,4 +97,36 @@ class FieldAttributesValidationTest extends TestCase
 
         $this->assertEquals(['numeric'], $field->getValidationRules());
     }
+
+    /** @test */
+    function it_returns_nullable_rule_when_call_nullable_method()
+    {
+        $field = Field::text('name')->nullable();
+
+        $this->assertSame(['nullable'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_required_rule_when_call_required_method()
+    {
+        $field = Field::text('name')->required();
+
+        $this->assertSame(['required'], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_delete_all_rules_when_call_disabledRules_method_without_parameters()
+    {
+        $field = Field::number('code')->min(1)->max(10)->required()->disableRules();
+
+        $this->assertSame([], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_delete_specific_rule_when_call_disableRules_method_with_the_rules_to_be_deleted_as_parameters()
+    {
+        $field = Field::email('email')->min(10)->required()->disableRules('required', 'min');
+
+        $this->assertSame(['email'], $field->getValidationRules());
+    }
 }
