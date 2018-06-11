@@ -177,4 +177,52 @@ class FieldAttributesValidationTest extends TestCase
 
         $this->assertSame('Foo Bar', $field->value);
     }
+
+    /** @test */
+    function it_returns_required_if_rule_when_call_requiredIf_method()
+    {
+        $field = Field::text('name')->requiredIf('status', true);
+
+        $this->assertSame(['required_if:status,1'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_required_unless_rule_when_call_requiredUnless_method()
+    {
+        $field = Field::text('offer_code')->requiredUnless('price', '>=', 500);
+
+        $this->assertSame(['required_unless:price,>=,500'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_required_with_rule_when_call_requiredWith_method()
+    {
+        $field = Field::text('name')->requiredWith('foo', 'bar', 'john', 'doe');
+
+        $this->assertSame(['required_with:foo,bar,john,doe'], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_returns_required_with_all_rule_when_call_requiredWithAll_method()
+    {
+        $field = Field::text('name')->requiredWithAll('foo', 'bar');
+
+        $this->assertSame(['required_with_all:foo,bar'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_required_without_rule_when_call_requiredWithout_method()
+    {
+        $field = Field::text('name')->requiredWithOut('John', 'Doe');
+
+        $this->assertSame(['required_without:John,Doe'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_required_without_all_rule_when_call_requiredWithoutAll_method()
+    {
+        $field = Field::text('name')->requiredWithoutAll('foo', 'bar');
+
+        $this->assertSame(['required_without_all:foo,bar'], $field->getValidationRules());
+    }
 }
