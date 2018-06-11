@@ -78,15 +78,12 @@ trait ValidationRules
         }
     }
 
-    public function addRule($value)
-    {
-        $this->rules[] = $value;
-
-        return $this;
-    }
-
     public function disableRules(...$rules)
     {
+        if (! empty($rules)) {
+            $rules = is_array($rules[0]) ? $rules[0] : $rules;
+        }
+
         foreach ($this->rules as $key => $rule) {
             if ($pos = strpos($rule, ':')) {
                 if (in_array(substr($rule, 0, $pos), $rules)) {
@@ -132,6 +129,8 @@ trait ValidationRules
 
     public function nullable()
     {
+        $this->disableRules('required');
+
         return $this->setRule('nullable');
     }
 }

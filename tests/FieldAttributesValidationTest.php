@@ -129,4 +129,28 @@ class FieldAttributesValidationTest extends TestCase
 
         $this->assertSame(['email'], $field->getValidationRules());
     }
+    
+    /** @test */
+    function it_delete_specifics_rules_when_call_disableRules_method_with_an_array_in_parameter()
+    {
+        $field = Field::email('email')->min(10)->required()->disableRules(['min', 'required']);
+
+        $this->assertSame(['email'], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_delete_required_rule_when_call_nullable_method()
+    {
+        $field = Field::name('first_name')->required()->nullable();
+
+        $this->assertSame(['nullable'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_delete_nullable_rule_when_call_required_method()
+    {
+        $field = Field::name('first_name')->nullable()->required();
+
+        $this->assertSame(['required'], $field->getValidationRules());
+    }
 }
