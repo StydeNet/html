@@ -63,7 +63,6 @@ class Field implements Htmlable
         $this->type = $type;
 
         $this->addRuleByFieldType($type);
-        $this->nullable();
     }
 
     public function __toString()

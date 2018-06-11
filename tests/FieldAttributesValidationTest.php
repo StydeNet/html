@@ -16,14 +16,6 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_adds_the_nullable_rule_when_the_required_attribute_is_not_present()
-    {
-        $field = Field::text('name');
-
-        $this->assertSame(['nullable'], $field->getValidationRules());
-    }
-
-    /** @test */
     function it_returns_the_email_rule_for_email_fields()
     {
         $field = Field::email('email', ['required' => true]);
@@ -70,8 +62,8 @@ class FieldAttributesValidationTest extends TestCase
             })
             ->label('Parent');
 
-        $this->assertSame('exists:table_name,id', (string) $field->getValidationRules()[1]);
-        $this->assertInstanceOf(Exists::class, $field->getValidationRules()[1]);
+        $this->assertSame('exists:table_name,id', (string) $field->getValidationRules()[0]);
+        $this->assertInstanceOf(Exists::class, $field->getValidationRules()[0]);
     }
 
     /** @test */
@@ -79,7 +71,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $field = Field::text('name')->max(10);
 
-        $this->assertEquals(['nullable', 'max:10'], $field->getValidationRules());
+        $this->assertEquals(['max:10'], $field->getValidationRules());
     }
 
     /** @test */
@@ -87,7 +79,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $field = Field::file('avatar');
 
-        $this->assertEquals(['file', 'nullable'], $field->getValidationRules());
+        $this->assertEquals(['file'], $field->getValidationRules());
     }
 
     /** @test */
@@ -95,14 +87,14 @@ class FieldAttributesValidationTest extends TestCase
     {
         $field = Field::date('time');
 
-        $this->assertEquals(['date', 'nullable'], $field->getValidationRules());
+        $this->assertEquals(['date'], $field->getValidationRules());
     }
 
     /** @test */
     function it_returns_the_numeric_rule_for_number_fields()
     {
-        $field = Field::number('field')->required();
+        $field = Field::number('field');
 
-        $this->assertEquals(['numeric', 'required'], $field->getValidationRules());
+        $this->assertEquals(['numeric'], $field->getValidationRules());
     }
 }

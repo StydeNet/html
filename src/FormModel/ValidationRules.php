@@ -3,7 +3,6 @@
 namespace Styde\Html\FormModel;
 
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Collection;
 
 trait ValidationRules
 {
