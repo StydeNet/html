@@ -144,6 +144,64 @@ class Field implements Htmlable
         }
     }
 
+    public function minlength($value)
+    {
+        $this->setAttribute('minlength', $value);
+
+        return $this->setRule("min:$value");
+    }
+
+    public function maxlength($value)
+    {
+        $this->setAttribute('maxlength', $value);
+
+        return $this->setRule("max:$value");
+    }
+
+    public function pattern($value)
+    {
+        $this->setAttribute('pattern', $value);
+
+        return $this->setRule("regex:/$value/");
+    }
+
+    public function min($value)
+    {
+        $this->setAttribute('min', $value);
+
+        return $this->setRule("min:$value");
+    }
+
+    public function max($value)
+    {
+        $this->setAttribute('max', $value);
+
+        return $this->setRule("max:$value");
+    }
+
+    public function size($value)
+    {
+        $this->setAttribute('size', $value);
+
+        return $this->setRule("size:$value");
+    }
+
+    public function required()
+    {
+        $this->setAttribute('required');
+
+        $this->disableRules('nullable');
+
+        return $this->setRule('required');
+    }
+
+    public function nullable()
+    {
+        $this->disableRules('required');
+
+        return $this->setRule('nullable');
+    }
+
     public function toHtml()
     {
         return $this->render();

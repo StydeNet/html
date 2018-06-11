@@ -69,7 +69,7 @@ trait ValidationRules
     {
         foreach ($this->attributes as $key => $value) {
             if (method_exists($this, $value)) {
-                $this->$value(); continue;
+                $this->$value();
             }
 
             if (method_exists($this, $key)) {
@@ -95,42 +95,5 @@ trait ValidationRules
         $this->rules = empty($rules) ? [] : array_diff($this->rules, $rules);
 
         return $this;
-    }
-
-    public function min($value)
-    {
-        $this->setAttribute('min', $value);
-
-        return $this->setRule("min:$value");
-    }
-
-    public function max($value)
-    {
-        $this->setAttribute('max', $value);
-
-        return $this->setRule("max:$value");
-    }
-
-    public function size($value)
-    {
-        $this->setAttribute('size', $value);
-        
-        return $this->setRule("size:$value");
-    }
-
-    public function required()
-    {
-        $this->setAttribute('required');
-
-        $this->disableRules('nullable');
-
-        return $this->setRule('required');
-    }
-
-    public function nullable()
-    {
-        $this->disableRules('required');
-
-        return $this->setRule('nullable');
     }
 }

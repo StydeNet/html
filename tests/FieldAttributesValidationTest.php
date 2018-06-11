@@ -137,20 +137,28 @@ class FieldAttributesValidationTest extends TestCase
 
         $this->assertSame(['email'], $field->getValidationRules());
     }
-    
-    /** @test */
-    function it_delete_required_rule_when_call_nullable_method()
-    {
-        $field = Field::name('first_name')->required()->nullable();
 
-        $this->assertSame(['nullable'], $field->getValidationRules());
+    /** @test */
+    function it_returns_the_min_rule_when_call_minlength_method()
+    {
+        $field = Field::text('name')->minlength(10);
+
+        $this->assertSame(['min:10'], $field->getValidationRules());
     }
 
     /** @test */
-    function it_delete_nullable_rule_when_call_required_method()
+    function it_returns_the_max_rule_when_call_maxlength_method()
     {
-        $field = Field::name('first_name')->nullable()->required();
+        $field = Field::text('name')->maxlength(10);
 
-        $this->assertSame(['required'], $field->getValidationRules());
+        $this->assertSame(['max:10'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_the_regex_rule_when_call_pattern_method()
+    {
+        $field = Field::text('name')->pattern('.{6,}');
+
+        $this->assertSame(['regex:/.{6,}/'], $field->getValidationRules());
     }
 }
