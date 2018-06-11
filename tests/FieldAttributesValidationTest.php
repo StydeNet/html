@@ -16,19 +16,11 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_adds_the_nullable_rule_when_the_required_attribute_is_not_present()
-    {
-        $field = Field::text('name');
-
-        $this->assertSame(['nullable'], $field->getValidationRules());
-    }
-
-    /** @test */
     function it_returns_the_email_rule_for_email_fields()
     {
         $field = Field::email('email', ['required' => true]);
 
-        $this->assertEquals(['required', 'email'], $field->getValidationRules());
+        $this->assertEquals(['email', 'required'], $field->getValidationRules());
     }
 
     /** @test */
@@ -36,7 +28,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $field = Field::url('link', ['required' => true]);
 
-        $this->assertEquals(['required', 'url'], $field->getValidationRules());
+        $this->assertEquals(['url', 'required'], $field->getValidationRules());
     }
 
     /** @test */
@@ -44,7 +36,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $field = Field::email('email', ['required']);
 
-        $this->assertEquals(['required', 'email'], $field->getValidationRules());
+        $this->assertEquals(['email', 'required'], $field->getValidationRules());
     }
 
     /** @test */
@@ -70,7 +62,103 @@ class FieldAttributesValidationTest extends TestCase
             })
             ->label('Parent');
 
-        $this->assertSame('exists:table_name,id', (string) $field->getValidationRules()[1]);
-        $this->assertInstanceOf(Exists::class, $field->getValidationRules()[1]);
+        $this->assertSame('exists:table_name,id', (string) $field->getValidationRules()[0]);
+        $this->assertInstanceOf(Exists::class, $field->getValidationRules()[0]);
+    }
+
+    /** @test */
+    function it_returns_the_max_rule_when_call_method_max()
+    {
+        $field = Field::text('name')->max(10);
+
+        $this->assertEquals(['max:10'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_the_file_rule_for_file_fields()
+    {
+        $field = Field::file('avatar');
+
+        $this->assertEquals(['file'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_the_date_rule_for_date_fields()
+    {
+        $field = Field::date('time');
+
+        $this->assertEquals(['date'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_the_numeric_rule_for_number_fields()
+    {
+        $field = Field::number('field');
+
+        $this->assertEquals(['numeric'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_nullable_rule_when_call_nullable_method()
+    {
+        $field = Field::text('name')->nullable();
+
+        $this->assertSame(['nullable'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_required_rule_when_call_required_method()
+    {
+        $field = Field::text('name')->required();
+
+        $this->assertSame(['required'], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_delete_all_rules_when_call_disabledRules_method_without_parameters()
+    {
+        $field = Field::number('code')->min(1)->max(10)->required()->disableRules();
+
+        $this->assertSame([], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_delete_specific_rule_when_call_disableRules_method_with_the_rules_to_be_deleted_as_parameters()
+    {
+        $field = Field::email('email')->min(10)->required()->disableRules('required', 'min');
+
+        $this->assertSame(['email'], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_delete_specifics_rules_when_call_disableRules_method_with_an_array_in_parameter()
+    {
+        $field = Field::email('email')->min(10)->required()->disableRules(['min', 'required']);
+
+        $this->assertSame(['email'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_the_min_rule_when_call_minlength_method()
+    {
+        $field = Field::text('name')->minlength(10);
+
+        $this->assertSame(['min:10'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_the_max_rule_when_call_maxlength_method()
+    {
+        $field = Field::text('name')->maxlength(10);
+
+        $this->assertSame(['max:10'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_the_regex_rule_when_call_pattern_method()
+    {
+        $field = Field::text('name')->pattern('.{6,}');
+
+        $this->assertSame(['regex:/.{6,}/'], $field->getValidationRules());
     }
 }

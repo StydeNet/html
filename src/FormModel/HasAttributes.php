@@ -26,6 +26,9 @@ trait HasAttributes
         } else {
             $this->attributes[$attributes] = $value;
         }
+
+        $this->addRulesOfAttributes();
+
         return $this;
     }
 
