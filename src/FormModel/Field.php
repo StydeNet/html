@@ -56,6 +56,12 @@ class Field implements Htmlable
 
     protected $query;
 
+    /**
+     * Field constructor.
+     * @param FieldBuilder $fieldBuilder
+     * @param $name
+     * @param string $type
+     */
     public function __construct(FieldBuilder $fieldBuilder, $name, $type = 'text')
     {
         $this->fieldBuilder = $fieldBuilder;
@@ -65,29 +71,52 @@ class Field implements Htmlable
         $this->addRuleByFieldType($type);
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->render();
     }
 
+    /**
+     * @param $label
+     * @return $this
+     */
     public function label($label)
     {
         $this->label = $label;
+
         return $this;
     }
 
+    /**
+     * @param $value
+     * @return $this
+     */
     public function value($value)
     {
         $this->value = $value;
+
         return $this;
     }
 
+    /**
+     * @param $template
+     * @return $this
+     */
     public function template($template)
     {
         $this->template = $template;
+
         return $this;
     }
 
+    /**
+     * @param $values
+     * @param bool $value
+     * @return $this
+     */
     public function extra($values, $value = true)
     {
         if (is_array($values)) {
@@ -98,6 +127,10 @@ class Field implements Htmlable
         return $this;
     }
 
+    /**
+     * @param $options
+     * @return $this
+     */
     public function options($options)
     {
         $this->options = $options;
@@ -105,6 +138,13 @@ class Field implements Htmlable
         return $this;
     }
 
+    /**
+     * @param $table
+     * @param $text
+     * @param string $id
+     * @param null $query
+     * @return $this
+     */
     public function from($table, $text, $id = 'id', $query = null)
     {
         $this->table = $table;
@@ -117,6 +157,9 @@ class Field implements Htmlable
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getOptions()
     {
         if ($this->table) {
@@ -132,11 +175,17 @@ class Field implements Htmlable
         return $this->options;
     }
 
+    /**
+     * @return string
+     */
     public function getType()
     {
         return $this->type;
     }
 
+    /**
+     * @return string
+     */
     public function render()
     {
         if ($this->included) {
@@ -144,6 +193,21 @@ class Field implements Htmlable
         }
     }
 
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function placeholder($value)
+    {
+        $this->setAttribute('placeholder', $value);
+
+        return $this;
+    }
+
+    /**
+     * @param $value
+     * @return Field
+     */
     public function minlength($value)
     {
         $this->setAttribute('minlength', $value);
@@ -151,6 +215,10 @@ class Field implements Htmlable
         return $this->setRule("min:$value");
     }
 
+    /**
+     * @param $value
+     * @return Field
+     */
     public function maxlength($value)
     {
         $this->setAttribute('maxlength', $value);
@@ -158,6 +226,10 @@ class Field implements Htmlable
         return $this->setRule("max:$value");
     }
 
+    /**
+     * @param $value
+     * @return Field
+     */
     public function pattern($value)
     {
         $this->setAttribute('pattern', $value);
@@ -165,6 +237,10 @@ class Field implements Htmlable
         return $this->setRule("regex:/$value/");
     }
 
+    /**
+     * @param $value
+     * @return Field
+     */
     public function min($value)
     {
         $this->setAttribute('min', $value);
@@ -172,6 +248,10 @@ class Field implements Htmlable
         return $this->setRule("min:$value");
     }
 
+    /**
+     * @param $value
+     * @return Field
+     */
     public function max($value)
     {
         $this->setAttribute('max', $value);
@@ -179,6 +259,10 @@ class Field implements Htmlable
         return $this->setRule("max:$value");
     }
 
+    /**
+     * @param $value
+     * @return Field
+     */
     public function size($value)
     {
         $this->setAttribute('size', $value);
@@ -186,6 +270,9 @@ class Field implements Htmlable
         return $this->setRule("size:$value");
     }
 
+    /**
+     * @return Field
+     */
     public function required()
     {
         $this->setAttribute('required');
@@ -195,6 +282,78 @@ class Field implements Htmlable
         return $this->setRule('required');
     }
 
+    /**
+     * @param $column
+     * @param $value
+     * @return Field
+     */
+    public function requiredIf($column, $value)
+    {
+        return $this->setRule("required_if:$column,$value");
+    }
+
+    /**
+     * @param $column
+     * @param $operator
+     * @param null $value
+     * @return Field
+     */
+    public function requiredUnless($column, $operator, $value = null)
+    {
+        if (! $value) {
+            return $this->setRule("required_unless:$column,$operator");
+        }
+
+        return $this->setRule("required_unless:$column,$operator,$value");
+    }
+
+    /**
+     * @param array $values
+     * @return Field
+     */
+    public function requiredWith(...$values)
+    {
+        $value = implode(',', $values);
+
+        return $this->setRule("required_with:$value");
+    }
+
+    /**
+     * @param array $values
+     * @return Field
+     */
+    public function requiredWithAll(...$values)
+    {
+        $value = implode(',', $values);
+
+        return $this->setRule("required_with_all:$value");
+    }
+
+    /**
+     * @param array $values
+     * @return Field
+     */
+    public function requiredWithout(...$values)
+    {
+        $value = implode(',', $values);
+
+        return $this->setRule("required_without:$value");
+    }
+
+    /**
+     * @param $value
+     * @return Field
+     */
+    public function requiredWithoutAll(...$values)
+    {
+        $value = implode(',', $values);
+
+        return $this->setRule("required_without_all:$value");
+    }
+
+    /**
+     * @return Field
+     */
     public function nullable()
     {
         $this->disableRules('required');
@@ -202,6 +361,9 @@ class Field implements Htmlable
         return $this->setRule('nullable');
     }
 
+    /**
+     * @return string
+     */
     public function toHtml()
     {
         return $this->render();
