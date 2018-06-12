@@ -2,6 +2,8 @@
 
 namespace Styde\Html\FormModel;
 
+use Illuminate\Validation\Rule;
+
 trait IncludeRulesHelpers
 {
     /**
@@ -224,9 +226,125 @@ trait IncludeRulesHelpers
     /**
      * @return mixed
      */
+    public function file()
+    {
+        return $this->setRule('file');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function filled()
+    {
+        return $this->setRule('filled');
+    }
+
+    /**
+     * @param string $field
+     * @return mixed
+     */
+    public function gt(string $field)
+    {
+        return $this->setRule("gt:$field");
+    }
+
+    /**
+     * @param string $field
+     * @return mixed
+     */
+    public function gte(string $field)
+    {
+        return $this->setRule("gte:$field");
+    }
+
+    /**
+     * @return mixed
+     */
     public function image()
     {
         return $this->setRule('image');
+    }
+
+    /**
+     * @param mixed ...$values
+     * @return mixed
+     */
+    public function in(...$values)
+    {
+        if (isset($values[0]) && is_array($values[0])) {
+            return $this->setRule(Rule::in($values[0]));
+        }
+
+        $fields = implode(',', $values);
+
+        return $this->setRule("in:$fields");
+    }
+
+    /**
+     * @param string $field
+     * @return mixed
+     */
+    public function inArray(string $field)
+    {
+        return $this->setRule("in_array:$field");
+    }
+
+    /**
+     * @return mixed
+     */
+    public function integer()
+    {
+        return $this->setRule('integer');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function ip()
+    {
+        return $this->setRule('ip');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function ipv4()
+    {
+        return $this->setRule('ipv4');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function ipv6()
+    {
+        return $this->setRule('ipv6');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function json()
+    {
+        return $this->setRule('json');
+    }
+
+    /**
+     * @param string $field
+     * @return mixed
+     */
+    public function lt(string $field)
+    {
+        return $this->setRule("lt:$field");
+    }
+
+    /**
+     * @param string $field
+     * @return mixed
+     */
+    public function lte(string $field)
+    {
+        return $this->setRule("lte:$field");
     }
 
     /**
@@ -240,7 +358,6 @@ trait IncludeRulesHelpers
         return $this->setRule("max:$value");
     }
 
-
     /**
      * @param int $value
      * @return mixed
@@ -250,6 +367,28 @@ trait IncludeRulesHelpers
         $this->setAttribute('maxlength', $value);
 
         return $this->setRule("max:$value");
+    }
+
+    /**
+     * @param mixed ...$values
+     * @return mixed
+     */
+    public function mimetypes(...$values)
+    {
+        $extensions = implode(',', $values);
+
+        return $this->setRule("mimetypes:$extensions");
+    }
+
+    /**
+     * @param mixed ...$values
+     * @return mixed
+     */
+    public function mimes(...$values)
+    {
+        $extensions = implode(',', $values);
+
+        return $this->setRule("mimes:$extensions");
     }
 
     /**
@@ -275,6 +414,30 @@ trait IncludeRulesHelpers
     }
 
     /**
+     * @param mixed ...$values
+     * @return mixed
+     */
+    public function notIn(...$values)
+    {
+        if (isset($values[0]) && is_array($values[0])) {
+            return $this->setRule(Rule::notIn($values[0]));
+        }
+
+        $fields = implode(',', $values);
+
+        return $this->setRule("not_in:$fields");
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function notRegex($value)
+    {
+        return $this->setRule("not_regex:/$value/");
+    }
+
+    /**
      * @return Field
      */
     public function nullable()
@@ -285,6 +448,14 @@ trait IncludeRulesHelpers
     }
 
     /**
+     * @return mixed
+     */
+    public function numeric()
+    {
+        return $this->setRule('numeric');
+    }
+
+    /**
      * @param $value
      * @return Field
      */
@@ -292,6 +463,23 @@ trait IncludeRulesHelpers
     {
         $this->setAttribute('pattern', $value);
 
+        return $this->regex($value);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function present()
+    {
+        return $this->setRule('present');
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function regex($value)
+    {
         return $this->setRule("regex:/$value/");
     }
 
@@ -394,5 +582,84 @@ trait IncludeRulesHelpers
         $this->setAttribute('size', $value);
 
         return $this->setRule("size:$value");
+    }
+
+    /**
+     * @return mixed
+     */
+    public function string()
+    {
+        return $this->setRule('string');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function timezone()
+    {
+        return $this->setRule('timezone');
+    }
+
+
+    /**
+     * @param mixed ...$values
+     * @return mixed
+     */
+    public function unique(...$values)
+    {
+        if (empty($values)) {
+            return $this->setRule("unique:{$this->table}");
+        }
+
+        foreach ($values as $key => $value) {
+            if (is_array($value) && array_key_exists('ignore', $value)) {
+                if (is_array($value['ignore'])) {
+                    return $this->setRule(
+                        Rule::unique($values[0], $values[1])->ignore($value['ignore'][0], $value['ignore'][1])
+                    );
+                }
+                return $this->setRule(Rule::unique($values[0], $values[1])->ignore($value['ignore']));
+            }
+        }
+
+        $data = implode(',', $values);
+
+        return $this->setRule("unique:$data");
+    }
+
+    /**
+     * @param $id
+     * @param null $idColumn
+     * @return mixed
+     * @throws \Exception
+     */
+    public function ignore($id, $idColumn = null)
+    {
+        foreach ($this->getValidationRules() as $key => $rule) {
+            if (strpos($rule, 'unique:') !== false) {
+                $data = str_replace('unique:', '', $rule);
+                $this->disableRules([$rule]);
+            }
+        }
+
+        if (! isset($data)) {
+            throw new \Exception('You need use the unique method before ignore.');
+        }
+
+        $data = explode(',', $data);
+
+        $table = $data[0] ? $data[0] : 'NULL';
+        $column = array_key_exists(1, $data) ? $data[1] : 'NULL';
+        $idColumn = $idColumn ? $idColumn : 'id';
+
+        return $this->setRule("unique:$table,$column,\"$id\",$idColumn");
+    }
+
+    /**
+     * @return mixed
+     */
+    public function url()
+    {
+        return $this->setRule('url');
     }
 }
