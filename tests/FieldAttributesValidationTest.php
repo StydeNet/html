@@ -413,8 +413,16 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_adds_the_distinct_rule()
     {
-        $field = Field::name('name')->distinct();
+        $field = Field::value('name')->distinct();
 
         return $this->assertSame(['distinct'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_email_rule()
+    {
+        $field = Field::text('email')->email();
+
+        return $this->assertSame(['email'], $field->getValidationRules());
     }
 }

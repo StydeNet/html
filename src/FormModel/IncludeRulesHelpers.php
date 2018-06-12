@@ -198,7 +198,14 @@ trait IncludeRulesHelpers
     {
         return $this->setRule('distinct');
     }
-    
+
+    /**
+     * @return mixed
+     */
+    public function email()
+    {
+        return $this->setRule('email');
+    }
 
     /**
      * @return mixed
@@ -207,7 +214,6 @@ trait IncludeRulesHelpers
     {
         return $this->setRule('image');
     }
-
 
     /**
      * @param int $value
