@@ -71,47 +71,11 @@ trait IncludeRulesHelpers
     }
 
     /**
-     * @param $value
-     * @return Field
+     * @return mixed
      */
-    public function minlength($value)
+    public function image()
     {
-        $this->setAttribute('minlength', $value);
-
-        return $this->setRule("min:$value");
-    }
-
-    /**
-     * @param $value
-     * @return Field
-     */
-    public function maxlength($value)
-    {
-        $this->setAttribute('maxlength', $value);
-
-        return $this->setRule("max:$value");
-    }
-
-    /**
-     * @param $value
-     * @return Field
-     */
-    public function pattern($value)
-    {
-        $this->setAttribute('pattern', $value);
-
-        return $this->setRule("regex:/$value/");
-    }
-
-    /**
-     * @param $value
-     * @return Field
-     */
-    public function min($value)
-    {
-        $this->setAttribute('min', $value);
-
-        return $this->setRule("min:$value");
+        return $this->setRule('image');
     }
 
     /**
@@ -129,11 +93,54 @@ trait IncludeRulesHelpers
      * @param $value
      * @return Field
      */
-    public function size($value)
+    public function maxlength($value)
     {
-        $this->setAttribute('size', $value);
+        $this->setAttribute('maxlength', $value);
 
-        return $this->setRule("size:$value");
+        return $this->setRule("max:$value");
+    }
+
+    /**
+     * @param $value
+     * @return Field
+     */
+    public function min($value)
+    {
+        $this->setAttribute('min', $value);
+
+        return $this->setRule("min:$value");
+    }
+
+    /**
+     * @param $value
+     * @return Field
+     */
+    public function minlength($value)
+    {
+        $this->setAttribute('minlength', $value);
+
+        return $this->setRule("min:$value");
+    }
+
+    /**
+     * @return Field
+     */
+    public function nullable()
+    {
+        $this->disableRules('required');
+
+        return $this->setRule('nullable');
+    }
+
+    /**
+     * @param $value
+     * @return Field
+     */
+    public function pattern($value)
+    {
+        $this->setAttribute('pattern', $value);
+
+        return $this->setRule("regex:/$value/");
     }
 
     /**
@@ -218,16 +225,6 @@ trait IncludeRulesHelpers
     }
 
     /**
-     * @return Field
-     */
-    public function nullable()
-    {
-        $this->disableRules('required');
-
-        return $this->setRule('nullable');
-    }
-
-    /**
      * @param $field
      * @return mixed
      */
@@ -237,10 +234,13 @@ trait IncludeRulesHelpers
     }
 
     /**
-     * @return mixed
+     * @param $value
+     * @return Field
      */
-    public function image()
+    public function size($value)
     {
-        return $this->setRule('image');
+        $this->setAttribute('size', $value);
+
+        return $this->setRule("size:$value");
     }
 }

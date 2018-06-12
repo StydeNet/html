@@ -67,7 +67,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_the_max_rule_when_call_method_max()
+    function it_adds_the_max_rule()
     {
         $field = Field::text('name')->max(10);
 
@@ -75,7 +75,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_the_file_rule_for_file_fields()
+    function it_adds_the_file_rule()
     {
         $field = Field::file('avatar');
 
@@ -83,7 +83,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_the_date_rule_for_date_fields()
+    function it_adds_the_date_rule()
     {
         $field = Field::date('time');
 
@@ -91,7 +91,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_the_numeric_rule_for_number_fields()
+    function it_adds_the_numeric_rule()
     {
         $field = Field::number('field');
 
@@ -99,7 +99,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_nullable_rule_when_call_nullable_method()
+    function it_adds_the_nullable_rule()
     {
         $field = Field::text('name')->nullable();
 
@@ -107,7 +107,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_required_rule_when_call_required_method()
+    function it_adds_the_required_rule()
     {
         $field = Field::text('name')->required();
 
@@ -139,7 +139,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_the_min_rule_when_call_minlength_method()
+    function it_adds_the_min_rule()
     {
         $field = Field::text('name')->minlength(10);
 
@@ -147,7 +147,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_the_max_rule_when_call_maxlength_method()
+    function it_adds_the_max_rule()
     {
         $field = Field::text('name')->maxlength(10);
 
@@ -155,7 +155,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_the_regex_rule_when_call_pattern_method()
+    function it_adds_the_regex_rule()
     {
         $field = Field::text('name')->pattern('.{6,}');
 
@@ -163,7 +163,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_placeholder_attribute_when_use_placeholder_method()
+    function it_adds_the_placeholder_attribute()
     {
         $field = Field::text('name')->placeholder('Foo Bar');
 
@@ -171,7 +171,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_value_attribute_when_use_value_method()
+    function it_adds_the_value_attribute()
     {
         $field = Field::text('name')->value('Foo Bar');
 
@@ -179,7 +179,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_required_if_rule_when_call_requiredIf_method()
+    function it_adds_the_required_if_rule()
     {
         $field = Field::text('name')->requiredIf('status', true);
 
@@ -187,7 +187,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_required_unless_rule_when_call_requiredUnless_method()
+    function it_adds_the_required_unless_rule()
     {
         $field = Field::text('offer_code')->requiredUnless('price', '>=', 500);
 
@@ -195,7 +195,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_required_with_rule_when_call_requiredWith_method()
+    function it_adds_the_required_with_rule()
     {
         $field = Field::text('name')->requiredWith('foo', 'bar', 'john', 'doe');
 
@@ -203,7 +203,7 @@ class FieldAttributesValidationTest extends TestCase
     }
     
     /** @test */
-    function it_returns_required_with_all_rule_when_call_requiredWithAll_method()
+    function it_adds_the_required_with_all_rule()
     {
         $field = Field::text('name')->requiredWithAll('foo', 'bar');
 
@@ -211,7 +211,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_required_without_rule_when_call_requiredWithout_method()
+    function it_adds_the_required_without_rule()
     {
         $field = Field::text('name')->requiredWithOut('John', 'Doe');
 
@@ -219,7 +219,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_required_without_all_rule_when_call_requiredWithoutAll_method()
+    function it_adds_the_required_without_all_rule()
     {
         $field = Field::text('name')->requiredWithoutAll('foo', 'bar');
 
@@ -227,7 +227,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_same_rule_when_call_same_method()
+    function it_adds_the_same_rule()
     {
         $field = Field::number('phone')->same('phone2');
 
@@ -235,7 +235,7 @@ class FieldAttributesValidationTest extends TestCase
     }
     
     /** @test */
-    function it_returns_size_rule_when_call_size_method()
+    function it_adds_the_size_rule()
     {
         $field = Field::file('image')->size(1000);
 
@@ -243,7 +243,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_image_rule_when_call_image_method()
+    function it_adds_the_image_rule()
     {
         $field = Field::file('image')->image();
 
@@ -251,7 +251,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_accepted_rule_when_call_accepted_method()
+    function it_adds_the_accepted_rule()
     {
         $field = Field::text('name')->accepted();
 
@@ -259,7 +259,7 @@ class FieldAttributesValidationTest extends TestCase
     }
     
     /** @test */
-    function it_returns_active_url_rule_when_call_activeUrl_method()
+    function it_adds_the_active_url_rule()
     {
         $field = Field::text('name')->activeUrl();
 
@@ -267,7 +267,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_after_rule_when_call_after_method()
+    function it_adds_the_after_rule()
     {
         $field = Field::text('name')->after('tomorrow');
 
@@ -275,7 +275,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_after_or_equal_rule_when_call_afterOrEqual_method()
+    function it_adds_the_after_or_equal_rule()
     {
         $field = Field::text('name')->afterOrEqual('tomorrow');
 
@@ -283,7 +283,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_alpha_rule_when_call_alpha_method()
+    function it_adds_the_alpha_rule()
     {
         $field = Field::text('name')->alpha();
 
@@ -291,7 +291,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_alpha_dash_rule_when_call_alphaDash_method()
+    function it_adds_the_alpha_dash_rule()
     {
         $field = Field::text('name')->alphaDash();
 
@@ -299,7 +299,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_alpha_num_rule_when_call_alphaNum_method()
+    function it_adds_the_alpha_num_rule()
     {
         $field = Field::text('name')->alphaNum();
 
@@ -307,9 +307,10 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_returns_array_rule_when_call_array_method()
+    function it_adds_the_array_rule()
     {
         $field = Field::text('name')->array();
 
+        $this->assertSame(['array'], $field->getValidationRules());
     }
 }
