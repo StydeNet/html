@@ -225,4 +225,91 @@ class FieldAttributesValidationTest extends TestCase
 
         $this->assertSame(['required_without_all:foo,bar'], $field->getValidationRules());
     }
+
+    /** @test */
+    function it_returns_same_rule_when_call_same_method()
+    {
+        $field = Field::number('phone')->same('phone2');
+
+        $this->assertSame(['numeric', 'same:phone2'], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_returns_size_rule_when_call_size_method()
+    {
+        $field = Field::file('image')->size(1000);
+
+        $this->assertSame(['file', 'size:1000'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_image_rule_when_call_image_method()
+    {
+        $field = Field::file('image')->image();
+
+        $this->assertSame(['file', 'image'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_accepted_rule_when_call_accepted_method()
+    {
+        $field = Field::text('name')->accepted();
+
+        $this->assertSame(['accepted'], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_returns_active_url_rule_when_call_activeUrl_method()
+    {
+        $field = Field::text('name')->activeUrl();
+
+        $this->assertSame(['active_url'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_after_rule_when_call_after_method()
+    {
+        $field = Field::text('name')->after('tomorrow');
+
+        $this->assertSame(['after:tomorrow'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_after_or_equal_rule_when_call_afterOrEqual_method()
+    {
+        $field = Field::text('name')->afterOrEqual('tomorrow');
+
+        $this->assertSame(['after_or_equal:tomorrow'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_alpha_rule_when_call_alpha_method()
+    {
+        $field = Field::text('name')->alpha();
+
+        $this->assertSame(['alpha'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_alpha_dash_rule_when_call_alphaDash_method()
+    {
+        $field = Field::text('name')->alphaDash();
+
+        $this->assertSame(['alpha_dash'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_alpha_num_rule_when_call_alphaNum_method()
+    {
+        $field = Field::text('name')->alphaNum();
+
+        $this->assertSame(['alpha_num'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_array_rule_when_call_array_method()
+    {
+        $field = Field::text('name')->array();
+
+    }
 }
