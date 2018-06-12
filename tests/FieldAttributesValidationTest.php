@@ -83,7 +83,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_adds_the_date_rule()
+    function it_adds_the_date_rule_with_attribute()
     {
         $field = Field::date('time');
 
@@ -304,5 +304,117 @@ class FieldAttributesValidationTest extends TestCase
         $field = Field::text('name')->array();
 
         $this->assertSame(['array'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_bail_rule()
+    {
+        $field = Field::text('name')->bail();
+
+        $this->assertSame(['bail'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_before_rule()
+    {
+        $field = Field::text('name')->before('tomorrow');
+
+        $this->assertSame(['before:tomorrow'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_before_or_equal_rule()
+    {
+        $field = Field::text('name')->beforeOrEqual('tomorrow');
+
+        $this->assertSame(['before_or_equal:tomorrow'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_between_rule()
+    {
+        $field = Field::text('name')->between(1,10);
+
+        $this->assertSame(['between:1,10'], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_adds_the_boolean_rule()
+    {
+        $field = Field::text('value')->boolean();
+
+        $this->assertSame(['boolean'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_confirmed_rule()
+    {
+        $field = Field::email('email')->confirmed();
+
+        $this->assertSame(['email', 'confirmed'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_date_rule()
+    {
+        $field = Field::text('date')->date();
+
+        return $this->assertSame(['date'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_date_equals_rule()
+    {
+        $field = Field::text('date')->dateEquals('tomorrow');
+
+        return $this->assertSame(['date_equals:tomorrow'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_date_format_rule()
+    {
+        $field = Field::text('date')->dateFormat('d-m-Y');
+
+        return $this->assertSame(['date_format:d-m-Y'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_different_rule()
+    {
+        $field = Field::text('last_name')->different('first_name');
+
+        return $this->assertSame(['different:first_name'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_digits_rule()
+    {
+        $field = Field::number('age')->digits(2);
+
+        return $this->assertSame(['numeric', 'digits:2'], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_adds_the_digits_between_rule()
+    {
+        $field = Field::number('age')->digitsBetween(1,2);
+
+        return $this->assertSame(['numeric', 'digits_between:1,2'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_dimensions_rule()
+    {
+        $field = Field::file('avatar')->dimensions(['min_width' => 100, 'max_height' => 100]);
+
+        return $this->assertSame(['file', 'dimensions:min_width=100,max_height=100,'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_distinct_rule()
+    {
+        $field = Field::name('name')->distinct();
+
+        return $this->assertSame(['distinct'], $field->getValidationRules());
     }
 }
