@@ -577,4 +577,60 @@ class FieldAttributesValidationTest extends TestCase
 
         $this->assertSame(['numeric'], $field->getValidationRules());
     }
+
+    /** @test */
+    function it_adds_the_present_rule()
+    {
+        $field = Field::text('name')->present();
+
+        $this->assertSame(['present'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_string_rule()
+    {
+        $field = Field::text('name')->string();
+
+        $this->assertSame(['string'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_timezone_rule()
+    {
+        $field = Field::text('date')->timezone();
+
+        $this->assertSame(['timezone'], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_adds_the_unique_rule()
+    {
+        $field = Field::text('name')->unique('users', 'name');
+
+        $this->assertSame(['unique:users,name'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_ignore_in_unique_rule()
+    {
+        $field = Field::text('name')->unique('users', 'name')->ignore(1, 'user_id');
+
+        $this->assertSame('unique:users,name,"1",user_id', (string) $field->getValidationRules()[0]);
+    }
+
+    /** @test */
+    function it_cannot_use_method_ignore()
+    {
+        $this->expectException('Exception');
+
+        Field::text('name')->ignore(1, 'user_id');
+    }
+
+    /** @test */
+    function it_adds_the_url_rule()
+    {
+        $field = Field::text('page')->url();
+
+        $this->assertSame(['url'], $field->getValidationRules());
+    }
 }

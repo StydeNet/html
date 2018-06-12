@@ -447,6 +447,9 @@ trait IncludeRulesHelpers
         return $this->setRule('nullable');
     }
 
+    /**
+     * @return mixed
+     */
     public function numeric()
     {
         return $this->setRule('numeric');
@@ -461,6 +464,14 @@ trait IncludeRulesHelpers
         $this->setAttribute('pattern', $value);
 
         return $this->regex($value);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function present()
+    {
+        return $this->setRule('present');
     }
 
     /**
@@ -571,5 +582,84 @@ trait IncludeRulesHelpers
         $this->setAttribute('size', $value);
 
         return $this->setRule("size:$value");
+    }
+
+    /**
+     * @return mixed
+     */
+    public function string()
+    {
+        return $this->setRule('string');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function timezone()
+    {
+        return $this->setRule('timezone');
+    }
+
+
+    /**
+     * @param mixed ...$values
+     * @return mixed
+     */
+    public function unique(...$values)
+    {
+        if (empty($values)) {
+            return $this->setRule("unique:{$this->table}");
+        }
+
+        foreach ($values as $key => $value) {
+            if (is_array($value) && array_key_exists('ignore', $value)) {
+                if (is_array($value['ignore'])) {
+                    return $this->setRule(
+                        Rule::unique($values[0], $values[1])->ignore($value['ignore'][0], $value['ignore'][1])
+                    );
+                }
+                return $this->setRule(Rule::unique($values[0], $values[1])->ignore($value['ignore']));
+            }
+        }
+
+        $data = implode(',', $values);
+
+        return $this->setRule("unique:$data");
+    }
+
+    /**
+     * @param $id
+     * @param null $idColumn
+     * @return mixed
+     * @throws \Exception
+     */
+    public function ignore($id, $idColumn = null)
+    {
+        foreach ($this->getValidationRules() as $key => $rule) {
+            if (strpos($rule, 'unique:') !== false) {
+                $data = str_replace('unique:', '', $rule);
+                $this->disableRules([$rule]);
+            }
+        }
+
+        if (! isset($data)) {
+            throw new \Exception('You need use the unique method before ignore.');
+        }
+
+        $data = explode(',', $data);
+
+        $table = $data[0] ? $data[0] : 'NULL';
+        $column = array_key_exists(1, $data) ? $data[1] : 'NULL';
+        $idColumn = $idColumn ? $idColumn : 'id';
+
+        return $this->setRule("unique:$table,$column,\"$id\",$idColumn");
+    }
+
+    /**
+     * @return mixed
+     */
+    public function url()
+    {
+        return $this->setRule('url');
     }
 }
