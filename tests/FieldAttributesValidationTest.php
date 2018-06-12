@@ -147,14 +147,6 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_adds_the_max_rule()
-    {
-        $field = Field::text('name')->maxlength(10);
-
-        $this->assertSame(['max:10'], $field->getValidationRules());
-    }
-
-    /** @test */
     function it_adds_the_regex_rule()
     {
         $field = Field::text('name')->pattern('.{6,}');
