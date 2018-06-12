@@ -2,6 +2,8 @@
 
 namespace Styde\Html\FormModel;
 
+use Illuminate\Validation\Rule;
+
 trait IncludeRulesHelpers
 {
     /**
@@ -224,9 +226,125 @@ trait IncludeRulesHelpers
     /**
      * @return mixed
      */
+    public function file()
+    {
+        return $this->setRule('file');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function filled()
+    {
+        return $this->setRule('filled');
+    }
+
+    /**
+     * @param string $field
+     * @return mixed
+     */
+    public function gt(string $field)
+    {
+        return $this->setRule("gt:$field");
+    }
+
+    /**
+     * @param string $field
+     * @return mixed
+     */
+    public function gte(string $field)
+    {
+        return $this->setRule("gte:$field");
+    }
+
+    /**
+     * @return mixed
+     */
     public function image()
     {
         return $this->setRule('image');
+    }
+
+    /**
+     * @param mixed ...$values
+     * @return mixed
+     */
+    public function in(...$values)
+    {
+        if (isset($values[0]) && is_array($values[0])) {
+            return $this->setRule(Rule::in($values[0]));
+        }
+
+        $fields = implode(',', $values);
+
+        return $this->setRule("in:$fields");
+    }
+
+    /**
+     * @param string $field
+     * @return mixed
+     */
+    public function inArray(string $field)
+    {
+        return $this->setRule("in_array:$field");
+    }
+
+    /**
+     * @return mixed
+     */
+    public function integer()
+    {
+        return $this->setRule('integer');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function ip()
+    {
+        return $this->setRule('ip');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function ipv4()
+    {
+        return $this->setRule('ipv4');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function ipv6()
+    {
+        return $this->setRule('ipv6');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function json()
+    {
+        return $this->setRule('json');
+    }
+
+    /**
+     * @param string $field
+     * @return mixed
+     */
+    public function lt(string $field)
+    {
+        return $this->setRule("lt:$field");
+    }
+
+    /**
+     * @param string $field
+     * @return mixed
+     */
+    public function lte(string $field)
+    {
+        return $this->setRule("lte:$field");
     }
 
     /**
@@ -240,7 +358,6 @@ trait IncludeRulesHelpers
         return $this->setRule("max:$value");
     }
 
-
     /**
      * @param int $value
      * @return mixed
@@ -250,6 +367,28 @@ trait IncludeRulesHelpers
         $this->setAttribute('maxlength', $value);
 
         return $this->setRule("max:$value");
+    }
+
+    /**
+     * @param mixed ...$values
+     * @return mixed
+     */
+    public function mimetypes(...$values)
+    {
+        $extensions = implode(',', $values);
+
+        return $this->setRule("mimetypes:$extensions");
+    }
+
+    /**
+     * @param mixed ...$values
+     * @return mixed
+     */
+    public function mimes(...$values)
+    {
+        $extensions = implode(',', $values);
+
+        return $this->setRule("mimes:$extensions");
     }
 
     /**
@@ -275,6 +414,30 @@ trait IncludeRulesHelpers
     }
 
     /**
+     * @param mixed ...$values
+     * @return mixed
+     */
+    public function notIn(...$values)
+    {
+        if (isset($values[0]) && is_array($values[0])) {
+            return $this->setRule(Rule::notIn($values[0]));
+        }
+
+        $fields = implode(',', $values);
+
+        return $this->setRule("not_in:$fields");
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function notRegex($value)
+    {
+        return $this->setRule("not_regex:/$value/");
+    }
+
+    /**
      * @return Field
      */
     public function nullable()
@@ -282,6 +445,11 @@ trait IncludeRulesHelpers
         $this->disableRules('required');
 
         return $this->setRule('nullable');
+    }
+
+    public function numeric()
+    {
+        return $this->setRule('numeric');
     }
 
     /**
@@ -292,6 +460,15 @@ trait IncludeRulesHelpers
     {
         $this->setAttribute('pattern', $value);
 
+        return $this->regex($value);
+    }
+
+    /**
+     * @param $value
+     * @return mixed
+     */
+    public function regex($value)
+    {
         return $this->setRule("regex:/$value/");
     }
 

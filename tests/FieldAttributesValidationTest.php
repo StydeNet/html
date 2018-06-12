@@ -75,7 +75,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_adds_the_file_rule()
+    function it_adds_the_file_rule_with_the_attribute()
     {
         $field = Field::file('avatar');
 
@@ -91,7 +91,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_adds_the_numeric_rule()
+    function it_adds_the_numeric_rule_with_attribute()
     {
         $field = Field::number('field');
 
@@ -149,7 +149,7 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_adds_the_regex_rule()
     {
-        $field = Field::text('name')->pattern('.{6,}');
+        $field = Field::text('name')->regex('.{6,}');
 
         $this->assertSame(['regex:/.{6,}/'], $field->getValidationRules());
     }
@@ -432,5 +432,149 @@ class FieldAttributesValidationTest extends TestCase
         $field = Field::text('foo')->exists('table', 'column');
 
         return $this->assertSame(['exists:table,column'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_file_rule()
+    {
+        $field = Field::text('foobar')->file();
+
+        return $this->assertSame(['file'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_filled_rule()
+    {
+        $field = Field::text('name')->filled();
+
+        return $this->assertSame(['filled'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_gt_rule()
+    {
+        $field = Field::text('name')->gt('field');
+
+        return $this->assertSame(['gt:field'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_gte_rule()
+    {
+        $field = Field::text('name')->gte('field');
+
+        return $this->assertSame(['gte:field'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_in_rule()
+    {
+        $field = Field::text('name')->in('first-zone', 'second-zone');
+
+        return $this->assertSame(['in:first-zone,second-zone'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_in_array_rule()
+    {
+        $field = Field::text('name')->inArray('value');
+
+        return $this->assertSame(['in_array:value'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_integer_rule()
+    {
+        $field = Field::text('dni')->integer();
+
+        return $this->assertSame(['integer'], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_adds_the_ip_rule()
+    {
+        $field = Field::text('ip')->ip();
+
+        return $this->assertSame(['ip'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_ipv4_rule()
+    {
+        $field = Field::text('ip')->ipv4();
+
+        return $this->assertSame(['ipv4'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_ipv6_rule()
+    {
+        $field = Field::text('ip')->ipv6();
+
+        return $this->assertSame(['ipv6'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_json_rule()
+    {
+        $field = Field::text('data')->json();
+
+        return $this->assertSame(['json'], $field->getValidationRules());
+    }
+    
+    /** @test */
+    function it_adds_the_lt_rule()
+    {
+        $field = Field::text('data')->lt('field');
+
+        return $this->assertSame(['lt:field'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_lte_rule()
+    {
+        $field = Field::text('data')->lte('field');
+
+        return $this->assertSame(['lte:field'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_mimetypes_rule()
+    {
+        $field = Field::text('data')->mimetypes('video/avi', 'video/mpeg');
+
+        return $this->assertSame(['mimetypes:video/avi,video/mpeg'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_mimes_rule()
+    {
+        $field = Field::text('data')->mimes('mp3', 'mp4', 'avi');
+
+        return $this->assertSame(['mimes:mp3,mp4,avi'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_not_in_rule()
+    {
+        $field = Field::text('name')->notIn('first-zone', 'second-zone');
+
+        return $this->assertSame(['not_in:first-zone,second-zone'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_not_regex_rule()
+    {
+        $field = Field::text('name')->notRegex('.{6,}');
+
+        $this->assertSame(['not_regex:/.{6,}/'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_numeric_rule()
+    {
+        $field = Field::text('number')->numeric();
+
+        $this->assertSame(['numeric'], $field->getValidationRules());
     }
 }
