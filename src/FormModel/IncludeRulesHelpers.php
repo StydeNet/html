@@ -73,27 +73,179 @@ trait IncludeRulesHelpers
     /**
      * @return mixed
      */
+    public function bail()
+    {
+        return $this->setRule('bail');
+    }
+
+    /**
+     * @param string $date
+     * @return mixed
+     */
+    public function before(string $date)
+    {
+        return $this->setRule("before:$date");
+    }
+
+    /**
+     * @param string $date
+     * @return mixed
+     */
+    public function beforeOrEqual(string $date)
+    {
+        return $this->setRule("before_or_equal:$date");
+    }
+
+    /**
+     * @param int $min
+     * @param int $max
+     * @return mixed
+     */
+    public function between(int $min, int $max)
+    {
+        return $this->setRule("between:$min,$max");
+    }
+
+    /**
+     * @return mixed
+     */
+    public function boolean()
+    {
+        return $this->setRule('boolean');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function confirmed()
+    {
+        return $this->setRule('confirmed');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function date()
+    {
+        return $this->setRule('date');
+    }
+
+    /**
+     * @param string $date
+     * @return mixed
+     */
+    public function dateEquals(string $date)
+    {
+        return $this->setRule("date_equals:$date");
+    }
+
+    /**
+     * @param string $format
+     * @return mixed
+     */
+    public function dateFormat(string $format)
+    {
+        return $this->setRule("date_format:$format");
+    }
+
+    /**
+     * @param string $field
+     * @return mixed
+     */
+    public function different(string $field)
+    {
+        return $this->setRule("different:$field");
+    }
+
+    /**
+     * @param int $value
+     * @return mixed
+     */
+    public function digits(int $value)
+    {
+        return $this->setRule("digits:$value");
+    }
+
+    /**
+     * @param int $min
+     * @param int $max
+     * @return mixed
+     */
+    public function digitsBetween(int $min, int $max)
+    {
+        return $this->setRule("digits_between:$min,$max");
+    }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    public function dimensions(array $data)
+    {
+        $rule = 'dimensions:';
+
+        foreach ($data as $key => $value) {
+            $rule .= "$key=$value,";
+        }
+
+        return $this->setRule($rule);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function distinct()
+    {
+        return $this->setRule('distinct');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function email()
+    {
+        return $this->setRule('email');
+    }
+
+    /**
+     * @param string $table
+     * @param string|null $column
+     * @return mixed
+     */
+    public function exists(string $table, string $column = null)
+    {
+        if ($column) {
+            return $this->setRule("exists:$table,$column");
+        }
+
+        return $this->setRule("exists:$table");
+    }
+
+    /**
+     * @return mixed
+     */
     public function image()
     {
         return $this->setRule('image');
     }
 
     /**
-     * @param $value
-     * @return Field
+     * @param int $value
+     * @return mixed
      */
-    public function max($value)
+    public function max(int $value)
     {
         $this->setAttribute('max', $value);
 
         return $this->setRule("max:$value");
     }
 
+
     /**
-     * @param $value
-     * @return Field
+     * @param int $value
+     * @return mixed
      */
-    public function maxlength($value)
+    public function maxlength(int $value)
     {
         $this->setAttribute('maxlength', $value);
 
@@ -104,7 +256,7 @@ trait IncludeRulesHelpers
      * @param $value
      * @return Field
      */
-    public function min($value)
+    public function min(int $value)
     {
         $this->setAttribute('min', $value);
 
@@ -115,7 +267,7 @@ trait IncludeRulesHelpers
      * @param $value
      * @return Field
      */
-    public function minlength($value)
+    public function minlength(int $value)
     {
         $this->setAttribute('minlength', $value);
 
