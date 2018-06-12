@@ -413,7 +413,7 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_adds_the_distinct_rule()
     {
-        $field = Field::value('name')->distinct();
+        $field = Field::text('name')->distinct();
 
         return $this->assertSame(['distinct'], $field->getValidationRules());
     }
@@ -424,5 +424,13 @@ class FieldAttributesValidationTest extends TestCase
         $field = Field::text('email')->email();
 
         return $this->assertSame(['email'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_exists_rule()
+    {
+        $field = Field::text('foo')->exists('table', 'column');
+
+        return $this->assertSame(['exists:table,column'], $field->getValidationRules());
     }
 }

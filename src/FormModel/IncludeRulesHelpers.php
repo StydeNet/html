@@ -208,6 +208,20 @@ trait IncludeRulesHelpers
     }
 
     /**
+     * @param string $table
+     * @param string|null $column
+     * @return mixed
+     */
+    public function exists(string $table, string $column = null)
+    {
+        if ($column) {
+            return $this->setRule("exists:$table,$column");
+        }
+
+        return $this->setRule("exists:$table");
+    }
+
+    /**
      * @return mixed
      */
     public function image()
