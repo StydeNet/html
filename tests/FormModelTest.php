@@ -27,6 +27,17 @@ class FormModelTest extends TestCase
 
         $this->assertHtmlEquals('<p>Custom template</p>', $formModel);
     }
+
+    /** @test */
+    function it_returns_all_rules_of_fields()
+    {
+        $rules = app(RegisterForm::class)->getValidationRules();
+
+        $this->assertEmpty($rules['name']);
+        $this->assertEquals(['email', 'unique:users', 'required'], $rules['email']);
+        $this->assertEquals(['confirmed', 'min:6', 'max:12', 'required'], $rules['password']);
+        $this->assertEquals(['min:6', 'max:12', 'required'], $rules['password_confirmation']);
+    }
 }
 
 class LoginForm extends FormModel
@@ -66,5 +77,26 @@ class CustomTemplateForm extends FormModel {
     public function setup(Form $form, FieldCollection $fields, ButtonCollection $buttons)
     {
         // TODO: Implement setup() method.
+    }
+}
+
+class RegisterForm extends FormModel
+{
+    public $method = 'post';
+
+    /**
+     * Setup the form attributes, fields and buttons.
+     *
+     * @param \Styde\Html\Form $form
+     * @param \Styde\Html\FormModel\FieldCollection $fields
+     * @param \Styde\Html\FormModel\ButtonCollection $buttons
+     * @return void
+     */
+    public function setup(Form $form, FieldCollection $fields, ButtonCollection $buttons)
+    {
+        $fields->text('name')->required()->disableRules();
+        $fields->email('email')->unique('users')->required();
+        $fields->password('password')->confirmed()->min(6)->max(12)->required();
+        $fields->password('password_confirmation')->min(6)->max(12)->required();
     }
 }
