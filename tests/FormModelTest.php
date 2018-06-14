@@ -33,10 +33,14 @@ class FormModelTest extends TestCase
     {
         $rules = app(RegisterForm::class)->getValidationRules();
 
-        $this->assertEmpty($rules['name']);
-        $this->assertEquals(['email', 'unique:users', 'required'], $rules['email']);
-        $this->assertEquals(['confirmed', 'min:6', 'max:12', 'required'], $rules['password']);
-        $this->assertEquals(['min:6', 'max:12', 'required'], $rules['password_confirmation']);
+        $expect = [
+            'name' => [],
+            'email' => ['email', 'unique:users', 'required'],
+            'password' => ['confirmed', 'min:6', 'max:12', 'required'],
+            'password_confirmation' => ['min:6', 'max:12', 'required']
+        ];
+
+        $this->assertEquals($expect, $rules);
     }
 }
 
