@@ -4,12 +4,9 @@ namespace Styde\Html;
 
 use Styde\Html\Menu\Menu;
 use Styde\Html\Menu\MenuGenerator;
-use Styde\Html\Access\AccessHandler;
 use Illuminate\Support\ServiceProvider;
 use Styde\Html\Alert\Container as Alert;
-use Styde\Html\Access\BasicAccessHandler;
 use Styde\Html\FormModel\FormMakeCommand;
-use Illuminate\Contracts\Auth\Access\Gate;
 use Styde\Html\Alert\Middleware as AlertMiddleware;
 use Styde\Html\Alert\SessionHandler as AlertSessionHandler;
 
@@ -27,10 +24,7 @@ class HtmlServiceProvider extends ServiceProvider
      * @var \Styde\Html\Theme
      */
     protected $theme;
-    /**
-     * @var AccessHandler
-     */
-    protected $accessHandler = null;
+
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -66,8 +60,6 @@ class HtmlServiceProvider extends ServiceProvider
         $this->registerHtmlBuilder();
 
         $this->registerFormBuilder();
-
-        $this->registerAccessHandler();
 
         $this->registerThemeClass();
 
@@ -112,29 +104,6 @@ class HtmlServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the AccessHandler implementation into the IoC Container.
-     * This package provides a BasicAccessHandler.
-     *
-     * @return \Styde\Html\Access\AccessHandler
-     */
-    protected function registerAccessHandler()
-    {
-        $this->app->singleton('access', function ($app) {
-            $guard = $app['config']->get('html.guard', null);
-            $handler = new BasicAccessHandler($app['auth']->guard($guard));
-
-            $gate = $app->make(Gate::class);
-            if ($gate) {
-                $handler->setGate($gate);
-            }
-
-            return $handler;
-        });
-
-        $this->app->alias('access', AccessHandler::class);
-    }
-
-    /**
      * Register the Form Builder instance.
      */
     protected function registerFormBuilder()
@@ -176,10 +145,6 @@ class HtmlServiceProvider extends ServiceProvider
             $fieldBuilder = new FieldBuilder(
                 $app['form'], $app->make(Theme::class), $app['translator']
             );
-
-            if ($this->options['control_access']) {
-                $fieldBuilder->setAccessHandler($app[AccessHandler::class]);
-            }
 
             if (isset ($this->options['theme_values']['field_templates'])) {
                 $fieldBuilder->setTemplates(
@@ -273,7 +238,6 @@ class HtmlServiceProvider extends ServiceProvider
         return [
             HtmlBuilder::class,
             FormBuilder::class,
-            AccessHandler::class,
             FieldBuilder::class,
             Alert::class,
             AlertMiddleware::class,
