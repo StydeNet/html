@@ -3,14 +3,13 @@
 namespace Styde\Html;
 
 use Styde\Html\FormModel\Field;
-use Styde\Html\Access\VerifyAccess;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Translation\Translator as Lang;
 
 class FieldBuilder
 {
-    use VerifyAccess, Macroable {
+    use Macroable {
         Macroable::__call as macroCall;
     }
 
