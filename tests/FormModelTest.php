@@ -2,9 +2,14 @@
 
 namespace Styde\Html\Tests;
 
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Styde\Html\{Form, FormModel};
-use Illuminate\Support\Facades\{View, Route};
+use Illuminate\Support\Facades\{
+    Gate, View, Route
+};
 use Styde\Html\FormModel\{FieldCollection, ButtonCollection};
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 
 class FormModelTest extends TestCase
 {
@@ -40,7 +45,124 @@ class FormModelTest extends TestCase
             'password_confirmation' => ['min:6', 'max:12', 'required']
         ];
 
-        $this->assertEquals($expect, $rules);
+        $this->assertSame($expect, $rules);
+    }
+
+    /** @test */
+    function it_returns_all_rules_except_the_rules_with_method_ifAuth()
+    {
+        $form = app(PostForm::class);
+
+        $form->fields->email('email')->required();
+        $form->fields->text('description')->required()->ifAuth();
+
+        $expect = [
+            'email' => ['email', 'required']
+        ];
+
+        $this->assertEquals($expect, $form->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_all_rules_except_the_rules_with_method_ifGuest()
+    {
+        $form = app(PostForm::class);
+
+        $fakeUser = new class extends Model implements AuthenticatableInterface {
+            use Authenticatable;
+        };
+
+        $this->actingAs($fakeUser);
+
+        $form->fields->email('email')->required();
+        $form->fields->text('description')->required()->ifGuest();
+
+        $expect = [
+            'email' => ['email', 'required']
+        ];
+
+        $this->assertEquals($expect, $form->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_rules_of_fields_with_method_ifCan()
+    {
+        $form = app(PostForm::class);
+
+        $fakeUser = new class extends Model implements AuthenticatableInterface {
+            use Authenticatable;
+
+            public $key = 1234;
+        };
+
+        $this->actingAs($fakeUser);
+
+        Gate::define('edit-all', function ($user, $key) {
+            return $user->key == $key;
+        });
+
+        $form->fields->email('email')->required();
+        $form->fields->text('description')->required()->ifCan('edit-all', 1234);
+
+        $expect = [
+            'email' => ['email', 'required'],
+            'description' => ['required']
+        ];
+
+        $this->assertEquals($expect, $form->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_rules_of_fields_with_method_ifCannot()
+    {
+        $form = app(PostForm::class);
+
+        $fakeUser = new class extends Model implements AuthenticatableInterface {
+            use Authenticatable;
+        };
+
+        $this->actingAs($fakeUser);
+
+        Gate::define('admin', function ($user) {
+            return false;
+        });
+
+        $form->fields->email('email')->required();
+        $form->fields->text('description')->required()->ifCannot('admin');
+
+        $expect = [
+            'email' => ['email', 'required'],
+            'description' => ['required']
+        ];
+
+        $this->assertEquals($expect, $form->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_rules_of_fields_with_method_ifIs()
+    {
+        $form = app(PostForm::class);
+
+        $fakeUser = new class extends Model implements AuthenticatableInterface {
+            use Authenticatable;
+
+            public function isA($role)
+            {
+                return $role == 'admin';
+            }
+        };
+
+        $this->actingAs($fakeUser);
+
+        $form->fields->email('email')->required();
+        $form->fields->text('description')->required()->ifIs('admin');
+
+        $expect = [
+            'email' => ['email', 'required'],
+            'description' => ['required']
+        ];
+
+        $this->assertEquals($expect, $form->getValidationRules());
     }
 }
 
@@ -102,5 +224,23 @@ class RegisterForm extends FormModel
         $fields->email('email')->unique('users')->required();
         $fields->password('password')->confirmed()->min(6)->max(12)->required();
         $fields->password('password_confirmation')->min(6)->max(12)->required();
+    }
+}
+
+class PostForm extends FormModel
+{
+    public $method = 'post';
+
+    /**
+     * Setup the form attributes, fields and buttons.
+     *
+     * @param \Styde\Html\Form $form
+     * @param \Styde\Html\FormModel\FieldCollection $fields
+     * @param \Styde\Html\FormModel\ButtonCollection $buttons
+     * @return void
+     */
+    public function setup(Form $form, FieldCollection $fields, ButtonCollection $buttons)
+    {
+        //
     }
 }
