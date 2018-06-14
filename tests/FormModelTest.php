@@ -49,7 +49,7 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_all_rules_except_the_rules_with_method_ifAuth()
+    function it_returns_all_rules_except_the_rules_with_ifauth_method()
     {
         $form = app(PostForm::class);
 
@@ -64,7 +64,7 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_all_rules_except_the_rules_with_method_ifGuest()
+    function it_returns_all_rules_except_the_rules_with_ifguest_method()
     {
         $form = app(PostForm::class);
 
@@ -85,7 +85,7 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_rules_of_fields_with_method_ifCan()
+    function it_returns_rules_of_fields_with_ifcan_method()
     {
         $form = app(PostForm::class);
 
@@ -113,7 +113,7 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_rules_of_fields_with_method_ifCannot()
+    function it_returns_rules_of_fields_with_ifcannot_method()
     {
         $form = app(PostForm::class);
 
@@ -139,7 +139,7 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_rules_of_fields_with_method_ifIs()
+    function it_returns_rules_of_fields_with_ifis_method()
     {
         $form = app(PostForm::class);
 
