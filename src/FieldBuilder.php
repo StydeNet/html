@@ -360,10 +360,6 @@ class FieldBuilder
      */
     public function render(Field $field)
     {
-        if (! $this->checkAccess($field->attributes)) {
-            return '';
-        }
-
         $required = $this->getRequired($field->attributes);
 
         $label = $field->label;
