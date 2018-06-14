@@ -44,11 +44,11 @@ class HtmlServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/../themes' => base_path('resources/views/themes'),
-        ]);
+        ], 'styde-html-theme');
 
         $this->publishes([
             __DIR__.'/../config.php' => config_path('html.php'),
-        ]);
+        ], 'styde-html-config');
     }
 
     protected function mergeDefaultConfiguration()
