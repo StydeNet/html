@@ -49,7 +49,7 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_all_rules_except_the_rules_with_ifauth_method()
+    function it_returns_the_rules_that_dont_require_authentication()
     {
         $form = app(PostForm::class);
 
@@ -64,15 +64,11 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_all_rules_except_the_rules_with_ifguest_method()
+    function it_returns_the_rules_that_dont_require_a_guest_user()
     {
         $form = app(PostForm::class);
 
-        $fakeUser = new class extends Model implements AuthenticatableInterface {
-            use Authenticatable;
-        };
-
-        $this->actingAs($fakeUser);
+        $this->actingAs($this->getUser());
 
         $form->fields->email('email')->required();
         $form->fields->text('description')->required()->ifGuest();
@@ -85,24 +81,18 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_rules_of_fields_with_ifcan_method()
+    function it_returns_the_rules_from_fields_with_authorization()
     {
         $form = app(PostForm::class);
 
-        $fakeUser = new class extends Model implements AuthenticatableInterface {
-            use Authenticatable;
+        $this->actingAs($this->getUser());
 
-            public $key = 1234;
-        };
-
-        $this->actingAs($fakeUser);
-
-        Gate::define('edit-all', function ($user, $key) {
-            return $user->key == $key;
+        Gate::define('edit-all', function ($user) {
+            return true;
         });
 
         $form->fields->email('email')->required();
-        $form->fields->text('description')->required()->ifCan('edit-all', 1234);
+        $form->fields->text('description')->required()->ifCan('edit-all');
 
         $expect = [
             'email' => ['email', 'required'],
@@ -113,15 +103,11 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_rules_of_fields_with_ifcannot_method()
+    function it_returns_the_rules_from_fields_withot_authorization()
     {
         $form = app(PostForm::class);
 
-        $fakeUser = new class extends Model implements AuthenticatableInterface {
-            use Authenticatable;
-        };
-
-        $this->actingAs($fakeUser);
+        $this->actingAs($this->getUser());
 
         Gate::define('admin', function ($user) {
             return false;
