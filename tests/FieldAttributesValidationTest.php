@@ -2,6 +2,7 @@
 
 namespace Styde\Html\Tests;
 
+use Illuminate\Support\Facades\Gate;
 use Styde\Html\Facades\Field;
 use Illuminate\Validation\Rules\Exists;
 
@@ -632,5 +633,59 @@ class FieldAttributesValidationTest extends TestCase
         $field = Field::text('page')->url();
 
         $this->assertSame(['url'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_delete_all_rules_when_call_ifis_method_and_not_pass()
+    {
+        $field = Field::text('name')->required()->ifIs('foobar');
+
+        $this->assertSame([], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_delete_all_rules_when_call_ifguest_method_and_not_pass()
+    {
+        $this->actingAs($this->getUser());
+
+        $field = Field::text('name')->required()->ifGuest();
+
+        $this->assertSame([], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_delete_all_rules_when_call_ifauth_method_and_not_pass()
+    {
+        $field = Field::text('name')->required()->ifAuth();
+
+        $this->assertSame([], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_delete_all_rules_when_call_ifcan_method_and_not_pass()
+    {
+        $this->actingAs($this->getUser());
+
+        Gate::define('edit-all', function ($user) {
+            return false;
+        });
+
+        $field = Field::text('name')->required()->ifCan('edit-all');
+
+        $this->assertSame([], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_delete_all_rules_when_call_ifcannot_method_and_not_pass()
+    {
+        $this->actingAs($this->getUser());
+
+        Gate::define('edit-all', function ($user) {
+            return true;
+        });
+
+        $field = Field::text('name')->required()->ifCannot('edit-all');
+
+        $this->assertSame([], $field->getValidationRules());
     }
 }
