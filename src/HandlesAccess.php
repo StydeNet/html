@@ -31,10 +31,6 @@ trait HandlesAccess
 
     public function ifCan($ability, $arguments = [])
     {
-        if ($this->rules && ! Gate::allows($ability, $arguments)) {
-            $this->rules = [];
-        }
-
         return $this->includeIf(Gate::allows($ability, $arguments));
     }
 

@@ -4,6 +4,9 @@ namespace Styde\Html\Tests;
 
 use Styde\Html\Facades\Field;
 use Illuminate\Support\MessageBag;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 
 class FieldBuilderTest extends TestCase
 {
@@ -127,5 +130,13 @@ class FieldBuilderTest extends TestCase
         $this->assertTemplateMatches(
             'field/radios', Field::radios('gender', ['m' => 'Male', 'f' => 'Female'], 'm')
         );
+    }
+
+    /** @test */
+    function it_not_render_if_not_pass_ifis_method()
+    {
+        $field = Field::text('name')->required()->ifIs('foo-bar');
+
+        $this->assertSame(null, $field->render());
     }
 }
