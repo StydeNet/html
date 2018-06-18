@@ -2,11 +2,9 @@
 
 namespace Styde\Html\Tests;
 
+use Illuminate\Support\Facades\Gate;
 use Styde\Html\Facades\Field;
 use Illuminate\Support\MessageBag;
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 
 class FieldBuilderTest extends TestCase
 {
@@ -136,6 +134,52 @@ class FieldBuilderTest extends TestCase
     function it_not_render_if_not_pass_ifis_method()
     {
         $field = Field::text('name')->required()->ifIs('foo-bar');
+
+        $this->assertSame(null, $field->render());
+    }
+
+    /** @test */
+    function it_not_render_if_not_pass_ifguest_method()
+    {
+        $this->actingAs($this->getUser());
+
+        $field = Field::text('name')->required()->ifGuest();
+
+        $this->assertSame(null, $field->render());
+    }
+
+    /** @test */
+    function it_not_render_if_not_pass_ifauth_method()
+    {
+        $field = Field::text('name')->required()->ifAuth();
+
+        $this->assertSame(null, $field->render());
+    }
+
+    /** @test */
+    function it_not_render_if_not_pass_ifcan_method()
+    {
+        $this->actingAs($this->getUser());
+
+        Gate::define('edit-all', function ($user) {
+            return false;
+        });
+
+        $field = Field::text('name')->required()->ifCan('edit-all');
+
+        $this->assertSame(null, $field->render());
+    }
+
+    /** @test */
+    function it_not_render_if_not_pass_ifcannot_method()
+    {
+        $this->actingAs($this->getUser());
+
+        Gate::define('edit-all', function ($user) {
+            return true;
+        });
+
+        $field = Field::text('name')->required()->ifCannot('edit-all');
 
         $this->assertSame(null, $field->render());
     }
