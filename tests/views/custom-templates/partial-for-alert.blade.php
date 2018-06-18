@@ -1,0 +1,1 @@
+<p>Alert partial</p>

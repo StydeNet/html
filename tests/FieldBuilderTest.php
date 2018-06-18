@@ -2,9 +2,10 @@
 
 namespace Styde\Html\Tests;
 
-use Illuminate\Support\Facades\Gate;
 use Styde\Html\Facades\Field;
 use Illuminate\Support\MessageBag;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\View;
 
 class FieldBuilderTest extends TestCase
 {
@@ -168,7 +169,7 @@ class FieldBuilderTest extends TestCase
         $field = Field::text('name')->required()->ifCan('edit-all');
 
         $this->assertSame(null, $field->render());
-    }
+    } 
 
     /** @test */
     function it_not_render_if_not_pass_ifcannot_method()
@@ -181,6 +182,16 @@ class FieldBuilderTest extends TestCase
 
         $field = Field::text('name')->required()->ifCannot('edit-all');
 
-        $this->assertSame(null, $field->render());
+        $this->assertSame(null, $field->render()); 
+    }
+  
+    function can_customize_the_template()
+    {
+        View::addLocation(__DIR__.'/views');
+
+        $field = Field::text('name', 'value')->template('custom-templates.field-text');
+
+        $this->assertInstanceOf(\Styde\Html\FormModel\Field::class, $field);
+        $this->assertTemplateMatches('field/text-custom-template', $field);
     }
 }
