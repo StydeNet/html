@@ -142,13 +142,7 @@ class Container
             $messages[] = $message->raw();
         }
 
-        $previousMessages = $this->handler->getPreviousMessages();
-
-        if (is_array($previousMessages)) {
-            return array_merge($previousMessages, $messages);
-        }
-
-        return $messages;
+        return array_merge($this->handler->getPreviousMessages(), $messages);
     }
 
     /**
@@ -211,5 +205,4 @@ class Container
 
         return $messages;
     }
-
 }

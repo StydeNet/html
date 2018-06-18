@@ -2,6 +2,7 @@
 
 namespace Styde\Html\Tests;
 
+use Illuminate\Support\Facades\View;
 use Styde\Html\Facades\Alert;
 
 class AlertTest extends TestCase
@@ -39,5 +40,43 @@ class AlertTest extends TestCase
             ->button('Take me to your leader', 'http://google.com', 'info');
 
         $this->assertTemplateMatches('alert/complex', Alert::render());
+    }
+
+    /** @test */
+    function can_customize_the_template()
+    {
+        View::addLocation(__DIR__.'/views');
+
+        Alert::message('This is a message', 'info');
+
+        $this->assertTemplateMatches('alert/custom-template', Alert::render('custom-templates.alert'));
+    }
+
+    /** @test */
+    function it_can_render_view_inside_the_alert()
+    {
+        View::addLocation(__DIR__.'/views');
+
+        Alert::info()->view('custom-templates.partial-for-alert');
+
+        $this->assertTemplateMatches('alert/with-partial-view', Alert::render());
+    }
+
+    /** @test */
+    function it_returns_raw_messages()
+    {
+        Alert::info('This is a info');
+        Alert::message('This is a message');
+
+        $this->assertEquals([
+            [
+                'message' => 'This is a info',
+                'type' => 'info'
+            ],
+            [
+                'message' => 'This is a message',
+                'type' => 'success'
+            ]
+        ], Alert::toArray());
     }
 }
