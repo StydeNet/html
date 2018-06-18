@@ -12,6 +12,10 @@ trait HandlesAccess
     {
         $this->included = $value;
 
+        if (! $this->included && isset($this->rules)) {
+            $this->disableRules();
+        }
+
         return $this;
     }
 
