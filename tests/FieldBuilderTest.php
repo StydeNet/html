@@ -2,8 +2,9 @@
 
 namespace Styde\Html\Tests;
 
-use Styde\Html\Facades\Field;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\MessageBag;
+use Styde\Html\Facades\Field;
 
 class FieldBuilderTest extends TestCase
 {
@@ -127,5 +128,16 @@ class FieldBuilderTest extends TestCase
         $this->assertTemplateMatches(
             'field/radios', Field::radios('gender', ['m' => 'Male', 'f' => 'Female'], 'm')
         );
+    }
+
+    /** @test */
+    function can_customize_the_template()
+    {
+        View::addLocation(__DIR__.'/views');
+
+        $field = Field::text('name', 'value')->template('custom-templates.field-text');
+
+        $this->assertInstanceOf(\Styde\Html\FormModel\Field::class, $field);
+        $this->assertTemplateMatches('field/text-custom-template', $field);
     }
 }
