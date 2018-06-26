@@ -2,10 +2,10 @@
 
 namespace Styde\Html;
 
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Support\HtmlString;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Traits\Macroable;
+use Illuminate\Contracts\Routing\UrlGenerator;
 
 class HtmlBuilder
 {
@@ -114,6 +114,12 @@ class HtmlBuilder
         }
     }
 
+    /**
+     * It checks if it is an void element
+     *
+     * @param string $tag
+     * @return bool
+     */
     public function isVoidElement($tag)
     {
         return in_array($tag, [
@@ -122,6 +128,11 @@ class HtmlBuilder
         ]);
     }
 
+    /**
+     * @param $method
+     * @param array $parameters
+     * @return HtmlString|mixed
+     */
     public function __call($method, array $parameters)
     {
         if (static::hasMacro($method)) {

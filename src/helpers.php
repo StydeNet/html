@@ -5,6 +5,10 @@
  */
 
 if (! function_exists('html')) {
+
+    /**
+     * @return \Illuminate\Foundation\Application|mixed
+     */
     function html()
     {
         return app('html');
@@ -12,6 +16,9 @@ if (! function_exists('html')) {
 }
 
 if (! function_exists('form')) {
+    /**
+     * @return \Illuminate\Foundation\Application|mixed
+     */
     function form()
     {
         return app('form');
