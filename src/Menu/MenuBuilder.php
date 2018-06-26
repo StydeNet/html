@@ -4,10 +4,9 @@ namespace Styde\Html\Menu;
 
 use Closure;
 use Styde\Html\Theme;
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Contracts\Routing\UrlGenerator;
 
-class MenuBuilder implements Htmlable
+class MenuBuilder
 {
     use BuildsItems;
 
@@ -24,6 +23,10 @@ class MenuBuilder implements Htmlable
     protected $activeUrlResolver;
 
     public $items = [];
+
+    /**
+     * @var \Styde\Html\Menu\Item
+     */
     public $parent;
 
     /**
@@ -31,8 +34,18 @@ class MenuBuilder implements Htmlable
      */
     public $url;
 
+    /**
+     * @var \Styde\Html\Menu\Menu
+     */
     protected $currentMenu;
 
+    /**
+     * Create a Menu Builder class
+     *
+     * @param \Illuminate\Contracts\Routing\UrlGenerator $url
+     * @param \Styde\Html\Theme $theme
+     * @param Closure $activeUrlResolver
+     */
     public function __construct(UrlGenerator $url, Theme $theme, Closure $activeUrlResolver)
     {
         $this->url = $url;
@@ -40,7 +53,14 @@ class MenuBuilder implements Htmlable
         $this->activeUrlResolver = $activeUrlResolver;
     }
 
-    public function build($config, $parent = null)
+    /**
+     * Build a Menu
+     *
+     * @param  Closure $config
+     * @param  \Styde\Html\Menu\Item $parent
+     * @return \Styde\Html\Menu\Menu
+     */
+    public function build(Closure $config, $parent = null)
     {
         $this->parent = $parent;
 
@@ -63,47 +83,12 @@ class MenuBuilder implements Htmlable
         $this->activeUrlResolver = $closure;
     }
 
-    public function raw(string $url, string $text)
-    {
-        return $this->add($url, $text);
-    }
-
-    public function url(string $path, $text, $extra = [], $secure = false)
-    {
-        return $this->add($this->url->to($path, $extra, $secure), $text);
-    }
-
-    public function secureUrl(string $path, $text, $extra = [])
-    {
-        return $this->url($path, $text, $extra, true);
-    }
-
-    public function route(string $route, $text, $parameters = [])
-    {
-        return $this->add($this->url->route($route, $parameters), $text);
-    }
-
-    public function action(string $action, $text, $parameters = [])
-    {
-        return $this->add($this->url->action($action, $parameters), $text);
-    }
-
-    public function placeholder($text)
-    {
-        return $this->add('#', $text);
-    }
-
-    public function submenu($text, Closure $setup)
-    {
-        return $this->add('#', $text)->submenu($setup);
-    }
-
     /**
      * Add a menu item.
      *
      * @param string $url
      * @param string $text
-     * @return Item
+     * @return \Styde\Html\Menu\Item
      */
     public function add(string $url, string $text): Item
     {
@@ -167,15 +152,5 @@ class MenuBuilder implements Htmlable
     protected function isActive(Item $item)
     {
         return ($this->activeUrlResolver)($item);
-    }
-
-    /**
-     * Get content as a string of HTML.
-     *
-     * @return string
-     */
-    public function toHtml()
-    {
-        return $this->render();
     }
 }

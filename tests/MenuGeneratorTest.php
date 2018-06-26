@@ -2,12 +2,12 @@
 
 namespace Styde\Html\Tests;
 
-use Styde\Html\Facades\Menu;
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\{Auth, Gate, Route, View};
-use Styde\Html\Menu\{ItemBuilder, MenuBuilder, MenuComposer};
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
+use Styde\Html\Facades\Menu;
+use Styde\Html\Menu\{MenuBuilder, MenuComposer, Item};
 
 class MenuGeneratorTest extends TestCase
 {
@@ -23,6 +23,18 @@ class MenuGeneratorTest extends TestCase
 
         $this->assertInstanceOf(\Styde\Html\Menu\Menu::class, $menu);
         $this->assertTemplateMatches('menu/menu', $menu);
+    }
+
+    /** @test */
+    function it_render_menus_with_additional_classes()
+    {
+        $menu = Menu::make(function ($items) {
+            $items->url('/', 'Home');
+            $items->url('contact-us', 'Contact us');
+        })->setClass('nav other css classes');
+
+        $this->assertInstanceOf(\Styde\Html\Menu\Menu::class, $menu);
+        $this->assertTemplateMatches('menu/menu-classes', $menu);
     }
 
     /** @test */
@@ -224,21 +236,21 @@ class MenuGeneratorTest extends TestCase
     /** @test */
     function menu_items_can_have_extra_attributes()
     {
-        $builder = new ItemBuilder('path', 'text');
+        $item = new Item('path', 'text');
 
-        $builder->target('_blank');
+        $item->target('_blank');
 
-        return $this->assertSame('_blank', $builder->getItem()->target);
+        return $this->assertSame('_blank', $item->getItem()->target);
     }
 
     /** @test */
     function menu_items_can_have_extra_classes()
     {
-        $builder = new ItemBuilder('path', 'text');
+        $item = new Item('path', 'text');
 
-        $builder->classes(['font-weight-bold', 'text-primary']);
+        $item->classes(['font-weight-bold', 'text-primary']);
 
-        return $this->assertSame('font-weight-bold text-primary', $builder->getItem()->class->toHtml());
+        return $this->assertSame('font-weight-bold text-primary', $item->getItem()->class->toHtml());
     }
 
     /** @test */
