@@ -2,6 +2,7 @@
 
 namespace Styde\Html\Menu;
 
+use Closure;
 use Illuminate\Contracts\Support\Htmlable;
 
 class Menu implements Htmlable
@@ -10,6 +11,13 @@ class Menu implements Htmlable
      * @var \Styde\Html\Theme
      */
     protected $theme;
+
+    /**
+     * Default CSS class(es) for the menu
+     *
+     * @var string
+     */
+    protected $class = 'nav';
 
     /**
      * @var array
@@ -40,6 +48,19 @@ class Menu implements Htmlable
     }
 
     /**
+     * Set the main CSS class(es) for this menu.
+     * If you want to pass more than one CSS class divide them with spaces.
+     *
+     * @param string $value
+     * @return \Styde\Html\Menu\Menu $this
+     */
+    public function setClass($value)
+    {
+        $this->class = $value;
+        return $this;
+    }
+
+    /**
      * Renders the menu as an HTML string.
      *
      * @return string
@@ -48,7 +69,7 @@ class Menu implements Htmlable
     {
         $data = [
             'items' => $this->items,
-            'class' => 'nav',
+            'class' => $this->class,
         ];
 
         return $this->theme->render($this->template, $data, 'menu');

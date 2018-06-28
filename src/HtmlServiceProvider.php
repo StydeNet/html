@@ -2,13 +2,14 @@
 
 namespace Styde\Html;
 
-use Styde\Html\Menu\Menu;
-use Styde\Html\Menu\MenuGenerator;
 use Illuminate\Support\ServiceProvider;
 use Styde\Html\Alert\Container as Alert;
-use Styde\Html\FormModel\FormMakeCommand;
 use Styde\Html\Alert\Middleware as AlertMiddleware;
 use Styde\Html\Alert\SessionHandler as AlertSessionHandler;
+use Styde\Html\FormModel\FormMakeCommand;
+use Styde\Html\Menu\Menu;
+use Styde\Html\Menu\MenuGenerator;
+use Styde\Html\Menu\MenuMakeCommand;
 
 class HtmlServiceProvider extends ServiceProvider
 {
@@ -163,6 +164,7 @@ class HtmlServiceProvider extends ServiceProvider
     public function registerMakeFormCommand()
     {
         $this->commands(FormMakeCommand::class);
+        $this->commands(MenuMakeCommand::class);
     }
 
     /**

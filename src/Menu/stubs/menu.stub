@@ -1,0 +1,19 @@
+<?php
+
+namespace DummyRootNamespaceHttp\Menus;
+
+use Styde\Html\Menu\MenuBuilder;
+use Styde\Html\Menu\MenuComposer;
+
+class DummyClass extends MenuComposer
+{
+    /**
+     * Use this method to add items to your menu
+     *
+     * @param  \Styde\Html\Menu\MenuBuilder $items
+     */
+    public function compose(MenuBuilder $items)
+    {
+        // add items
+    }
+}

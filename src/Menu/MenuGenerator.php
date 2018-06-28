@@ -70,13 +70,9 @@ class MenuGenerator
      * @param string $classes main CSS classes for the menu
      * @return Menu
      */
-    public function make(Closure $config, $classes = '')
+    public function make(Closure $config)
     {
         $menu = new MenuBuilder($this->url, $this->theme, $this->activeUrlResolver);
-
-        if ($classes != '') {
-            $menu->setClass($classes);
-        }
 
         return $menu->build($config);
     }
