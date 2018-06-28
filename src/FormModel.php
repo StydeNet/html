@@ -19,7 +19,7 @@ abstract class FormModel implements Htmlable
     protected $theme;
 
     /**
-     * @var array|\Illuminate\Database\Eloquent\Model
+     * @var \Illuminate\Database\Eloquent\Model
      */
     protected $model;
 
@@ -42,6 +42,14 @@ abstract class FormModel implements Htmlable
 
     public $customTemplate;
 
+    /**
+     * Form Model constructor.
+     *
+     * @param FormBuilder $formBuilder
+     * @param FieldCollection $fields
+     * @param ButtonCollection $buttons
+     * @param Theme $theme
+     */
     public function __construct(FormBuilder $formBuilder, FieldCollection $fields, ButtonCollection $buttons, Theme $theme)
     {
         $this->formBuilder = $formBuilder;
@@ -55,6 +63,8 @@ abstract class FormModel implements Htmlable
     }
 
     /**
+     * Get Method
+     *
      * @return string
      */
     public function method()
@@ -72,6 +82,12 @@ abstract class FormModel implements Htmlable
      */
     abstract public function setup(Form $form, FieldCollection $fields, ButtonCollection $buttons);
 
+    /**
+     * Set a new custom template
+     *
+     * @param string $template
+     * @return $this
+     */
     public function template($template)
     {
         $this->customTemplate = $template;
@@ -79,17 +95,33 @@ abstract class FormModel implements Htmlable
         return $this;
     }
 
+    /**
+     * Set a new Model
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @return $this
+     */
     public function model($model)
     {
         $this->model = $model;
+
         return $this;
     }
 
+    /**
+     * Render all form to Html
+     *
+     * @return string
+     */
     public function toHtml()
     {
         return $this->render();
     }
 
+    /**
+     * @param string|null $customTemplate
+     * @return string
+     */
     public function render($customTemplate = null)
     {
         return $this->theme->render($customTemplate ?: $this->customTemplate, [
@@ -99,11 +131,22 @@ abstract class FormModel implements Htmlable
         ], 'form');
     }
 
+    /**
+     * Validate the request with the validation rules specified
+     *
+     * @param Request|null $request
+     * @return mixed
+     */
     public function validate(Request $request = null)
     {
         return ($request ?: request())->validate($this->getValidationRules());
     }
 
+    /**
+     * Get all rules of validation
+     *
+     * @return array
+     */
     public function getValidationRules()
     {
         $rules = [];

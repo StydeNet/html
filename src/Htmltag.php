@@ -7,8 +7,21 @@ use Illuminate\Contracts\Support\Htmlable;
 
 class Htmltag extends BaseTag
 {
+
+    /**
+     * Attributes of the tag
+     *
+     * @var array|string
+     */
     protected $content = [];
 
+    /**
+     * Htmltag constructor.
+     *
+     * @param string $tag
+     * @param string $content
+     * @param array $attributes
+     */
     public function __construct($tag, $content = '', array $attributes = [])
     {
         parent::__construct($tag, $attributes);
@@ -16,11 +29,19 @@ class Htmltag extends BaseTag
         $this->content = $content;
     }
 
+    /**
+     * Add content
+     *
+     * @param Htmlable $child
+     */
     public function add(Htmlable $child)
     {
         $this->content[] = $child;
     }
 
+    /**
+     * @return HtmlString
+     */
     public function render()
     {
         return new HtmlString(
@@ -30,16 +51,29 @@ class Htmltag extends BaseTag
         );
     }
 
+    /**
+     * Open tag
+     *
+     * @return HtmlString
+     */
     public function open()
     {
         return new HtmlString('<'.$this->tag.$this->renderAttributes().'>');
     }
 
+    /**
+     * Close tag
+     *
+     * @return HtmlString
+     */
     public function close()
     {
         return new HtmlString('</'.$this->tag.'>');
     }
 
+    /**
+     * @return string
+     */
     public function renderContent()
     {
         $result = '';
@@ -51,6 +85,10 @@ class Htmltag extends BaseTag
         return $result;
     }
 
+    /**
+     * @param string $name
+     * @return mixed
+     */
     public function __get($name)
     {
         if (isset ($this->content[$name])) {

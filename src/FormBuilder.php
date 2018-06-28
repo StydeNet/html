@@ -6,7 +6,6 @@ use Styde\Html\Form\Input;
 use Styde\Html\Form\HiddenInput;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Contracts\Routing\UrlGenerator;
 
 class FormBuilder

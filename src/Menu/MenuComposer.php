@@ -9,6 +9,11 @@ abstract class MenuComposer implements Htmlable
 {
     protected $template = null;
 
+    /**
+     * Render Menu in Html
+     *
+     * @return string
+     */
     public function toHtml()
     {
         $menu = Menu::make(function (MenuBuilder $items) {
@@ -20,5 +25,9 @@ abstract class MenuComposer implements Htmlable
         return $menu->toHtml();
     }
 
+    /**
+     * @param MenuBuilder $items
+     * @return mixed
+     */
     abstract public function compose(MenuBuilder $items);
 }

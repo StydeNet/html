@@ -20,6 +20,14 @@ class Link
     protected $attributes;
     protected $secure = false;
 
+    /**
+     * Link constructor.
+     * @param HtmlBuilder $htmlBuilder
+     * @param string $url
+     * @param string $title
+     * @param array $attributes
+     * @param bool $secure
+     */
     public function __construct(HtmlBuilder $htmlBuilder, $url, $title, array $attributes = array(), $secure = false)
     {
         $this->htmlBuilder = $htmlBuilder;
@@ -30,11 +38,17 @@ class Link
         $this->secure = $secure;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return (string) $this->render();
     }
 
+    /**
+     * @param bool $secure
+     */
     public function secure($secure = true)
     {
         $this->secure = $secure;

@@ -4,22 +4,46 @@ namespace Styde\Html\FormModel;
 
 trait HasAttributes
 {
-    public function __call($method, $params)
+    /**
+     * @param $method
+     * @param array $params
+     * @return HasAttributes
+     */
+    public function __call($method, array $params)
     {
         return $this->attr($method, isset($params[0]) ? $params[0] : true);
     }
 
+    /**
+     * Set attribute id
+     *
+     * @param $id
+     * @return HasAttributes
+     */
     public function id($id)
     {
         return $this->attributes('id', $id);
     }
 
+    /**
+     * Set attribute class
+     *
+     * @param array $classes
+     * @return HasAttributes
+     */
     public function classes($classes)
     {
         return $this->attributes('class', $classes);
     }
 
-    public function attr($attributes, $value = true)
+    /**
+     * Set a new attribute in the field and set all rules of the attributes
+     *
+     * @param array|string $attributes
+     * @param string|null $value
+     * @return $this
+     */
+    public function attr($attributes, $value = null)
     {
         if (is_array($attributes)) {
             $this->attributes = array_merge($this->attributes, $attributes);
@@ -32,11 +56,22 @@ trait HasAttributes
         return $this;
     }
 
+    /**
+     * Check if have attribute
+     *
+     * @param $name
+     * @return bool
+     */
     public function hasAttribute($name)
     {
         return in_array($name, $this->attributes);
     }
 
+    /**
+     * @param string|array $attributes
+     * @param bool $value
+     * @return HasAttributes
+     */
     public function attributes($attributes, $value = true)
     {
         return $this->attr($attributes, $value);
