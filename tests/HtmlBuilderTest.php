@@ -2,8 +2,9 @@
 
 namespace Styde\Html\Tests;
 
-use Styde\Html\Htmltag;
+use Illuminate\Support\Facades\Route;
 use Styde\Html\Facades\Html;
+use Styde\Html\Htmltag;
 
 class HtmlBuilderTest extends TestCase
 {
@@ -53,6 +54,68 @@ class HtmlBuilderTest extends TestCase
         $this->assertHtmlEquals(
             '<a href="http://localhost/url">Text</a>',
             Html::link('url', 'Text')
+        );
+    }
+
+    /** @test */
+    function it_generates_a_secure_link()
+    {
+        $this->assertHtmlEquals(
+            '<a href="https://localhost/url">Text</a>',
+            Html::Securelink('url', 'Text')
+        );
+    }
+
+    /** @test */
+    function it_generates_links_with_addtional_attributes()
+    {
+        $this->assertHtmlEquals(
+            '<a target="_blank" href="http://localhost/url">Text</a>',
+            Html::link('url', 'Text', ['target' => '_blank'])
+        );
+    }
+
+    /** @test */
+    function it_generates_links_from_css_style()
+    {
+        $this->assertHtmlEquals(
+            '<link type="text/css" rel="stylesheet" href="http://localhost/css/app.css">',
+            Html::style('css/app.css')
+        );
+    }
+
+    /** @test */
+    function it_generates_link_from_javascrip()
+    {
+        $this->assertHtmlEquals(
+            '<script src="http://localhost/js/app.js"></script>',
+            Html::script('js/app.js')
+        );
+    }
+
+    /** @test */
+    function it_generates_link_from_asset()
+    {
+        $this->assertHtmlEquals(
+            '<a href="http://localhost/user/avatar">Avatar</a>',
+            Html::linkAsset('user/avatar', 'Avatar')
+        );
+    }
+
+    /** @test */
+    function it_generates_link_from_a_route()
+    {
+        Route::get('dashboard', ['as' => 'dashboard']);
+        Route::get('edit/{page}', ['as' => 'pages.edit']);
+
+        $this->assertHtmlEquals(
+            '<a href="http://localhost/dashboard">Control Panel</a>',
+            Html::linkRoute('dashboard', 'Control Panel')
+        );
+
+        $this->assertHtmlEquals(
+            '<a href="http://localhost/edit/profile">Edit profile</a>',
+            Html::linkRoute('pages.edit', 'Edit profile', ['profile'])
         );
     }
 

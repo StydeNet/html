@@ -75,23 +75,6 @@ class HtmlBuilder
     }
 
     /**
-     * Generate a HTML link.
-     *
-     * @param string $url
-     * @param string $title
-     * @param array $attributes
-     * @param bool $secure
-     *
-     * @return \Illuminate\Support\HtmlString
-     */
-    public function link($url, $title = null, $attributes = [], $secure = null)
-    {
-        $attributes['href'] = $this->url->to($url, [], $secure);
-
-        return new Htmltag('a', $title ?: $url, $attributes);
-    }
-
-    /**
      * Generate an html tag.
      *
      * @param string $tag
@@ -126,6 +109,117 @@ class HtmlBuilder
             'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input',
             'keygen', 'link', 'menuitem', 'meta', 'param', 'source', 'track', 'wbr'
         ]);
+    }
+
+    /**
+     * Generate an HTML link.
+     *
+     * @param string $url
+     * @param string $title
+     * @param array $attributes
+     * @param bool $secure
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function link($url, $title = null, $attributes = [], $secure = null)
+    {
+        $attributes['href'] = $this->url->to($url, [], $secure);
+
+        return new Htmltag('a', $title ?: $url, $attributes);
+    }
+
+    /**
+     * Generate an HTTPS HTML link.
+     *
+     * @param string $url
+     * @param string $title
+     * @param array $attributes
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function secureLink($url, $title = null, $attributes = [])
+    {
+        return $this->link($url, $title, $attributes, true);
+    }
+
+    /**
+     * Generate an HTML link from a route
+     *
+     * @param  string $url
+     * @param  string $title
+     * @param  array $parameters
+     * @param  array $attributes
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function linkRoute($url, $title = null, $parameters = [], $attributes = [])
+    {
+        return $this->link($this->url->route($url, $parameters), $title, $attributes);
+    }
+
+    /**
+     * Generate an HTML link from an asset
+     *
+     * @param  string $url
+     * @param  string $title
+     * @param  array $attributes
+     * @param  bool $secure
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function linkAsset($url, $title = null, $attributes = [], $secure = null)
+    {
+        return $this->link($this->url->asset($url, $secure), $title, $attributes);
+    }
+
+    /**
+     * Generate an HTTPS HTML link from an asset
+     *
+     * @param  string $url
+     * @param  string $title
+     * @param  array $attributes
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function linkSecureAsset($url, $title = null, $attributes = [])
+    {
+        return $this->linkAsset($url, $title, $attributes, true);
+    }
+
+    /**
+     * Generate an CSS stylesheet link
+     *
+     * @param  string $url
+     * @param  array  $attributes
+     * @param  bool $secure
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function style($url, $attributes = [], $secure = null)
+    {
+        $defaults = ['type' => 'text/css', 'rel' => 'stylesheet'];
+
+        $attributes = array_merge($defaults, $attributes);
+
+        $attributes['href'] = $this->url->asset($url, $secure);
+
+        return new VoidTag('link', $attributes);
+    }
+
+    /**
+     * Generate a Javascript link
+     *
+     * @param  string $url
+     * @param  array  $attributes
+     * @param  bool $secure
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
+    public function script($url, $attributes = [], $secure = null)
+    {
+        $attributes['src'] = $this->url->asset($url, $secure);
+
+        return new Htmltag('script', null, $attributes);
     }
 
     /**
