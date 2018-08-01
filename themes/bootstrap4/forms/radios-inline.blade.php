@@ -1,7 +1,7 @@
 @php
-    $class = 'form-check-input';
+    $classes = 'form-check-input';
     if ($hasErrors) {
-        $class .= ' is-invalid';
+        $classes .= ' is-invalid';
     }
 @endphp
 @foreach($radios as $radio)
