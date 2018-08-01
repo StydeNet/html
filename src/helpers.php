@@ -41,25 +41,26 @@ if (! function_exists('alert')) {
      * @param array $args
      * @return string
      */
-    function alert($message = '', $type = 'success', $args = []) {
+    function alert($message = '', $type = 'success', $args = [])
+    {
         return app('alert')->message($message, $type, $args);
     }
 }
 
-if(! function_exists('menu')) {
+if (! function_exists('menu')) {
     /**
      * Generates a new menu (alias of Menu::make)
      *
-     * @param $items
-     * @param string|null $classes
+     * @param \Closure $items
      * @return string
      */
-    function menu($items, $classes = null) {
-        return app('menu')->make($items, $classes);
+    function menu(Closure $items)
+    {
+        return app('menu')->make($items);
     }
 }
 
-if(! function_exists('html_classes')) {
+if (! function_exists('html_classes')) {
     /**
      * Builds an HTML class attribute dynamically.
      *
