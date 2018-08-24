@@ -7,7 +7,7 @@ Este paquete contiene una colección de clases de PHP Laravel diseñado para gen
 * Form fields
 * Colección de radios y checkboxes
 
-Éste es una extensión del [paquete HTML de Laravel Collective](https://github.com/laravelcollective/html) y será útil si estás trabajando en un CMS personalizado, un panel de administración o básicamente cualquier proyecto que necesite generar HTML dinámicamente.
+Ésta es una extensión del [paquete HTML de Laravel Collective](https://github.com/laravelcollective/html) y será útil si estás trabajando en un CMS personalizado, un panel de administración o básicamente cualquier proyecto que necesite generar HTML dinámicamente.
 
 ## Cómo instalar 
 
