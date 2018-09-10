@@ -7,11 +7,23 @@ Este paquete contiene una colección de clases de PHP Laravel diseñado para gen
 * Form fields
 * Colección de radios y checkboxes
 
-Éste es una extensión del [paquete HTML de Laravel Collective](https://github.com/laravelcollective/html) y será útil si estás trabajando en un CMS personalizado, un panel de administración o básicamente cualquier proyecto que necesite generar HTML dinámicamente.
+Styde Html es una extensión del [paquete HTML de Laravel Collective](https://github.com/laravelcollective/html) y será útil si estás trabajando en un CMS personalizado, un panel de administración o básicamente cualquier proyecto que necesite generar HTML dinámicamente.
 
 ## Cómo instalar 
 
 1. La mejor forma de instalar este paquete es a través de Composer.
+
+**Para Laravel 5.7**:
+
+Instala ejecutando `composer require "styde/html=~1.6"` o agregando `"styde/html": "~1.6"` a tu archivo `composer.json` y luego ejecuta `composer update`.
+
+**Para Laravel 5.6**:
+
+Instala ejecutando `composer require "styde/html=~1.5"` o agregando `"styde/html": "~1.5"` a tu archivo `composer.json` y luego ejecuta `composer update`.
+
+**Para Laravel 5.5**:
+
+Instala ejecutando `composer require "styde/html=~1.4"` o agregando `"styde/html": "~1.4"` a tu archivo `composer.json` y luego ejecuta `composer update`.
 
 **Para Laravel 5.4**:
 
