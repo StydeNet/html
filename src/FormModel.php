@@ -53,13 +53,34 @@ abstract class FormModel implements Htmlable
     public function __construct(FormBuilder $formBuilder, FieldCollection $fields, ButtonCollection $buttons, Theme $theme)
     {
         $this->formBuilder = $formBuilder;
-        $this->theme = $theme;
-
-        $this->form = $formBuilder->make($this->method());
         $this->fields = $fields;
         $this->buttons = $buttons;
 
-        $this->setup($this->form, $this->fields, $this->buttons);
+        $this->theme = $theme;
+    }
+
+    /**
+     * Run the setup
+     * @return void
+     */
+    protected function runSetup()
+    {
+        if ($this->form) {
+            return;
+        }
+
+        $this->form = $this->formBuilder->make($this->method());
+
+        $this->setup($this->form, $this->buttons);
+        $this->fields($this->fields);
+
+        if ($this->method() == 'post') {
+            $this->creationSetup($this->form, $this->buttons);
+            $this->creationFields($this->fields);
+        } else {
+            $this->updateSetup($this->form, $this->buttons);
+            $this->updateFields($this->fields);
+        }
     }
 
     /**
@@ -73,14 +94,73 @@ abstract class FormModel implements Htmlable
     }
 
     /**
-     * Setup the form attributes, fields and buttons.
+     * Setup the common form attributes and buttons.
      *
      * @param \Styde\Html\Form $form
-     * @param \Styde\Html\FormModel\FieldCollection $fields
      * @param \Styde\Html\FormModel\ButtonCollection $buttons
      * @return void
      */
-    abstract public function setup(Form $form, FieldCollection $fields, ButtonCollection $buttons);
+    public function setup(Form $form, ButtonCollection $buttons)
+    {
+        //...
+    }
+
+    /**
+     * Setup the form attributes and buttons for creation.
+     *
+     * @param \Styde\Html\Form $form
+     * @param \Styde\Html\FormModel\ButtonCollection $buttons
+     * @return void
+     */
+    public function creationSetup(Form $form, ButtonCollection $buttons)
+    {
+        //...
+    }
+
+    /**
+     * Setup the form attributes and buttons for update.
+     *
+     * @param \Styde\Html\Form $form
+     * @param \Styde\Html\FormModel\ButtonCollection $buttons
+     * @return void
+     */
+    public function updateSetup(Form $form, ButtonCollection $buttons)
+    {
+        //...
+    }
+
+    /**
+     * Setup the common form fields.
+     *
+     * @param \Styde\Html\FormModel\FieldCollection $fields
+     * @return void
+     */
+    public function fields(FieldCollection $fields)
+    {
+        //...
+    }
+
+    /**
+     * Setup the form fields for creation.
+     *
+     * @param \Styde\Html\FormModel\FieldCollection $fields
+     * @return void
+     */
+    public function creationFields(FieldCollection $fields)
+    {
+        //...
+    }
+
+    /**
+     * Setup the form fields for update.
+     *
+     * @param \Styde\Html\FormModel\FieldCollection $fields
+     * @return void
+     */
+    public function updateFields(FieldCollection $fields)
+    {
+        //...
+    }
 
     /**
      * Set a new custom template
@@ -124,9 +204,11 @@ abstract class FormModel implements Htmlable
      */
     public function render($customTemplate = null)
     {
+        $this->runSetup();
+
         return $this->theme->render($customTemplate ?: $this->customTemplate, [
-            'form'    => $this->form,
-            'fields'  => $this->fields,
+            'form' => $this->form,
+            'fields' => $this->fields,
             'buttons' => $this->buttons,
         ], 'form');
     }
@@ -149,6 +231,8 @@ abstract class FormModel implements Htmlable
      */
     public function getValidationRules()
     {
+        $this->runSetup();
+
         $rules = [];
 
         foreach ($this->fields->all() as $name => $field) {

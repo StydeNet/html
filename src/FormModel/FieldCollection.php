@@ -33,6 +33,16 @@ class FieldCollection
     }
 
     /**
+     * Returns true , false otherwise.
+     *
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty($this->fields);
+    }
+
+    /**
      * Dynamically handle calls to the field builder.
      *
      * @param  string $method

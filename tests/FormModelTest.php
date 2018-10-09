@@ -157,36 +157,43 @@ class LoginForm extends FormModel
     public $method = 'post';
 
     /**
-     * Setup the form attributes, fields and buttons.
+     * Setup the form attributes and buttons.
      *
      * @param \Styde\Html\Form $form
-     * @param \Styde\Html\FormModel\FieldCollection $fields
      * @param \Styde\Html\FormModel\ButtonCollection $buttons
      * @return void
      */
-    public function setup(Form $form, FieldCollection $fields, ButtonCollection $buttons)
+    public function setup(Form $form, ButtonCollection $buttons)
     {
         $form->route('login')->role('form');
-
-        $fields->email('email');
-        $fields->password('password');
-        $fields->checkbox('remember_me');
 
         $buttons->submit(trans('auth.login_action'))->classes('btn btn-primary');
         $buttons->link(url('password/email'), trans('auth.forgot_link'));
     }
+
+    /**
+     * Setup the form fields.
+     *
+     * @param \Styde\Html\FormModel\FieldCollection $fields
+     * @return void
+     */
+    public function fields(FieldCollection $fields)
+    {
+        $fields->email('email');
+        $fields->password('password');
+        $fields->checkbox('remember_me');
+    }
 }
 
-class CustomTemplateForm extends FormModel {
+class CustomTemplateForm extends FormModel
+{
     /**
      * Setup the form attributes, fields and buttons.
      *
-     * @param \Styde\Html\Form $form
      * @param \Styde\Html\FormModel\FieldCollection $fields
-     * @param \Styde\Html\FormModel\ButtonCollection $buttons
      * @return void
      */
-    public function setup(Form $form, FieldCollection $fields, ButtonCollection $buttons)
+    public function fields(FieldCollection $fields)
     {
         // TODO: Implement setup() method.
     }
@@ -194,17 +201,13 @@ class CustomTemplateForm extends FormModel {
 
 class RegisterForm extends FormModel
 {
-    public $method = 'post';
-
     /**
-     * Setup the form attributes, fields and buttons.
+     * Setup the form fields.
      *
-     * @param \Styde\Html\Form $form
      * @param \Styde\Html\FormModel\FieldCollection $fields
-     * @param \Styde\Html\FormModel\ButtonCollection $buttons
      * @return void
      */
-    public function setup(Form $form, FieldCollection $fields, ButtonCollection $buttons)
+    public function fields(FieldCollection $fields)
     {
         $fields->text('name')->required()->disableRules();
         $fields->email('email')->unique('users')->required();
@@ -215,17 +218,13 @@ class RegisterForm extends FormModel
 
 class PostForm extends FormModel
 {
-    public $method = 'post';
-
     /**
-     * Setup the form attributes, fields and buttons.
+     * Setup the form fields.
      *
-     * @param \Styde\Html\Form $form
      * @param \Styde\Html\FormModel\FieldCollection $fields
-     * @param \Styde\Html\FormModel\ButtonCollection $buttons
      * @return void
      */
-    public function setup(Form $form, FieldCollection $fields, ButtonCollection $buttons)
+    public function fields(FieldCollection $fields)
     {
         //
     }
