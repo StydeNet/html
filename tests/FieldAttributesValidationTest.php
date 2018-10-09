@@ -76,7 +76,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_adds_the_file_rule_with_the_attribute()
+    function it_adds_the_file_rule_to_file_fields()
     {
         $field = Field::file('avatar');
 
@@ -84,7 +84,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_adds_the_date_rule_with_attribute()
+    function it_adds_the_date_rule_to_date_fields()
     {
         $field = Field::date('time');
 
@@ -92,7 +92,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_adds_the_numeric_rule_with_attribute()
+    function it_adds_the_numeric_rule_to_number_fields()
     {
         $field = Field::number('field');
 
@@ -113,30 +113,6 @@ class FieldAttributesValidationTest extends TestCase
         $field = Field::text('name')->required();
 
         $this->assertSame(['required'], $field->getValidationRules());
-    }
-    
-    /** @test */
-    function it_delete_all_rules_when_call_disabledRules_method_without_parameters()
-    {
-        $field = Field::number('code')->min(1)->max(10)->required()->disableRules();
-
-        $this->assertSame([], $field->getValidationRules());
-    }
-    
-    /** @test */
-    function it_delete_specific_rule_when_call_disableRules_method_with_the_rules_to_be_deleted_as_parameters()
-    {
-        $field = Field::email('email')->min(10)->required()->disableRules('required', 'min');
-
-        $this->assertSame(['email'], $field->getValidationRules());
-    }
-    
-    /** @test */
-    function it_delete_specifics_rules_when_call_disableRules_method_with_an_array_in_parameter()
-    {
-        $field = Field::email('email')->min(10)->required()->disableRules(['min', 'required']);
-
-        $this->assertSame(['email'], $field->getValidationRules());
     }
 
     /** @test */
@@ -676,8 +652,30 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_delete_all_rules_when_call_ifcannot_method_and_not_pass()
+    function it_deletes_all_the_rules()
     {
+        $field = Field::number('code')->min(1)->max(10)->required()->disableRules();
+
+        $this->assertSame([], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_deletes_a_specific_rule()
+    {
+        $field = Field::email('email')->min(10)->required()->disableRules('required', 'min');
+
+        $this->assertSame(['email'], $field->getValidationRules());
+
+        $field = Field::email('email')->min(10)->required()->disableRules(['min', 'required']);
+
+        $this->assertSame(['email'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function unauthorized_fields_dont_retrieve_rules()
+    {
+        //FIXME: this should not be checked in the field level but in the collection.
+
         $this->actingAs($this->getUser());
 
         Gate::define('edit-all', function ($user) {
