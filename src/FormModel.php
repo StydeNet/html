@@ -60,7 +60,30 @@ abstract class FormModel implements Htmlable
     }
 
     /**
-     * Run the setup
+     * Set the form method as post.
+     *
+     * @return $this
+     */
+    public function forCreation()
+    {
+        $this->method = 'post';
+        return $this;
+    }
+
+    /**
+     * Set the form method as put.
+     *
+     * @return $this
+     */
+    public function forUpdate()
+    {
+        $this->method = 'put';
+        return $this;
+    }
+
+    /**
+     * Run the setup.
+     *
      * @return void
      */
     protected function runSetup()
@@ -74,12 +97,15 @@ abstract class FormModel implements Htmlable
         $this->setup($this->form, $this->buttons);
         $this->fields($this->fields);
 
-        if ($this->method() == 'post') {
-            $this->creationSetup($this->form, $this->buttons);
-            $this->creationFields($this->fields);
-        } else {
-            $this->updateSetup($this->form, $this->buttons);
-            $this->updateFields($this->fields);
+        switch ($this->method()) {
+            case 'post':
+                $this->creationSetup($this->form, $this->buttons);
+                $this->creationFields($this->fields);
+                break;
+            case 'put':
+                $this->updateSetup($this->form, $this->buttons);
+                $this->updateFields($this->fields);
+                break;
         }
     }
 
