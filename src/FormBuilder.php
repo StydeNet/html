@@ -225,6 +225,19 @@ class FormBuilder
     }
 
     /**
+     * Create a password input field.
+     *
+     * @param  string $name
+     * @param  array  $attributes
+     *
+     * @return \Styde\Html\Htmltag
+     */
+    public function password(string $name, $attributes = [])
+    {
+        return new Input('password', $name, null, $attributes);
+    }
+
+    /**
      * Create a hidden input field.
      *
      * @param string $name

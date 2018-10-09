@@ -12,7 +12,7 @@ class FieldCollectionTest extends TestCase
     {
         $fields = new FieldCollection(field());
 
-        $fields->add('first_name', 'text');
+        $fields->text('first_name');
 
         $this->assertInstanceOf(Field::class, $fields->first_name);
     }
@@ -22,18 +22,8 @@ class FieldCollectionTest extends TestCase
     {
         $fields = new FieldCollection(field());
 
-        $fields->add('name')->label('Full name');
-        $fields->add('role', 'select')->options(['admin' => 'Admin' , 'user' => 'User']);
-
-        $this->assertTemplateMatches('field-collection/fields', $fields->render());
-    }
-
-    /** @test */
-    function it_render_field_password_with_required_rule()
-    {
-        $fields = new FieldCollection(field());
-
-        $fields->password('password')->required();
+        $fields->text('name')->label('Full name');
+        $fields->select('role')->options(['admin' => 'Admin' , 'user' => 'User']);
 
         $this->assertTemplateMatches('field-collection/fields', $fields->render());
     }

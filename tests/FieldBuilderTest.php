@@ -18,10 +18,18 @@ class FieldBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_generates_a_text_field_with_a_required_label()
+    function it_generates_a_required_text_field()
     {
         $this->assertTemplateMatches(
             'field/text-required', Field::text('name', ['required' => true])
+        );
+    }
+
+    /** @test */
+    function it_generates_a_required_password_field()
+    {
+        $this->assertTemplateMatches(
+            'field/password-required', Field::password('password')->required()
         );
     }
 
