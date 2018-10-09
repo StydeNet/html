@@ -27,4 +27,14 @@ class FieldCollectionTest extends TestCase
 
         $this->assertTemplateMatches('field-collection/fields', $fields->render());
     }
+
+    /** @test */
+    function it_render_field_password_with_required_rule()
+    {
+        $fields = new FieldCollection(field());
+
+        $fields->password('password')->required();
+
+        $this->assertTemplateMatches('field-collection/fields', $fields->render());
+    }
 }
