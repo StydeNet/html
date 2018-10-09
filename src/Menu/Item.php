@@ -134,6 +134,8 @@ class Item
     public function __call($method, array $parameters)
     {
         $this->extra[$method] = $parameters[0] ?? true;
+
+        return $this;
     }
 
     /**
