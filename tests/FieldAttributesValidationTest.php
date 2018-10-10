@@ -622,7 +622,7 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_delete_all_rules_when_call_ifguest_method_and_not_pass()
     {
-        $this->actingAs($this->getUser());
+        $this->actingAs($this->aUser());
 
         $field = Field::text('name')->required()->ifGuest();
 
@@ -640,7 +640,7 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_delete_all_rules_when_call_ifcan_method_and_not_pass()
     {
-        $this->actingAs($this->getUser());
+        $this->actingAs($this->aUser());
 
         Gate::define('edit-all', function ($user) {
             return false;
@@ -676,7 +676,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         //FIXME: this should not be checked in the field level but in the collection.
 
-        $this->actingAs($this->getUser());
+        $this->actingAs($this->aUser());
 
         Gate::define('edit-all', function ($user) {
             return true;

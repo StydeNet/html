@@ -17,10 +17,24 @@ class TestCase extends OrchestraTestCase
         return [HtmlServiceProvider::class];
     }
 
-    protected function getUser()
+    protected function aUser()
     {
-        return new class extends Model implements AuthenticatableInterface {
-            use Authenticatable;
-        };
+        return new TestUser(['role' => 'user']);
+    }
+
+    protected function anAdmin()
+    {
+        return new TestUser(['role' => 'admin']);
+    }
+}
+
+class TestUser extends Model implements AuthenticatableInterface {
+    use Authenticatable;
+
+    protected $guarded = [];
+
+    public function isA($role)
+    {
+        return $this->role === $role;
     }
 }

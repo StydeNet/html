@@ -68,7 +68,7 @@ class FormModelTest extends TestCase
     {
         $form = app(PostForm::class);
 
-        $this->actingAs($this->getUser());
+        $this->actingAs($this->aUser());
 
         $form->fields->email('email')->required();
         $form->fields->text('description')->required()->ifGuest();
@@ -85,7 +85,7 @@ class FormModelTest extends TestCase
     {
         $form = app(PostForm::class);
 
-        $this->actingAs($this->getUser());
+        $this->actingAs($this->aUser());
 
         Gate::define('edit-all', function ($user) {
             return true;
@@ -107,7 +107,7 @@ class FormModelTest extends TestCase
     {
         $form = app(PostForm::class);
 
-        $this->actingAs($this->getUser());
+        $this->actingAs($this->aUser());
 
         Gate::define('admin', function ($user) {
             return false;

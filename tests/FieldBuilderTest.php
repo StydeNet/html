@@ -140,66 +140,88 @@ class FieldBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_not_render_if_not_pass_ifis_method()
+    function it_only_renders_the_field_if_the_user_has_the_expected_role()
     {
-        $field = Field::text('name')->required()->ifIs('foo-bar');
+        $field = Field::text('name');
 
-        $this->assertSame(null, $field->render());
+        $this->assertNull($field->ifIs('admin')->render());
+
+        $this->actingAs($this->aUser());
+        $this->assertNull($field->ifIs('admin')->render());
+
+        $this->actingAs($this->anAdmin());
+        $this->assertNotNull($field->ifIs('admin')->render());
     }
 
     /** @test */
-    function it_not_render_if_not_pass_ifguest_method()
+    function it_only_renders_the_field_if_the_user_is_not_guess()
     {
-        $this->actingAs($this->getUser());
+        $field = Field::text('name');
 
-        $field = Field::text('name')->required()->ifGuest();
+        $this->assertNotNull($field->ifGuest()->render());
 
-        $this->assertSame(null, $field->render());
+        $this->actingAs($this->aUser());
+        $this->assertNull($field->ifGuest()->render());
     }
 
     /** @test */
-    function it_not_render_if_not_pass_ifauth_method()
+    function if_only_renders_the_field_if_user_is_logged_in()
     {
-        $field = Field::text('name')->required()->ifAuth();
+        $field = Field::text('name');
 
-        $this->assertSame(null, $field->render());
+        $this->assertNull($field->ifAuth()->render());
+
+        $this->actingAs($this->aUser());
+        $this->assertNotNull($field->ifAuth()->render());
     }
 
     /** @test */
-    function it_not_render_if_not_pass_ifcan_method()
+    function it_only_renders_the_field_if_the_user_has_the_given_ability()
     {
-        $this->actingAs($this->getUser());
+        $this->actingAs($this->aUser());
 
         Gate::define('edit-all', function ($user) {
             return false;
         });
 
-        $field = Field::text('name')->required()->ifCan('edit-all');
-
-        $this->assertSame(null, $field->render());
-    } 
-
-    /** @test */
-    function it_not_render_if_not_pass_ifcannot_method()
-    {
-        $this->actingAs($this->getUser());
-
-        Gate::define('edit-all', function ($user) {
+        Gate::define('edit-mine', function ($user) {
             return true;
         });
 
-        $field = Field::text('name')->required()->ifCannot('edit-all');
+        $field = Field::text('name');
 
-        $this->assertSame(null, $field->render()); 
+        $this->assertNull($field->ifCan('edit-all')->render());
+
+        $this->assertNotNull($field->ifCan('edit-mine')->render());
+    } 
+
+    /** @test */
+    function it_only_renders_the_field_if_the_user_does_not_have_the_given_ability()
+    {
+        $this->actingAs($this->aUser());
+
+        Gate::define('edit-all', function ($user) {
+            return false;
+        });
+
+        Gate::define('edit-mine', function ($user) {
+            return true;
+        });
+
+        $field = Field::text('name');
+
+        $this->assertNotNull($field->ifCannot('edit-all')->render());
+
+        $this->assertNull($field->ifCannot('edit-mine')->render());
     }
-  
-    function can_customize_the_template()
+
+    /** @test */
+    function it_can_customize_the_template()
     {
         View::addLocation(__DIR__.'/views');
 
         $field = Field::text('name', 'value')->template('custom-templates.field-text');
 
-        $this->assertInstanceOf(\Styde\Html\FormModel\Field::class, $field);
         $this->assertTemplateMatches('field/text-custom-template', $field);
     }
 }
