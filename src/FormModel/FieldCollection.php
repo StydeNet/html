@@ -9,7 +9,9 @@ use Illuminate\Support\Traits\Macroable;
 
 class FieldCollection
 {
-    use Macroable;
+    use Macroable {
+        Macroable::__call as macroCall;
+    }
 
     /**
      * @var \Styde\Html\FieldBuilder
@@ -53,6 +55,10 @@ class FieldCollection
      */
     public function __call($method, $params)
     {
+        if ($this->hasMacro($method)) {
+            return $this->macroCall($method, $params);
+        }
+
         return $this->add($params[0], $method);
     }
 

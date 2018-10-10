@@ -43,4 +43,16 @@ class FieldCollectionTest extends TestCase
 
         $this->assertCount(2, $fields->all());
     }
+
+    /** @test */
+    function it_is_macroable()
+    {
+        FieldCollection::macro('myCustomMethod', function () {
+            return 'my-custom-tag';
+        });
+
+        $fields = new FieldCollection(field());
+
+        $this->assertSame('my-custom-tag', $fields->myCustomMethod());
+    }
 }
