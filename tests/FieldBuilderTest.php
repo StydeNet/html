@@ -154,7 +154,7 @@ class FieldBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_only_renders_the_field_if_the_user_is_not_guess()
+    function it_only_renders_the_field_if_the_user_is_not_guest()
     {
         $field = Field::text('name');
 
