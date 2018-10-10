@@ -27,4 +27,20 @@ class FieldCollectionTest extends TestCase
 
         $this->assertTemplateMatches('field-collection/fields', $fields->render());
     }
+
+    /** @test */
+    function it_adds_html_tags()
+    {
+        $fields = new FieldCollection(field());
+
+        $field = $fields->tag('h3', 'Title', ['class' => 'red']);
+
+        $this->assertHtmlEquals('<h3 class="red">Title</h3>', $field);
+
+        $field = $fields->tag('hr', ['class' => 'red']);
+
+        $this->assertHtmlEquals('<hr class="red">', $field);
+
+        $this->assertCount(2, $fields->all());
+    }
 }

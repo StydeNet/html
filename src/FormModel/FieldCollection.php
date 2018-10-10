@@ -2,6 +2,7 @@
 
 namespace Styde\Html\FormModel;
 
+use Styde\Html\Facades\Html;
 use Styde\Html\FieldBuilder;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Traits\Macroable;
@@ -25,7 +26,7 @@ class FieldCollection
     /**
      * Creates a new FieldCollection class.
      *
-     * @param FieldBuilder $fieldBuilder
+     * @param \Styde\Html\FieldBuilder $fieldBuilder
      */
     public function __construct(FieldBuilder $fieldBuilder)
     {
@@ -82,7 +83,7 @@ class FieldCollection
      *
      * @param  string $name
      *
-     * @return Field
+     * @return \Styde\Html\FormModel\Field
      */
     public function text($name)
     {
@@ -94,7 +95,7 @@ class FieldCollection
      *
      * @param  string $name
      *
-     * @return Field
+     * @return \Styde\Html\FormModel\Field
      */
     public function textarea($name)
     {
@@ -105,7 +106,7 @@ class FieldCollection
      *
      * @param  string $name
      *
-     * @return Field
+     * @return \Styde\Html\FormModel\Field
      */
     public function email($name)
     {
@@ -117,7 +118,7 @@ class FieldCollection
      *
      * @param  string $name
      *
-     * @return Field
+     * @return \Styde\Html\FormModel\Field
      */
     public function password($name)
     {
@@ -130,7 +131,7 @@ class FieldCollection
      * @param  string  $name
      * @param  mixed   $value
      *
-     * @return Field
+     * @return \Styde\Html\FormModel\Field
      */
     public function checkbox($name, $value = 1)
     {
@@ -143,7 +144,7 @@ class FieldCollection
      * @param  string $name
      * @param  array  $options
      *
-     * @return Field
+     * @return \Styde\Html\FormModel\Field
      */
     public function select($name, array $options = array())
     {
@@ -156,7 +157,7 @@ class FieldCollection
      * @param  string $name
      * @param  array  $options
      *
-     * @return Field
+     * @return \Styde\Html\FormModel\Field
      */
     public function radios($name, array $options = array())
     {
@@ -169,7 +170,7 @@ class FieldCollection
      * @param  string $name
      * @param  array  $options
      *
-     * @return Field
+     * @return \Styde\Html\FormModel\Field
      */
     public function checkboxes($name, array $options = array())
     {
@@ -181,7 +182,7 @@ class FieldCollection
      *
      * @param  string $name
      *
-     * @return Field
+     * @return \Styde\Html\FormModel\Field
      */
     public function url($name)
     {
@@ -193,7 +194,7 @@ class FieldCollection
      *
      * @param  string $name
      *
-     * @return Field
+     * @return \Styde\Html\FormModel\Field
      */
     public function file($name)
     {
@@ -206,11 +207,16 @@ class FieldCollection
      * @param string $name
      * @param string $type
      *
-     * @return Field
+     * @return \Styde\Html\FormModel\Field
      */
     public function add($name, $type = 'text')
     {
         return $this->fields[$name] = new Field($this->fieldBuilder, $name, $type);
+    }
+
+    public function tag($tag, $content = '', array $attributes = [])
+    {
+        return $this->fields[] = Html::tag($tag, $content, $attributes);
     }
 
     /**
