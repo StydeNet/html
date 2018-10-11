@@ -143,8 +143,18 @@ class FieldBuilderTest extends TestCase
     {
         View::addLocation(__DIR__.'/views');
 
-        $field = Field::text('name', 'value')->template('custom-templates.field-text');
-
-        $this->assertTemplateMatches('field/text-custom-template', $field);
+        $this->assertTemplateMatches(
+            'field/text-custom-template',
+            Field::text('name', 'value')->template('custom-templates.field-text')
+        );
+    }
+    
+    /** @test */
+    function it_can_add_labels_with_html()
+    {
+        $this->assertTemplateMatches(
+            'field/text-with-raw-label',
+            Field::text('name', 'value')->rawLabel('Label with <strong>HTML</strong>')
+        );
     }
 }

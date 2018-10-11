@@ -2,6 +2,7 @@
 
 namespace Styde\Html\FormModel;
 
+use Illuminate\Support\HtmlString;
 use Styde\Html\FieldBuilder;
 use Styde\Html\HandlesAccess;
 use Illuminate\Support\Facades\DB;
@@ -86,6 +87,19 @@ class Field implements Htmlable
     public function label($label)
     {
         $this->label = $label;
+
+        return $this;
+    }
+
+    /**
+     * Add a label that contains HTML (be careful because it won't be escaped).
+     *
+     * @param $html
+     * @return $this
+     */
+    public function rawLabel($html)
+    {
+        $this->label = new HtmlString($html);
 
         return $this;
     }
