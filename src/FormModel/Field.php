@@ -178,14 +178,6 @@ class Field implements Htmlable
     /**
      * @return string
      */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @return string
-     */
     public function render()
     {
         if ($this->included) {

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Htmlable;
 use Styde\Html\FormModel\{FieldCollection, ButtonCollection};
 
-abstract class FormModel implements Htmlable
+class FormModel implements Htmlable
 {
     /**
      * @var \Styde\Html\FormBuilder
@@ -234,11 +234,23 @@ abstract class FormModel implements Htmlable
         if (method_exists($this->form, $method)) {
             return $this->form->$method(...$parameters);
         }
-        
+
         if (method_exists($this->buttons, $method)) {
             return $this->buttons->$method(...$parameters);
         }
 
         return $this->fields->$method(...$parameters);
+    }
+
+    /**
+     * Get a field by name.
+     *
+     * @param  string $name
+     *
+     * @return Field
+     */
+    public function __get($name)
+    {
+        return $this->fields->$name;
     }
 }
