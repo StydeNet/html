@@ -234,15 +234,11 @@ abstract class FormModel implements Htmlable
         if (method_exists($this->form, $method)) {
             return $this->form->$method(...$parameters);
         }
-
-        if (method_exists($this->fields, $method)) {
-            return $this->fields->$method(...$parameters);
-        }
-
+        
         if (method_exists($this->buttons, $method)) {
             return $this->buttons->$method(...$parameters);
         }
 
-        throw new \BadMethodCallException("The method {$method} doesn't exist in the FormModel.");
+        return $this->fields->$method(...$parameters);
     }
 }
