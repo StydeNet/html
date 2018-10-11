@@ -22,6 +22,11 @@ class TestCase extends OrchestraTestCase
         return new TestUser(['role' => 'user']);
     }
 
+    protected function anEditor()
+    {
+        return new TestUser(['role' => 'editor']);
+    }
+
     protected function anAdmin()
     {
         return new TestUser(['role' => 'admin']);

@@ -34,7 +34,7 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_all_rules_of_fields()
+    function it_returns_the_rules_from_all_fields()
     {
         $rules = app(RegisterForm::class)->getValidationRules();
 
@@ -53,8 +53,8 @@ class FormModelTest extends TestCase
     {
         $form = app(PostForm::class);
 
-        $form->fields->email('email')->required();
-        $form->fields->text('description')->required()->ifAuth();
+        $form->email('email')->required();
+        $form->text('description')->required()->ifAuth();
 
         $expect = [
             'email' => ['email', 'required']
@@ -70,8 +70,8 @@ class FormModelTest extends TestCase
 
         $this->actingAs($this->aUser());
 
-        $form->fields->email('email')->required();
-        $form->fields->text('description')->required()->ifGuest();
+        $form->email('email')->required();
+        $form->text('description')->required()->ifGuest();
 
         $expect = [
             'email' => ['email', 'required']
@@ -91,8 +91,8 @@ class FormModelTest extends TestCase
             return true;
         });
 
-        $form->fields->email('email')->required();
-        $form->fields->text('description')->required()->ifCan('edit-all');
+        $form->email('email')->required();
+        $form->text('description')->required()->ifCan('edit-all');
 
         $expect = [
             'email' => ['email', 'required'],
@@ -103,7 +103,7 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_the_rules_from_fields_withot_authorization()
+    function it_returns_the_rules_from_fields_without_authorization()
     {
         $form = app(PostForm::class);
 
@@ -113,8 +113,8 @@ class FormModelTest extends TestCase
             return false;
         });
 
-        $form->fields->email('email')->required();
-        $form->fields->text('description')->required()->ifCannot('admin');
+        $form->email('email')->required();
+        $form->text('description')->required()->ifCannot('admin');
 
         $expect = [
             'email' => ['email', 'required'],
@@ -125,23 +125,15 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_rules_of_fields_with_ifis_method()
+    function it_returns_the_rules_from_fields_with_role_authorization()
     {
         $form = app(PostForm::class);
 
-        $fakeUser = new class extends Model implements AuthenticatableInterface {
-            use Authenticatable;
+        $this->actingAs($this->anEditor());
 
-            public function isA($role)
-            {
-                return $role == 'admin';
-            }
-        };
-
-        $this->actingAs($fakeUser);
-
-        $form->fields->email('email')->required();
-        $form->fields->text('description')->required()->ifIs('admin');
+        $form->email('email')->required();
+        $form->text('description')->required()->ifIs('editor');
+        $form->text('published')->required()->ifIs('admin');
 
         $expect = [
             'email' => ['email', 'required'],
@@ -154,78 +146,46 @@ class FormModelTest extends TestCase
 
 class LoginForm extends FormModel
 {
-    public $method = 'post';
-
     /**
-     * Setup the form attributes and buttons.
+     * Setup the form attributes, fields and buttons.
      *
-     * @param \Styde\Html\Form $form
-     * @param \Styde\Html\FormModel\ButtonCollection $buttons
      * @return void
      */
-    public function setup(Form $form, ButtonCollection $buttons)
+    public function setup()
     {
-        $form->route('login')->role('form');
+        $this->route('login')->role('form');
 
-        $buttons->submit(trans('auth.login_action'))->classes('btn btn-primary');
-        $buttons->link(url('password/email'), trans('auth.forgot_link'));
-    }
+        $this->email('email');
+        $this->password('password');
+        $this->checkbox('remember_me');
 
-    /**
-     * Setup the form fields.
-     *
-     * @param \Styde\Html\FormModel\FieldCollection $fields
-     * @return void
-     */
-    public function fields(FieldCollection $fields)
-    {
-        $fields->email('email');
-        $fields->password('password');
-        $fields->checkbox('remember_me');
+        $this->submit(trans('auth.login_action'))->classes('btn btn-primary');
+        $this->link(url('password/email'), trans('auth.forgot_link'));
     }
 }
 
 class CustomTemplateForm extends FormModel
 {
-    /**
-     * Setup the form attributes, fields and buttons.
-     *
-     * @param \Styde\Html\FormModel\FieldCollection $fields
-     * @return void
-     */
-    public function fields(FieldCollection $fields)
-    {
-        // TODO: Implement setup() method.
-    }
+    //...
 }
 
 class RegisterForm extends FormModel
 {
     /**
-     * Setup the form fields.
+     * Setup the form attributes, fields and buttons.
      *
-     * @param \Styde\Html\FormModel\FieldCollection $fields
      * @return void
      */
-    public function fields(FieldCollection $fields)
+    public function setup()
     {
-        $fields->text('name')->required()->disableRules();
-        $fields->email('email')->unique('users')->required();
-        $fields->password('password')->confirmed()->min(6)->max(12)->required();
-        $fields->password('password_confirmation')->min(6)->max(12)->required();
+        $this->text('name')->required()->disableRules();
+        $this->email('email')->unique('users')->required();
+        $this->password('password')->confirmed()->min(6)->max(12)->required();
+        $this->password('password_confirmation')->min(6)->max(12)->required();
     }
 }
 
 class PostForm extends FormModel
 {
-    /**
-     * Setup the form fields.
-     *
-     * @param \Styde\Html\FormModel\FieldCollection $fields
-     * @return void
-     */
-    public function fields(FieldCollection $fields)
-    {
-        //
-    }
+    //...
 }

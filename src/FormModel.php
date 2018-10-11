@@ -94,18 +94,14 @@ abstract class FormModel implements Htmlable
 
         $this->form = $this->formBuilder->make($this->method());
 
-        $this->setup($this->form, $this->buttons);
-        $this->fields($this->fields);
+        $this->setup();
 
-        switch ($this->method()) {
-            case 'post':
-                $this->creationSetup($this->form, $this->buttons);
-                $this->creationFields($this->fields);
-                break;
-            case 'put':
-                $this->updateSetup($this->form, $this->buttons);
-                $this->updateFields($this->fields);
-                break;
+        if ($this->method() == 'post') {
+            return $this->creationSetup();
+        }
+
+        if ($this->method() == 'put') {
+            return $this->updateSetup();
         }
     }
 
@@ -120,70 +116,33 @@ abstract class FormModel implements Htmlable
     }
 
     /**
-     * Setup the common form attributes and buttons.
+     * Setup the common form attributes, fields and buttons.
      *
-     * @param \Styde\Html\Form $form
-     * @param \Styde\Html\FormModel\ButtonCollection $buttons
      * @return void
      */
-    public function setup(Form $form, ButtonCollection $buttons)
+    public function setup()
     {
         //...
     }
 
     /**
-     * Setup the form attributes and buttons for creation.
+     * Setup the form attributes, fields and buttons for creation.
+     * Called after setup, common fields will be available here.
      *
-     * @param \Styde\Html\Form $form
-     * @param \Styde\Html\FormModel\ButtonCollection $buttons
      * @return void
      */
-    public function creationSetup(Form $form, ButtonCollection $buttons)
+    public function creationSetup()
     {
         //...
     }
 
     /**
-     * Setup the form attributes and buttons for update.
+     * Setup the form attributes, form fields and buttons for update.
+     * Called after setup, common fields will be available here.
      *
-     * @param \Styde\Html\Form $form
-     * @param \Styde\Html\FormModel\ButtonCollection $buttons
      * @return void
      */
-    public function updateSetup(Form $form, ButtonCollection $buttons)
-    {
-        //...
-    }
-
-    /**
-     * Setup the common form fields.
-     *
-     * @param \Styde\Html\FormModel\FieldCollection $fields
-     * @return void
-     */
-    public function fields(FieldCollection $fields)
-    {
-        //...
-    }
-
-    /**
-     * Setup the form fields for creation.
-     *
-     * @param \Styde\Html\FormModel\FieldCollection $fields
-     * @return void
-     */
-    public function creationFields(FieldCollection $fields)
-    {
-        //...
-    }
-
-    /**
-     * Setup the form fields for update.
-     *
-     * @param \Styde\Html\FormModel\FieldCollection $fields
-     * @return void
-     */
-    public function updateFields(FieldCollection $fields)
+    public function updateSetup()
     {
         //...
     }
@@ -268,5 +227,22 @@ abstract class FormModel implements Htmlable
         }
 
         return $rules;
+    }
+
+    public function __call($method, $parameters = [])
+    {
+        if (method_exists($this->form, $method)) {
+            return $this->form->$method(...$parameters);
+        }
+
+        if (method_exists($this->fields, $method)) {
+            return $this->fields->$method(...$parameters);
+        }
+
+        if (method_exists($this->buttons, $method)) {
+            return $this->buttons->$method(...$parameters);
+        }
+
+        throw new \BadMethodCallException("The method {$method} doesn't exist in the FormModel.");
     }
 }
