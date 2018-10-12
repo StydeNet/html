@@ -2,7 +2,9 @@
 
 namespace DummyRootNamespaceHttp\Forms;
 
-abstract class Form extends \Styde\Html\FormModel\Form
-{
+use Styde\Html\FormModel as BaseFormModel;
 
+abstract class FormModel extends BaseFormModel
+{
+    //
 }
