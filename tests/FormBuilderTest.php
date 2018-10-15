@@ -2,11 +2,9 @@
 
 namespace Styde\Html\Tests;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\HtmlString;
 use Styde\Html\Facades\Form;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\{Route, Session};
 
 class FormBuilderTest extends TestCase
 {
@@ -69,7 +67,7 @@ class FormBuilderTest extends TestCase
     }
     
     /** @test */
-    function it_assign_a_route_to_the_action_attribute()
+    function it_assigns_a_route_to_the_action_attribute()
     {
         Route::post('the-url/{param1}/{param2}', ['as' => 'the-route']);
 
@@ -117,7 +115,7 @@ class FormBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_generate_radios()
+    function it_generates_radios()
     {
         $this->assertTemplateMatches(
             'form/radios', Form::radios('gender', ['m' => 'Male', 'f' => 'Female'], 'm')
@@ -125,7 +123,7 @@ class FormBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_generate_checkboxes()
+    function it_generates_checkboxes()
     {
         $tags = ['php' => 'PHP', 'python' => 'Python', 'js' => 'JS', 'ruby' => 'Ruby on Rails'];
         $checked = ['php', 'js'];
@@ -136,7 +134,7 @@ class FormBuilderTest extends TestCase
     }
     
     /** @test */
-    function display_input_values_from_the_users_session()
+    function it_displays_input_values_from_the_users_session()
     {
         Session::put('_old_input', ['name' => 'Duilio Palacios']);
 
@@ -146,7 +144,7 @@ class FormBuilderTest extends TestCase
     }
 
     /** @test */
-    function display_input_values_from_the_current_model()
+    function it_displays_input_values_from_the_current_model()
     {
         $user = new class extends Model {
             protected $attributes = ['name' => 'Duilio'];
@@ -160,7 +158,7 @@ class FormBuilderTest extends TestCase
     }
 
     /** @test */
-    function display_textarea_content_from_the_current_model()
+    function it_displays_textarea_content_from_the_current_model()
     {
         $post = new class extends Model {
             protected $attributes = ['content' => 'The content.'];

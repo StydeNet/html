@@ -131,7 +131,7 @@ class FieldBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_generate_radios()
+    function it_generates_radios()
     {
         $this->assertTemplateMatches(
             'field/radios', Field::radios('gender', ['m' => 'Male', 'f' => 'Female'], 'm')

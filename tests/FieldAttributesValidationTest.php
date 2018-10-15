@@ -43,7 +43,7 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_builds_the_in_rule_when_the_field_includes_static_options()
     {
-        $field = Field::select('visibility', null, ['required'])->options([
+        $field = Field::select('visibility')->required()->options([
             'public' => 'Everyone',
             'admin' => 'Admin only',
             'auth' => 'Authenticated users only',
@@ -56,6 +56,7 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_builds_the_exists_rule_when_options_come_from_a_table()
     {
+        // TODO: improve this syntax.
         $field = Field::select('parent_id')
             ->from('table_name', 'label', 'id', function ($query) {
                 $query->whereNull('parent_id')
@@ -182,7 +183,7 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_adds_the_required_without_rule()
     {
-        $field = Field::text('name')->requiredWithOut('John', 'Doe');
+        $field = Field::text('name')->requiredWithout('John', 'Doe');
 
         $this->assertSame(['required_without:John,Doe'], $field->getValidationRules());
     }
@@ -374,7 +375,7 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_adds_the_digits_between_rule()
     {
-        $field = Field::number('age')->digitsBetween(1,2);
+        $field = Field::number('age')->digitsBetween(1, 2);
 
         return $this->assertSame(['numeric', 'digits_between:1,2'], $field->getValidationRules());
     }
@@ -582,6 +583,7 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_adds_the_unique_rule()
     {
+        //TODO: fix test and code
         $field = Field::text('name')->unique('users', 'name');
 
         $this->assertSame(['unique:users,name'], $field->getValidationRules());
@@ -590,6 +592,7 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_adds_ignore_in_unique_rule()
     {
+        //TODO: fix test and code
         $field = Field::text('name')->unique('users', 'name')->ignore(1, 'user_id');
 
         $this->assertSame('unique:users,name,"1",user_id', (string) $field->getValidationRules()[0]);
@@ -598,6 +601,7 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_cannot_use_method_ignore()
     {
+        //TODO: fix test and code
         $this->expectException('Exception');
 
         Field::text('name')->ignore(1, 'user_id');
@@ -612,7 +616,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_delete_all_rules_when_call_ifis_method_and_not_pass()
+    function it_doesnt_return_rules_if_the_user_doesnt_have_the_expected_role()
     {
         $field = Field::text('name')->required()->ifIs('foobar');
 
@@ -620,7 +624,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_delete_all_rules_when_call_ifguest_method_and_not_pass()
+    function it_doesnt_return_rules_if_the_user_is_not_guest()
     {
         $this->actingAs($this->aUser());
 
@@ -630,7 +634,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_delete_all_rules_when_call_ifauth_method_and_not_pass()
+    function it_doesnt_return_rules_if_user_is_not_logged_in()
     {
         $field = Field::text('name')->required()->ifAuth();
 
@@ -638,7 +642,7 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_delete_all_rules_when_call_ifcan_method_and_not_pass()
+    function it_doesnt_return_rules_if_the_user_cannot_perform_the_specified_action()
     {
         $this->actingAs($this->aUser());
 
@@ -652,30 +656,8 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_deletes_all_the_rules()
+    function it_doesnt_return_rules_if_the_user_can_perform_the_specified_action()
     {
-        $field = Field::number('code')->min(1)->max(10)->required()->disableRules();
-
-        $this->assertSame([], $field->getValidationRules());
-    }
-
-    /** @test */
-    function it_deletes_a_specific_rule()
-    {
-        $field = Field::email('email')->min(10)->required()->disableRules('required', 'min');
-
-        $this->assertSame(['email'], $field->getValidationRules());
-
-        $field = Field::email('email')->min(10)->required()->disableRules(['min', 'required']);
-
-        $this->assertSame(['email'], $field->getValidationRules());
-    }
-
-    /** @test */
-    function unauthorized_fields_dont_retrieve_rules()
-    {
-        //FIXME: this should not be checked in the field level but in the collection.
-
         $this->actingAs($this->aUser());
 
         Gate::define('edit-all', function ($user) {

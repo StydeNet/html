@@ -12,7 +12,7 @@ use Styde\Html\Menu\{MenuBuilder, MenuComposer, Item};
 class MenuGeneratorTest extends TestCase
 {
     /** @test */
-    function it_render_menus()
+    function it_renders_menus()
     {
         $menu = Menu::make(function ($items) {
             $items->url('/', 'Home');
@@ -26,7 +26,7 @@ class MenuGeneratorTest extends TestCase
     }
 
     /** @test */
-    function it_render_menus_with_additional_classes()
+    function it_renders_menus_with_additional_classes()
     {
         $menu = Menu::make(function ($items) {
             $items->url('/', 'Home');
@@ -122,7 +122,7 @@ class MenuGeneratorTest extends TestCase
     }
 
     /** @test */
-    function it_render_menus_with_secure_urls()
+    function it_renders_menus_with_secure_urls()
     {
         $menu = Menu::make(function ($items) {
             $items->secureUrl('/', 'Home');
@@ -133,7 +133,7 @@ class MenuGeneratorTest extends TestCase
     }
 
     /** @test */
-    function it_render_menus_with_raw_urls()
+    function it_renders_menus_with_raw_urls()
     {
         $menu = Menu::make(function ($items) {
             $items->raw('https://laravel.com', 'Laravel');

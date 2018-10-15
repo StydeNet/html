@@ -67,7 +67,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_generates_links_with_addtional_attributes()
+    function it_generates_links_with_additional_attributes()
     {
         $this->assertHtmlEquals(
             '<a target="_blank" href="http://localhost/url">Text</a>',
@@ -76,7 +76,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_generates_links_from_css_style()
+    function it_generates_a_style_sheet_link()
     {
         $this->assertHtmlEquals(
             '<link type="text/css" rel="stylesheet" href="http://localhost/css/app.css">',
@@ -85,7 +85,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_generates_link_from_javascrip()
+    function it_generates_a_javascript_tag()
     {
         $this->assertHtmlEquals(
             '<script src="http://localhost/js/app.js"></script>',
@@ -94,7 +94,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_generates_link_from_asset()
+    function it_generates_a_link_from_asset()
     {
         $this->assertHtmlEquals(
             '<a href="http://localhost/user/avatar">Avatar</a>',
@@ -103,7 +103,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_generates_link_from_a_route()
+    function it_generates_a_link_from_a_route()
     {
         Route::get('dashboard', ['as' => 'dashboard']);
         Route::get('edit/{page}', ['as' => 'pages.edit']);
@@ -120,7 +120,7 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_generate_the_html_class_attribute()
+    function it_generates_the_html_class_attribute()
     {
         $html = Html::classes([
             'home' => true,

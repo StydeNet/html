@@ -57,11 +57,6 @@ class FormModelTest extends TestCase
 
 class LoginForm extends FormModel
 {
-    /**
-     * Setup the form attributes, fields and buttons.
-     *
-     * @return void
-     */
     public function setup()
     {
         $this->route('login')->role('form');
@@ -77,11 +72,6 @@ class LoginForm extends FormModel
 
 class RegisterForm extends FormModel
 {
-    /**
-     * Setup the form attributes, fields and buttons.
-     *
-     * @return void
-     */
     public function setup()
     {
         $this->text('name')->required()->disableRules();

@@ -53,7 +53,7 @@ class AlertTest extends TestCase
     }
 
     /** @test */
-    function it_can_render_a_view_inside_the_alert()
+    function it_renders_a_view_inside_the_alert()
     {
         View::addLocation(__DIR__.'/views');
 
