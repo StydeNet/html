@@ -333,14 +333,18 @@ class FieldBuilder
     {
         $field = new Field($this, $name, $type);
 
-        if (isset ($attributes['label'])) {
+        if (isset($attributes['label'])) {
             $field->label($attributes['label']);
             unset($attributes['label']);
         }
 
-        if (isset ($attributes['template'])) {
+        if (isset($attributes['template'])) {
             $field->template($attributes['template']);
             unset($attributes['template']);
+        }
+
+        if (isset($attributes['required']) && ! $attributes['required']) {
+            unset($attributes['required']);
         }
 
         $field->value($value)
@@ -381,7 +385,7 @@ class FieldBuilder
             $field->template,
             array_merge(
                 $field->extra,
-                compact('htmlName', 'id',  'label', 'input', 'errors', 'hasErrors', 'required')
+                compact('htmlName', 'id', 'label', 'input', 'errors', 'hasErrors', 'required')
             ),
             'fields.'.$this->getDefaultTemplate($field->type)
         );
@@ -517,21 +521,6 @@ class FieldBuilder
     }
 
     /**
-     * Get the custom template for an individual field if no custom template is
-     * set, this will return null.
-     *
-     * You can pass a custom template using the 'template' key in the attributes
-     * array.
-     *
-     * @param  $attributes
-     * @return string
-     */
-    protected function getCustomTemplate($attributes)
-    {
-        return isset($attributes['template']) ? $attributes['template'] : null;
-    }
-
-    /**
      * Get the HTML name for the input control.
      *
      * You can use dots to specify arrays:
@@ -560,7 +549,7 @@ class FieldBuilder
      */
     protected function getHtmlId($value, $attributes)
     {
-        if (isset ($attributes['id'])) {
+        if (isset($attributes['id'])) {
             return $attributes['id'];
         }
 
@@ -579,12 +568,12 @@ class FieldBuilder
      */
     protected function getRequired($attributes)
     {
-        if (in_array('required', $attributes)) {
-            return true;
-        }
-
         if (isset($attributes['required'])) {
             return $attributes['required'];
+        }
+
+        if (in_array('required', $attributes)) {
+            return true;
         }
 
         return false;
@@ -704,5 +693,4 @@ class FieldBuilder
                 return $this->form->$type($htmlName, $value, $attributes);
         }
     }
-
 }

@@ -25,6 +25,14 @@ class FieldBuilderTest extends TestCase
     }
 
     /** @test */
+    function it_generates_a_not_required_text_field()
+    {
+        $this->assertTemplateMatches(
+            'field/text-not-required', Field::text('name', ['required' => false])
+        );
+    }
+
+    /** @test */
     function it_generates_a_required_password_field()
     {
         $this->assertTemplateMatches(
@@ -139,13 +147,89 @@ class FieldBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_can_customize_the_template()
+    function it_generates_an_input_field_with_label()
+    {
+        $this->assertTemplateMatches(
+            'field/input', Field::input('text', 'profession', 'developer')
+        );
+    }
+
+    /** @test */
+    function it_generates_an_email_field()
+    {
+        $this->assertTemplateMatches(
+            'field/email', Field::email('e-mail', 'clemir@styde.net')
+        );
+    }
+
+    /** @test */
+    function it_generates_an_url_field()
+    {
+        $this->assertTemplateMatches(
+            'field/url', Field::url('site', 'https://styde.net')
+        );
+    }
+
+    /** @test */
+    function it_generates_a_file_field()
+    {
+        $this->assertTemplateMatches(
+            'field/file', Field::file('myFile')
+        );
+    }
+
+    /** @test */
+    function it_generates_a_textarea_field()
+    {
+        $this->assertTemplateMatches(
+            'field/textarea', Field::textarea('address', '742 Evergreen Terrace', ['rows' => 2, 'cols' => 20])
+        );
+    }
+
+    /** @test */
+    function it_generates_an_hidden_field()
+    {
+        $this->assertTemplateMatches(
+            'field/hidden', Field::hidden('_token', 'some-random-token')
+        );
+    }
+
+    /** @test */
+    function it_generates_a_checkbox_field()
+    {
+        $this->assertTemplateMatches(
+            'field/checkbox', Field::checkbox('remember_me')
+        );
+    }
+
+    /** @test */
+    function it_can_customize_the_template_by_method()
     {
         View::addLocation(__DIR__.'/views');
 
         $this->assertTemplateMatches(
             'field/text-custom-template',
             Field::text('name', 'value')->template('custom-templates.field-text')
+        );
+    }
+
+    /** @test */
+    function it_can_customize_the_template_by_attributes_array()
+    {
+        View::addLocation(__DIR__.'/views');
+
+        $this->assertTemplateMatches(
+            'field/text-custom-template',
+            Field::text('name', 'value', ['template' => 'custom-templates.field-text'])
+        );
+    }
+
+    /** @test */
+    function it_generates_a_field_with_dots_name()
+    {
+        $this->assertTemplateMatches(
+            'field/text-dots-name',
+            Field::text('student.name')
         );
     }
     
@@ -156,5 +240,15 @@ class FieldBuilderTest extends TestCase
             'field/text-with-raw-label',
             Field::text('name', 'value')->rawLabel('Label with <strong>HTML</strong>')
         );
+    }
+
+    /** @test */
+    function it_is_macroable()
+    {
+        Field::macro('myCustomField', function () {
+            return 'my-custom-field';
+        });
+
+        $this->assertSame('my-custom-field', Field::myCustomField());
     }
 }

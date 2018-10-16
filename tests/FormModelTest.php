@@ -53,6 +53,14 @@ class FormModelTest extends TestCase
 
         $this->assertSame($expect, $rules);
     }
+
+    /** @test */
+    function it_builds_a_update_form()
+    {
+        $userForm = app(UserForm::class)->forUpdate();
+
+        $this->assertTemplateMatches('form-model/user-form-for-update', $userForm);
+    }
 }
 
 class LoginForm extends FormModel
@@ -78,5 +86,19 @@ class RegisterForm extends FormModel
         $this->email('email')->unique('users')->required();
         $this->password('password')->confirmed()->min(6)->max(12)->required();
         $this->password('password_confirmation')->min(6)->max(12)->required();
+    }
+}
+
+class UserForm extends FormModel
+{
+    public function setup()
+    {
+        $this->text('name');
+        $this->email('email');
+    }
+
+    public function updateSetup()
+    {
+        $this->submit('Update user');
     }
 }
