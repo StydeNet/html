@@ -37,43 +37,54 @@ class FormMakeCommand extends GeneratorCommand
         return __DIR__.'/stubs/form.stub';
     }
 
+    /**
+     * Get the stub file for the base class
+     *
+     * @return string
+     */
     protected function getBaseFormStub()
     {
         return __DIR__.'/stubs/base-form.stub';
     }
 
-    public function fire()
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param  string  $rootNamespace
+     * @return string
+     */
+    protected function getDefaultNamespace($rootNamespace)
     {
-        $this->makeBaseForm();
-        parent::fire();
+        return $rootNamespace.'\Http\Forms';
     }
 
+    /**
+     * Execute the console command.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $this->makeBaseForm();
+        parent::handle();
+    }
+
+    /**
+     * Create base Form class
+     *
+     * @return void
+     */
     protected function makeBaseForm()
     {
-        $path = $this->laravel['path'].'/Http/Forms/Form.php';
+        $path = $this->getPath($this->qualifyClass('FormModel'));
 
         if (! $this->files->exists($path)) {
             // Create app/Http/Forms folder
             $this->makeDirectory($path);
             // Create base Form class
             $stub = $this->files->get($this->getBaseFormStub());
-            $this->replaceNamespace($stub, 'Form');
+            $this->replaceNamespace($stub, 'FormModel');
             $this->files->put($path, $stub);
-            $this->info('Base form created successfully.');
         }
     }
-
-    /**
-     * Get the destination class path.
-     *
-     * @param  string  $name
-     * @return string
-     */
-    protected function getPath($name)
-    {
-        $name = str_replace($this->laravel->getNamespace(), '', $name);
-
-        return $this->laravel['path'].'/Http/Forms/'.str_replace('\\', '/', $name).'.php';
-    }
-
 }

@@ -2,17 +2,37 @@
 
 namespace DummyRootNamespaceHttp\Forms;
 
-class DummyClass extends Form
+class DummyClass extends FormModel
 {
-
     /**
-     * Use this method to add fields and buttons to your form model
+     * Setup the common form attributes, fields and buttons.
      *
-     * @param  \Styde\Html\FieldCollection  $fields
-     * @param  \Styde\Html\ButtonCollection $buttons
+     * @return void
      */
-    protected function setup($fields, $buttons)
+    public function setup()
     {
+        //...
     }
 
+    /**
+     * Setup the form attributes, fields and buttons for creation.
+     * Called after setup method, so common fields defined there will be available here.
+     *
+     * @return void
+     */
+    public function creationSetup()
+    {
+        //...
+    }
+
+    /**
+     * Setup the form attributes, form fields and buttons for update.
+     * Called after setup method, so common fields defined there will be available here.
+     *
+     * @return void
+     */
+    public function updateSetup()
+    {
+        //...
+    }
 }

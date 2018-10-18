@@ -127,7 +127,7 @@ class FormModel implements Htmlable
 
     /**
      * Setup the form attributes, fields and buttons for creation.
-     * Called after setup, common fields will be available here.
+     * Called after setup method, so common fields defined there will be available here.
      *
      * @return void
      */
@@ -138,7 +138,7 @@ class FormModel implements Htmlable
 
     /**
      * Setup the form attributes, form fields and buttons for update.
-     * Called after setup, common fields will be available here.
+     * Called after setup method, so common fields defined there will be available here.
      *
      * @return void
      */
