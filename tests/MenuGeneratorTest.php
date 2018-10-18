@@ -281,4 +281,16 @@ class MenuGeneratorTest extends TestCase
 
         $this->assertTemplateMatches('menu/menu', $menu);
     }
+
+    /** @test */
+    function can_create_menus_using_a_helper()
+    {
+        $config = function($items) {
+            $items->url('/', 'Home');
+            $items->placeholder('About us');
+            $items->url('projects', 'Our projects');
+            $items->url('contact-us', 'Contact us');
+        };
+        $this->assertTemplateMatches('menu/menu', menu($config));
+    }
 }

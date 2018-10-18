@@ -333,15 +333,7 @@ class FieldBuilder
     {
         $field = new Field($this, $name, $type);
 
-        if (isset($attributes['label'])) {
-            $field->label($attributes['label']);
-            unset($attributes['label']);
-        }
-
-        if (isset($attributes['template'])) {
-            $field->template($attributes['template']);
-            unset($attributes['template']);
-        }
+        $this->setCustomAttributes($attributes, $field);
 
         if (isset($attributes['required']) && ! $attributes['required']) {
             unset($attributes['required']);
@@ -389,6 +381,18 @@ class FieldBuilder
             ),
             'fields.'.$this->getDefaultTemplate($field->type)
         );
+    }
+
+    protected function setCustomAttributes(&$attributes, $field)
+    {
+        $custom = ['label', 'template', 'id'];
+
+        foreach ($custom as $key) {
+            if (isset($attributes[$key])) {
+                $field->$key($attributes[$key]);
+                unset($attributes[$key]);
+            }
+        }
     }
 
     /**

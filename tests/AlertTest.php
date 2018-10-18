@@ -2,7 +2,10 @@
 
 namespace Styde\Html\Tests;
 
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\View;
+use Styde\Html\Alert\Middleware as AlertMiddleware;
 use Styde\Html\Facades\Alert;
 
 class AlertTest extends TestCase
@@ -78,5 +81,35 @@ class AlertTest extends TestCase
                 'type' => 'success'
             ]
         ], Alert::toArray());
+    }
+
+    /** @test */
+    function it_returns_empty_when_there_are_any_alert_messages()
+    {
+        $this->assertEmpty(Alert::render());
+    }
+
+
+    /** @test */
+    function it_persist_the_alert_messages_once_the_response()
+    {
+        Alert::success('Success!');
+
+        $middleware = new AlertMiddleware($this->app->get('alert'));
+
+        $this->assertNull($this->app['session.store']->get('styde/alerts'));
+
+        $middleware->terminate(new Request(), new Response());
+
+        $session = $this->app['session.store']->get('styde/alerts');
+        $this->assertNotNull($session);
+        $this->assertContains(["message" => "Success!", "type" => "success"], $session);
+    }
+
+    /** @test */
+    function it_has_a_helper()
+    {
+        alert('This is a message', 'info');
+        $this->assertTemplateMatches('alert/alert', Alert::render());
     }
 }
