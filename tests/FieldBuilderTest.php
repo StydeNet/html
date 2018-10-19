@@ -2,9 +2,11 @@
 
 namespace Styde\Html\Tests;
 
-use Styde\Html\Facades\Field;
-use Illuminate\Support\MessageBag;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\MessageBag;
+use Styde\Html\Facades\Field;
+use Styde\Html\Facades\Form;
 
 class FieldBuilderTest extends TestCase
 {
@@ -49,6 +51,14 @@ class FieldBuilderTest extends TestCase
     }
 
     /** @test */
+    public function it_generates_a_text_field_with_a_custom_id()
+    {
+        $this->assertTemplateMatches(
+            'field/text-custom-id', Field::text('name', 'value', ['id' => 'custom_id'])
+        );
+    }
+
+    /** @test */
     public function it_generates_a_select_field()
     {
          trans()->addLines([
@@ -57,6 +67,18 @@ class FieldBuilderTest extends TestCase
 
         $this->assertTemplateMatches(
             'field/select', Field::select('gender', ['m' => 'Male', 'f' => 'Female'])
+        );
+    }
+
+    /** @test */
+    public function it_generates_a_select_field_with_custom_trans_empty()
+    {
+         trans()->addLines([
+             'validation.empty_option.gender' => 'Select gender',
+         ], 'en');
+
+        $this->assertTemplateMatches(
+            'field/select-empty', Field::select('gender', ['m' => 'Male', 'f' => 'Female'])
         );
     }
 
@@ -239,6 +261,48 @@ class FieldBuilderTest extends TestCase
         $this->assertTemplateMatches(
             'field/text-with-raw-label',
             Field::text('name', 'value')->rawLabel('Label with <strong>HTML</strong>')
+        );
+    }
+
+    /** @test */
+    function it_adds_a_select_field_with_options_from_model()
+    {
+        $post = new class extends Model {
+            public function getCategoryOptions()
+            {
+                return ['general' => 'General', 'random' => 'Random'];
+            }
+        };
+
+        Form::setCurrentModel($post);
+
+        $this->assertTemplateMatches(
+            'field/select-from-model', Field::select('category', [], null, ['empty' => 'Select category'])
+        );
+    }
+
+    /** @test */
+    function it_adds_a_select_field_with_options_in_wrong_name_method()
+    {
+        $post = new class extends Model {
+            public function getUserIdOptions()
+            {
+                return ['1' => 'John', '2' => 'Mary'];
+            }
+        };
+
+        Form::setCurrentModel($post);
+
+        $this->assertTemplateMatches(
+            'field/select-without-options-from-model', Field::select('user', [], null, ['empty' => 'Select user'])
+        );
+    }
+
+    /** @test */
+    function it_adds_a_select_field_from_model_without_options()
+    {
+        $this->assertTemplateMatches(
+            'field/select-without-options-from-model', Field::select('user', [], null, ['empty' => 'Select user'])
         );
     }
 

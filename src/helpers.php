@@ -34,7 +34,7 @@ if (! function_exists('field')) {
 
 if (! function_exists('alert')) {
     /**
-     * Creates a new alert message (alias of Alert::make)
+     * Creates a new alert message (alias of Alert::message)
      *
      * @param string $message
      * @param string $type

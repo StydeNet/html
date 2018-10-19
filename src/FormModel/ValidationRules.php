@@ -25,6 +25,10 @@ trait ValidationRules
         'number' => 'numeric'
     ];
 
+    protected $attributesWithoutRules = [
+        'id'
+    ];
+
     /**
      * Get all rules of validation
      *
@@ -90,7 +94,7 @@ trait ValidationRules
                 $this->$value();
             }
 
-            if (method_exists($this, $key)) {
+            if (method_exists($this, $key) && !in_array($key, $this->attributesWithoutRules)) {
                 $this->$key($value);
             }
         }
