@@ -55,6 +55,21 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
+    function it_returns_the_rules_only_for_fields()
+    {
+        $form = app(FormModel::class);
+
+        $form->tag('h3', 'title here');
+        $form->email('email')->required();
+        
+        $expect = [
+            'email' => ['email', 'required']
+        ];
+
+        $this->assertSame($expect, $form->getValidationRules());
+    }
+
+    /** @test */
     function it_builds_a_update_form()
     {
         $userForm = app(UserForm::class)->forUpdate();

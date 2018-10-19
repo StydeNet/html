@@ -4,7 +4,7 @@ namespace Styde\Html;
 
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Htmlable;
-use Styde\Html\FormModel\{FieldCollection, ButtonCollection};
+use Styde\Html\FormModel\{Field, FieldCollection, ButtonCollection};
 
 class FormModel implements Htmlable
 {
@@ -221,7 +221,7 @@ class FormModel implements Htmlable
         $rules = [];
 
         foreach ($this->fields->all() as $name => $field) {
-            if ($field->included) {
+            if ($field instanceof Field && $field->included) {
                 $rules[$name] = $field->getValidationRules();
             }
         }

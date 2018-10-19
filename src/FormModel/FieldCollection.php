@@ -220,6 +220,14 @@ class FieldCollection
         return $this->fields[$name] = new Field($this->fieldBuilder, $name, $type);
     }
 
+    /**
+     * Add a tag.
+     *
+     * @param string $name
+     * @param string $type
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
     public function tag($tag, $content = '', array $attributes = [])
     {
         return $this->fields[] = Html::tag($tag, $content, $attributes);
