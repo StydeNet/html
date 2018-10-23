@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Htmlable;
 
 abstract class BaseTag implements Htmlable
 {
+    use HandlesAccess;
     /**
      * @var string
      */

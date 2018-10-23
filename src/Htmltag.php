@@ -44,11 +44,13 @@ class Htmltag extends BaseTag
      */
     public function render()
     {
-        return new HtmlString(
-             '<'.$this->tag.$this->renderAttributes().'>'
-                 .$this->renderContent()
-            .'</'.$this->tag.'>'
-        );
+        if ($this->included) {
+            return new HtmlString(
+                '<'.$this->tag.$this->renderAttributes().'>'
+                     .$this->renderContent()
+                .'</'.$this->tag.'>'
+            );
+        }
     }
 
     /**
@@ -58,7 +60,9 @@ class Htmltag extends BaseTag
      */
     public function open()
     {
-        return new HtmlString('<'.$this->tag.$this->renderAttributes().'>');
+        if ($this->included) {
+            return new HtmlString('<'.$this->tag.$this->renderAttributes().'>');
+        }
     }
 
     /**
@@ -68,7 +72,9 @@ class Htmltag extends BaseTag
      */
     public function close()
     {
-        return new HtmlString('</'.$this->tag.'>');
+        if ($this->included) {
+            return new HtmlString('</'.$this->tag.'>');
+        }
     }
 
     /**
@@ -91,7 +97,7 @@ class Htmltag extends BaseTag
      */
     public function __get($name)
     {
-        if (isset ($this->content[$name])) {
+        if (isset($this->content[$name])) {
             return $this->content[$name];
         }
 
