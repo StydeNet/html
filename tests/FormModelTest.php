@@ -48,7 +48,8 @@ class FormModelTest extends TestCase
             'name' => [],
             'email' => ['email', 'unique:users', 'required'],
             'password' => ['confirmed', 'min:6', 'max:12', 'required'],
-            'password_confirmation' => ['min:6', 'max:12', 'required']
+            'password_confirmation' => ['min:6', 'max:12', 'required'],
+            'remember_me' => ['required']
         ];
 
         $this->assertSame($expect, $rules);
@@ -101,6 +102,7 @@ class RegisterForm extends FormModel
         $this->email('email')->unique('users')->required();
         $this->password('password')->confirmed()->min(6)->max(12)->required();
         $this->password('password_confirmation')->min(6)->max(12)->required();
+        $this->checkbox('remember_me')->required();
     }
 }
 

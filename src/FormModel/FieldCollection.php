@@ -139,9 +139,9 @@ class FieldCollection
      *
      * @return \Styde\Html\FormModel\Field
      */
-    public function checkbox($name, $value = 1)
+    public function checkbox($name)
     {
-        return $this->add($name, 'checkbox')->options($value);
+        return $this->add($name, 'checkbox');
     }
 
     /**
