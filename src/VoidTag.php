@@ -15,6 +15,8 @@ class VoidTag extends BaseTag implements Htmlable
      */
     public function render()
     {
-        return new HtmlString('<'.$this->tag.$this->renderAttributes().'>');
+        if ($this->included) {
+            return new HtmlString('<'.$this->tag.$this->renderAttributes().'>');
+        }
     }
 }
