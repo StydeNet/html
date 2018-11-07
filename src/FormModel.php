@@ -19,11 +19,6 @@ class FormModel implements Htmlable
     protected $theme;
 
     /**
-     * @var \Illuminate\Database\Eloquent\Model
-     */
-    protected $model;
-
-    /**
      * @var \Styde\Html\Form
      */
     public $form;
@@ -168,7 +163,7 @@ class FormModel implements Htmlable
      */
     public function model($model)
     {
-        $this->model = $model;
+        $this->formBuilder->setCurrentModel($model);
 
         return $this;
     }

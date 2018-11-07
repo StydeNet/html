@@ -31,6 +31,11 @@ class TestCase extends OrchestraTestCase
     {
         return new TestUser(['role' => 'admin']);
     }
+
+    protected function aUserWithData(array $data)
+    {
+        return new TestUser($data);
+    }
 }
 
 class TestUser extends Model implements AuthenticatableInterface {
