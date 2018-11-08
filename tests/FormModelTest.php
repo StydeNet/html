@@ -73,7 +73,12 @@ class FormModelTest extends TestCase
     /** @test */
     function it_builds_a_update_form()
     {
-        $userForm = app(UserForm::class)->forUpdate();
+        $userModel = $this->aUserWithData([
+            'name' => 'Clemir',
+            'email' => 'clemir@styde.net'
+        ]);
+
+        $userForm = app(UserForm::class)->model($userModel)->forUpdate();
 
         $this->assertTemplateMatches('form-model/user-form-for-update', $userForm);
     }
