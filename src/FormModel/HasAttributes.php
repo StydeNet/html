@@ -64,7 +64,7 @@ trait HasAttributes
      */
     public function hasAttribute($name)
     {
-        return in_array($name, $this->attributes);
+        return array_key_exists($name, $this->attributes);
     }
 
     /**
