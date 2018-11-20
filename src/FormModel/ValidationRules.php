@@ -38,7 +38,9 @@ trait ValidationRules
     {
         $this->setRuleIn();
 
-        return $this->rules;
+        return array_map(function ($rule) {
+            return (string) $rule;
+        }, $this->rules);
     }
 
     /**

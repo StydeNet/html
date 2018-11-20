@@ -3,6 +3,7 @@
 namespace Styde\Html\FormModel;
 
 use Illuminate\Validation\Rule;
+use Styde\Html\Rules\Unique;
 
 trait IncludeRulesHelpers
 {
@@ -600,31 +601,18 @@ trait IncludeRulesHelpers
         return $this->setRule('timezone');
     }
 
-
     /**
-     * @param mixed ...$values
-     * @return mixed
+     * @param string $table
+     * @param string|null $column
+     * @return \Styde\Html\Rules\Unique
      */
-    public function unique(...$values)
+    public function unique($table, $column = null)
     {
-        if (empty($values)) {
-            return $this->setRule("unique:{$this->table}");
-        }
+        $rule = new Unique($table, $column, $this);
 
-        foreach ($values as $key => $value) {
-            if (is_array($value) && array_key_exists('ignore', $value)) {
-                if (is_array($value['ignore'])) {
-                    return $this->setRule(
-                        Rule::unique($values[0], $values[1])->ignore($value['ignore'][0], $value['ignore'][1])
-                    );
-                }
-                return $this->setRule(Rule::unique($values[0], $values[1])->ignore($value['ignore']));
-            }
-        }
+        $this->setRule($rule);
 
-        $data = implode(',', $values);
-
-        return $this->setRule("unique:$data");
+        return $rule;
     }
 
     /**

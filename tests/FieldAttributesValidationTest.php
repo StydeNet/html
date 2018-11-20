@@ -64,8 +64,7 @@ class FieldAttributesValidationTest extends TestCase
             })
             ->label('Parent');
 
-        $this->assertSame('exists:table_name,id', (string) $field->getValidationRules()[0]);
-        $this->assertInstanceOf(Exists::class, $field->getValidationRules()[0]);
+        $this->assertSame('exists:table_name,id', $field->getValidationRules()[0]);
     }
 
     /** @test */
@@ -586,7 +585,7 @@ class FieldAttributesValidationTest extends TestCase
         //TODO: fix test and code
         $field = Field::text('name')->unique('users', 'name');
 
-        $this->assertSame(['unique:users,name'], $field->getValidationRules());
+        $this->assertSame('unique:users,name,NULL,id', $field->getValidationRules()[0]);
     }
 
     /** @test */
