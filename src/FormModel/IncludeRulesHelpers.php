@@ -603,10 +603,10 @@ trait IncludeRulesHelpers
 
     /**
      * @param string $table
-     * @param string|null $column
+     * @param string $column
      * @return \Styde\Html\Rules\Unique
      */
-    public function unique($table, $column = null)
+    public function unique($table, $column = 'NULL')
     {
         $rule = new Unique($table, $column, $this);
 

@@ -46,7 +46,7 @@ class FormModelTest extends TestCase
 
         $expect = [
             'name' => [],
-            'email' => ['email', 'unique:users,,NULL,id', 'required'],
+            'email' => ['email', 'unique:users,NULL,NULL,id', 'required'],
             'password' => ['confirmed', 'min:6', 'max:12', 'required'],
             'password_confirmation' => ['min:6', 'max:12', 'required'],
             'remember_me' => ['required']
