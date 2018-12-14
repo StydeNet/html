@@ -191,7 +191,7 @@ trait IncludeRulesHelpers
             $rule .= "$key=$value,";
         }
 
-        return $this->setRule($rule);
+        return $this->setRule(rtrim($rule, ','));
     }
 
     /**
