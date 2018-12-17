@@ -33,6 +33,10 @@ class Field implements Htmlable
      */
     public $label;
     /**
+     * @var string
+     */
+    public $helpText;
+    /**
      * @var template
      */
     public $template;
@@ -104,6 +108,29 @@ class Field implements Htmlable
         return $this;
     }
 
+    /**
+     * @param $helpText
+     * @return $this
+     */
+    public function helpText($helpText)
+    {
+        $this->helpText = $helpText;
+
+        return $this;
+    }
+
+    /**
+     * Add a help Text that contains HTML (be careful because it won't be escaped).
+     *
+     * @param $html
+     * @return $this
+     */
+    public function rawHelpText($html)
+    {
+        $this->helpText = new HtmlString($html);
+
+        return $this;
+    }
     /**
      * @param $value
      * @return $this

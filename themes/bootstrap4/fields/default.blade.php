@@ -6,6 +6,9 @@
 @endif
     </label>
     {{ $input->id($id)->classes(['form-control', 'is-invalid' => $hasErrors]) }}
+    @if ($helpText)
+<small id="help_block_{{ $id }}" class="form-text text-muted">{{ $helpText }}</small>
+    @endif
 @foreach ($errors as $error)
     <div class="invalid-feedback">{{ $error }}</div>
 @endforeach

@@ -51,6 +51,22 @@ class FieldBuilderTest extends TestCase
     }
 
     /** @test */
+    public function it_generates_a_text_field_with_an_help_text()
+    {
+        $this->assertTemplateMatches(
+            'field/text-help-text', Field::text('name', 'value', ['helpText' => 'This is a help text for the field'])
+        );
+    }
+
+    /** @test */
+    public function it_generates_a_text_field_with_a_raw_help_text()
+    {
+        $this->assertTemplateMatches(
+            'field/text-raw-help-text', Field::text('name', 'value')->rawHelpText('This is a text with a <a href="#">link</a>')
+        );
+    }
+
+    /** @test */
     public function it_generates_a_text_field_with_a_custom_id()
     {
         $this->assertTemplateMatches(
@@ -157,6 +173,22 @@ class FieldBuilderTest extends TestCase
 
         $this->assertTemplateMatches(
             'field/checkboxes', Field::checkboxes('tags', $tags, $checked)
+        );
+    }
+
+    /** @test */
+    function it_generates_checkboxes_with_help_text()
+    {
+        $tags = [
+            'php' => 'PHP',
+            'python' => 'Python',
+            'js' => 'JS',
+            'ruby' => 'Ruby on Rails'
+        ];
+        $checked = ['php', 'js'];
+
+        $this->assertTemplateMatches(
+            'field/checkboxes_help_text', Field::checkboxes('tags', $tags, $checked)->helpText('This is a help text')->required()
         );
     }
 
