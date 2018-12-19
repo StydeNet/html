@@ -3,8 +3,9 @@
 namespace Styde\Html\Tests;
 
 use Illuminate\Support\Facades\Gate;
-use Styde\Html\Facades\Field;
 use Illuminate\Validation\Rules\Exists;
+use Illuminate\Validation\Rules\NotIn;
+use Styde\Html\Facades\Field;
 
 class FieldAttributesValidationTest extends TestCase
 {
@@ -73,6 +74,16 @@ class FieldAttributesValidationTest extends TestCase
         $field = Field::text('name')->max(10);
 
         $this->assertEquals(['max:10'], $field->getValidationRules());
+        $this->assertTrue($field->hasAttribute('max'));
+    }
+
+    /** @test */
+    function it_adds_the_maxlength_rule()
+    {
+        $field = Field::text('name')->maxlength(10);
+
+        $this->assertEquals(['max:10'], $field->getValidationRules());
+        $this->assertTrue($field->hasAttribute('maxlength'));
     }
 
     /** @test */
@@ -116,11 +127,21 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_adds_the_min_rule()
+    function it_adds_the_minlength_rule()
     {
         $field = Field::text('name')->minlength(10);
 
         $this->assertSame(['min:10'], $field->getValidationRules());
+        $this->assertTrue($field->hasAttribute('minlength'));
+    }
+
+    /** @test */
+    function it_adds_the_min_rule()
+    {
+        $field = Field::text('name')->min(10);
+
+        $this->assertSame(['min:10'], $field->getValidationRules());
+        $this->assertTrue($field->hasAttribute('min'));
     }
 
     /** @test */
@@ -129,6 +150,15 @@ class FieldAttributesValidationTest extends TestCase
         $field = Field::text('name')->regex('.{6,}');
 
         $this->assertSame(['regex:/.{6,}/'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_pattern_rule()
+    {
+        $field = Field::text('name')->pattern('.{6,}');
+
+        $this->assertSame(['regex:/.{6,}/'], $field->getValidationRules());
+        $this->assertTrue($field->hasAttribute('pattern'));
     }
 
     /** @test */
@@ -158,9 +188,11 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_adds_the_required_unless_rule()
     {
-        $field = Field::text('offer_code')->requiredUnless('price', '>=', 500);
+        $fieldA = Field::text('offer_code')->requiredUnless('price', '>=', 500);
+        $fieldB = Field::text('offer_code')->requiredUnless('price', 500);
 
-        $this->assertSame(['required_unless:price,>=,500'], $field->getValidationRules());
+        $this->assertSame(['required_unless:price,>=,500'], $fieldA->getValidationRules());
+        $this->assertSame(['required_unless:price,500'], $fieldB->getValidationRules());
     }
 
     /** @test */
@@ -406,9 +438,11 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_adds_the_exists_rule()
     {
-        $field = Field::text('foo')->exists('table', 'column');
+        $fieldA = Field::text('foo')->exists('table', 'column');
+        $fieldB = Field::text('foo')->exists('table');
 
-        return $this->assertSame(['exists:table,column'], $field->getValidationRules());
+        $this->assertSame(['exists:table,column'], $fieldA->getValidationRules());
+        $this->assertSame(['exists:table'], $fieldB->getValidationRules());
     }
 
     /** @test */
@@ -444,11 +478,19 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_adds_the_in_rule()
+    function it_adds_the_in_rule_string()
     {
         $field = Field::text('name')->in('first-zone', 'second-zone');
 
-        return $this->assertSame(['in:first-zone,second-zone'], $field->getValidationRules());
+        $this->assertSame(['in:first-zone,second-zone'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_in_rule_class()
+    {
+        $field = Field::text('name')->in(['first-zone', 'second-zone']);
+
+        $this->assertEquals([new \Illuminate\Validation\Rules\In(['first-zone','second-zone'])], $field->getValidationRules());
     }
 
     /** @test */
@@ -532,11 +574,19 @@ class FieldAttributesValidationTest extends TestCase
     }
 
     /** @test */
-    function it_adds_the_not_in_rule()
+    function it_adds_the_not_in_rule_string()
     {
         $field = Field::text('name')->notIn('first-zone', 'second-zone');
 
         return $this->assertSame(['not_in:first-zone,second-zone'], $field->getValidationRules());
+    }
+
+    /** @test */
+    function it_adds_the_not_in_rule_class()
+    {
+        $field = Field::text('name')->notIn(['first-zone', 'second-zone']);
+
+        return $this->assertEquals([new NotIn(['first-zone','second-zone'])], $field->getValidationRules());
     }
 
     /** @test */
