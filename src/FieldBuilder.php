@@ -363,10 +363,14 @@ class FieldBuilder
             $label = $this->getDefaultLabel($field->name);
         }
 
+        $helpText = $field->helpText;
+
         $htmlName = $this->getHtmlName($field->name);
+
         $id = $this->getHtmlId($field->name, $field->attributes);
 
         $errors = $this->getControlErrors($id);
+
         $hasErrors = !empty($errors);
 
         $input = $this->buildControl(
@@ -377,7 +381,7 @@ class FieldBuilder
             $field->template,
             array_merge(
                 $field->extra,
-                compact('htmlName', 'id', 'label', 'input', 'errors', 'hasErrors', 'required')
+                compact('htmlName', 'id', 'label', 'input', 'errors', 'hasErrors', 'required', 'helpText')
             ),
             'fields.'.$this->getDefaultTemplate($field->type)
         );
@@ -385,7 +389,7 @@ class FieldBuilder
 
     protected function setCustomAttributes(&$attributes, $field)
     {
-        $custom = ['label', 'template', 'id'];
+        $custom = ['label', 'template', 'id', 'helpText'];
 
         foreach ($custom as $key) {
             if (isset($attributes[$key])) {
