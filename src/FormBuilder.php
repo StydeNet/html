@@ -238,6 +238,19 @@ class FormBuilder
     }
 
     /**
+     * Create a file input field.
+     *
+     * @param  string $name
+     * @param  array  $attributes
+     *
+     * @return \Styde\Html\Htmltag
+     */
+    public function file(string $name, $attributes = [])
+    {
+        return new Input('file', $name, null, $attributes);
+    }
+
+    /**
      * Create a hidden input field.
      *
      * @param string $name

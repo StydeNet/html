@@ -49,6 +49,7 @@ class FormModelTest extends TestCase
             'email' => ['email', 'unique:users,NULL,NULL,id', 'required'],
             'password' => ['confirmed', 'min:6', 'max:12', 'required'],
             'password_confirmation' => ['min:6', 'max:12', 'required'],
+            'photo' => ['file', 'required', 'image', 'dimensions:ratio=3/2'],
             'remember_me' => ['required']
         ];
 
@@ -107,6 +108,7 @@ class RegisterForm extends FormModel
         $this->email('email')->unique('users')->required();
         $this->password('password')->confirmed()->min(6)->max(12)->required();
         $this->password('password_confirmation')->min(6)->max(12)->required();
+        $this->file('photo')->required()->image()->dimensions(['ratio' => '3/2']);
         $this->checkbox('remember_me')->required();
     }
 }

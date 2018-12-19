@@ -384,7 +384,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $field = Field::file('avatar')->dimensions(['min_width' => 100, 'max_height' => 100]);
 
-        return $this->assertSame(['file', 'dimensions:min_width=100,max_height=100,'], $field->getValidationRules());
+        return $this->assertSame(['file', 'dimensions:min_width=100,max_height=100'], $field->getValidationRules());
     }
 
     /** @test */
