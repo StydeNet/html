@@ -83,6 +83,26 @@ class FormModelTest extends TestCase
 
         $this->assertTemplateMatches('form-model/user-form-for-update', $userForm);
     }
+
+    /** @test */
+    function it_set_a_novalidate_attribute()
+    {
+        Route::post('login', ['as' => 'login']);
+
+        $form = app(LoginForm::class)->novalidate();
+
+        $this->assertTemplateMatches('form-model/form-with-novalidate', $form);
+    }
+
+    /** @test */
+    function it_set_a_novalidate_attribute_as_false()
+    {
+        Route::post('login', ['as' => 'login']);
+
+        $form = app(LoginForm::class)->novalidate(false);
+
+        $this->assertTemplateMatches('form-model/login-form', $form);
+    }
 }
 
 class LoginForm extends FormModel

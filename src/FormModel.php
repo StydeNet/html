@@ -169,6 +169,21 @@ class FormModel implements Htmlable
     }
 
     /**
+     * Set the novalidate attribute for a form, so developers can
+     * skip HTML5 validation, in order to test backend validation
+     * in a local or development environment.
+     *
+     * @param boolean $value
+     * @return $this
+     */
+    public function novalidate($value = true)
+    {
+        $this->formBuilder->novalidate($value);
+
+        return $this;
+    }
+
+    /**
      * Render all form to Html
      *
      * @return string
