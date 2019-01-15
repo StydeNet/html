@@ -103,6 +103,15 @@ class FormModelTest extends TestCase
 
         $this->assertTemplateMatches('form-model/login-form', $form);
     }
+
+    /** @test */
+    function it_thrown_an_exception_when_call_a_bad_method()
+    {
+        $this->expectException('BadMethodCallException');
+        $this->expectExceptionMessage('Call to undefined method Styde\Html\Tests\LoginForm::badMethod()');
+
+        $form = app(LoginForm::class)->badMethod();
+    }
 }
 
 class LoginForm extends FormModel
