@@ -239,7 +239,9 @@ In addition of using the facade methods `Alert::message` and `Menu::make`, you c
 alert('this is the message', 'type-of-message')
 ```
 
-`menu($items, $classes)`
+```php
+menu($items, $classes)
+```
 
 ## Access handler
 
