@@ -1,10 +1,10 @@
 # Form Builder
 
-## novalidate
+## Novalidate
 
 Permite a los usuarios establecer la opción `novalidate` para cada formulario generado con el método `Form::open` o el método `Form::model` así los desarrolladores pueden saltar la validación de HTML5 para evaluar la validación backend en los entornos local o de desarrollo:
 
-```
+```php
 return [
     //..
     'novalidate' => true
@@ -12,23 +12,25 @@ return [
 ];
 ```
 
-## radios
+## Radios
 
 Crea una lista de radios.
 
 Esta función es similar a `Form::select` pero genera una colección de radios en vez de opciones. Es decir:
 
-`Form::radios('status', ['a' => 'Active', 'i' => 'Inactive'])`
+```php
+Form::radios('status', ['a' => 'Active', 'i' => 'Inactive'])
+```
 
 Se puede pasar 'inline' como un valor en el arreglo de atributos para establecer los radios en línea (ellos se renderizarán con la plantilla 'radios-inline').
 
-## checkboxes
+## Checkboxes
 
 Crea una lista de checkboxes.
 
 Esta función es similar a `Form::select` pero genera una colección de checkboxes en vez de opciones, es decir:
 
-```
+```php
 $tags = [
     'php' => 'PHP',
     'python' => 'Python',
@@ -39,6 +41,8 @@ $tags = [
 $checked = ['php', 'js'];
 ```
 
-`{!! Form::checkboxes('tags', $tags, $checked) !!}`
+```blade
+{!! Form::checkboxes('tags', $tags, $checked) !!}
+```
 
 Se puede pasar 'inline' como un valor en el arreglo de atributos para establecer los checkboxes en línea (ellos serán renderizados usando la plantilla 'checkboxes-inline').

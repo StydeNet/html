@@ -202,7 +202,7 @@ Este paquete extiende la funcionalidad del HTML Builder de the Laravel Collectiv
 
 Hay un solo método adicional _por ahora_, pero ¡es muy útil!
 
-####Generar clases de CSS:
+#### Generar clases de CSS:
 
 ```blade
 {!! Html::classes(['home' => true, 'main', 'dont-use-this' => false]) !!}
@@ -220,7 +220,9 @@ Además de utilizar los métodos facade `Alert::message` y `Menu::make`, puedes 
 alert('this is the message', 'type-of-message')
 ```
 
-`menu($items, $clases)`
+```php
+menu($items, $clases)
+```
 
 ## Access handler
 
