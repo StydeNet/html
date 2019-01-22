@@ -111,6 +111,7 @@ Si no se necesita utilizar el componente Traductor, sólo define translate_texts
 
 ```php
 //config/html.php
+
 return [
     //...
     'translate_texts' => false
@@ -120,13 +121,10 @@ return [
 
 ## Temas
 
-Por defecto, los mensajes de alerta serán renderizados con la plantilla predeterminada, localizada en themes/[nombre-del-tema]/alert, por ejemplo, para el tema de Bootstrap sería:
-
-`vendor/styde/html/themes/bootstrap/alert.blade.php`
+Por defecto, los mensajes de alerta serán renderizados con la plantilla predeterminada, localizada en themes/[nombre-del-tema]/alert, por ejemplo, para el tema de Bootstrap sería: `vendor/styde/html/themes/bootstrap/alert.blade.php`
 
 Se puede pasar una plantilla personalizada como el primer argumento del método render(), es decir:
 
 ```blade
 {!! Alert::render('partials/custom-alert-template') !!}
 ```
-

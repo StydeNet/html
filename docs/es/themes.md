@@ -4,12 +4,15 @@ Este paquete fue creado teniendo en cuenta que hay un montón de frameworks de C
 
 Para cambiar o personalizar un theme, simplemente ejecuta: 
 
-`php artisan vendor:publish`
+```bash
+php artisan vendor:publish
+```
 
 Luego ir a `config/html.php` y cambiar el valor de theme:
 
 ```php
 //config/html.php
+
 return [
     'theme' => 'custom-theme'
 ];
