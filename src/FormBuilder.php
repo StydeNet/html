@@ -275,7 +275,11 @@ class FormBuilder
      */
     public function textarea($name, $value = null, $attributes = [])
     {
-        return new Htmltag('textarea', $this->getValueAttribute($name, $value), array_merge(compact('type', 'name'), $attributes));
+        return new Htmltag(
+            'textarea',
+            $this->getValueAttribute($name, $value),
+            array_merge(compact('name'), $attributes)
+        );
     }
 
     /**
