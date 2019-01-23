@@ -20,13 +20,15 @@ Sólo pasa una de las siguientes opciones como un atributo de campo o valor del 
 
 Uso: 
 
-####Form fields
+#### Form fields
 
-`{!! Field::select('user_id', null, ['roles' => 'admin'])`
-
-####Menu items
-
+```blade
+{!! Field::select('user_id', null, ['roles' => 'admin'])
 ```
+
+#### Menu items
+
+```php
 // config/menu.php
 
 return [
@@ -44,7 +46,9 @@ return [
 ];
 ```
      
-`{!! Menu::make('menu.items') !}}`
+```blade
+{!! Menu::make('menu.items') !}}
+```
 
 ## Autorización y políticas de acceso
 
@@ -56,14 +60,19 @@ Si es un array, la primera posición del array será el nombre de la habilidad y
 
 Ejemplos:
 
-`{!! Field::text('change-password', ['allows' => 'change-password']) !!}`
-`{!! Field::select('category', $options, ['allows' => ['change-post-category', $category]]) !!}`
+```blade
+{!! Field::text('change-password', ['allows' => 'change-password']) !!}
+```
+
+```blade
+{!! Field::select('category', $options, ['allows' => ['change-post-category', $category]]) !!}
+```
 
 Si estás contruyendo menús puedes usar parámetros dinámicos para pasar valores a la autorización.
 
 En el siguiente ejemplo definiremos un parámetro dinámico 'post' y pasarlo usando setParam cuando se construya el menú:
 
-```
+```php
 // config/menu.php
 
 return [
@@ -76,7 +85,9 @@ return [
 ];
 ```
      
-`{!! Menu::make('menu.items')->setParam('post', $post)->render() !}}`
+```blade
+{!! Menu::make('menu.items')->setParam('post', $post)->render() !}}
+```
      
 ## Personalización
 
@@ -86,7 +97,7 @@ Si estás trabajando en un proyecto complejo con muchas reglas de acceso diferen
 
 Si se quiere usar la clase del access handler como un componente independiente, por favor agrega este alias global en `config/app.php`.
 
-```
+```php
   'aliases' => [
     // ...
     'Access' => Styde\Html\Facades\Access,
@@ -96,7 +107,7 @@ Si se quiere usar la clase del access handler como un componente independiente, 
 
 Luego se puede utilizar la facade donde se quiera:
 
-```
+```blade
 @if (Access:check(['roles' => ['admin, 'editor']]))
     <p>
         <a href='{{ url('admin/posts', [$post->id]) }}'>
@@ -106,12 +117,13 @@ Luego se puede utilizar la facade donde se quiera:
 @endif
 ```
 
-##Desactivar el access handler
+## Desactivar el access handler
 
 Se puede desactivar este componente en la configuración:
 
-```
+```php
 //config/html.php
+
 return [
     //..
     'control_access' => false,
