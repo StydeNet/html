@@ -141,7 +141,7 @@ class FormBuilder extends CollectiveFormBuilder
 
         return $this->theme->render(
             $template,
-            compact('name', 'radios', 'attributes', 'classes', 'hasErrors'),
+            compact('name', 'radios', 'attributes', 'hasErrors'),
             $defaultTemplate
         );
     }
