@@ -18,7 +18,7 @@ Just pass one of the following options as a field attribute or menu item value:
 
 *WARNING*: note this package will only prevents the elements from appearing in the front end, you still need to protect the backend access using middleware, etc.
 
-##Usage 
+## Usage 
 
 #### Form fields
 
