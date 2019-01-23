@@ -2,12 +2,15 @@
 
 namespace Styde\Html;
 
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Http\Request;
+use Illuminate\Support\Traits\ForwardsCalls;
 use Styde\Html\FormModel\{Field, FieldCollection, ButtonCollection};
 
 class FormModel implements Htmlable
 {
+    use ForwardsCalls;
+
     /**
      * @var \Styde\Html\FormBuilder
      */
@@ -239,6 +242,15 @@ class FormModel implements Htmlable
         return $rules;
     }
 
+    /**
+     * Dynamically handle calls to the form model.
+     *
+     * @param  string $method
+     * @param  array $parameters
+     *
+     * @return mixed
+     * @throws \BadMethodCallException
+     */
     public function __call($method, $parameters = [])
     {
         if (method_exists($this->form, $method)) {
@@ -249,7 +261,11 @@ class FormModel implements Htmlable
             return $this->buttons->$method(...$parameters);
         }
 
-        return $this->fields->$method(...$parameters);
+        if (method_exists($this->fields, $method)) {
+            return $this->fields->$method(...$parameters);
+        }
+
+        static::throwBadMethodCallException($method);
     }
 
     /**
