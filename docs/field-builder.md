@@ -4,11 +4,15 @@ This component will allow you to generate the entire markup for form fields with
 
 If you have used the Laravel Collective HTML component before, you already know how to use the basics of this component; simply replace the alias “Form” with “Field”, for example, replace:
 
-`{!! Form::text(‘name’, ‘value’, $attributes) !!}`
+```blade
+{!! Form::text(‘name’, ‘value’, $attributes) !!}
+```
 
 With this:
 
-`{!! Field::text(‘name’, ‘value’, $attributes) !!}`
+```blade
+{!! Field::text(‘name’, ‘value’, $attributes) !!}
+```
 
 This will generate a field including the container, the label, the control and any errors associated with it.
 
@@ -20,18 +24,24 @@ There are also other convenient options and handy fallbacks:
 
 If you don't want to pass a value argument (`null`) but you want to pass the array of `$attributes`, you can  skip the second argument. i.e. this:
 
-`{!! Field::text(‘name’, $attributes) !!}`
+```blade
+{!! Field::text(‘name’, $attributes) !!}
+```
 
 Is the same as:
 
-`{!! Field::text(‘name’, null, $attributes) !!}`
+```blade
+{!! Field::text(‘name’, null, $attributes) !!}
+```
 
 
 ## Labels:
 
 You can explicitly pass a label for a field as part of the attributes array, i.e.:
 
-`{!! Field::text(’name’, [‘label’ => ‘Full name’]) !!}`
+```blade
+{!! Field::text(’name’, [‘label’ => ‘Full name’]) !!}
+```
 
 As a second option, you can store the labels in the lang/ folder with the same convention used to store the attribute's names for the validation errors:
 
@@ -47,7 +57,9 @@ If you skip both options, then the FieldBuilder will generate a label based on t
 
 By default, the fields will be rendered with the default template, located in the [theme]/fields folder, for example, for the Bootstrap theme that would be:
 
-`vendor/styde/html/themes/bootstrap/fields/default.blade.php`
+```
+vendor/styde/html/themes/bootstrap/fields/default.blade.php
+```
 
 But you have options to customize the template used for a particular type or field:
 
@@ -55,16 +67,16 @@ But you have options to customize the template used for a particular type or fie
 
 Some CSS frameworks (like Bootstrap) need different markups for different form field types, so you can use the configuration to assign a different template to a particular field type, like this:
 
-```
-	'themes' => [
-		'bootstrap' => [
-			'field_templates' => [
-				'checkbox' => 'checkbox',
-				'checkboxes' => 'collection',
-				'radios' => 'collection'
-			],
-			//...
-	//...
+```php
+'themes' => [
+    'bootstrap' => [
+        'field_templates' => [
+            'checkbox' => 'checkbox',
+            'checkboxes' => 'collection',
+            'radios' => 'collection'
+        ],
+        //...
+//...
 ```
 
 With this configuration, the "checkbox" fields will use the `vendor/styde/html/themes/bootstrap/fields/checkbox.blade.php` template by default, while the "checkboxes" and "radios" fields will use the `vendor/styde/html/themes/bootstrap/fields/collection.blade.php` template.
@@ -77,7 +89,9 @@ Note: you'd only have to worry about the theme you actually need, so if you don'
 
 You can specify a custom `template` for a single field through the `'template key'` of the `$attributes` array, like this:
 
-`{!! Field::text(’name’, [’template’ => ’templates/my_template’]) !!}`
+```blade
+{!! Field::text(’name’, [’template’ => ’templates/my_template’]) !!}
+```
 
 The path will be relative to the resources/views/ directory.
 
@@ -99,20 +113,26 @@ It will be assigned automatically to each input control, if you use dot syntax (
 
 You can specify a 'required' value in the attributes array:
 
-`{!! Field::text(’name’, [’required’]) !!}`
+```blade
+{!! Field::text(’name’, [’required’]) !!}
+```
 
 Or as a key => value pair (the field will be marked as required if the value evaluates to true, i.e.:
 
-`$required = true;`
+```php
+$required = true;
+```
 
-`{!! Field::text(’name’, null, [’required’ => $required]) !!}`
+```blade
+{!! Field::text(’name’, null, [’required’ => $required]) !!}
+```
 
 The field templates will always have a ‘required’ variable so you can use it to print extra CSS classes or badges, to indicate whether a field is required or optional, i.e.:
 
-```
-    @if ($required)
-        <span class="label label-info">Required</span>
-    @endif
+```blade
+@if ($required)
+    <span class="label label-info">Required</span>
+@endif
 ```
 
 ## Errors:
@@ -123,19 +143,21 @@ For example, with Twitter Bootstrap you will need a `has-error` class in case yo
 
 This is an extract of the fields/default template for the Bootstrap theme:
 
-`<div{!! Html::classes(['form-group', 'has-error' => $hasErrors]) !!}>`
+```blade
+<div{!! Html::classes(['form-group', 'has-error' => $hasErrors]) !!}>
+```
 
 Inputs, selects, textareas, etc. with errors will also get an extra CSS class, you can configure this in:
 
 
-```
-    'themes' => [
-        'bootstrap' => [
-            //...
-            'field_classes' => [
-            		//...
-                'error' => 'input-with-feedback'
+```php
+'themes' => [
+    'bootstrap' => [
+        //...
+        'field_classes' => [
                 //...
+            'error' => 'input-with-feedback'
+            //...
 ```
 
 And once again, if you are using Twitter Bootstrap, any field with errors will get the `input-with-feedback` class. This is also required for showing the input in red color.
@@ -144,11 +166,13 @@ And once again, if you are using Twitter Bootstrap, any field with errors will g
 
 For selects, radios and checkboxes, you can skip the options argument or pass null:
 
-`{!! Field::select('os') !!}` or `{!! Field::select('os', null) !!}`
+```blade
+{!! Field::select('os') !!}` or `{!! Field::select('os', null) !!}
+```
 
 If there is a model bound to the form, then the FieldBuilder will check if there is a method called: `get[fieldName]Options` in that case, it will be called and the returned value will be used as the options, i.e.:
 
-```
+```php
 class Product extends Model
 
     //...
@@ -165,7 +189,9 @@ class Product extends Model
 
 Select fields usually need an empty option, (like "Select something please"), you can pass it as the `'empty'` attribute, like this:
 
-`{!! Field::select('os', null, ['empty' => 'Select your favorite operative system']) !!}`
+```blade
+{!! Field::select('os', null, ['empty' => 'Select your favorite operative system']) !!}
+```
 
 If you set the empty attribute to `false`, i.e. `['empty' => false]` , the empty option won't be rendered.
 
@@ -181,20 +207,22 @@ At last if none of these options is not found, it will use an empty string as th
 
 To save some key strokes, you can use abbreviations instead of the full name of the attributes, pass them in the configuration:
 
-```
-    /*
-     * Specify abbreviations for the form field attributes
-     */
-    'abbreviations' => [
-        'ph' => 'placeholder',
-        'max' => 'maxlength',
-        'tpl' => 'template'
-    ],
+```php
+/*
+ * Specify abbreviations for the form field attributes
+ */
+'abbreviations' => [
+    'ph' => 'placeholder',
+    'max' => 'maxlength',
+    'tpl' => 'template'
+],
 ```
 
 Then you can do things like this:
 
-`{!! Field::text('name', ['ph' => 'This will be the placeholder]) !!}`
+```blade
+{!! Field::text('name', ['ph' => 'This will be the placeholder]) !!}
+```
 
 ## CSS classes
 
@@ -204,17 +232,17 @@ You can pass custom CSS classes for each field using the 'class' key of the attr
 
 Using the configuration, you can assign default CSS class for every field according to its type:
 
-```
-    'themes' => [
-			//...
-        'bootstrap' => [
-            //...
-            'field_classes' => [
-                // type => CSS class or classes
-                'default' => 'form-control',
-                'checkbox' => '',
-                'error' => 'input-with-feedback'
-            ],
+```php
+'themes' => [
+        //...
+    'bootstrap' => [
+        //...
+        'field_classes' => [
+            // type => CSS class or classes
+            'default' => 'form-control',
+            'checkbox' => '',
+            'error' => 'input-with-feedback'
+        ],
 ```
 
 Of course this is theme specific, since it would be impossible to convince all CSS framework authors to use the same classes...
