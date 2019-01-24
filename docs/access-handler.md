@@ -18,15 +18,17 @@ Just pass one of the following options as a field attribute or menu item value:
 
 *WARNING*: note this package will only prevents the elements from appearing in the front end, you still need to protect the backend access using middleware, etc.
 
-##Usage 
+## Usage 
 
 #### Form fields
 
-`{!! Field::select('user_id', null, ['role' => 'admin'])`
+```blade
+{!! Field::select('user_id', null, ['role' => 'admin'])
+```
 
 #### Menu items
 
-```
+```php
 // config/menu.php
 
 return [
@@ -44,7 +46,9 @@ return [
 ];
 ```
      
-`{!! Menu::make('menu.items') !}}`
+```blade
+{!! Menu::make('menu.items') !}}
+```
 
 ## Gate authorization
 
@@ -56,14 +60,19 @@ If it is an array, the first position of the array will be the name of the abili
 
 Examples:
 
-`{!! Field::text('change-password', ['allows' => 'change-password']) !!}`
-`{!! Field::select('category', $options, ['allows' => ['change-post-category', $category]]) !!}`
+```blade
+{!! Field::text('change-password', ['allows' => 'change-password']) !!}
+```
+
+```blade
+{!! Field::select('category', $options, ['allows' => ['change-post-category', $category]]) !!}
+```
 
 If you are building menus, you can use dynamic parameters to pass values to the gate.
 
 In the following example we will define a dynamic 'post' parameter, and pass it using setParam when building the menu:
 
-```
+```php
 // config/menu.php
 
 return [
@@ -76,7 +85,9 @@ return [
 ];
 ```
      
-`{!! Menu::make('menu.items')->setParam('post', $post)->render() !}}`
+```blade
+{!! Menu::make('menu.items')->setParam('post', $post)->render() !}}
+```
      
 ## Customization
 
@@ -86,7 +97,7 @@ If you are working on a complex project with lots of different access rules, etc
 
 If you want to use the access handler class as a standalone component, please add this global alias in `config/app.php`
 
-```
+```php
   'aliases' => [
     // ...
     'Access' => Styde\Html\Facades\Access,
@@ -96,7 +107,7 @@ If you want to use the access handler class as a standalone component, please ad
 
 Then you can use the facade wherever you want:
 
-```
+```php
 @if (Access:check(['roles' => ['admin, 'editor']]))
     <p>
         <a href='{{ url('admin/posts', [$post->id]) }}'>
@@ -110,7 +121,7 @@ Then you can use the facade wherever you want:
 
 You can deactivate this component in the configuration:
 
-```
+```php
 //config/html.php
 return [
     //..
@@ -118,4 +129,5 @@ return [
     //..
 ];
 ```
+
 By doing this, the callback, logged and roles attributes will simply be ignored and all users will be able to see all items. 
