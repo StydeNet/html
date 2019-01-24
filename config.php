@@ -6,7 +6,7 @@ return [
      * Set the HTML theme for the components
      * like alerts, form fields, menus, etc.
      */
-    'theme'  => 'bootstrap4',
+    'theme' => 'bootstrap4',
 
     /*
      * Set the folder to store the custom templates
@@ -96,6 +96,33 @@ return [
                 'default' => 'form-control',
                 'checkbox' => 'form-check-input',
                 'error' => 'is-invalid'
+            ],
+        ],
+        /**
+         * configuration for BulmaCss
+         */
+        'bulma' => [
+            /*
+             * Set a specific HTML template for a field type if the
+             * type is not set, the default template will be used
+             */
+            'field_templates' => [
+                // type => template
+                'checkbox' => 'checkbox',
+                'checkboxes' => 'collections',
+                'radios' => 'collections',
+                'select'=>'selects',
+
+            ],
+            /*
+             * Set the default classes for each field type
+             */
+            'field_classes' => [
+                // type => class or classes
+                'textarea'=>'textarea',
+                'default' => 'input',
+                'checkbox' => 'checkbox',
+                'error' => 'is-danger'
             ],
         ]
     ]
