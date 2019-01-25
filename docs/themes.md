@@ -4,12 +4,15 @@ There are a lot of CSS (and all kind of) frameworks out there, this package was 
 
 To change or customize a theme, simply run: 
 
-`php artisan vendor:publish`
+```bash
+php artisan vendor:publish
+```
 
 Then go to `config/html.php` and change the theme value:
 
-```
+```php
 //config/html.php
+
 return [
     'theme' => 'custom-theme'
 ];
@@ -23,11 +26,17 @@ Then you can change all the templates within that directory or add new ones if y
 
 Maybe you don't need to create or use a new theme and you just simply need to override a particular template, you can do this too, since most methods support that, for example:
 
-`{!! Menu::make('menu.items')->render('custom-template') !!}`
+```blade
+{!! Menu::make('menu.items')->render('custom-template') !!}
+```
 
-`{!! Alert::render('custom-template') !!}`
+```blade
+{!! Alert::render('custom-template') !!}
+```
 
-`{!! Field::email('email', ['template' => 'custom-template'])`
+```blade
+{!! Field::email('email', ['template' => 'custom-template']) !!}
+```
 
 ## Customize templates by field type (field builder)
 

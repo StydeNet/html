@@ -10,16 +10,22 @@ You can specify one or more CSS classes as a key and a condition as a value. If 
 
 Example:
 
-`{!! Html::classes(['home' => true, 'main', 'dont-use-this' => false]) !!}`
+```blade
+{!! Html::classes(['home' => true, 'main', 'dont-use-this' => false]) !!}
+```
 
-Returns: ` class="home main"`.
+Returns: `class="home main"`.
 
 Note that this function returns an empty space before the class attribute. So don't add another one, in other words use it like this:
 
-`<p{!! classes(..) !!}>`
+```blade
+<p{!! classes(..) !!}>
+```
 
 instead of this:
 
-`<p {{!! classes(..) !!}>`
+```blade
+<p {!! classes(..) !!}>
+```
 
 If no classes are evaluated as TRUE then this function will return an empty string.
