@@ -240,14 +240,14 @@ Using the configuration, you can assign default CSS class for every field accord
 
 ```php
 'themes' => [
-        //...
+    //...
     'bootstrap' => [
         //...
         'field_classes' => [
             // type => CSS class or classes
             'default' => 'form-control',
             'checkbox' => '',
-            'error' => 'input-with-feedback'
+            'error' => 'input-with-feedback',
         ],
 ```
 

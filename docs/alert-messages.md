@@ -7,7 +7,7 @@ Alert::info('Your account is about to expire')
     ->details('Renew now to learn about:')
     ->items([
         'Laravel',
-        'PHP,
+        'PHP',
         'And more',
     ])
     ->button('Renew now!', '#', 'primary');

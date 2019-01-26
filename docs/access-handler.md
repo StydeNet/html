@@ -108,7 +108,7 @@ If you want to use the access handler class as a standalone component, please ad
 Then you can use the facade wherever you want:
 
 ```blade
-@if (Access:check(['roles' => ['admin, 'editor']]))
+@if (Access:check(['roles' => ['admin', 'editor']]))
     <p>
         <a href='{{ url('admin/posts', [$post->id]) }}'>
             Edit this page

@@ -7,7 +7,7 @@ Allow users to set the novalidate option for every form generated with the `Form
 ```php
 return [
     //..
-    'novalidate' => true
+    'novalidate' => true,
     //..
 ];
 ```

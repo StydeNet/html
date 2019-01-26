@@ -4,9 +4,10 @@ You can configure whether you want this package to attempt to translate texts or
 
 ```php
 //config/html.php
+
 return [
     //...
-    'translate_texts' => false
+    'translate_texts' => false,
     //...
 ];
 ```
@@ -29,7 +30,7 @@ But you can also define it as part of the `attributes` array in the `resources/l
 //resources/lang/en/validation.php
 
 'attributes' => [
-    'name' => 'Full name'
+    'name' => 'Full name',
 ],
 ```
 
@@ -57,7 +58,7 @@ If the `'translate_texts'` is set to `true`, and you don't specify an explicit t
 //resources/lang/en/menu.php
 
 return [
-    'home' => 'Homepage'
+    'home' => 'Homepage',
 ];
 ```
 
@@ -68,8 +69,8 @@ return [
     'items' => [
         'home'  => [],
         'about' => ['title' => 'Who we are'],
-        'contact-us' => []
-    ]
+        'contact-us' => [],
+    ],
 ];
 ```
 

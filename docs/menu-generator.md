@@ -16,7 +16,7 @@ To generate a menu simply add the following code in your layout's template:
 [
 	'home' => ['url' => ''],
 	'about' => ['title' => 'Who we are', 'url' => 'about-us'],
-	'contact-us' => ['full_url' => 'http://contact.us']
+	'contact-us' => ['full_url' => 'http://contact.us'],
 ]
 ```
 
@@ -169,9 +169,7 @@ The active item will also get the 'active' class, and the items with sub-menus w
 You can customize these classes using:
 
 ```blade
-{!! Menu::make('items')
-    ->setActiveClass('Active')
-    ->setDropDownClass('dropdown') !!}
+{!! Menu::make('items')->setActiveClass('Active')->setDropDownClass('dropdown') !!}
 ```
 
 ## Render menus and custom templates

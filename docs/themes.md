@@ -14,7 +14,7 @@ Then go to `config/html.php` and change the theme value:
 //config/html.php
 
 return [
-    'theme' => 'custom-theme'
+    'theme' => 'custom-theme',
 ];
 ```
 
