@@ -1,7 +1,7 @@
 @foreach ($messages as $msg)
     <article class="message is-{{ $msg['type'] }}">
         <div class="message-header">
-            <p>  <strong>Alerta!!</strong></p>
+            <p><strong>Alert!</strong></p>
             <button type="button" onclick="this.parentElement.parentElement.style.display = 'none';" class="delete" aria-label="delete"></button>
         </div>
         <div class="message-body">

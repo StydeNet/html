@@ -254,7 +254,7 @@ Es decir:
 
 ## Themes
 
-Este paquete fue creado pensando que hay muchos frameworks de CSS por ahí, y aunque sólo Twitter Bootstrap es incluído por defecto, planeamos agregar más paquetes en el futuro (y también invitamos a colaborar).
+Este paquete fue creado pensando que hay muchos frameworks de CSS por ahí, y aunque Bootstrap (versión 3 y 4) y Bulma (version 0.7.2) son incluídos por defecto, planeamos agregar más paquetes en el futuro (y también invitamos a colaborar).
 
 Puedes crear tus propios temas o modificar el existente con facilidad:
 
