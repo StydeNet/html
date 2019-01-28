@@ -6,15 +6,17 @@ So instead of adding too much extra HTML and Blade boilerplate code, you can use
 
 To generate a menu simply add the following code in your layout's template:
 
-`{!! Menu::make('items.here', 'optional css classes') !!}`
+```blade
+{!! Menu::make('items.here', 'optional css classes') !!}
+```
 
 `'items.here'` can be an array or a configuration key (that contains an array), there you will specify the menu items, for example:
 
-```
+```php
 [
 	'home' => ['url' => ''],
 	'about' => ['title' => 'Who we are', 'url' => 'about-us'],
-	'contact-us' => ['full_url' => 'http://contact.us']
+	'contact-us' => ['full_url' => 'http://contact.us'],
 ]
 ```
 
@@ -22,7 +24,7 @@ Each item in the array will be a menu item, the array key is required and will b
 
 You can specify the following options for each menu item:
 
-## URL
+## url
 
 Of course this is the most important part of each menu item, and therefore you have several options to specify an URL:
 
@@ -30,23 +32,31 @@ Of course this is the most important part of each menu item, and therefore you h
 
 If you pass a 'full_url' key within the item configuration, it will return it as the URL with no additional action, i.e.:
 
-`['full_url' => 'https://styde.net']`
+```php
+['full_url' => 'https://styde.net']
+```
 
 ### url
 
 You can pass a relative URL, using the 'url' key. The final URL will be generated using the method `UrlGenerator::to`, i.e.:
 
-`['url' => 'contact-us']`
+```php
+['url' => 'contact-us']
+```
 
 You can also pass a 'secure' key to indicate whether this particular URL should use https or not. You can also specify a default secure value using the `setDefaultSecure` method (false by default).
 
-`['url' => 'login', 'secure' => 'true']`
+```php
+['url' => 'login', 'secure' => 'true']
+```
 
 ### route
 
 You can specify a route's name for a menu item.
 
-`['route' => 'home']`
+```php
+['route' => 'home']
+```
 
 ### route with parameters
 
@@ -54,7 +64,9 @@ You can specify a route with parameters if you pass an array instead of a string
 
 The first value will be taken as the route's name, and the others will be the route's parameters.
 
-`['route' => ['profile', 'sileence']]`
+```php
+['route' => ['profile', 'sileence']]
+```
 
 ### action
 
@@ -74,25 +86,33 @@ If none of above options is found, then the URL will simply be a placeholder "#"
 
 Sometimes you will need to use dynamic parameters to build routes and actions, in that case, instead of a value, pass a name precede with :, for example:
 
-`['route' => ['profile', ':username']]`
+```php
+['route' => ['profile', ':username']]
+```
 
 Then you can assign a value using the setParams or setParam method, like this:
 
-`{!! Menu::make('config.items')->setParam('username', 'sileence') !!}`
+```blade
+{!! Menu::make('config.items')->setParam('username', 'sileence') !!}
+```
 
 Or this:
 
-`{!! Menu::make('config.items')->setParams(['username' => 'sileence']) !!}`
+```blade
+{!! Menu::make('config.items')->setParams(['username' => 'sileence']) !!}
+```
 
 ## title
 
 You can specify a title for a menu item using the 'title' key in the options array, i.e.:
 
-`['title' => 'Contact me']`
+```php
+['title' => 'Contact me']
+```
 
 If no title is set and you are using the translate texts option, it will search for a lang key for the menu item, following this convention: `menu.[key]`, for example:
 
-```
+```php
 [
     'home' => ['url' => '/']
 ]
@@ -112,16 +132,16 @@ The menu's item key will be used as the menu's item HTML id attribute by default
 
 You can specify a sub-menu key and pass another array of menu items, like this:
 
-```
+```php
 [
     'home' => [],
     'pages' => [
         'submenu' => [
             'about' => [],
-            'company' => ['url' => 'company']
-        ]
-    ]
-]
+            'company' => ['url' => 'company'],
+        ],
+    ],
+],
 ```
 
 The sub-menu items will be rendered with the same options and fallbacks as the menu items.
@@ -132,9 +152,9 @@ All menu items will have the active value set to false as default, unless the UR
 
 For example: 
 
-```
+```php
 [
-    'news' => ['url' => 'news/']
+    'news' => ['url' => 'news/'],
 ]
 ```
 
@@ -148,17 +168,17 @@ The active item will also get the 'active' class, and the items with sub-menus w
 
 You can customize these classes using:
 
-```
-{!! Menu::make('items')
-        ->setActiveClass('Active')
-        ->setDropDownClass('dropdown') !!}
+```blade
+{!! Menu::make('items')->setActiveClass('Active')->setDropDownClass('dropdown') !!}
 ```
 
 ## Render menus and custom templates
 
 The menu will be rendered automatically if you treat `Menu::make` as a string, but you can also call the render method which accepts an optional custom template as an argument, like this:
 
-`{!! Menu::make('menu.items')->render('custom-template') !!}`
+```blade
+{!! Menu::make('menu.items')->render('custom-template') !!}
+```
 
 ## Access handler
 
