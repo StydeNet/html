@@ -261,7 +261,7 @@ i.e.:
 
 ## Themes
 
-There are a lot of CSS frameworks out there, this package was created with that in mind, and even though only Twitter Bootstrap is included out of the box, we plan to add more packages in the future (we also invite you to collaborate).
+There are a lot of CSS frameworks out there, this package was created with that in mind, and even though *Bootstrap* (version 3 and 4) and *Bulma* are included out of the box, we plan to add more packages in the future (we also invite you to collaborate).
 
 But you can also create your own themes with ease, or modify the existing one:
 
