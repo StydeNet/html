@@ -54,9 +54,7 @@ Si saltas ambas opciones, entonces FieldBuilder generará un label basado en el 
 
 ## Plantillas
 
-Por defecto, los campos serán renderizados con la plantilla predeterminada, ubicada en la carpeta [theme]/fields, por ejemplo, para el tema Bootstrap sería:
-
-`vendor/styde/html/themes/bootstrap/fields/default.blade.php`
+Por defecto, los campos serán renderizados con la plantilla predeterminada, ubicada en la carpeta [theme]/fields, por ejemplo, para el tema Bootstrap sería: `vendor/styde/html/themes/bootstrap/fields/default.blade.php`
 
 Pero se tiene la opción de personalizar la plantilla usada para un tipo o campo particular: 
 
@@ -129,9 +127,9 @@ $required = true;
 Las plantillas de campo siempre tendrán una variable `required` por lo que pueda ser usado para imprimir clases de CSS adicionales o badges, para indicar si un campo es necesario u opcional, es decir:
 
 ```blade
-    @if ($required)
-        <span class="label label-info">Required</span>
-    @endif
+@if ($required)
+    <span class="label label-info">Required</span>
+@endif
 ```
 
 ## Errores:
@@ -149,13 +147,13 @@ Este es un extracto de una plantilla personalizada para el tema Bootstrap:
 Los inputs, selects, textareas, etc. con errores también tendrán una clase de CSS adicional que se puede configurar de esta manera:
 
 ```php
-    'themes' => [
-        'bootstrap' => [
-            //...
-            'field_classes' => [
-            		//...
-                'error' => 'input-with-feedback'
+'themes' => [
+    'bootstrap' => [
+        //...
+        'field_classes' => [
                 //...
+            'error' => 'input-with-feedback'
+            //...
             ],
         ],
     ]
@@ -207,14 +205,14 @@ En último caso, si ninguna de las opciones es encontrada, se usará un string v
 Para ahorrar algunas pulsaciones de teclas, puedes utilizar abreviaturas en lugar del nombre completo de los atributos, pasándolos en la configuración:
 
 ```php
-    /*
-     * Especifica las abreviaturas para los atributos del campo del formulario
-     */
-    'abbreviations' => [
-        'ph' => 'placeholder',
-        'max' => 'maxlength',
-        'tpl' => 'template'
-    ],
+/*
+* Especifica las abreviaturas para los atributos del campo del formulario
+*/
+'abbreviations' => [
+    'ph' => 'placeholder',
+    'max' => 'maxlength',
+    'tpl' => 'template'
+],
 ```
 
 Después se podrán hacer cosas como éstas:
@@ -232,16 +230,16 @@ Se puede pasar clases de CSS personalizadas para cada campo usando la llave 'cla
 Utilizando la configuración, se puede asignar clases de CSS predeterminadas para cada campo según su tipo:
 
 ```php
-    'themes' => [
-			//...
-        'bootstrap' => [
-            //...
-            'field_classes' => [
-                // tipo => clase o clases de CSS
-                'default' => 'form-control',
-                'checkbox' => '',
-                'error' => 'input-with-feedback'
-            ],
+'themes' => [
+        //...
+    'bootstrap' => [
+        //...
+        'field_classes' => [
+            // tipo => clase o clases de CSS
+            'default' => 'form-control',
+            'checkbox' => '',
+            'error' => 'input-with-feedback'
+        ],
         ],
     ],
 ```

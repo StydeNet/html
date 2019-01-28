@@ -88,7 +88,6 @@ return [
 ```blade
 {!! Menu::make('menu.items')->setParam('post', $post)->render() !}}
 ```
-
 ## Personalización
 
 Si estás trabajando en un proyecto complejo con muchas reglas de acceso diferentes, etc... puedes necesitar implementar un AccessHandler propio. Para hacer esto, crea una nueva clase que implemente la interface `Styde\Html\Access\AccessHandler`, entonces extiende el HtmlServiceProvider y sustituye el método `registerAccessHandler`.
@@ -123,6 +122,7 @@ Se puede desactivar este componente en la configuración:
 
 ```php
 //config/html.php
+
 return [
     //..
     'control_access' => false,

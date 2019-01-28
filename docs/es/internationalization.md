@@ -4,6 +4,7 @@ Puedes configurar si quieres usar este paquete para tratar de traducir los texto
 
 ```php
 //config/html.php
+
 return [
   //...
   'translate_texts' => false
@@ -26,11 +27,12 @@ Si quieres tener un label específico en un campo, puedes hacerlo pasándolo com
 También puedes definirlo como parte del array `attributes`en el archivo `resources/lang/en/validation.php`:
  
 ```php
-     //resources/lang/en/validation.php
-     //..
-     'attributes' => [
-         'name' => 'Nombre completo'
-     ],
+//resources/lang/en/validation.php
+
+//..
+'attributes' => [
+    'name' => 'Nombre completo'
+],
 ```
 
 Toma en cuenta que esto también es una convención usada por el componente Laravel Validator, de esta manera puedes tener todos los textos de los labels en un mismo lugar.  
@@ -43,7 +45,7 @@ Si `'translate_texts'` es definido como `true`, este componente asumirá que tod
 
 ```blade
 {!! Alert::success('messages.users.updated')
-		->button('messages.users.go_to_profile', url('users/profile')) !!}
+        ->button('messages.users.go_to_profile', url('users/profile')) !!}
 ```
 
 Por supuesto, si la llave de idioma no es encontrada, éste devolverá el string literal (también puesdes pasar el mensaje completo en lugar de una llave de idioma).
@@ -56,6 +58,7 @@ Si `'translate_texts'` es definido como `true`, pero no específicas un título 
 
 ```php
 //resources/lang/en/menu.php
+
 return [
     'home' => 'Homepage'
 ];
@@ -63,6 +66,7 @@ return [
 
 ```php
 //config/menu.php
+
 return [
     'items' => [
         'home'  => [],
@@ -74,11 +78,11 @@ return [
 
 ```blade
 {!! Menu::make('menu.items') !!}
-``
+```
 
 Devolverá algo así:
 
-```blade
+```html
 <ul>
     <li><a href="#">Homepage</a></li>
     <li><a href="#">Who we are</a></li>
