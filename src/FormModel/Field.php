@@ -238,23 +238,6 @@ class Field implements Htmlable
     }
 
     /**
-     * Set a new attribute in the field
-     *
-     * @param $name
-     * @param null $value
-     */
-    protected function setAttribute($name, $value = null)
-    {
-        if (! in_array($name, $this->attributes)) {
-            if (! $value) {
-                $this->attributes[] = $name;
-            } else {
-                $this->attributes[$name] = $value;
-            }
-        }
-    }
-
-    /**
      * Render field with all attributes
      *
      * @return string
