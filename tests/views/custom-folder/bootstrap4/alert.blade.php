@@ -1,0 +1,1 @@
+<p>Custom alert template for Bootstrap 4 in resources/views/custom-folder/bootstrap4</p>

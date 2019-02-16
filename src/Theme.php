@@ -78,7 +78,7 @@ class Theme
             return $this->view->make($custom, $data)->render();
         }
 
-        $template = $this->theme.'/'.$template;
+        $template = $this->getName().'/'.$template;
 
         if ($this->view->exists($this->custom.'/'.$template)) {
             return $this->view->make($this->custom.'/'.$template, $data)->render();

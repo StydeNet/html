@@ -4,6 +4,7 @@ namespace Styde\Html\Tests;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\View;
 use Styde\Html\Alert\Middleware as AlertMiddleware;
 use Styde\Html\Facades\Alert;
@@ -53,6 +54,18 @@ class AlertTest extends TestCase
         Alert::message('This is a message', 'info');
 
         $this->assertTemplateMatches('alert/custom-template', Alert::render('custom-templates.alert'));
+    }
+
+    /** @test */
+    function can_customize_the_themes_folder_name_in_resources_views()
+    {
+        View::addLocation(__DIR__.'/views');
+
+        Config::set('html.custom', 'custom-folder');
+
+        Alert::message('This is a message', 'info');
+
+        $this->assertTemplateMatches('alert/custom-folder-in-resources-views', Alert::render());
     }
 
     /** @test */

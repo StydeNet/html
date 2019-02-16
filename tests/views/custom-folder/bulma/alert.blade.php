@@ -1,0 +1,1 @@
+<p>Custom alert template for Bulma in resources/views/custom-folder/bulma</p>
