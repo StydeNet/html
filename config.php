@@ -14,13 +14,6 @@ return [
     'custom' => 'themes',
 
     /*
-     * Set to false to deactivate the AccessHandler component
-     * Doing so the component will run slightly faster but
-     * the logged and roles checkers won't be available
-     */
-    'control_access' => true,
-
-    /*
      * Set to false to deactivate the Translator for the alert and menu
      * components, doing so they will run slightly faster but won't
      * search for Lang keys to translate texts.
@@ -55,7 +48,33 @@ return [
                 'checkboxes' => 'collections',
                 'radios' => 'collections'
             ]
+        ],
+        /**
+         * Configuration for Bulma CSS v1.7.2
+         */
+        'bulma' => [
+            /*
+             * Set a specific HTML template for a field type if the
+             * type is not set, the default template will be used
+             */
+            'field_templates' => [
+                // type => template
+                'checkbox' => 'checkbox',
+                'checkboxes' => 'collections',
+                'radios' => 'collections',
+                'select'=>'selects',
+
+            ],
+            /*
+             * Set the default classes for each field type
+             */
+            'field_classes' => [
+                // type => class or classes
+                'textarea' => 'textarea',
+                'default' => 'input',
+                'checkbox' => 'checkbox',
+                'error' => 'is-danger'
+            ],
         ]
     ]
-
 ];

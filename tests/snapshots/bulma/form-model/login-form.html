@@ -1,0 +1,42 @@
+<form method="post" action="http://localhost/login" role="form"><input type="hidden" name="_token">
+<div id="field_email" class="field">
+    <label class="label" for="email">
+        Email
+    </label>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input type="email" name="email">
+            </div>
+            <p class="help is-danger">
+                        </p>
+        </div>
+    </div>
+</div>
+<div id="field_password" class="field">
+    <label class="label" for="password">
+        Password
+    </label>
+    <div class="field-body">
+        <div class="field">
+            <div class="control">
+                <input type="password" name="password">
+            </div>
+            <p class="help is-danger">
+                        </p>
+        </div>
+    </div>
+</div>
+<div id="field_remember_me" class="field">
+    <div class="control">
+        <input type="checkbox" name="remember_me" value="1">
+        <label class="checkbox" for="remember_me">
+            Remember me
+        </label>
+        <p class="help is-danger">
+            </p>
+    </div>
+</div>
+
+<button type="submit" class="btn btn-primary">auth.login_action</button><a href="http://localhost/password/email">auth.forgot_link</a>
+</form>

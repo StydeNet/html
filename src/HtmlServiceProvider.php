@@ -82,14 +82,14 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function loadConfigurationOptions()
     {
-        if ( ! empty($this->options)) return;
+        if (! empty($this->options)) return;
 
         $this->mergeDefaultConfiguration();
 
         $this->options = $this->app->make('config')->get('html');
 
         $this->options['theme_values'] = $this->options['themes'][$this->options['theme']];
-        unset ($this->options['themes']);
+        unset($this->options['themes']);
     }
 
     /**
@@ -99,7 +99,7 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerThemeClass()
     {
-       $this->app->singleton(Theme::class, function ($app) {
+        $this->app->singleton(Theme::class, function ($app) {
             return new Theme($this->app['view'], $this->options['theme'], $this->options['custom']);
         });
     }
@@ -147,9 +147,15 @@ class HtmlServiceProvider extends ServiceProvider
                 $app['form'], $app->make(Theme::class), $app['translator']
             );
 
-            if (isset ($this->options['theme_values']['field_templates'])) {
+            if (isset($this->options['theme_values']['field_templates'])) {
                 $fieldBuilder->setTemplates(
                     $this->options['theme_values']['field_templates']
+                );
+            }
+
+            if (isset($this->options['theme_values']['field_classes'])) {
+                $fieldBuilder->classes(
+                    $this->options['theme_values']['field_classes']
                 );
             }
 
