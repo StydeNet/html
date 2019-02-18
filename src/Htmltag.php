@@ -102,4 +102,16 @@ class Htmltag extends BaseTag
 
         return $result;
     }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        if (isset($this->content[$name])) {
+            return $this->content[$name];
+        }
+        return parent::__get($name);
+    }
 }

@@ -79,4 +79,34 @@ class HtmltagTest extends TestCase
 
         $this->assertEquals('', (string) $htmlElement->close());
     }
+
+    /** @test */
+    function it_returns_the_tag_attributes_dynamically()
+    {
+        $tag = new Htmltag('div', null, ['id' => 'my-div', 'class' => 'classA']);
+
+        $this->assertEquals('my-div', $tag->id);
+        $this->assertEquals('classA', $tag->class);
+    }
+
+    /** @test */
+    function it_returns_the_tag_content_dynamically()
+    {
+        $children['title'] = new Htmltag('h1', 'Title');
+        $children['summary'] = new Htmltag('p', 'This is the content');
+        $tag = new Htmltag('div', $children);
+
+        $this->assertEquals('<h1>Title</h1>', $tag->title->toHtml());
+        $this->assertEquals('<p>This is the content</p>', $tag->summary->toHtml());
+    }
+
+    /** @test */
+    function it_thrown_an_exception_when_call_a_missing_attribute()
+    {
+        $this->expectException('InvalidArgumentException');
+        $this->expectExceptionMessage('The property content does not exist in this [div] element');
+
+        $tag = new Htmltag('div', 'This is a content');
+        $tag->content;
+    }
 }
