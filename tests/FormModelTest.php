@@ -2,8 +2,10 @@
 
 namespace Styde\Html\Tests;
 
-use Styde\Html\FormModel;
+use Illuminate\Http\Request;
+use Illuminate\Http\Testing\FileFactory;
 use Illuminate\Support\Facades\{View, Route};
+use Styde\Html\FormModel;
 
 class FormModelTest extends TestCase
 {
@@ -46,7 +48,7 @@ class FormModelTest extends TestCase
 
         $expect = [
             'name' => [],
-            'email' => ['email', 'unique:users,NULL,NULL,id', 'required'],
+            'email' => ['email', 'required'],
             'password' => ['confirmed', 'min:6', 'max:12', 'required'],
             'password_confirmation' => ['min:6', 'max:12', 'required'],
             'photo' => ['file', 'required', 'image', 'dimensions:ratio=3/2'],
@@ -54,6 +56,34 @@ class FormModelTest extends TestCase
         ];
 
         $this->assertSame($expect, $rules);
+    }
+
+    /** @test */
+    function it_return_all_validated_fields_of_a_form()
+    {
+        $files = [
+            'photo' => $image = (new FileFactory)->image('foo.jpg', 30, 20),
+        ];
+        $request = Request::create('/', 'GET', [
+            'name' => 'Clemir',
+            'email' => 'clemir@styde.net',
+            'password' => 'secret',
+            'password_confirmation' => 'secret',
+            "remember_me" => 1,
+        ], [], $files);
+
+        $result = app(RegisterForm::class)->validate($request);
+
+        $expect = [
+            'name' => 'Clemir',
+            'email' => 'clemir@styde.net',
+            'password' => 'secret',
+            'password_confirmation' => 'secret',
+            'photo' => $image,
+            "remember_me" => 1,
+        ];
+
+        $this->assertSame($expect, $result);
     }
 
     /** @test */
@@ -82,6 +112,19 @@ class FormModelTest extends TestCase
         $userForm = app(UserForm::class)->model($userModel)->forUpdate();
 
         $this->assertTemplateMatches('form-model/user-form-for-update', $userForm);
+    }
+
+    /** @test */
+    function it_builds_a_create_form_with_forCreation_method()
+    {
+        $userModel = $this->aUserWithData([
+            'name' => 'Clemir',
+            'email' => 'clemir@styde.net'
+        ]);
+
+        $userForm = app(UserForm::class)->forCreation();
+
+        $this->assertTemplateMatches('form-model/user-form-for-creation', $userForm);
     }
 
     /** @test */
@@ -134,7 +177,7 @@ class RegisterForm extends FormModel
     public function setup()
     {
         $this->text('name')->required()->disableRules();
-        $this->email('email')->unique('users')->required();
+        $this->email('email')->required();
         $this->password('password')->confirmed()->min(6)->max(12)->required();
         $this->password('password_confirmation')->min(6)->max(12)->required();
         $this->file('photo')->required()->image()->dimensions(['ratio' => '3/2']);
@@ -148,6 +191,11 @@ class UserForm extends FormModel
     {
         $this->text('name');
         $this->email('email');
+    }
+
+    public function creationSetup()
+    {
+        $this->submit('Create user');
     }
 
     public function updateSetup()
