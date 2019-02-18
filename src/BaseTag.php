@@ -74,6 +74,16 @@ abstract class BaseTag implements Htmlable
     }
 
     /**
+     * Render the open tag with the attributes
+     *
+     * @return string
+     */
+    public function renderOpenTag()
+    {
+        return '<'.$this->tag.$this->renderAttributes().'>';
+    }
+
+    /**
      * @param string $name
      * @return mixed|string
      */
@@ -138,5 +148,18 @@ abstract class BaseTag implements Htmlable
     public function __toString()
     {
         return $this->toHtml();
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function __get($name)
+    {
+        if (isset($this->attributes[$name])) {
+            return $this->attributes[$name];
+        }
+
+        throw new \InvalidArgumentException("The property $name does not exist in this [{$this->tag}] element");
     }
 }

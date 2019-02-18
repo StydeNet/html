@@ -9,7 +9,7 @@ class Htmltag extends BaseTag
 {
 
     /**
-     * Attributes of the tag
+     * Content of the tag
      *
      * @var array|string
      */
@@ -22,9 +22,13 @@ class Htmltag extends BaseTag
      * @param string $content
      * @param array $attributes
      */
-    public function __construct($tag, $content = '', array $attributes = [])
+    public function __construct($tag, $content = null, array $attributes = [])
     {
         parent::__construct($tag, $attributes);
+
+        if (is_string($content)) {
+            $content = [new TextElement($content)];
+        }
 
         $this->content = $content;
     }
@@ -46,9 +50,9 @@ class Htmltag extends BaseTag
     {
         if ($this->included) {
             return new HtmlString(
-                '<'.$this->tag.$this->renderAttributes().'>'
+                $this->renderOpenTag()
                      .$this->renderContent()
-                .'</'.$this->tag.'>'
+                .$this->renderCloseTag()
             );
         }
     }
@@ -61,7 +65,7 @@ class Htmltag extends BaseTag
     public function open()
     {
         if ($this->included) {
-            return new HtmlString('<'.$this->tag.$this->renderAttributes().'>');
+            return new HtmlString($this->renderOpenTag());
         }
     }
 
@@ -73,8 +77,16 @@ class Htmltag extends BaseTag
     public function close()
     {
         if ($this->included) {
-            return new HtmlString('</'.$this->tag.'>');
+            return new HtmlString($this->renderCloseTag());
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function renderCloseTag()
+    {
+        return '</'.$this->tag.'>';
     }
 
     /**
@@ -85,22 +97,9 @@ class Htmltag extends BaseTag
         $result = '';
 
         foreach ((array) $this->content as $content) {
-            $result .= e($content);
+            $result .= $content->render();
         }
 
         return $result;
-    }
-
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    public function __get($name)
-    {
-        if (isset($this->content[$name])) {
-            return $this->content[$name];
-        }
-
-        throw new \InvalidArgumentException("The property $name does not exist in this [{$this->tag}] element");
     }
 }

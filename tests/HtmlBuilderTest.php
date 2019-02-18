@@ -23,14 +23,6 @@ class HtmlBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_closes_html_tags()
-    {
-        $htmlElement = new Htmltag('span');
-
-        $this->assertEquals('</span>', (string) $htmlElement->close());
-    }
-
-    /** @test */
     function it_escapes_the_attributes_of_generated_tags()
     {
         $this->assertEquals(

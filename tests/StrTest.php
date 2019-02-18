@@ -58,5 +58,8 @@ class StrTest extends TestCase
         $text = 'You know nothing, John Snow';
 
         $this->assertSame($text, Str::teaser($text, 28));
+
+        // if it is a empty string
+        $this->assertSame('', Str::teaser('', 28, '...'));
     }
 }
