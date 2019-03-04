@@ -10,8 +10,8 @@
     ],
     "require": {
         "php": ">=7.1.3",
-        "laravelcollective/html": "5.7.*",
-        "illuminate/translation": "5.7.*"
+        "laravelcollective/html": "5.8.*",
+        "illuminate/translation": "5.8.*"
     },
     "require-dev": {
         "phpspec/phpspec": "~4.0"
