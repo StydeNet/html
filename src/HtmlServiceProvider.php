@@ -2,16 +2,17 @@
 
 namespace Styde\Html;
 
-use Styde\Html\Menu\Menu;
-use Styde\Html\Menu\MenuGenerator;
-use Styde\Html\Access\AccessHandler;
-use Illuminate\Foundation\AliasLoader;
-use Styde\Html\Alert\Container as Alert;
-use Styde\Html\Access\BasicAccessHandler;
+use Collective\Html\HtmlServiceProvider as ServiceProvider;
 use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Foundation\AliasLoader;
+use Illuminate\Support\Arr;
+use Styde\Html\Access\AccessHandler;
+use Styde\Html\Access\BasicAccessHandler;
+use Styde\Html\Alert\Container as Alert;
 use Styde\Html\Alert\Middleware as AlertMiddleware;
 use Styde\Html\Alert\SessionHandler as AlertSessionHandler;
-use Collective\Html\HtmlServiceProvider as ServiceProvider;
+use Styde\Html\Menu\Menu;
+use Styde\Html\Menu\MenuGenerator;
 
 class HtmlServiceProvider extends ServiceProvider
 {
@@ -89,7 +90,7 @@ class HtmlServiceProvider extends ServiceProvider
 
         $this->options = $this->app->make('config')->get('html');
 
-        $this->options['theme_values'] = array_get($this->options['themes'], $this->options['theme']);
+        $this->options['theme_values'] = Arr::get($this->options['themes'], $this->options['theme']);
 
         unset ($this->options['themes']);
     }

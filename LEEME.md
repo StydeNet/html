@@ -13,6 +13,10 @@ Styde Html es una extensión del [paquete HTML de Laravel Collective](https://gi
 
 1. La mejor forma de instalar este paquete es a través de Composer.
 
+**Para Laravel 5.8**:
+
+Instala ejecutando `composer require "styde/html=~1.7"` o agregando `"styde/html": "~1.7"` a tu archivo `composer.json` y luego ejecuta `composer update`.
+
 **Para Laravel 5.7**:
 
 Instala ejecutando `composer require "styde/html=~1.6"` o agregando `"styde/html": "~1.6"` a tu archivo `composer.json` y luego ejecuta `composer update`.
@@ -51,10 +55,10 @@ Instala ejecutando `composer require "styde/html=~1.0"` o agregando `"styde/html
 ],
 ```
 
-3. Agrega el middleware `\Styde\Html\Alert\Middleware::class` **ANTES** del middleware `EncryptCookies` que se encuentra en el array `$middleware` (si es Laravel 5.1, 5.2 y 5.3)  o en el array `$middlewareGroups` (en Laravel 5.4) del archivo `app/Http/Kernel.php` : 
+3. Agrega el middleware `\Styde\Html\Alert\Middleware::class` **ANTES** del middleware `EncryptCookies` que se encuentra en el array `$middleware` (si es Laravel 5.1, 5.2 y 5.3)  o en el array `$middlewareGroups` (en Laravel 5.4 y posteriores) del archivo `app/Http/Kernel.php` : 
 
 ```php
-// Para Laravel 5.4
+// Para Laravel 5.4 y posteriores
 protected $middlewareGroups = [
     \Styde\Html\Alert\Middleware::class,
     //...
