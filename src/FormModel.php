@@ -9,8 +9,6 @@ use Styde\Html\FormModel\{Field, FieldCollection, ButtonCollection};
 
 class FormModel implements Htmlable
 {
-    use ForwardsCalls;
-
     /**
      * @var \Styde\Html\FormBuilder
      */
@@ -260,12 +258,7 @@ class FormModel implements Htmlable
         if (method_exists($this->buttons, $method)) {
             return $this->buttons->$method(...$parameters);
         }
-
-        if (method_exists($this->fields, $method)) {
-            return $this->fields->$method(...$parameters);
-        }
-
-        static::throwBadMethodCallException($method);
+        return $this->fields->$method(...$parameters);
     }
 
     /**

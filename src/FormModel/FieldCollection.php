@@ -2,14 +2,15 @@
 
 namespace Styde\Html\FormModel;
 
+use Illuminate\Support\HtmlString;
+use Illuminate\Support\Traits\ForwardsCalls;
+use Illuminate\Support\Traits\Macroable;
 use Styde\Html\Facades\Html;
 use Styde\Html\FieldBuilder;
-use Illuminate\Support\HtmlString;
-use Illuminate\Support\Traits\Macroable;
 
 class FieldCollection
 {
-    use Macroable {
+    use ForwardsCalls, Macroable {
         Macroable::__call as macroCall;
     }
 
@@ -52,6 +53,7 @@ class FieldCollection
      * @param  array $params
      *
      * @return \Styde\Html\FieldBuilder
+     * @throws \BadMethodCallException
      */
     public function __call($method, $params)
     {
@@ -59,7 +61,11 @@ class FieldCollection
             return $this->macroCall($method, $params);
         }
 
-        return $this->add($params[0], $method);
+        if (!empty($params)) {
+            return $this->add($params[0], $method);
+        }
+
+        static::throwBadMethodCallException($method);
     }
 
     /**
