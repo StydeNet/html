@@ -21,8 +21,9 @@ class Middleware {
     }
 
     /**
-     * This is just a requisite of the framework's middleware.
-     * We are not doing anything special here.
+     * Call the push method of the Alert Container object, which will get the
+     * messages in array format (raw), and persist them using the Alert Handler
+     * implementation.
      *
      * @param $request
      * @param \Closure $next
@@ -30,20 +31,11 @@ class Middleware {
      */
     public function handle($request, \Closure $next)
     {
-        return $next($request);
-    }
+        $response = $next($request);
 
-    /**
-     * Call the push method of the Alert Container object, which will get the
-     * messages in array format (raw), and persist them using the Alert Handler
-     * implementation.
-     *
-     * @param $request
-     * @param $response
-     */
-    public function terminate($request, $response)
-    {
         $this->alert->push();
+
+        return $response;
     }
 
 }
