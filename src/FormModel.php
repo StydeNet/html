@@ -179,7 +179,9 @@ class FormModel implements Htmlable
      */
     public function novalidate($value = true)
     {
-        $this->formBuilder->novalidate($value);
+        $this->runSetup();
+
+        $this->form->novalidate($value);
 
         return $this;
     }

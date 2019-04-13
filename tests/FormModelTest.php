@@ -5,6 +5,8 @@ namespace Styde\Html\Tests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Testing\FileFactory;
 use Illuminate\Support\Facades\{View, Route};
+use Styde\Html\Facades\Form;
+use Styde\Html\FormBuilder;
 use Styde\Html\FormModel;
 
 class FormModelTest extends TestCase
@@ -128,13 +130,21 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_set_a_novalidate_attribute()
+    function it_sets_the_novalidate_attribute()
     {
         Route::post('login', ['as' => 'login']);
-
         $form = app(LoginForm::class)->novalidate();
 
         $this->assertTemplateMatches('form-model/form-with-novalidate', $form);
+    }
+
+    /** @test */
+    function setting_novalidate_in_a_form_model_doesnt_change_the_global_novalidate_config()
+    {
+        Route::post('login', ['as' => 'login']);
+        app(LoginForm::class)->novalidate();
+
+        $this->assertHtmlEquals('<form method="get"></form>', Form::get());
     }
 
     /** @test */
