@@ -90,17 +90,6 @@ class HtmltagTest extends TestCase
     }
 
     /** @test */
-    function it_returns_the_tag_content_dynamically()
-    {
-        $children['title'] = new Htmltag('h1', 'Title');
-        $children['summary'] = new Htmltag('p', 'This is the content');
-        $tag = new Htmltag('div', $children);
-
-        $this->assertEquals('<h1>Title</h1>', $tag->title->toHtml());
-        $this->assertEquals('<p>This is the content</p>', $tag->summary->toHtml());
-    }
-
-    /** @test */
     function it_thrown_an_exception_when_call_a_missing_attribute()
     {
         $this->expectException('InvalidArgumentException');

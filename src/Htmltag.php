@@ -2,12 +2,12 @@
 
 namespace Styde\Html;
 
+use InvalidArgumentException;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\Support\Htmlable;
 
 class Htmltag extends BaseTag
 {
-
     /**
      * Content of the tag
      *
@@ -26,11 +26,13 @@ class Htmltag extends BaseTag
     {
         parent::__construct($tag, $attributes);
 
-        if (is_string($content)) {
-            $content = [new TextElement($content)];
+        if (is_array($content)) {
+            array_walk($content, [$this, 'add']);
+        } elseif (is_string($content)) {
+            $this->add(new TextElement($content));
+        } elseif ($content) {
+            $this->add($content);
         }
-
-        $this->content = $content;
     }
 
     /**
