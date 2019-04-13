@@ -96,14 +96,12 @@ class Form extends Htmltag
      */
     protected function renderHiddenFields()
     {
-        $html = '';
-
-        foreach ($this->content as $child) {
+        return array_reduce($this->content, function ($result, $child) {
             if ($child instanceof HiddenInput) {
-                $html .= $child->render();
+                $result .= $child->render();
             }
-        }
 
-        return $html;
+            return $result;
+        }, '');
     }
 }

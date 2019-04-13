@@ -5,6 +5,7 @@ namespace Styde\Html\Tests;
 use Styde\Html\Facades\Form;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\{Route, Session};
+use Styde\Html\Form\Input;
 
 class FormBuilderTest extends TestCase
 {
@@ -49,11 +50,33 @@ class FormBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_renders_forms()
+    function opening_a_form_does_not_render_visible_fields()
+    {
+        $form = Form::get();
+
+        $form->add(Form::text('name', 'Duilio'));
+
+        $expected = '<form method="get">';
+
+        $this->assertHtmlEquals($expected, $form->open());
+    }
+
+    /** @test */
+    function it_renders_a_form()
     {
         $this->assertTemplateMatches(
             'form/get-method', Form::get()->render()
         );
+    }
+
+    /** @test */
+    function it_renders_a_form_with_fields()
+    {
+        $form = Form::post();
+
+        $form->add(Form::text('name', 'Duilio'));
+
+        $this->assertTemplateMatches('form/post-with-fields', $form->render());
     }
     
     /** @test */
