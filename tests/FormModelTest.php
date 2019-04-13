@@ -148,12 +148,12 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_thrown_an_exception_when_call_a_bad_method()
+    function it_throws_a_bad_method_call_exception_when_calling_a_non_existing_method()
     {
         $this->expectException('BadMethodCallException');
         $this->expectExceptionMessage('Call to undefined method Styde\Html\FormModel\FieldCollection::badMethod()');
 
-        $form = app(LoginForm::class)->badMethod();
+        app(LoginForm::class)->badMethod();
     }
 }
 

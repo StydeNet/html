@@ -2,15 +2,15 @@
 
 namespace Styde\Html\FormModel;
 
-use Illuminate\Support\HtmlString;
-use Illuminate\Support\Traits\ForwardsCalls;
-use Illuminate\Support\Traits\Macroable;
 use Styde\Html\Facades\Html;
 use Styde\Html\FieldBuilder;
+use Illuminate\Support\HtmlString;
+use Illuminate\Support\Traits\Macroable;
+use Mockery\Exception\BadMethodCallException;
 
 class FieldCollection
 {
-    use ForwardsCalls, Macroable {
+    use Macroable {
         Macroable::__call as macroCall;
     }
 
@@ -65,7 +65,9 @@ class FieldCollection
             return $this->add($params[0], $method);
         }
 
-        static::throwBadMethodCallException($method);
+        throw new BadMethodCallException(sprintf(
+            'Call to undefined method %s::%s()', static::class, $method
+        ));
     }
 
     /**
