@@ -198,19 +198,23 @@ class RegisterForm extends FormModel
 
 class UserForm extends FormModel
 {
-    public function setup()
-    {
-        $this->text('name');
-        $this->email('email');
-    }
-
     public function creationSetup()
     {
+        $this->setup();
+
         $this->submit('Create user');
     }
 
     public function updateSetup()
     {
+        $this->setup();
+
         $this->submit('Update user');
+    }
+
+    public function setup()
+    {
+        $this->text('name');
+        $this->email('email');
     }
 }
