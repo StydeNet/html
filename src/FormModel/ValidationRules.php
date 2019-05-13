@@ -125,19 +125,35 @@ trait ValidationRules
      */
     public function disableRules(...$rules)
     {
-        if (! empty($rules)) {
-            $rules = is_array($rules[0]) ? $rules[0] : $rules;
+        // TODO: improve this logic
+
+        if (empty ($rules)) {
+            $this->rules = [];
+            return $this;
         }
 
-        foreach ($this->rules as $key => $rule) {
+        $customRules = [];
+        $oldRules = [];
+
+        foreach ($this->rules as $rule) {
+            if (is_object($rule)) {
+                $customRules[] = $rule;
+            } else {
+                $oldRules[] = $rule;
+            }
+        }
+
+        $rules = is_array($rules[0]) ? $rules[0] : $rules;
+
+        foreach ($oldRules as $key => $rule) {
             if ($pos = strpos($rule, ':')) {
                 if (in_array(substr($rule, 0, $pos), $rules)) {
-                    unset($this->rules[$key]);
+                    unset($oldRules[$key]);
                 }
             }
         }
 
-        $this->rules = empty($rules) ? [] : array_diff($this->rules, $rules);
+        $this->rules = array_merge(array_diff($oldRules, $rules), $customRules);
 
         return $this;
     }

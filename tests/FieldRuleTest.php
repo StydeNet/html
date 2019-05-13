@@ -14,11 +14,27 @@ class FieldRuleTest extends TestCase
 
         $this->assertSame([$rule], $field->getValidationRules());
     }
+
+    /** @test */
+    function can_deactivate_rules_when_field_has_a_custom_rule()
+    {
+        $field = Field::text('name')
+            ->required()
+            ->withRule($rule = new MyCustomRule)
+            ->disableRules('required');
+
+        $this->assertSame([$rule], $field->getValidationRules());
+    }
     
     /** @test */
-    function it_deletes_all_the_rules()
+    function it_disables_all_rules()
     {
-        $field = Field::number('code')->min(1)->max(10)->required()->disableRules();
+        $field = Field::number('code')
+            ->max(10)
+            ->required()
+            ->withRule(new MyCustomRule);
+
+        $field->disableRules();
 
         $this->assertSame([], $field->getValidationRules());
     }
