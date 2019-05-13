@@ -90,14 +90,12 @@ class FormModel implements Htmlable
 
         $this->form = $this->formBuilder->make($this->method());
 
-        $this->setup();
-
         if ($this->method() == 'post') {
-            return $this->creationSetup();
-        }
-
-        if ($this->method() == 'put') {
-            return $this->updateSetup();
+            $this->creationSetup();
+        } elseif ($this->method() == 'put') {
+            $this->updateSetup();
+        } else {
+            $this->setup();
         }
     }
 
@@ -112,7 +110,7 @@ class FormModel implements Htmlable
     }
 
     /**
-     * Setup the common form attributes, fields and buttons.
+     * Setup common form attributes, fields and buttons.
      *
      * @return void
      */
@@ -122,25 +120,23 @@ class FormModel implements Htmlable
     }
 
     /**
-     * Setup the form attributes, fields and buttons for creation.
-     * Called after setup method, so common fields defined there will be available here.
+     * Setup form attributes, fields and buttons for creation.
      *
      * @return void
      */
     public function creationSetup()
     {
-        //...
+        $this->setup();
     }
 
     /**
-     * Setup the form attributes, form fields and buttons for update.
-     * Called after setup method, so common fields defined there will be available here.
+     * Setup form attributes, form fields and buttons for update.
      *
      * @return void
      */
     public function updateSetup()
     {
-        //...
+        $this->setup();
     }
 
     /**
