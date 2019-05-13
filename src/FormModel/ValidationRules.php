@@ -39,8 +39,23 @@ trait ValidationRules
         $this->setRuleIn();
 
         return array_map(function ($rule) {
+            if ($rule instanceof \Illuminate\Contracts\Validation\Rule) {
+                return $rule;
+            }
+
             return (string) $rule;
         }, $this->rules);
+    }
+
+    /**
+     * Adds a new rule to the field.
+     *
+     * @param $rule
+     * @return $this
+     */
+    public function withRule($rule)
+    {
+        return $this->setRule($rule);
     }
 
     /**
@@ -49,7 +64,7 @@ trait ValidationRules
      * @param string $rule
      * @return $this
      */
-    public function setRule($rule)
+    protected function setRule($rule)
     {
         $this->rules[] = $rule;
 

@@ -89,7 +89,7 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_the_rules_only_for_fields()
+    function only_fields_have_rules()
     {
         $form = app(FormModel::class);
 
@@ -104,7 +104,7 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_builds_a_update_form()
+    function it_builds_an_update_form()
     {
         $userModel = $this->aUserWithData([
             'name' => 'Clemir',
@@ -133,13 +133,14 @@ class FormModelTest extends TestCase
     function it_sets_the_novalidate_attribute()
     {
         Route::post('login', ['as' => 'login']);
+
         $form = app(LoginForm::class)->novalidate();
 
         $this->assertTemplateMatches('form-model/form-with-novalidate', $form);
     }
 
     /** @test */
-    function setting_novalidate_in_a_form_model_doesnt_change_the_global_novalidate_config()
+    function setting_novalidate_in_a_form_model_does_not_change_the_global_novalidate_config()
     {
         Route::post('login', ['as' => 'login']);
         app(LoginForm::class)->novalidate();
@@ -148,7 +149,7 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_set_a_novalidate_attribute_as_false()
+    function novalidate_can_be_deactivated()
     {
         Route::post('login', ['as' => 'login']);
 

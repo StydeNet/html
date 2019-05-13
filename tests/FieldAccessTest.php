@@ -44,26 +44,6 @@ class FieldAccessTest extends TestCase
     }
 
     /** @test */
-    function it_deletes_all_the_rules()
-    {
-        $field = Field::number('code')->min(1)->max(10)->required()->disableRules();
-
-        $this->assertSame([], $field->getValidationRules());
-    }
-
-    /** @test */
-    function it_deletes_a_specific_rule()
-    {
-        $field = Field::email('email')->min(10)->required()->disableRules('required', 'min');
-
-        $this->assertSame(['email'], $field->getValidationRules());
-
-        $field = Field::email('email')->min(10)->required()->disableRules(['min', 'required']);
-
-        $this->assertSame(['email'], $field->getValidationRules());
-    }
-
-    /** @test */
     function it_only_renders_the_field_if_the_user_has_the_given_ability()
     {
         $this->actingAs($this->aUser());
