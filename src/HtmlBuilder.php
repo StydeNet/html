@@ -2,6 +2,7 @@
 
 namespace Styde\Html;
 
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Traits\Macroable;
@@ -85,13 +86,8 @@ class HtmlBuilder
      */
     public function tag($tag, $content = '', array $attributes = [])
     {
-        if (is_array($content)) {
-            $attributes = $content;
-            $content = '';
-        }
-
         if ($this->isVoidElement($tag)) {
-            return new VoidTag($tag, $attributes);
+            return new VoidTag($tag, is_array($content) ? $content : $attributes);
         } else {
             return new Htmltag($tag, $content, $attributes);
         }
