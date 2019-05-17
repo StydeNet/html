@@ -215,7 +215,7 @@ class FormModel implements Htmlable
 
         $scripts = [];
 
-        foreach ($this->fields->all() as $name => $field) {
+        foreach ($this->fields->onlyFields() as $name => $field) {
             $scripts = array_merge($scripts, $field->scripts);
         }
 
@@ -235,7 +235,7 @@ class FormModel implements Htmlable
 
         $styles = [];
 
-        foreach ($this->fields->all() as $name => $field) {
+        foreach ($this->fields->onlyFields() as $name => $field) {
             $styles = array_merge($styles, $field->styles);
         }
 

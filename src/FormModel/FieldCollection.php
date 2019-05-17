@@ -252,6 +252,18 @@ class FieldCollection
     }
 
     /**
+     * Get only the fields from the fields array.
+     *
+     * @return array
+     */
+    public function onlyFields()
+    {
+        return array_filter($this->fields, function ($field) {
+            return $field instanceof Field;
+        });
+    }
+
+    /**
      * Render all the fields.
      *
      * @return string

@@ -43,6 +43,8 @@ class AssetsForm extends FormModel
 
         $this->calendar('ends_at');
 
+        $this->tag('p', 'Not a field');
+
         $this->editor('body');
 
         $this->editor('content');
