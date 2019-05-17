@@ -51,6 +51,15 @@ class Field implements Htmlable
     /**
      * @var array
      */
+    public $styles = [];
+    /**
+     * @var array
+     */
+    public $scripts = [];
+
+    /**
+     * @var array
+     */
     protected $options = [];
 
     protected $table;
@@ -149,6 +158,20 @@ class Field implements Htmlable
     public function template($template)
     {
         $this->template = $template;
+
+        return $this;
+    }
+
+    public function style($style)
+    {
+        $this->styles[] = $style;
+
+        return $this;
+    }
+
+    public function script($script)
+    {
+        $this->scripts[] = $script;
 
         return $this;
     }

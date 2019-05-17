@@ -4,7 +4,9 @@ namespace Styde\Html;
 
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Http\Request;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Traits\ForwardsCalls;
+use Styde\Html\Facades\Html;
 use Styde\Html\FormModel\{Field, FieldCollection, ButtonCollection};
 
 class FormModel implements Htmlable
@@ -207,6 +209,46 @@ class FormModel implements Htmlable
         ], 'form');
     }
 
+    public function scripts()
+    {
+        $this->runSetup();
+
+        $scripts = [];
+
+        foreach ($this->fields->all() as $name => $field) {
+            $scripts = array_merge($scripts, $field->scripts);
+        }
+
+        return array_values(array_unique($scripts));
+    }
+
+    public function renderScripts()
+    {
+        return new HtmlString(array_reduce($this->scripts(), function ($result, $script) {
+            return $result.Html::script($script);
+        }, ''));
+    }
+
+    public function styles()
+    {
+        $this->runSetup();
+
+        $styles = [];
+
+        foreach ($this->fields->all() as $name => $field) {
+            $styles = array_merge($styles, $field->styles);
+        }
+
+        return array_values(array_unique($styles));
+    }
+
+    public function renderStyles()
+    {
+        return new HtmlString(array_reduce($this->styles(), function ($result, $style) {
+            return $result.Html::style($style);
+        }, ''));
+    }
+    
     /**
      * Validate the request with the validation rules specified
      *
