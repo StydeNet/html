@@ -67,29 +67,26 @@ class Theme
      * You can publish and customize the default template (resources/views/themes/)
      * or be located inside the components directory (vendor/styde/html/themes/).
      *
-     * @param string|null $customTemplate
+     * @param string $template
      * @param array $data
-     * @param string|null $defaultTemplate
      * @return string
      */
-    public function render($customTemplate = null, $data = array(), $defaultTemplate = null)
+    public function render($template, $data = array())
     {
-        if ($customTemplate) {
-            return $this->renderCustomTemplate($customTemplate, $data);
-        } elseif ($this->view->exists($this->getPublishedTemplate($defaultTemplate))) {
-            return $this->renderPublishedTemplate($data, $defaultTemplate);
+        if (strpos($template, '@') === 0) {
+            return $this->renderThemeTemplate(substr($template, 1), $data);
         } else {
-            return $this->renderDefaultTemplate($data, $defaultTemplate);
+            return $this->renderCustomTemplate($template, $data);
         }
     }
 
-    public function renderCustomTemplate($template, $data)
+    public function renderThemeTemplate($template, $data)
     {
-        if (strpos($template, '@') === 0) {
-            $template = "{$this->publishedThemesDirectory}/{$this->currentTheme}/".substr($template, 1);
+        if ($this->view->exists($this->getPublishedTemplate($template))) {
+            return $this->renderPublishedTemplate($data, $template);
+        } else {
+            return $this->renderDefaultTemplate($data, $template);
         }
-
-        return $this->view->make($template, $data)->render();
     }
 
     protected function renderPublishedTemplate($data, $template)
@@ -105,5 +102,10 @@ class Theme
     protected function renderDefaultTemplate($data, $template)
     {
         return $this->view->make("styde.html::{$this->currentTheme}/{$template}", $data)->render();
+    }
+
+    public function renderCustomTemplate($template, $data)
+    {
+        return $this->view->make($template, $data)->render();
     }
 }

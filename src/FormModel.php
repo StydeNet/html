@@ -202,11 +202,11 @@ class FormModel implements Htmlable
     {
         $this->runSetup();
 
-        return $this->theme->render($customTemplate ?: $this->customTemplate, [
+        return $this->theme->render($customTemplate ?: $this->customTemplate ?: '@form', [
             'form' => $this->form,
             'fields' => $this->fields,
             'buttons' => $this->buttons,
-        ], 'form');
+        ]);
     }
 
     public function scripts()

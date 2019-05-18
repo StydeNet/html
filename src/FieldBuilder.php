@@ -378,12 +378,11 @@ class FieldBuilder
         );
 
         return $this->theme->render(
-            $field->template,
+            $field->template ?: "@fields.{$this->getDefaultTemplate($field->type)}",
             array_merge(
                 $field->extra,
                 compact('htmlName', 'id', 'label', 'input', 'errors', 'hasErrors', 'required', 'helpText')
-            ),
-            'fields.'.$this->getDefaultTemplate($field->type)
+            )
         );
     }
 

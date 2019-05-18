@@ -72,6 +72,6 @@ class Menu implements Htmlable
             'class' => $this->class,
         ];
 
-        return $this->theme->render($this->template, $data, 'menu');
+        return $this->theme->render($this->template ?: '@menu', $data);
     }
 }

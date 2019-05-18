@@ -178,9 +178,9 @@ class Container
 
         $this->clearMessages();
 
-        return new HtmlString($this->theme->render(
-            $custom, ['messages' => $this->withDefaults($messages)], 'alert'
-        ));
+        return new HtmlString(
+            $this->theme->render($custom ?: '@alert', ['messages' => $this->withDefaults($messages)])
+        );
     }
 
     /**

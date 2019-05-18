@@ -428,13 +428,15 @@ class FormBuilder
      *
      * @return string
      */
-    public function radios($name, $options = array(), $checked = null, $attributes = array())
+    public function radios($name, $options = [], $checked = null, $attributes = [])
     {
         $checked = $this->getValueAttribute($name, $checked);
 
-        $defaultTemplate = in_array('inline', $attributes) ? 'forms.radios-inline' : 'forms.radios';
-
-        $template = $attributes['template'] ?? null;
+        if (empty ($attributes['template'])) {
+            $template = in_array('inline', $attributes) ? '@forms.radios-inline' : '@forms.radios';
+        } else {
+            $template = $attributes['template'];
+        }
 
         $radios = [];
 
@@ -448,7 +450,7 @@ class FormBuilder
         }
 
         return new HtmlString(
-            $this->theme->render($template, compact('name', 'radios'), $defaultTemplate)
+            $this->theme->render($template, compact('name', 'radios'))
         );
     }
 
@@ -462,21 +464,19 @@ class FormBuilder
      *
      * @return string
      */
-    public function checkboxes($name, $options = array(), $selected = null, $attributes = array())
+    public function checkboxes($name, $options = array(), $selected = null, $attributes = [])
     {
         $selected = $this->getValueAttribute($name, $selected);
 
         if (is_null($selected)) {
-            $selected = array();
+            $selected = [];
         }
 
-        $defaultTemplate = in_array('inline', $attributes)
-            ? 'forms.checkboxes-inline'
-            : 'forms.checkboxes';
-
-        $template = isset($attributes['template'])
-            ? $attributes['template']
-            : null;
+        if (empty ($attributes['template'])) {
+            $template = in_array('inline', $attributes) ? '@forms.checkboxes-inline' : '@forms.checkboxes';
+        } else {
+            $template = $attributes['template'];
+        }
 
         $checkboxes = [];
 
@@ -490,7 +490,7 @@ class FormBuilder
         }
 
         return new HtmlString(
-            $this->theme->render($template, compact('name', 'checkboxes', 'attributes'), $defaultTemplate)
+            $this->theme->render($template, compact('name', 'checkboxes', 'attributes'))
         );
     }
 

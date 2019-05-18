@@ -20,7 +20,7 @@ class ThemeTest extends TestCase
 
         $theme = new Theme($factory, 'bootstrap');
 
-        $this->assertSame('<html>', $theme->render('custom.template', ['data' => 123], 'template'));
+        $this->assertSame('<html>', $theme->render('custom.template', ['data' => 123]));
     }
 
     /** @test */
@@ -38,7 +38,7 @@ class ThemeTest extends TestCase
 
         $theme = new Theme($factory, 'bootstrap');
 
-        $this->assertSame('<html>', $theme->render(null, ['data' => 234], 'template'));
+        $this->assertSame('<html>', $theme->render('@template', ['data' => 234]));
     }
 
     /** @test */
@@ -56,7 +56,7 @@ class ThemeTest extends TestCase
 
         $theme = new Theme($factory, 'bootstrap');
 
-        $this->assertSame('<html>', $theme->render(null, ['data' => 234], 'template'));
+        $this->assertSame('<html>', $theme->render('@template', ['data' => 234]));
     }
 
     function it_can_retrieve_the_view_object()
