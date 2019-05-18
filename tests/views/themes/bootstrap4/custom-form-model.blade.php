@@ -1,0 +1,1 @@
+<p>Custom template from theme</p>

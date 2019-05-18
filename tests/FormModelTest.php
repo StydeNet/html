@@ -2,12 +2,11 @@
 
 namespace Styde\Html\Tests;
 
+use Styde\Html\FormModel;
 use Illuminate\Http\Request;
+use Styde\Html\Facades\Form;
 use Illuminate\Http\Testing\FileFactory;
 use Illuminate\Support\Facades\{View, Route};
-use Styde\Html\Facades\Form;
-use Styde\Html\FormBuilder;
-use Styde\Html\FormModel;
 
 class FormModelTest extends TestCase
 {
@@ -41,6 +40,16 @@ class FormModelTest extends TestCase
         $formModel = app(FormModel::class)->template('custom-templates/form-model');
 
         $this->assertHtmlEquals('<p>Custom template</p>', $formModel);
+    }
+
+    /** @test */
+    function can_use_a_customized_template_from_the_current_theme()
+    {
+        View::addLocation(__DIR__.'/views');
+
+        $formModel = app(FormModel::class)->template('@custom-form-model');
+
+        $this->assertHtmlEquals('<p>Custom template from theme</p>', $formModel);
     }
 
     /** @test */

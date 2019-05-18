@@ -17,28 +17,28 @@ class Theme
      *
      * @var string
      */
-    protected $theme;
+    protected $currentTheme;
 
     /**
      * Directory to store the custom templates
      *
      * @var string
      */
-    protected $custom;
+    protected $publishedThemesDirectory;
 
     /**
      * Creates a Theme class, used to render custom or default templates for
      * any of the classes of this component (alert, menu, form, field)
      *
      * @param View $view
-     * @param string $theme
-     * @param string $custom Directory to store the custom templates
+     * @param string $currentTheme
+     * @param string $publishedThemesDirectory Directory to store the custom templates
      */
-    public function __construct(View $view, $theme, $custom = 'themes')
+    public function __construct(View $view, $currentTheme, $publishedThemesDirectory = 'themes')
     {
         $this->view = $view;
-        $this->theme = $theme;
-        $this->custom = $custom;
+        $this->currentTheme = $currentTheme;
+        $this->publishedThemesDirectory = $publishedThemesDirectory;
     }
 
     /**
@@ -48,7 +48,7 @@ class Theme
      */
     public function getName()
     {
-        return $this->theme;
+        return $this->currentTheme;
     }
 
     /**
@@ -67,23 +67,43 @@ class Theme
      * You can publish and customize the default template (resources/views/themes/)
      * or be located inside the components directory (vendor/styde/html/themes/).
      *
-     * @param string|null $custom
+     * @param string|null $customTemplate
      * @param array $data
-     * @param string|null $template
+     * @param string|null $defaultTemplate
      * @return string
      */
-    public function render($custom = null, $data = array(), $template = null)
+    public function render($customTemplate = null, $data = array(), $defaultTemplate = null)
     {
-        if ($custom != null) {
-            return $this->view->make($custom, $data)->render();
+        if ($customTemplate) {
+            return $this->renderCustomTemplate($customTemplate, $data);
+        } elseif ($this->view->exists($this->getPublishedTemplate($defaultTemplate))) {
+            return $this->renderPublishedTemplate($data, $defaultTemplate);
+        } else {
+            return $this->renderDefaultTemplate($data, $defaultTemplate);
+        }
+    }
+
+    public function renderCustomTemplate($template, $data)
+    {
+        if (strpos($template, '@') === 0) {
+            $template = "{$this->publishedThemesDirectory}/{$this->currentTheme}/".substr($template, 1);
         }
 
-        $template = $this->getName().'/'.$template;
+        return $this->view->make($template, $data)->render();
+    }
 
-        if ($this->view->exists($this->custom.'/'.$template)) {
-            return $this->view->make($this->custom.'/'.$template, $data)->render();
-        }
+    protected function renderPublishedTemplate($data, $template)
+    {
+        return $this->view->make($this->getPublishedTemplate($template), $data)->render();
+    }
 
-        return $this->view->make('styde.html::'.$template, $data)->render();
+    protected function getPublishedTemplate($template)
+    {
+        return "{$this->publishedThemesDirectory}/{$this->currentTheme}/{$template}";
+    }
+
+    protected function renderDefaultTemplate($data, $template)
+    {
+        return $this->view->make("styde.html::{$this->currentTheme}/{$template}", $data)->render();
     }
 }
