@@ -53,7 +53,7 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_returns_the_rules_from_all_fields()
+    function it_returns_the_form_model_validation_rules()
     {
         $rules = app(RegisterForm::class)->getValidationRules();
 
@@ -196,7 +196,7 @@ class RegisterForm extends FormModel
 {
     public function setup()
     {
-        $this->text('name')->required()->disableRules();
+        $this->text('name')->required()->withoutRules();
         $this->email('email')->required();
         $this->password('password')->confirmed()->min(6)->max(12)->required();
         $this->password('password_confirmation')->min(6)->max(12)->required();

@@ -38,13 +38,13 @@ trait ValidationRules
     {
         $this->setRuleIn();
 
-        return array_map(function ($rule) {
+        return array_values(array_map(function ($rule) {
             if ($rule instanceof \Illuminate\Contracts\Validation\Rule) {
                 return $rule;
             }
 
             return (string) $rule;
-        }, $this->rules);
+        }, $this->rules));
     }
 
     /**
@@ -55,18 +55,43 @@ trait ValidationRules
      */
     public function withRule($rule)
     {
-        return $this->setRule($rule);
+        return $this->addRule($rule);
     }
 
     /**
-     * Set a new rule
+     * Add new rules to the field
+     *
+     * @param mixed $rules
+     * @return $this
+     */
+    public function withRules($rules)
+    {
+        if (! is_array($rules)) {
+            $rules = func_get_args();
+        }
+
+        foreach ($rules as $rule) {
+            $this->addRule($rule);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add a new rule to the field
      *
      * @param string $rule
      * @return $this
      */
-    protected function setRule($rule)
+    protected function addRule($rule)
     {
-        $this->rules[] = $rule;
+        if (is_object($rule)) {
+            $key = get_class($rule);
+        } else {
+            $key = explode(':', $rule)[0];
+        }
+
+        $this->rules[$key] = $rule;
 
         return $this;
     }
@@ -76,7 +101,7 @@ trait ValidationRules
      */
     protected function setRuleIn()
     {
-        empty($this->options) ?: $this->setRule(Rule::in(array_keys($this->options)));
+        empty($this->options) ?: $this->addRule(Rule::in(array_keys($this->options)));
     }
 
     /**
@@ -84,7 +109,7 @@ trait ValidationRules
      */
     protected function setRuleExists()
     {
-        (! $this->table) ?: $this->setRule(Rule::exists($this->table, $this->tableId)->where($this->query));
+        (! $this->table) ?: $this->addRule(Rule::exists($this->table, $this->tableId)->where($this->query));
     }
 
 
@@ -97,7 +122,7 @@ trait ValidationRules
     protected function addRuleByFieldType($type)
     {
         if (array_key_exists($type, $this->fieldsWithRules)) {
-            $this->setRule($this->fieldsWithRules[$type]);
+            $this->addRule($this->fieldsWithRules[$type]);
         }
     }
 
@@ -118,43 +143,44 @@ trait ValidationRules
     }
 
     /**
-     * You can deactivate all rules or specify them.
+     * Remove a rule from the field.
+     * @param $rule
+     */
+    public function withoutRule($rule)
+    {
+        $this->removeRule($rule);
+    }
+
+    /**
+     * Remove all rules from the field or some of them.
      *
-     * @param mixed ...$rules
+     * @param mixed $rules
      * @return $this
      */
-    public function disableRules(...$rules)
+    public function withoutRules($rules = [])
     {
-        // TODO: improve this logic
-
         if (empty ($rules)) {
             $this->rules = [];
             return $this;
         }
 
-        $customRules = [];
-        $oldRules = [];
-
-        foreach ($this->rules as $rule) {
-            if (is_object($rule)) {
-                $customRules[] = $rule;
-            } else {
-                $oldRules[] = $rule;
-            }
+        if (! is_array($rules)) {
+            $rules = func_get_args();
         }
 
-        $rules = is_array($rules[0]) ? $rules[0] : $rules;
-
-        foreach ($oldRules as $key => $rule) {
-            if ($pos = strpos($rule, ':')) {
-                if (in_array(substr($rule, 0, $pos), $rules)) {
-                    unset($oldRules[$key]);
-                }
-            }
+        foreach ($rules as $rule) {
+            $this->removeRule($rule);
         }
-
-        $this->rules = array_merge(array_diff($oldRules, $rules), $customRules);
 
         return $this;
+    }
+
+    /**
+     * Remove a rule from the field.
+     * @param $rule
+     */
+    protected function removeRule($rule)
+    {
+        unset ($this->rules[$rule]);
     }
 }

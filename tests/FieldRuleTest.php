@@ -16,12 +16,12 @@ class FieldRuleTest extends TestCase
     }
 
     /** @test */
-    function can_deactivate_rules_when_field_has_a_custom_rule()
+    function can_remove_a_rule_when_field_has_a_custom_rule()
     {
         $field = Field::text('name')
             ->required()
             ->withRule($rule = new MyCustomRule)
-            ->disableRules('required');
+            ->withoutRules('required');
 
         $this->assertSame([$rule], $field->getValidationRules());
     }
@@ -32,22 +32,19 @@ class FieldRuleTest extends TestCase
         $field = Field::number('code')
             ->max(10)
             ->required()
-            ->withRule(new MyCustomRule);
-
-        $field->disableRules();
+            ->withRule(new MyCustomRule)
+            ->withoutRules();
 
         $this->assertSame([], $field->getValidationRules());
     }
 
     /** @test */
-    function it_deletes_a_specific_rule()
+    function it_deletes_specific_rules()
     {
-        $field = Field::email('email')->min(10)->required()->disableRules('required', 'min');
-
+        $field = Field::email('email')->min(10)->required()->withoutRules('required', 'min');
         $this->assertSame(['email'], $field->getValidationRules());
 
-        $field = Field::email('email')->min(10)->required()->disableRules(['min', 'required']);
-
+        $field = Field::email('email')->min(10)->required()->withoutRules(['min', 'required']);
         $this->assertSame(['email'], $field->getValidationRules());
     }
 }
