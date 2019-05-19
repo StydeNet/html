@@ -212,6 +212,11 @@ class FormModel implements Htmlable
         ]);
     }
 
+    public function renderFields()
+    {
+        return $this->fields->render();
+    }
+
     public function scripts()
     {
         $this->runSetup();

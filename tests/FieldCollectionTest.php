@@ -2,57 +2,50 @@
 
 namespace Styde\Html\Tests;
 
+use Styde\Html\FormModel;
 use Styde\Html\FormModel\Field;
 use Styde\Html\FormModel\FieldCollection;
 
 class FieldCollectionTest extends TestCase
 {
     /** @test */
-    function it_adds_a_field()
+    function it_adds_and_gets_a_field()
     {
-        $fields = new FieldCollection(field());
+        $form = app(TestFormModel::class);
 
-        $fields->text('first_name');
+        $form->text('first_name');
 
-        $this->assertInstanceOf(Field::class, $fields->first_name);
+        $this->assertInstanceOf(Field::class, $form->fields->first_name);
     }
 
     /** @test */
-    function it_renders_fields()
+    function it_renders_the_field_collection()
     {
-        $fields = new FieldCollection(field());
+        $form = app(TestFormModel::class);
 
-        $fields->text('name')->label('Full name');
-        $fields->select('role')->options(['admin' => 'Admin' , 'user' => 'User']);
+        $form->text('name')->label('Full name');
+        $form->select('role')->options(['admin' => 'Admin' , 'user' => 'User']);
 
-        $this->assertTemplateMatches('field-collection/fields', $fields->render());
+        $this->assertTemplateMatches('field-collection/fields', $form->renderFields());
     }
 
     /** @test */
-    function it_adds_html_tags()
+    function it_can_add_basic_html_tags()
     {
-        $fields = new FieldCollection(field());
+        $form = app(TestFormModel::class);
 
-        $field = $fields->tag('h3', 'Title', ['class' => 'red']);
+        $tag = $form->tag('h3', 'Title', ['class' => 'red']);
 
-        $this->assertHtmlEquals('<h3 class="red">Title</h3>', $field);
+        $this->assertHtmlEquals('<h3 class="red">Title</h3>', $tag);
 
-        $field = $fields->tag('hr', ['class' => 'red']);
+        $tag = $form->tag('hr', ['class' => 'red']);
 
-        $this->assertHtmlEquals('<hr class="red">', $field);
+        $this->assertHtmlEquals('<hr class="red">', $tag);
 
-        $this->assertCount(2, $fields->all());
+        $this->assertCount(2, $form->all());
     }
+}
 
-    /** @test */
-    function it_is_macroable()
-    {
-        FieldCollection::macro('myCustomMethod', function () {
-            return 'my-custom-tag';
-        });
+class TestFormModel extends FormModel {
 
-        $fields = new FieldCollection(field());
-
-        $this->assertSame('my-custom-tag', $fields->myCustomMethod());
-    }
 }
