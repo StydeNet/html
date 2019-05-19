@@ -24,9 +24,9 @@ trait HandlesAccess
     {
         $this->included = $value;
 
-        if ($this instanceof Field && ! $this->included && isset($this->rules)) {
-            $this->withoutRules();
-        }
+//        if ($this instanceof Field && ! $this->included && isset($this->rules)) {
+//            $this->withoutRules();
+//        }
 
         return $this;
     }
