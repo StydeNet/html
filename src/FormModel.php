@@ -2,15 +2,19 @@
 
 namespace Styde\Html;
 
-use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Http\Request;
-use Illuminate\Support\HtmlString;
-use Illuminate\Support\Traits\ForwardsCalls;
 use Styde\Html\Facades\Html;
-use Styde\Html\FormModel\{Field, FieldCollection, ButtonCollection};
+use Styde\Html\FormModel\Field;
+use Illuminate\Support\HtmlString;
+use Styde\Html\FormModel\AddsFields;
+use Styde\Html\FormModel\FieldCollection;
+use Illuminate\Contracts\Support\Htmlable;
+use Styde\Html\FormModel\ButtonCollection;
 
 class FormModel implements Htmlable
 {
+    use AddsFields;
+
     /**
      * @var \Styde\Html\FormBuilder
      */
@@ -53,7 +57,6 @@ class FormModel implements Htmlable
         $this->formBuilder = $formBuilder;
         $this->fields = $fields;
         $this->buttons = $buttons;
-
         $this->theme = $theme;
     }
 
