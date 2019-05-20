@@ -3,6 +3,7 @@
 namespace Styde\Html\FormModel\Concerns;
 
 use Styde\Html\Facades\Html;
+use Styde\Html\FormModel\HiddenField;
 
 trait HasFields
 {
@@ -145,7 +146,6 @@ trait HasFields
      * Add a file field.
      *
      * @param  string $name
-     *
      * @return \Styde\Html\FormModel\Field
      */
     public function file($name)
@@ -153,6 +153,17 @@ trait HasFields
         $this->acceptFiles();
 
         return $this->fields->addField($name, 'file');
+    }
+
+    /**
+     * Add a hidden field.
+     *
+     * @param  string $name
+     * @return \Styde\Html\FormModel\Field
+     */
+    function hidden($name)
+    {
+        return $this->fields->add(new HiddenField($name), $name);
     }
 
     /**

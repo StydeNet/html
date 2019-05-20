@@ -51,7 +51,7 @@ class FieldCollectionTest extends TestCase
     }
     
     /** @test */
-    function it_adds_a_file_field_and_the_form_accepts_files()
+    function it_adds_a_file()
     {
         $form = app(TestFormModel::class);
 
@@ -60,6 +60,17 @@ class FieldCollectionTest extends TestCase
         $this->assertFieldTypeIs('file', $form->document);
 
         $this->assertSame('multipart/form-data', $form->form->enctype);
+    }
+
+    /** @test */
+    function it_adds_a_hidden_field()
+    {
+        $form = app(TestFormModel::class);
+
+        $form->hidden('plan');
+
+        $this->assertFieldTypeIs('hidden', $form->plan);
+        $this->assertSame('<input type="hidden" name="plan">', (string) $form->plan);
     }
 
     public function assertFieldTypeIs($type, $field)
