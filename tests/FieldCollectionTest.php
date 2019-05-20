@@ -35,10 +35,25 @@ class FieldCollectionTest extends TestCase
     {
         $form = app(TestFormModel::class);
 
-        $form->number('pin');
+        $form->number('distance');
 
-        $this->assertInstanceOf(Field::class, $form->fields->pin);
-        $this->assertSame('number', $form->fields->pin->type);
+        $this->assertFieldTypeIs('number', $form->distance);
+    }
+
+    /** @test */
+    function it_adds_an_integer_field()
+    {
+        $form = app(TestFormModel::class);
+
+        $form->integer('pin');
+
+        $this->assertFieldTypeIs('integer', $form->pin);
+    }
+
+    public function assertFieldTypeIs($type, $field)
+    {
+        $this->assertInstanceOf(Field::class, $field);
+        $this->assertSame($type, $field->type);
     }
 
     /** @test */

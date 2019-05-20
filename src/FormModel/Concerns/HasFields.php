@@ -31,6 +31,18 @@ trait HasFields
     }
 
     /**
+     * Add an integer field.
+     *
+     * @param  string $name
+     *
+     * @return \Styde\Html\FormModel\Field
+     */
+    public function integer($name)
+    {
+        return $this->fields->addField($name, 'integer');
+    }
+
+    /**
      * Add a textarea field.
      *
      * @param  string $name
