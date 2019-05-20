@@ -19,17 +19,18 @@ class FormModelTest extends TestCase
 
         $this->assertTemplateMatches('form-model/login-form', $loginForm);
     }
-    
+
     /** @test */
-    function it_gets_the_fields_by_name()
+    function form_can_accept_files()
     {
-        $form = app(FormModel::class);
+        $form = app(TestFormModel::class);
 
-        $form->text('name');
+        $form->acceptFiles();
 
-        $this->assertInstanceOf(FormModel\Field::class, $form->name);
-        $this->assertSame('text', $form->name->type);
-        $this->assertSame('name', $form->name->name);
+        $this->assertHtmlEquals(
+            '<form method="post" enctype="multipart/form-data"><input type="hidden" name="_token">',
+            $form->form->open()
+        );
     }
 
     /** @test */

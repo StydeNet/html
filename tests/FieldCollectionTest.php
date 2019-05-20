@@ -49,6 +49,18 @@ class FieldCollectionTest extends TestCase
 
         $this->assertFieldTypeIs('integer', $form->pin);
     }
+    
+    /** @test */
+    function it_adds_a_file_field_and_the_form_accepts_files()
+    {
+        $form = app(TestFormModel::class);
+
+        $form->file('document');
+
+        $this->assertFieldTypeIs('file', $form->document);
+
+        $this->assertSame('multipart/form-data', $form->form->enctype);
+    }
 
     public function assertFieldTypeIs($type, $field)
     {

@@ -150,6 +150,8 @@ trait HasFields
      */
     public function file($name)
     {
+        $this->acceptFiles();
+
         return $this->fields->addField($name, 'file');
     }
 

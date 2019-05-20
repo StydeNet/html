@@ -87,9 +87,22 @@ class FormModel implements Htmlable
      */
     public function route($name, $parameters = [], $absolute = true)
     {
+        $this->runSetup();
+
         return $this->form->route($name, $parameters, $absolute);
     }
 
+    /**
+     * Indicate that the form should accept files.
+     * @return null
+     */
+    public function acceptFiles()
+    {
+        $this->runSetup();
+
+        $this->form->withFiles();
+    }
+    
     public function newFieldCollection(FieldBuilder $fieldBuilder)
     {
         return new FieldCollection($fieldBuilder);
