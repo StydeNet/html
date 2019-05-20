@@ -2,18 +2,22 @@
 
 namespace Styde\Html;
 
+use BadMethodCallException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Styde\Html\Facades\Html;
 use Styde\Html\FormModel\Field;
 use Illuminate\Support\HtmlString;
-use Styde\Html\FormModel\AddsFields;
+use Illuminate\Support\Traits\Macroable;
 use Styde\Html\FormModel\FieldCollection;
 use Illuminate\Contracts\Support\Htmlable;
 use Styde\Html\FormModel\ButtonCollection;
+use Styde\Html\FormModel\Concerns\HasFields;
+use Styde\Html\FormModel\Concerns\HasButtons;
 
 class FormModel implements Htmlable
 {
-    use AddsFields;
+    use HasFields, HasButtons, Macroable;
 
     /**
      * @var \Styde\Html\FormBuilder
@@ -43,21 +47,57 @@ class FormModel implements Htmlable
     public $method = 'post';
 
     public $customTemplate;
+    /**
+     * @var HtmlBuilder
+     */
+    private $htmlBuilder;
+    /**
+     * @var FieldBuilder
+     */
+    private $fieldBuilder;
 
     /**
      * Form Model constructor.
      *
+     * @param HtmlBuilder $htmlBuilder
      * @param FormBuilder $formBuilder
-     * @param FieldCollection $fields
-     * @param ButtonCollection $buttons
+     * @param FieldBuilder $fieldBuilder
      * @param Theme $theme
+     * @internal param FieldCollection $fields
+     * @internal param ButtonCollection $buttons
      */
-    public function __construct(FormBuilder $formBuilder, FieldCollection $fields, ButtonCollection $buttons, Theme $theme)
+    public function __construct(HtmlBuilder $htmlBuilder, FormBuilder $formBuilder, FieldBuilder $fieldBuilder, Theme $theme)
     {
         $this->formBuilder = $formBuilder;
-        $this->fields = $fields;
-        $this->buttons = $buttons;
+        $this->htmlBuilder = $htmlBuilder;
+        $this->fieldBuilder = $fieldBuilder;
         $this->theme = $theme;
+
+        $this->fields = $this->newFieldCollection($this->fieldBuilder);
+        $this->buttons = $this->newButtonCollection();
+    }
+
+    /**
+     * Link the form to an specific route.
+     *
+     * @param string $name
+     * @param array $parameters
+     * @param bool $absolute
+     * @return Form
+     */
+    public function route($name, $parameters = [], $absolute = true)
+    {
+        return $this->form->route($name, $parameters, $absolute);
+    }
+
+    public function newFieldCollection(FieldBuilder $fieldBuilder)
+    {
+        return new FieldCollection($fieldBuilder);
+    }
+
+    public function newButtonCollection()
+    {
+        return new ButtonCollection;
     }
 
     /**
@@ -211,12 +251,7 @@ class FormModel implements Htmlable
             'buttons' => $this->buttons,
         ]);
     }
-
-    public function renderFields()
-    {
-        return $this->fields->render();
-    }
-
+    
     public function scripts()
     {
         $this->runSetup();
@@ -299,14 +334,9 @@ class FormModel implements Htmlable
      */
     public function __call($method, $parameters = [])
     {
-        if (method_exists($this->form, $method)) {
-            return $this->form->$method(...$parameters);
-        }
-
-        if (method_exists($this->buttons, $method)) {
-            return $this->buttons->$method(...$parameters);
-        }
-        return $this->fields->$method(...$parameters);
+        throw new BadMethodCallException(sprintf(
+            'Call to undefined method %s::%s()', static::class, $method
+        ));
     }
 
     /**

@@ -9,6 +9,18 @@ use Styde\Html\FormModel\FieldCollection;
 class FieldCollectionTest extends TestCase
 {
     /** @test */
+    function check_if_the_field_collection_is_empty()
+    {
+        $form = app(TestFormModel::class);
+
+        $this->assertTrue($form->fields->isEmpty());
+
+        $form->text('first_name');
+
+        $this->assertFalse($form->fields->isEmpty());
+    }
+
+    /** @test */
     function it_adds_and_gets_a_field()
     {
         $form = app(TestFormModel::class);
@@ -42,10 +54,6 @@ class FieldCollectionTest extends TestCase
 
         $this->assertHtmlEquals('<hr class="red">', $tag);
 
-        $this->assertCount(2, $form->all());
+        $this->assertCount(2, $form->fields->all());
     }
-}
-
-class TestFormModel extends FormModel {
-
 }

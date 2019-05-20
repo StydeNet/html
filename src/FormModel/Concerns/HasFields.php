@@ -1,8 +1,10 @@
 <?php
 
-namespace Styde\Html\FormModel;
+namespace Styde\Html\FormModel\Concerns;
 
-trait AddsFields
+use Styde\Html\Facades\Html;
+
+trait HasFields
 {
     /**
      * Add a text field.
@@ -13,7 +15,7 @@ trait AddsFields
      */
     public function text($name)
     {
-        return $this->fields->add($name, 'text');
+        return $this->fields->addField($name, 'text');
     }
 
     /**
@@ -25,8 +27,9 @@ trait AddsFields
      */
     public function textarea($name)
     {
-        return $this->fields->add($name, 'textarea');
+        return $this->fields->addField($name, 'textarea');
     }
+
     /**
      * Add a email field.
      *
@@ -36,7 +39,7 @@ trait AddsFields
      */
     public function email($name)
     {
-        return $this->fields->add($name, 'email');
+        return $this->fields->addField($name, 'email');
     }
 
     /**
@@ -48,20 +51,19 @@ trait AddsFields
      */
     public function password($name)
     {
-        return $this->fields->add($name, 'password');
+        return $this->fields->addField($name, 'password');
     }
 
     /**
      * Add a checkbox field.
      *
      * @param  string  $name
-     * @param  mixed   $value
      *
      * @return \Styde\Html\FormModel\Field
      */
     public function checkbox($name)
     {
-        return $this->fields->add($name, 'checkbox');
+        return $this->fields->addField($name, 'checkbox');
     }
 
     /**
@@ -74,7 +76,7 @@ trait AddsFields
      */
     public function select($name, array $options = array())
     {
-        return $this->fields->add($name, 'select')->options($options);
+        return $this->fields->addField($name, 'select')->options($options);
     }
 
     /**
@@ -87,7 +89,7 @@ trait AddsFields
      */
     public function radios($name, array $options = array())
     {
-        return $this->fields->add($name, 'radios')->options($options);
+        return $this->fields->addField($name, 'radios')->options($options);
     }
 
     /**
@@ -100,7 +102,7 @@ trait AddsFields
      */
     public function checkboxes($name, array $options = array())
     {
-        return $this->fields->add($name, 'checkboxes')->options($options);
+        return $this->fields->addField($name, 'checkboxes')->options($options);
     }
 
     /**
@@ -112,7 +114,7 @@ trait AddsFields
      */
     public function url($name)
     {
-        return $this->fields->add($name, 'url');
+        return $this->fields->addField($name, 'url');
     }
 
     /**
@@ -124,6 +126,30 @@ trait AddsFields
      */
     public function file($name)
     {
-        return $this->fields->add($name, 'file');
+        return $this->fields->addField($name, 'file');
+    }
+
+    /**
+     * Add an HTML element to the field collection.
+     *
+     * @param $tag
+     * @param string $content
+     * @param array $attributes
+     * @return HtmlString
+     *
+     */
+    public function tag($tag, $content = '', array $attributes = [])
+    {
+        return $this->fields->add(Html::tag($tag, $content, $attributes));
+    }
+
+    /**
+     * Render all the elements in the fields collection.
+     *
+     * @return string
+     */
+    public function renderFields()
+    {
+        return $this->fields->render();
     }
 }
