@@ -29,6 +29,17 @@ class FieldCollectionTest extends TestCase
 
         $this->assertInstanceOf(Field::class, $form->fields->first_name);
     }
+    
+    /** @test */
+    function it_adds_a_number_field()
+    {
+        $form = app(TestFormModel::class);
+
+        $form->number('pin');
+
+        $this->assertInstanceOf(Field::class, $form->fields->pin);
+        $this->assertSame('number', $form->fields->pin->type);
+    }
 
     /** @test */
     function it_renders_the_field_collection()

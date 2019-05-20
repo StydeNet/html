@@ -19,6 +19,18 @@ trait HasFields
     }
 
     /**
+     * Add a number field.
+     *
+     * @param  string $name
+     *
+     * @return \Styde\Html\FormModel\Field
+     */
+    public function number($name)
+    {
+        return $this->fields->addField($name, 'number');
+    }
+
+    /**
      * Add a textarea field.
      *
      * @param  string $name
