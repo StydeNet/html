@@ -27,7 +27,7 @@ class FieldBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_generates_a_not_required_text_field()
+    function it_generates_an_optional_text_field()
     {
         $this->assertTemplateMatches(
             'field/text-not-required', Field::text('name', ['required' => false])

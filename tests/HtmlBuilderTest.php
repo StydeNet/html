@@ -30,6 +30,15 @@ class HtmlBuilderTest extends TestCase
             Html::tag('span', 'Span', ['id' => '<my-span>'])->render()
         );
     }
+    
+    /** @test */
+    function remove_attribute_from_tag()
+    {
+        $this->assertEquals(
+            '<input name="test">',
+            Html::tag('input', ['name' => 'test', 'required'])->removeAttr('required')->render()
+        );
+    }
 
     /** @test */
     function it_generates_html_tags_with_dynamic_methods()

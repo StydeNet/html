@@ -45,6 +45,19 @@ abstract class BaseTag implements Htmlable
     }
 
     /**
+     * Removes an attribute.
+     *
+     * @return $this
+     */
+    public function removeAttr($name)
+    {
+        unset ($this->attributes[$name]);
+        $this->attributes = array_diff_key($this->attributes, ['required']);
+
+        return $this;
+    }
+
+    /**
      * Set a new attribute with all the classes
      *
      * @param array $classes
