@@ -56,6 +56,8 @@ trait ValidationRules
     public function withRule($rule)
     {
         return $this->addRule($rule);
+
+        return $this;
     }
 
     /**
@@ -145,10 +147,13 @@ trait ValidationRules
     /**
      * Remove a rule from the field.
      * @param $rule
+     * @return $this
      */
     public function withoutRule($rule)
     {
         $this->removeRule($rule);
+
+        return $this;
     }
 
     /**
