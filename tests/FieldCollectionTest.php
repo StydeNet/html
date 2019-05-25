@@ -2,6 +2,7 @@
 
 namespace Styde\Html\Tests;
 
+use Illuminate\Support\Facades\View;
 use Styde\Html\FormModel;
 use Styde\Html\FormModel\Field;
 use Styde\Html\FormModel\FieldCollection;
@@ -71,6 +72,24 @@ class FieldCollectionTest extends TestCase
 
         $this->assertFieldTypeIs('hidden', $form->plan);
         $this->assertSame('<input type="hidden" name="plan">', (string) $form->plan);
+    }
+
+
+    /** @test */
+    function passes_custom_variables_to_the_field_template()
+    {
+        View::addLocation(__DIR__.'/views');
+
+        $form = app(TestFormModel::class);
+
+        $form->text('custom')
+            ->template('@fields.extra')
+            ->with('customVar', 'custom value');
+
+        $this->assertHtmlEquals(
+            '<strong>custom value</strong>',
+            $form->custom
+        );
     }
 
     public function assertFieldTypeIs($type, $field)

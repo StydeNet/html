@@ -177,11 +177,13 @@ class Field implements Htmlable
     }
 
     /**
+     * Add extra variables to the field template
+     *
      * @param $values
      * @param bool $value
      * @return $this
      */
-    public function extra($values, $value = true)
+    public function with($values, $value = true)
     {
         if (is_array($values)) {
             $this->extra = array_merge($this->extra, $values);

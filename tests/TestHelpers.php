@@ -10,7 +10,7 @@ trait TestHelpers
     {
         $this->assertInstanceOf(Htmlable::class, $actual);
 
-        $this->assertSame($expected, $actual->toHtml());
+        $this->assertSame($expected, trim($actual->toHtml()));
     }
 
     protected function assertTemplateMatches($template, $actual)

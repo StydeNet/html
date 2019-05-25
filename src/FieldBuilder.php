@@ -341,7 +341,7 @@ class FieldBuilder
 
         $field->value($value)
             ->attributes($attributes)
-            ->extra($extra)
+            ->with($extra)
             ->options($options);
 
         return $field;

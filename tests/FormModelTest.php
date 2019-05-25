@@ -42,7 +42,7 @@ class FormModelTest extends TestCase
 
         $this->assertHtmlEquals('<p>Custom template</p>', $formModel);
     }
-
+    
     /** @test */
     function can_use_a_customized_template_from_the_current_theme()
     {
