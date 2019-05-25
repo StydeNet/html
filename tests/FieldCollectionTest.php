@@ -92,6 +92,24 @@ class FieldCollectionTest extends TestCase
         );
     }
 
+    /** @test */
+    function passes_custom_variables_to_the_field_template_method()
+    {
+        View::addLocation(__DIR__.'/views');
+
+        $form = app(TestFormModel::class);
+
+        $form->text('custom')
+            ->template('@fields.extra', [
+                'customVar' => 'custom value'
+            ]);
+
+        $this->assertHtmlEquals(
+            '<strong>custom value</strong>',
+            $form->custom
+        );
+    }
+
     public function assertFieldTypeIs($type, $field)
     {
         $this->assertInstanceOf(Field::class, $field);

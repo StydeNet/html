@@ -152,12 +152,16 @@ class Field implements Htmlable
     }
 
     /**
+     * Add a custom field template and optionally pass extra vars to it.
+     *
      * @param $template
+     * @param array $vars
      * @return $this
      */
-    public function template($template)
+    public function template($template, $vars = [])
     {
         $this->template = $template;
+        $this->with($vars);
 
         return $this;
     }
