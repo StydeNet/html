@@ -4,8 +4,8 @@ namespace Styde\Html;
 
 use BadMethodCallException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
 use Styde\Html\Facades\Html;
+use Styde\Html\FormModel\ElementCollection;
 use Styde\Html\FormModel\Field;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Traits\Macroable;
@@ -73,8 +73,8 @@ class FormModel implements Htmlable
         $this->fieldBuilder = $fieldBuilder;
         $this->theme = $theme;
 
-        $this->fields = $this->newFieldCollection($this->fieldBuilder);
-        $this->buttons = $this->newButtonCollection();
+        $this->fields = new ElementCollection;
+        $this->buttons = new ElementCollection;
     }
 
     /**
@@ -101,16 +101,6 @@ class FormModel implements Htmlable
         $this->runSetup();
 
         $this->form->withFiles();
-    }
-    
-    public function newFieldCollection()
-    {
-        return new FieldCollection();
-    }
-
-    public function newButtonCollection()
-    {
-        return new ButtonCollection;
     }
 
     /**
@@ -271,7 +261,7 @@ class FormModel implements Htmlable
 
         $scripts = [];
 
-        foreach ($this->fields->onlyFields() as $name => $field) {
+        foreach ($this->getFields() as $name => $field) {
             $scripts = array_merge($scripts, $field->scripts);
         }
 
@@ -291,7 +281,7 @@ class FormModel implements Htmlable
 
         $styles = [];
 
-        foreach ($this->fields->onlyFields() as $name => $field) {
+        foreach ($this->getFields() as $name => $field) {
             $styles = array_merge($styles, $field->styles);
         }
 

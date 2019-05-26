@@ -3,6 +3,7 @@
 namespace Styde\Html\FormModel\Concerns;
 
 use Styde\Html\Facades\Html;
+use Styde\Html\FormModel\Field;
 use Styde\Html\FormModel\HiddenField;
 
 trait HasFields
@@ -16,7 +17,7 @@ trait HasFields
      */
     public function text($name)
     {
-        return $this->fields->addField($name, 'text');
+        return $this->addField($name, 'text');
     }
 
     /**
@@ -28,7 +29,7 @@ trait HasFields
      */
     public function number($name)
     {
-        return $this->fields->addField($name, 'number');
+        return $this->addField($name, 'number');
     }
 
     /**
@@ -40,7 +41,7 @@ trait HasFields
      */
     public function integer($name)
     {
-        return $this->fields->addField($name, 'integer');
+        return $this->addField($name, 'integer');
     }
 
     /**
@@ -52,7 +53,7 @@ trait HasFields
      */
     public function textarea($name)
     {
-        return $this->fields->addField($name, 'textarea');
+        return $this->addField($name, 'textarea');
     }
 
     /**
@@ -64,7 +65,7 @@ trait HasFields
      */
     public function email($name)
     {
-        return $this->fields->addField($name, 'email');
+        return $this->addField($name, 'email');
     }
 
     /**
@@ -76,7 +77,7 @@ trait HasFields
      */
     public function password($name)
     {
-        return $this->fields->addField($name, 'password');
+        return $this->addField($name, 'password');
     }
 
     /**
@@ -88,7 +89,7 @@ trait HasFields
      */
     public function checkbox($name)
     {
-        return $this->fields->addField($name, 'checkbox');
+        return $this->addField($name, 'checkbox');
     }
 
     /**
@@ -101,7 +102,7 @@ trait HasFields
      */
     public function select($name, array $options = array())
     {
-        return $this->fields->addField($name, 'select')->options($options);
+        return $this->addField($name, 'select')->options($options);
     }
 
     /**
@@ -114,7 +115,7 @@ trait HasFields
      */
     public function radios($name, array $options = array())
     {
-        return $this->fields->addField($name, 'radios')->options($options);
+        return $this->addField($name, 'radios')->options($options);
     }
 
     /**
@@ -127,7 +128,7 @@ trait HasFields
      */
     public function checkboxes($name, array $options = array())
     {
-        return $this->fields->addField($name, 'checkboxes')->options($options);
+        return $this->addField($name, 'checkboxes')->options($options);
     }
 
     /**
@@ -139,7 +140,7 @@ trait HasFields
      */
     public function url($name)
     {
-        return $this->fields->addField($name, 'url');
+        return $this->addField($name, 'url');
     }
 
     /**
@@ -152,7 +153,7 @@ trait HasFields
     {
         $this->acceptFiles();
 
-        return $this->fields->addField($name, 'file');
+        return $this->addField($name, 'file');
     }
 
     /**
@@ -178,6 +179,31 @@ trait HasFields
     public function tag($tag, $content = '', array $attributes = [])
     {
         return $this->fields->add(Html::tag($tag, $content, $attributes));
+    }
+
+    /**
+     * Add a field to the fields collection.
+     *
+     * @param string $name
+     * @param string $type
+     *
+     * @return \Styde\Html\FormModel\Field
+     */
+    public function addField($name, $type = 'text')
+    {
+        return $this->fields->add(new Field($name, $type), $name);
+    }
+
+    /**
+     * Get all the fields in the fields collection.
+     *
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->fields->filter(function ($field) {
+            return $field instanceof Field;
+        });
     }
 
     /**
