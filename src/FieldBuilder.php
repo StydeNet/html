@@ -331,7 +331,7 @@ class FieldBuilder
      */
     public function build($type, $name, $value = null, array $attributes = [], array $extra = [], $options = null)
     {
-        $field = new Field($this, $name, $type);
+        $field = new Field($name, $type);
 
         $this->setCustomAttributes($attributes, $field);
 

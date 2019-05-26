@@ -15,10 +15,6 @@ class Field implements Htmlable
     use HasAttributes, HandlesAccess, ValidationRules, IncludeRulesHelpers;
 
     /**
-     * @var \Styde\Html\FieldBuilder
-     */
-    protected $fieldBuilder;
-    /**
      * @var string
      */
     public $name;
@@ -74,11 +70,11 @@ class Field implements Htmlable
 
     /**
      * Field constructor.
-     * @param FieldBuilder $fieldBuilder
+     *
      * @param $name
      * @param string $type
      */
-    public function __construct(FieldBuilder $fieldBuilder, $name, $type = 'text')
+    public function __construct($name, $type = 'text')
     {
         $this->name = $name;
         $this->type = $type;

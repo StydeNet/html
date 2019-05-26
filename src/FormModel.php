@@ -103,9 +103,9 @@ class FormModel implements Htmlable
         $this->form->withFiles();
     }
     
-    public function newFieldCollection(FieldBuilder $fieldBuilder)
+    public function newFieldCollection()
     {
-        return new FieldCollection($fieldBuilder);
+        return new FieldCollection();
     }
 
     public function newButtonCollection()
