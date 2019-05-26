@@ -2,10 +2,11 @@
 
 namespace Styde\Html\FormModel;
 
-use Illuminate\Support\HtmlString;
 use Styde\Html\FieldBuilder;
 use Styde\Html\HandlesAccess;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\Support\Htmlable;
 
 class Field implements Htmlable
@@ -201,9 +202,11 @@ class Field implements Htmlable
      * @param $options
      * @return $this
      */
-    public function options($options)
+    public function options(array $options)
     {
         $this->options = $options;
+
+        $this->withRule(Rule::in(array_keys($options)));
 
         return $this;
     }

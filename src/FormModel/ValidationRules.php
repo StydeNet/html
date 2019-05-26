@@ -36,8 +36,6 @@ trait ValidationRules
      */
     public function getValidationRules()
     {
-        $this->setRuleIn();
-
         return array_values(array_map(function ($rule) {
             if ($rule instanceof \Illuminate\Contracts\Validation\Rule) {
                 return $rule;

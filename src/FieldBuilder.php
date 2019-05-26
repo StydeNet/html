@@ -341,8 +341,11 @@ class FieldBuilder
 
         $field->value($value)
             ->attributes($attributes)
-            ->with($extra)
-            ->options($options);
+            ->with($extra);
+
+        if (is_array($options) && !empty($options)) {
+            $field->options($options);
+        }
 
         return $field;
     }
