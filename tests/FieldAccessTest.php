@@ -2,45 +2,47 @@
 
 namespace Styde\Html\Tests;
 
-use Styde\Html\Facades\Field;
+use Styde\Html\FormModel\Field;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Contracts\Support\Htmlable;
+use Styde\Html\Facades\Field as FieldFactory;
 
 class FieldAccessTest extends TestCase
 {
     /** @test */
     function it_only_renders_the_field_if_the_user_has_the_expected_role()
     {
-        $field = Field::text('name');
+        $field = FieldFactory::text('name');
 
-        $this->assertNull($field->ifIs('admin')->render());
+        $this->assertDontRender($field->ifIs('admin'));
 
-        $this->actingAs($this->aUser());
-        $this->assertNull($field->ifIs('admin')->render());
+        $this->actingAs($this->aUser())
+            ->assertDontRender($field->ifIs('admin'));
 
-        $this->actingAs($this->anAdmin());
-        $this->assertNotNull($field->ifIs('admin')->render());
+        $this->actingAs($this->anAdmin())
+            ->assertRender($field->ifIs('admin'));
     }
 
     /** @test */
     function it_only_renders_the_field_if_the_user_is_not_guest()
     {
-        $field = Field::text('name');
+        $field = FieldFactory::text('name');
 
-        $this->assertNotNull($field->ifGuest()->render());
+        $this->assertRender($field->ifGuest());
 
-        $this->actingAs($this->aUser());
-        $this->assertNull($field->ifGuest()->render());
+        $this->actingAs($this->aUser())
+            ->assertDontRender($field->ifGuest());
     }
 
     /** @test */
     function if_only_renders_the_field_if_user_is_logged_in()
     {
-        $field = Field::text('name');
+        $field = FieldFactory::text('name');
 
-        $this->assertNull($field->ifAuth()->render());
+        $this->assertDontRender($field->ifAuth());
 
-        $this->actingAs($this->aUser());
-        $this->assertNotNull($field->ifAuth()->render());
+        $this->actingAs($this->aUser())
+            ->assertRender($field->ifAuth());
     }
 
     /** @test */
@@ -56,11 +58,11 @@ class FieldAccessTest extends TestCase
             return true;
         });
 
-        $field = Field::text('name');
+        $field = FieldFactory::text('name');
 
-        $this->assertNull($field->ifCan('edit-all')->render());
+        $this->assertDontRender($field->ifCan('edit-all'));
 
-        $this->assertNotNull($field->ifCan('edit-mine')->render());
+        $this->assertRender($field->ifCan('edit-mine'));
     }
 
     /** @test */
@@ -76,10 +78,21 @@ class FieldAccessTest extends TestCase
             return true;
         });
 
-        $field = Field::text('name');
+        $field = FieldFactory::text('name');
 
-        $this->assertNotNull($field->ifCannot('edit-all')->render());
+        $this->assertRender($field->ifCannot('edit-all'));
 
-        $this->assertNull($field->ifCannot('edit-mine')->render());
+        $this->assertDontRender($field->ifCannot('edit-mine'));
+    }
+
+    protected function assertRender(Field $field)
+    {
+        $this->assertInstanceOf(Htmlable::class, $field);
+        $this->assertNotEmpty((string) $field->render());
+    }
+
+    protected function assertDontRender(Field $field)
+    {
+        $this->assertSame('', $field->render());
     }
 }
