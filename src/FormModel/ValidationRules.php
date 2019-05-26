@@ -97,23 +97,6 @@ trait ValidationRules
     }
 
     /**
-     * Set a Rule In if have values in the property options
-     */
-    protected function setRuleIn()
-    {
-        empty($this->options) ?: $this->addRule(Rule::in(array_keys($this->options)));
-    }
-
-    /**
-     * Set Rule Exists if have property table
-     */
-    protected function setRuleExists()
-    {
-        (! $this->table) ?: $this->addRule(Rule::exists($this->table, $this->tableId)->where($this->query));
-    }
-
-
-    /**
      * A new rule is added if the field type is
      * in the fieldsWithRules array.
      *

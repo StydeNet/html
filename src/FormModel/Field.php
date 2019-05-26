@@ -225,7 +225,9 @@ class Field implements Htmlable
         $this->tableId = $id;
         $this->query = $query;
 
-        $this->setRuleExists();
+        $this->addRule(
+            Rule::exists($this->table, $this->tableId)->where($this->query)
+        );
 
         return $this;
     }
