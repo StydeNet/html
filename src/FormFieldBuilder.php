@@ -2,12 +2,13 @@
 
 namespace Styde\Html;
 
-use Styde\Html\FormModel\Field;
+use Styde\Html\Fields\Field;
+use Styde\Html\Fields\FieldBuilder;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Translation\Translator as Lang;
 
-class FieldBuilder
+class FormFieldBuilder
 {
     use Macroable {
         Macroable::__call as macroCall;
@@ -331,7 +332,7 @@ class FieldBuilder
      */
     public function build($type, $name, $value = null, array $attributes = [], array $extra = [], $options = null)
     {
-        $field = new Field($name, $type);
+        $field = new FieldBuilder($name, $type);
 
         $this->setCustomAttributes($attributes, $field);
 
@@ -340,7 +341,7 @@ class FieldBuilder
         }
 
         $field->value($value)
-            ->attributes($attributes)
+            ->attr($attributes)
             ->with($extra);
 
         if (is_array($options) && !empty($options)) {
@@ -354,7 +355,7 @@ class FieldBuilder
      * Render a Field object. Field objects can be built using the build function on this class.
      * Or through a FieldCollection in a FormModel.
      *
-     * @param  Field $field
+     * @param  \Styde\Html\Fields\Field $field
      * @return string
      */
     public function render(Field $field)
@@ -383,7 +384,7 @@ class FieldBuilder
         return $this->theme->render(
             $field->template ?: "@fields.{$this->getDefaultTemplate($field->type)}",
             array_merge(
-                $field->extra,
+                $field->data,
                 compact('htmlName', 'id', 'label', 'input', 'errors', 'hasErrors', 'required', 'helpText')
             )
         );

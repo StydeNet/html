@@ -2,112 +2,86 @@
 
 namespace Styde\Html\Tests;
 
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\Rules\Exists;
-use Illuminate\Validation\Rules\NotIn;
+use Illuminate\Contracts\Validation\Rule;
 use Styde\Html\Facades\Field;
+use Styde\Html\Fields\FieldBuilder;
+use Illuminate\Validation\Rules\In;
+use Illuminate\Validation\Rules\NotIn;
 
 class FieldAttributesValidationTest extends TestCase
 {
     /** @test */
     function the_required_attribute_generates_the_required_rule()
     {
-        $field = Field::text('name', ['required']);
-
-        $this->assertSame(['required'], $field->getValidationRules());
+        $this->assertHasRules(['required'], Field::text('name', ['required']));
     }
 
     /** @test */
     function it_returns_the_email_rule_for_email_fields()
     {
-        $field = Field::email('email', ['required' => true]);
-
-        $this->assertEquals(['email', 'required'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['email', 'required'], Field::email('email', ['required' => true])
+        );
     }
 
     /** @test */
     function it_returns_the_url_rule_when_the_type_of_the_field_is_url()
     {
-        $field = Field::url('link', ['required' => true]);
-
-        $this->assertEquals(['url', 'required'], $field->getValidationRules());
-    }
-
-    /** @test */
-    function it_returns_multiple_rules()
-    {
-        $field = Field::email('email', ['required']);
-
-        $this->assertEquals(['email', 'required'], $field->getValidationRules());
+        $this->assertHasRules(['url'], Field::url('link'));
     }
 
     /** @test */
     function it_builds_the_in_rule_when_the_field_includes_static_options()
     {
-        $field = Field::select('visibility')->required()->options([
+        $builder = Field::select('visibility')->required()->options([
             'public' => 'Everyone',
             'admin' => 'Admin only',
             'auth' => 'Authenticated users only',
             'guest' => 'Guest users only',
         ]);
 
-        $this->assertSame('in:"public","admin","auth","guest"', (string) $field->getValidationRules()[1]);
+        $this->assertHasRules(
+            ['required', 'in:"public","admin","auth","guest"'],
+            $builder->getValidationRules()
+        );
     }
 
     /** @test */
     function it_builds_the_exists_rule_when_options_come_from_a_table()
     {
-        // TODO: improve this syntax.
         $field = Field::select('parent_id')
-            ->from('table_name', 'label', 'id', function ($query) {
+            ->from('table_name', 'label', 'id', function ($query) { // TODO: improve this syntax
                 $query->whereNull('parent_id')
                     ->orderBy('label', 'ASC');
-            })
-            ->label('Parent');
+            });
 
-        $this->assertSame('exists:table_name,id', $field->getValidationRules()[0]);
+        $this->assertHasRules(['exists:table_name,id'], $field);
     }
 
     /** @test */
     function it_adds_the_max_rule()
     {
-        $field = Field::text('name')->max(10);
+        $this->assertHasRules(['max:10'], Field::text('name')->max(10));
 
-        $this->assertEquals(['max:10'], $field->getValidationRules());
-        $this->assertTrue($field->hasAttribute('max'));
-    }
-
-    /** @test */
-    function it_adds_the_maxlength_rule()
-    {
-        $field = Field::text('name')->maxlength(10);
-
-        $this->assertEquals(['max:10'], $field->getValidationRules());
-        $this->assertTrue($field->hasAttribute('maxlength'));
+        $this->assertHasRules(['max:10'], Field::text('name')->maxlength(10));
     }
 
     /** @test */
     function it_adds_the_file_rule_to_file_fields()
     {
-        $field = Field::file('avatar');
-
-        $this->assertEquals(['file'], $field->getValidationRules());
+        $this->assertHasRules(['file'], Field::file('avatar'));
     }
 
     /** @test */
     function it_adds_the_date_rule_to_date_fields()
     {
-        $field = Field::date('time');
-
-        $this->assertEquals(['date'], $field->getValidationRules());
+        $this->assertHasRules(['date'], Field::date('time'));
     }
 
     /** @test */
     function it_adds_the_numeric_rule_to_number_fields()
     {
-        $field = Field::number('field');
-
-        $this->assertEquals(['numeric'], $field->getValidationRules());
+        $this->assertHasRules(['numeric'], Field::number('field'));
     }
 
     /** @test */
@@ -115,542 +89,493 @@ class FieldAttributesValidationTest extends TestCase
     {
         $field = Field::text('name')->nullable();
 
-        $this->assertSame(['nullable'], $field->getValidationRules());
+        $this->assertHasRules(['nullable'], Field::text('name')->nullable());
     }
 
     /** @test */
     function it_adds_the_required_rule()
     {
-        $field = Field::text('name')->required();
-
-        $this->assertSame(['required'], $field->getValidationRules());
-    }
-
-    /** @test */
-    function it_adds_the_minlength_rule()
-    {
-        $field = Field::text('name')->minlength(10);
-
-        $this->assertSame(['min:10'], $field->getValidationRules());
-        $this->assertTrue($field->hasAttribute('minlength'));
+        $this->assertHasRules(['required'], Field::text('name')->required());
     }
 
     /** @test */
     function it_adds_the_min_rule()
     {
-        $field = Field::text('name')->min(10);
+        $this->assertHasRules(['min:10'], Field::text('name')->min(10));
 
-        $this->assertSame(['min:10'], $field->getValidationRules());
-        $this->assertTrue($field->hasAttribute('min'));
+        $this->assertHasRules(['min:10'], Field::text('name')->minlength(10));
     }
 
     /** @test */
     function it_adds_the_regex_rule()
     {
-        $field = Field::text('name')->regex('.{6,}');
-
-        $this->assertSame(['regex:/.{6,}/'], $field->getValidationRules());
+        $this->assertHasRules(['regex:/.{6,}/'], Field::text('name')->regex('.{6,}'));
     }
 
     /** @test */
     function it_adds_the_pattern_rule()
     {
-        $field = Field::text('name')->pattern('.{6,}');
+        $field = Field::text('name')->pattern('.{6,}')->getField();
 
-        $this->assertSame(['regex:/.{6,}/'], $field->getValidationRules());
+        $this->assertHasRules(['regex:/.{6,}/'], $field);
         $this->assertTrue($field->hasAttribute('pattern'));
     }
 
     /** @test */
     function it_adds_the_placeholder_attribute()
     {
-        $field = Field::text('name')->placeholder('Foo Bar');
+        $field = Field::text('name')->placeholder('This is a placeholder')->getField();
 
-        $this->assertSame(['placeholder' => 'Foo Bar'], $field->attributes);
+        $this->assertEquals(['placeholder' => 'This is a placeholder'], $field->attributes);
     }
 
     /** @test */
     function it_adds_the_value_attribute()
     {
-        $field = Field::text('name')->value('Foo Bar');
+        $field = Field::text('name')->value('This is the value')->getField();
 
-        $this->assertSame('Foo Bar', $field->value);
+        $this->assertSame('This is the value', $field->value);
     }
 
     /** @test */
     function it_adds_the_required_if_rule()
     {
-        $field = Field::text('name')->requiredIf('status', true);
-
-        $this->assertSame(['required_if:status,1'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['required_if:status,1'],
+            Field::text('name')->requiredIf('status', true)
+        );
     }
 
     /** @test */
     function it_adds_the_required_unless_rule()
     {
-        $fieldA = Field::text('offer_code')->requiredUnless('price', '>=', 500);
-        $fieldB = Field::text('offer_code')->requiredUnless('price', 500);
+        $this->assertHasRules(
+            ['required_unless:price,>=,500'],
+            Field::text('offer_code')->requiredUnless('price', '>=', 500)
+        );
 
-        $this->assertSame(['required_unless:price,>=,500'], $fieldA->getValidationRules());
-        $this->assertSame(['required_unless:price,500'], $fieldB->getValidationRules());
+        $this->assertHasRules(
+            ['required_unless:price,500'],
+            Field::text('offer_code')->requiredUnless('price', 500)
+        );
     }
 
     /** @test */
     function it_adds_the_required_with_rule()
     {
-        $field = Field::text('name')->requiredWith('foo', 'bar', 'john', 'doe');
-
-        $this->assertSame(['required_with:foo,bar,john,doe'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['required_with:foo,bar,john,doe'],
+            Field::text('name')->requiredWith('foo', 'bar', 'john', 'doe')
+        );
     }
     
     /** @test */
     function it_adds_the_required_with_all_rule()
     {
-        $field = Field::text('name')->requiredWithAll('foo', 'bar');
-
-        $this->assertSame(['required_with_all:foo,bar'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['required_with_all:foo,bar'],
+            Field::text('name')->requiredWithAll('foo', 'bar')
+        );
     }
 
     /** @test */
     function it_adds_the_required_without_rule()
     {
-        $field = Field::text('name')->requiredWithout('John', 'Doe');
-
-        $this->assertSame(['required_without:John,Doe'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['required_without:John,Doe'],
+            Field::text('name')->requiredWithout('John', 'Doe')
+        );
     }
 
     /** @test */
     function it_adds_the_required_without_all_rule()
     {
-        $field = Field::text('name')->requiredWithoutAll('foo', 'bar');
-
-        $this->assertSame(['required_without_all:foo,bar'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['required_without_all:foo,bar'],
+            Field::text('name')->requiredWithoutAll('foo', 'bar')
+        );
     }
 
     /** @test */
     function it_adds_the_same_rule()
     {
-        $field = Field::number('phone')->same('phone2');
-
-        $this->assertSame(['numeric', 'same:phone2'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['numeric', 'same:phone2'],
+            Field::number('phone')->same('phone2')
+        );
     }
     
     /** @test */
     function it_adds_the_size_rule()
     {
-        $field = Field::file('image')->size(1000);
-
-        $this->assertSame(['file', 'size:1000'], $field->getValidationRules());
+        $this->assertHasRules(['file', 'size:1000'], Field::file('image')->size(1000));
     }
 
     /** @test */
     function it_adds_the_image_rule()
     {
-        $field = Field::file('image')->image();
-
-        $this->assertSame(['file', 'image'], $field->getValidationRules());
+        $this->assertHasRules(['file', 'image'], Field::file('image')->image());
     }
 
     /** @test */
     function it_adds_the_accepted_rule()
     {
-        $field = Field::text('name')->accepted();
-
-        $this->assertSame(['accepted'], $field->getValidationRules());
+        $this->assertHasRules(['accepted'], Field::text('name')->accepted());
     }
     
     /** @test */
     function it_adds_the_active_url_rule()
     {
-        $field = Field::text('name')->activeUrl();
-
-        $this->assertSame(['active_url'], $field->getValidationRules());
+        $this->assertHasRules(['active_url'], Field::text('name')->activeUrl());
     }
 
     /** @test */
     function it_adds_the_after_rule()
     {
-        $field = Field::text('name')->after('tomorrow');
-
-        $this->assertSame(['after:tomorrow'], $field->getValidationRules());
+        $this->assertHasRules(['after:tomorrow'], Field::text('name')->after('tomorrow'));
     }
 
     /** @test */
     function it_adds_the_after_or_equal_rule()
     {
-        $field = Field::text('name')->afterOrEqual('tomorrow');
-
-        $this->assertSame(['after_or_equal:tomorrow'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['after_or_equal:tomorrow'],
+            Field::text('name')->afterOrEqual('tomorrow')
+        );
     }
 
     /** @test */
     function it_adds_the_alpha_rule()
     {
-        $field = Field::text('name')->alpha();
-
-        $this->assertSame(['alpha'], $field->getValidationRules());
+        $this->assertHasRules(['alpha'], Field::text('name')->alpha());
     }
 
     /** @test */
     function it_adds_the_alpha_dash_rule()
     {
-        $field = Field::text('name')->alphaDash();
-
-        $this->assertSame(['alpha_dash'], $field->getValidationRules());
+        $this->assertHasRules(['alpha_dash'], Field::text('name')->alphaDash());
     }
 
     /** @test */
     function it_adds_the_alpha_num_rule()
     {
-        $field = Field::text('name')->alphaNum();
-
-        $this->assertSame(['alpha_num'], $field->getValidationRules());
+        $this->assertHasRules(['alpha_num'], Field::text('name')->alphaNum());
     }
 
     /** @test */
     function it_adds_the_array_rule()
     {
-        $field = Field::text('name')->array();
-
-        $this->assertSame(['array'], $field->getValidationRules());
+        $this->assertHasRules(['array'], Field::text('name')->array());
     }
 
     /** @test */
     function it_adds_the_bail_rule()
     {
-        $field = Field::text('name')->bail();
-
-        $this->assertSame(['bail'], $field->getValidationRules());
+        $this->assertHasRules(['bail'], Field::text('name')->bail());
     }
 
     /** @test */
     function it_adds_the_before_rule()
     {
-        $field = Field::text('name')->before('tomorrow');
-
-        $this->assertSame(['before:tomorrow'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['before:tomorrow'],
+            Field::text('name')->before('tomorrow')
+        );
     }
 
     /** @test */
     function it_adds_the_before_or_equal_rule()
     {
-        $field = Field::text('name')->beforeOrEqual('tomorrow');
-
-        $this->assertSame(['before_or_equal:tomorrow'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['before_or_equal:tomorrow'],
+            Field::text('name')->beforeOrEqual('tomorrow')
+        );
     }
 
     /** @test */
     function it_adds_the_between_rule()
     {
-        $field = Field::text('name')->between(1,10);
-
-        $this->assertSame(['between:1,10'], $field->getValidationRules());
+        $this->assertHasRules(['between:1,10'], Field::text('name')->between(1,10));
     }
     
     /** @test */
     function it_adds_the_boolean_rule()
     {
-        $field = Field::text('value')->boolean();
-
-        $this->assertSame(['boolean'], $field->getValidationRules());
+        $this->assertHasRules(['boolean'], Field::text('value')->boolean());
     }
 
     /** @test */
     function it_adds_the_confirmed_rule()
     {
-        $field = Field::email('email')->confirmed();
-
-        $this->assertSame(['email', 'confirmed'], $field->getValidationRules());
+        $this->assertHasRules(['email', 'confirmed'], Field::email('email')->confirmed());
     }
 
     /** @test */
     function it_adds_the_date_rule()
     {
-        $field = Field::text('date')->date();
-
-        return $this->assertSame(['date'], $field->getValidationRules());
+        $this->assertHasRules(['date'], Field::text('date')->date());
     }
 
     /** @test */
     function it_adds_the_date_equals_rule()
     {
-        $field = Field::text('date')->dateEquals('tomorrow');
-
-        return $this->assertSame(['date_equals:tomorrow'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['date_equals:tomorrow'],
+            Field::text('date')->dateEquals('tomorrow')
+        );
     }
 
     /** @test */
     function it_adds_the_date_format_rule()
     {
-        $field = Field::text('date')->dateFormat('d-m-Y');
-
-        return $this->assertSame(['date_format:d-m-Y'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['date_format:d-m-Y'],
+            Field::text('date')->dateFormat('d-m-Y')
+        );
     }
 
     /** @test */
     function it_adds_the_different_rule()
     {
-        $field = Field::text('last_name')->different('first_name');
-
-        return $this->assertSame(['different:first_name'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['different:first_name'],
+            Field::text('last_name')->different('first_name')
+        );
     }
 
     /** @test */
     function it_adds_the_digits_rule()
     {
-        $field = Field::number('age')->digits(2);
-
-        return $this->assertSame(['numeric', 'digits:2'], $field->getValidationRules());
+        $this->assertHasRules(['numeric', 'digits:2'], Field::number('age')->digits(2));
     }
     
     /** @test */
     function it_adds_the_digits_between_rule()
     {
-        $field = Field::number('age')->digitsBetween(1, 2);
-
-        return $this->assertSame(['numeric', 'digits_between:1,2'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['numeric', 'digits_between:1,2'],
+            Field::number('age')->digitsBetween(1, 2)
+        );
     }
 
     /** @test */
     function it_adds_the_dimensions_rule()
     {
-        $field = Field::file('avatar')->dimensions(['min_width' => 100, 'max_height' => 100]);
-
-        return $this->assertSame(['file', 'dimensions:min_width=100,max_height=100'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['file', 'dimensions:min_width=100,max_height=100'],
+            Field::file('avatar')->dimensions(['min_width' => 100, 'max_height' => 100])
+        );
     }
 
     /** @test */
     function it_adds_the_distinct_rule()
     {
-        $field = Field::text('name')->distinct();
-
-        return $this->assertSame(['distinct'], $field->getValidationRules());
+        $this->assertHasRules(['distinct'], Field::text('name')->distinct());
     }
 
     /** @test */
     function it_adds_the_email_rule()
     {
-        $field = Field::text('email')->email();
-
-        return $this->assertSame(['email'], $field->getValidationRules());
+        $this->assertHasRules(['email'], Field::text('email')->email());
     }
 
     /** @test */
     function it_adds_the_exists_rule()
     {
-        $fieldA = Field::text('foo')->exists('table', 'column');
-        $fieldB = Field::text('foo')->exists('table');
+        $this->assertHasRules(
+            ['exists:table,column'],
+            Field::text('foo')->exists('table', 'column')
+        );
 
-        $this->assertSame(['exists:table,column'], $fieldA->getValidationRules());
-        $this->assertSame(['exists:table'], $fieldB->getValidationRules());
+        $this->assertHasRules(
+            ['exists:table'],
+            Field::text('foo')->exists('table')
+        );
     }
 
     /** @test */
     function it_adds_the_file_rule()
     {
-        $field = Field::text('foobar')->file();
-
-        return $this->assertSame(['file'], $field->getValidationRules());
+        $this->assertHasRules(['file'], Field::text('foobar')->file());
     }
 
     /** @test */
     function it_adds_the_filled_rule()
     {
-        $field = Field::text('name')->filled();
-
-        return $this->assertSame(['filled'], $field->getValidationRules());
+        $this->assertHasRules(['filled'], Field::text('name')->filled());
     }
 
     /** @test */
     function it_adds_the_gt_rule()
     {
-        $field = Field::text('name')->gt('field');
-
-        return $this->assertSame(['gt:field'], $field->getValidationRules());
+        $this->assertHasRules(['gt:field'], Field::text('name')->gt('field'));
     }
 
     /** @test */
     function it_adds_the_gte_rule()
     {
-        $field = Field::text('name')->gte('field');
-
-        return $this->assertSame(['gte:field'], $field->getValidationRules());
+        $this->assertHasRules(['gte:field'], Field::text('name')->gte('field'));
     }
 
     /** @test */
-    function it_adds_the_in_rule_string()
+    function it_adds_the_in_rule()
     {
-        $field = Field::text('name')->in('first-zone', 'second-zone');
-
-        $this->assertSame(['in:first-zone,second-zone'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['in:first-zone,second-zone'],
+            Field::text('name')->in('first-zone', 'second-zone')
+        );
     }
 
     /** @test */
     function it_adds_the_in_rule_class()
     {
-        $field = Field::text('name')->in(['first-zone', 'second-zone']);
-
-        $this->assertEquals([new \Illuminate\Validation\Rules\In(['first-zone','second-zone'])], $field->getValidationRules());
+        $this->assertHasRules(
+            [new In(['first-zone','second-zone'])],
+            Field::text('name')->in(['first-zone', 'second-zone'])
+        );
     }
 
     /** @test */
     function it_adds_the_in_array_rule()
     {
-        $field = Field::text('name')->inArray('value');
-
-        return $this->assertSame(['in_array:value'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['in_array:value'],
+            Field::text('name')->inArray('value')
+        );
     }
 
     /** @test */
     function it_adds_the_integer_rule()
     {
-        $field = Field::text('dni')->integer();
-
-        return $this->assertSame(['integer'], $field->getValidationRules());
+        $this->assertHasRules(['integer'], Field::text('dni')->integer());
     }
     
     /** @test */
     function it_adds_the_ip_rule()
     {
-        $field = Field::text('ip')->ip();
-
-        return $this->assertSame(['ip'], $field->getValidationRules());
+        $this->assertHasRules(['ip'], Field::text('ip')->ip());
     }
 
     /** @test */
     function it_adds_the_ipv4_rule()
     {
-        $field = Field::text('ip')->ipv4();
-
-        return $this->assertSame(['ipv4'], $field->getValidationRules());
+        $this->assertHasRules(['ipv4'], Field::text('ip')->ipv4());
     }
 
     /** @test */
     function it_adds_the_ipv6_rule()
     {
-        $field = Field::text('ip')->ipv6();
-
-        return $this->assertSame(['ipv6'], $field->getValidationRules());
+        $this->assertHasRules(['ipv6'], Field::text('ip')->ipv6());
     }
 
     /** @test */
     function it_adds_the_json_rule()
     {
-        $field = Field::text('data')->json();
-
-        return $this->assertSame(['json'], $field->getValidationRules());
+        $this->assertHasRules(['json'], Field::text('data')->json());
     }
     
     /** @test */
     function it_adds_the_lt_rule()
     {
-        $field = Field::text('data')->lt('field');
-
-        return $this->assertSame(['lt:field'], $field->getValidationRules());
+        $this->assertHasRules(['lt:field'], Field::text('data')->lt('field'));
     }
 
     /** @test */
     function it_adds_the_lte_rule()
     {
-        $field = Field::text('data')->lte('field');
-
-        return $this->assertSame(['lte:field'], $field->getValidationRules());
+        $this->assertHasRules(['lte:field'], Field::text('data')->lte('field'));
     }
 
     /** @test */
     function it_adds_the_mimetypes_rule()
     {
-        $field = Field::text('data')->mimetypes('video/avi', 'video/mpeg');
-
-        return $this->assertSame(['mimetypes:video/avi,video/mpeg'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['mimetypes:video/avi,video/mpeg'],
+            Field::text('data')->mimetypes('video/avi', 'video/mpeg')
+        );
     }
 
     /** @test */
     function it_adds_the_mimes_rule()
     {
-        $field = Field::text('data')->mimes('mp3', 'mp4', 'avi');
-
-        return $this->assertSame(['mimes:mp3,mp4,avi'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['mimes:mp3,mp4,avi'],
+            Field::text('data')->mimes('mp3', 'mp4', 'avi')
+        );
     }
 
     /** @test */
     function it_adds_the_not_in_rule_string()
     {
-        $field = Field::text('name')->notIn('first-zone', 'second-zone');
-
-        return $this->assertSame(['not_in:first-zone,second-zone'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['not_in:first-zone,second-zone'],
+            Field::text('name')->notIn('first-zone', 'second-zone')
+        );
     }
 
     /** @test */
     function it_adds_the_not_in_rule_class()
     {
-        $field = Field::text('name')->notIn(['first-zone', 'second-zone']);
-
-        return $this->assertEquals([new NotIn(['first-zone','second-zone'])], $field->getValidationRules());
+        $this->assertHasRules(
+            [new NotIn(['first-zone','second-zone'])],
+            Field::text('name')->notIn(['first-zone', 'second-zone'])
+        );
     }
 
     /** @test */
     function it_adds_the_not_regex_rule()
     {
-        $field = Field::text('name')->notRegex('.{6,}');
-
-        $this->assertSame(['not_regex:/.{6,}/'], $field->getValidationRules());
+        $this->assertHasRules(
+            ['not_regex:/.{6,}/'],
+            Field::text('name')->notRegex('.{6,}')
+        );
     }
 
     /** @test */
     function it_adds_the_numeric_rule()
     {
-        $field = Field::text('number')->numeric();
-
-        $this->assertSame(['numeric'], $field->getValidationRules());
+        $this->assertHasRules(['numeric'], Field::text('number')->numeric());
     }
 
     /** @test */
     function it_adds_the_present_rule()
     {
-        $field = Field::text('name')->present();
-
-        $this->assertSame(['present'], $field->getValidationRules());
+        $this->assertHasRules(['present'], Field::text('name')->present());
     }
 
     /** @test */
     function it_adds_the_string_rule()
     {
-        $field = Field::text('name')->string();
-
-        $this->assertSame(['string'], $field->getValidationRules());
+        $this->assertHasRules(['string'], Field::text('name')->string());
     }
 
     /** @test */
     function it_adds_the_timezone_rule()
     {
-        $field = Field::text('date')->timezone();
-
-        $this->assertSame(['timezone'], $field->getValidationRules());
+        $this->assertHasRules(['timezone'], Field::text('date')->timezone());
     }
     
     /** @test */
     function it_adds_the_unique_rule()
     {
-        //TODO: fix test and code
-        $field = Field::text('name')->unique('users', 'name');
-
-        $this->assertSame('unique:users,name,NULL,id', $field->getValidationRules()[0]);
+        $this->assertHasRules(
+            ['unique:users,name,NULL,id'],
+            Field::text('name')->unique('users', 'name')->getField()
+        );
     }
 
     /** @test */
     function it_adds_ignore_in_unique_rule()
     {
-        //TODO: fix test and code
-        $field = Field::text('name')->unique('users', 'name')->ignore(1, 'user_id');
-
-        $this->assertSame('unique:users,name,"1",user_id', (string) $field->getValidationRules()[0]);
+        $this->assertHasRules(
+            ['unique:users,name,"1",user_id'],
+            Field::text('name')->unique('users', 'name')->ignore(1, 'user_id')
+        );
     }
 
     /** @test */
-    function it_cannot_use_method_ignore()
+    function it_cannot_use_method_ignore_without_calling_unique_first()
     {
-        //TODO: fix test and code
         $this->expectException('Exception');
 
         Field::text('name')->ignore(1, 'user_id');
@@ -659,8 +584,19 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_adds_the_url_rule()
     {
-        $field = Field::text('page')->url();
+        $this->assertHasRules(['url'], Field::text('page')->url());
+    }
 
-        $this->assertSame(['url'], $field->getValidationRules());
+    protected function assertHasRules(array $rules, $field)
+    {
+        if (method_exists($field, 'getParent')) {
+            $field = $field->getParent();
+        }
+
+        if ($field instanceof FieldBuilder) {
+            $field = $field->getField();
+        }
+
+        $this->assertEquals($rules, $field->getValidationRules());
     }
 }

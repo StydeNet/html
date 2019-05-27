@@ -1,16 +1,9 @@
 <?php
 
-namespace Styde\Html\FormModel;
-
-use Illuminate\Validation\Rule;
+namespace Styde\Html\Fields;
 
 trait ValidationRules
 {
-    /**
-     * @var array
-     */
-    protected $rules = [];
-    
     /**
      * Fields with rules included
      *
@@ -30,22 +23,6 @@ trait ValidationRules
     ];
 
     /**
-     * Get all rules of validation
-     *
-     * @return array
-     */
-    public function getValidationRules()
-    {
-        return array_values(array_map(function ($rule) {
-            if ($rule instanceof \Illuminate\Contracts\Validation\Rule) {
-                return $rule;
-            }
-
-            return (string) $rule;
-        }, $this->rules));
-    }
-
-    /**
      * Adds a new rule to the field.
      *
      * @param $rule
@@ -53,7 +30,7 @@ trait ValidationRules
      */
     public function withRule($rule)
     {
-        return $this->addRule($rule);
+        $this->field->addRule($rule);
 
         return $this;
     }
@@ -71,27 +48,8 @@ trait ValidationRules
         }
 
         foreach ($rules as $rule) {
-            $this->addRule($rule);
+            $this->field->addRule($rule);
         }
-
-        return $this;
-    }
-
-    /**
-     * Add a new rule to the field
-     *
-     * @param string $rule
-     * @return $this
-     */
-    protected function addRule($rule)
-    {
-        if (is_object($rule)) {
-            $key = get_class($rule);
-        } else {
-            $key = explode(':', $rule)[0];
-        }
-
-        $this->rules[$key] = $rule;
 
         return $this;
     }
@@ -105,7 +63,7 @@ trait ValidationRules
     protected function addRuleByFieldType($type)
     {
         if (array_key_exists($type, $this->fieldsWithRules)) {
-            $this->addRule($this->fieldsWithRules[$type]);
+            $this->field->addRule($this->fieldsWithRules[$type]);
         }
     }
 
@@ -114,7 +72,7 @@ trait ValidationRules
      */
     protected function addRulesOfAttributes()
     {
-        foreach ($this->attributes as $key => $value) {
+        foreach ($this->field->attributes as $key => $value) {
             if (method_exists($this, $value)) {
                 $this->$value();
             }
@@ -132,7 +90,7 @@ trait ValidationRules
      */
     public function withoutRule($rule)
     {
-        $this->removeRule($rule);
+        $this->field->removeRule($rule);
 
         return $this;
     }
@@ -146,7 +104,7 @@ trait ValidationRules
     public function withoutRules($rules = [])
     {
         if (empty ($rules)) {
-            $this->rules = [];
+            $this->field->removeAllRules();
             return $this;
         }
 
@@ -155,18 +113,9 @@ trait ValidationRules
         }
 
         foreach ($rules as $rule) {
-            $this->removeRule($rule);
+            $this->field->removeRule($rule);
         }
 
         return $this;
-    }
-
-    /**
-     * Remove a rule from the field.
-     * @param $rule
-     */
-    protected function removeRule($rule)
-    {
-        unset ($this->rules[$rule]);
     }
 }

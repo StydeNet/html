@@ -16,6 +16,11 @@ trait FallbackToParent
         $this->parent = $parent;
     }
 
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
     public function __call($method, $parameters)
     {
         return $this->parent->$method(...$parameters);

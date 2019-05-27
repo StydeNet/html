@@ -257,7 +257,7 @@ class FieldBuilderTest extends TestCase
     }
 
     /** @test */
-    function it_can_customize_the_template_by_method()
+    function field_can_have_a_custom_template()
     {
         View::addLocation(__DIR__.'/views');
 

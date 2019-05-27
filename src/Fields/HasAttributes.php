@@ -1,6 +1,6 @@
 <?php
 
-namespace Styde\Html\FormModel;
+namespace Styde\Html\Fields;
 
 trait HasAttributes
 {
@@ -22,7 +22,7 @@ trait HasAttributes
      */
     public function id($id)
     {
-        return $this->attributes('id', $id);
+        return $this->field->setAttribute('id', $id);
     }
 
     /**
@@ -33,24 +33,7 @@ trait HasAttributes
      */
     public function classes($classes)
     {
-        return $this->attributes('class', $classes);
-    }
-
-    /**
-     * Set a new attribute in the field
-     *
-     * @param $name
-     * @param null $value
-     */
-    protected function setAttribute($name, $value = null)
-    {
-        if (! in_array($name, $this->attributes)) {
-            if (! $value) {
-                $this->attributes[] = $name;
-            } else {
-                $this->attributes[$name] = $value;
-            }
-        }
+        return $this->field->setAttribute('class', $classes);
     }
 
     /**
@@ -63,9 +46,9 @@ trait HasAttributes
     public function attr($attributes, $value = null)
     {
         if (is_array($attributes)) {
-            $this->attributes = array_merge($this->attributes, $attributes);
+            $this->field->mergeAttributes($attributes);
         } else {
-            $this->setAttribute($attributes, $value);
+            $this->field->setAttribute($attributes, $value);
         }
 
         $this->addRulesOfAttributes();
@@ -81,17 +64,6 @@ trait HasAttributes
      */
     public function hasAttribute($name)
     {
-        return array_key_exists($name, $this->attributes);
+        return $this->field->hasAttribute($name);
     }
-
-    /**
-     * @param string|array $attributes
-     * @param bool $value
-     * @return HasAttributes
-     */
-    public function attributes($attributes, $value = true)
-    {
-        return $this->attr($attributes, $value);
-    }
-
 }

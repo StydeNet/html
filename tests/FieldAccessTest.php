@@ -2,7 +2,7 @@
 
 namespace Styde\Html\Tests;
 
-use Styde\Html\FormModel\Field;
+use Styde\Html\Fields\FieldBuilder;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Contracts\Support\Htmlable;
 use Styde\Html\Facades\Field as FieldFactory;
@@ -85,13 +85,13 @@ class FieldAccessTest extends TestCase
         $this->assertDontRender($field->ifCannot('edit-mine'));
     }
 
-    protected function assertRender(Field $field)
+    protected function assertRender(FieldBuilder $field)
     {
         $this->assertInstanceOf(Htmlable::class, $field);
         $this->assertNotEmpty((string) $field->render());
     }
 
-    protected function assertDontRender(Field $field)
+    protected function assertDontRender(FieldBuilder $field)
     {
         $this->assertSame('', $field->render());
     }

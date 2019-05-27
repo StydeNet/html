@@ -1,8 +1,7 @@
 <?php
 
-namespace Styde\Html\FormModel;
+namespace Styde\Html\Fields;
 
-use Styde\Html\FieldBuilder;
 use Styde\Html\HandlesAccess;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -10,63 +9,14 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\Support\Htmlable;
 use Styde\Html\Facades\Field as FieldFacade;
 
-class Field implements Htmlable
+class FieldBuilder implements Htmlable
 {
     use HasAttributes, HandlesAccess, ValidationRules, IncludeRulesHelpers;
 
     /**
-     * @var string
+     * @var \Styde\Html\Fields\Field
      */
-    public $name;
-    /**
-     * @var string
-     */
-    public $type;
-    /**
-     * @var mixed
-     */
-    public $value;
-    /**
-     * @var string
-     */
-    public $label;
-    /**
-     * @var string
-     */
-    public $helpText;
-    /**
-     * @var template
-     */
-    public $template;
-    /**
-     * @var array
-     */
-    public $attributes = [];
-    /**
-     * @var array
-     */
-    public $extra = [];
-    /**
-     * @var array
-     */
-    public $styles = [];
-    /**
-     * @var array
-     */
-    public $scripts = [];
-
-    /**
-     * @var array
-     */
-    protected $options = [];
-
-    protected $table;
-
-    protected $tableText;
-
-    protected $tableId;
-
-    protected $query;
+    protected $field;
 
     /**
      * Field constructor.
@@ -76,10 +26,14 @@ class Field implements Htmlable
      */
     public function __construct($name, $type = 'text')
     {
-        $this->name = $name;
-        $this->type = $type;
+        $this->field = new Field($name, $type);
 
         $this->addRuleByFieldType($type);
+    }
+
+    public function getField()
+    {
+        return $this->field;
     }
 
     /**
@@ -96,7 +50,7 @@ class Field implements Htmlable
      */
     public function label($label)
     {
-        $this->label = $label;
+        $this->field->label = $label;
 
         return $this;
     }
@@ -109,7 +63,7 @@ class Field implements Htmlable
      */
     public function rawLabel($html)
     {
-        $this->label = new HtmlString($html);
+        $this->field->label = new HtmlString($html);
 
         return $this;
     }
@@ -120,7 +74,7 @@ class Field implements Htmlable
      */
     public function helpText($helpText)
     {
-        $this->helpText = $helpText;
+        $this->field->helpText = $helpText;
 
         return $this;
     }
@@ -133,17 +87,20 @@ class Field implements Htmlable
      */
     public function rawHelpText($html)
     {
-        $this->helpText = new HtmlString($html);
+        $this->field->helpText = new HtmlString($html);
 
         return $this;
     }
+
     /**
+     * Sets the value in the field.
+     *
      * @param $value
      * @return $this
      */
     public function value($value)
     {
-        $this->value = $value;
+        $this->field->value = $value;
 
         return $this;
     }
@@ -153,12 +110,12 @@ class Field implements Htmlable
      *
      * @param $template
      * @param array $vars
+     *
      * @return $this
      */
     public function template($template, $vars = [])
     {
-        $this->template = $template;
-        $this->with($vars);
+        $this->field->setTemplate($template, $vars);
 
         return $this;
     }
@@ -187,63 +144,52 @@ class Field implements Htmlable
     public function with($values, $value = true)
     {
         if (is_array($values)) {
-            $this->extra = array_merge($this->extra, $values);
+            $this->field->mergeData($values);
         } else {
-            $this->extra[$values] = $value;
+            $this->field->setData($values, $value);
         }
+
         return $this;
     }
 
     /**
+     * Set the options and the in rule in the field.
+     *
      * @param $options
      * @return $this
      */
     public function options(array $options)
     {
-        $this->options = $options;
-
-        $this->withRule(Rule::in(array_keys($options)));
+        $this->field->options = $options;
+        $this->field->addRule(Rule::in(array_keys($options)));
 
         return $this;
     }
 
     /**
+     * Set dynamic options and the exists rule in the field.
+     *
      * @param $table
      * @param $text
      * @param string $id
-     * @param null $query
+     * @param null $customQuery
      * @return $this
      */
-    public function from($table, $text, $id = 'id', $query = null)
+    public function from($table, $text, $id = 'id', $customQuery = null)
     {
-        $this->table = $table;
-        $this->tableText = $text;
-        $this->tableId = $id;
-        $this->query = $query;
+        $this->field->options = function () use ($table, $customQuery, $text, $id) {
+            $q = DB::table($table);
 
-        $this->addRule(
-            Rule::exists($this->table, $this->tableId)->where($this->query)
-        );
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getOptions()
-    {
-        if ($this->table) {
-            $query = DB::table($this->table);
-
-            if ($this->query) {
-                call_user_func($this->query, $query);
+            if ($customQuery) {
+                call_user_func($customQuery, $q);
             }
 
-            return $query->pluck($this->tableText, $this->tableId)->all();
-        }
+            return $q->pluck($text, $id)->all();
+        };
 
-        return $this->options;
+        $this->field->addRule(Rule::exists($table, $id)->where($customQuery));
+
+        return $this;
     }
 
     /**
@@ -255,16 +201,18 @@ class Field implements Htmlable
             return '';
         }
 
-        return FieldFacade::render($this);
+        return FieldFacade::render($this->field);
     }
 
     /**
+     * Set the placeholder attribute in the field.
+     *
      * @param $value
      * @return $this
      */
     public function placeholder($value)
     {
-        $this->setAttribute('placeholder', $value);
+        $this->field->setAttribute('placeholder', $value);
 
         return $this;
     }

@@ -3,7 +3,7 @@
 namespace Styde\Html;
 
 use Illuminate\Support\Facades\{Auth, Gate};
-use Styde\Html\FormModel\Field;
+use Styde\Html\Fields\FieldBuilder;
 
 trait HandlesAccess
 {
