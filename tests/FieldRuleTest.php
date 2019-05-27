@@ -9,43 +9,42 @@ class FieldRuleTest extends TestCase
     /** @test */
     function add_a_custom_rule()
     {
-        $field = Field::text('name')
-            ->withRule($rule = new MyCustomRule);
+        $builder = Field::text('name')->withRule($rule = new MyCustomRule);
 
-        $this->assertSame([$rule], $field->getValidationRules());
+        $this->assertSame([$rule], $builder->getField()->getValidationRules());
     }
 
     /** @test */
     function can_remove_a_rule_when_field_has_a_custom_rule()
     {
-        $field = Field::text('name')
+        $builder = Field::text('name')
             ->required()
             ->withRule($rule = new MyCustomRule)
             ->withoutRules('required');
 
-        $this->assertSame([$rule], $field->getValidationRules());
+        $this->assertSame([$rule], $builder->getField()->getValidationRules());
     }
     
     /** @test */
-    function it_disables_all_rules()
+    function it_removes_all_the_rules()
     {
-        $field = Field::number('code')
+        $builder = Field::number('code')
             ->max(10)
             ->required()
             ->withRule(new MyCustomRule)
             ->withoutRules();
 
-        $this->assertSame([], $field->getValidationRules());
+        $this->assertSame([], $builder->getField()->getValidationRules());
     }
 
     /** @test */
-    function it_deletes_specific_rules()
+    function it_removes_specific_rules()
     {
-        $field = Field::email('email')->min(10)->required()->withoutRules('required', 'min');
-        $this->assertSame(['email'], $field->getValidationRules());
+        $builder = Field::email('email')->min(10)->required()->withoutRules('required', 'min');
+        $this->assertSame(['email'], $builder->getField()->getValidationRules());
 
-        $field = Field::email('email')->min(10)->required()->withoutRules(['min', 'required']);
-        $this->assertSame(['email'], $field->getValidationRules());
+        $builder = Field::email('email')->min(10)->required()->withoutRules(['min', 'required']);
+        $this->assertSame(['email'], $builder->getField()->getValidationRules());
     }
 }
 

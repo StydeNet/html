@@ -2,6 +2,7 @@
 
 namespace Styde\Html;
 
+use Styde\Html\Fields\Field;
 use Styde\Html\Fields\FieldBuilder;
 use Illuminate\Support\Traits\Macroable;
 use Illuminate\Contracts\Session\Session;
@@ -340,7 +341,7 @@ class FormFieldBuilder
         }
 
         $field->value($value)
-            ->attributes($attributes)
+            ->attr($attributes)
             ->with($extra);
 
         if (is_array($options) && !empty($options)) {
@@ -354,10 +355,10 @@ class FormFieldBuilder
      * Render a Field object. Field objects can be built using the build function on this class.
      * Or through a FieldCollection in a FormModel.
      *
-     * @param  FieldBuilder $field
+     * @param  \Styde\Html\Fields\Field $field
      * @return string
      */
-    public function render(FieldBuilder $field)
+    public function render(Field $field)
     {
         $required = $this->getRequired($field->attributes);
 
@@ -383,7 +384,7 @@ class FormFieldBuilder
         return $this->theme->render(
             $field->template ?: "@fields.{$this->getDefaultTemplate($field->type)}",
             array_merge(
-                $field->extra,
+                $field->data,
                 compact('htmlName', 'id', 'label', 'input', 'errors', 'hasErrors', 'required', 'helpText')
             )
         );

@@ -8,69 +8,101 @@ use Styde\Html\Rules\Unique;
 trait IncludeRulesHelpers
 {
     /**
-     * @return mixed
+     * Add the accepted rule to the field.
+     *
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function accepted()
     {
-        return $this->addRule('accepted');
+        $this->field->addRule('accepted');
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * Add the active url rule to the field.
+     *
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function activeUrl()
     {
-        return $this->addRule('active_url');
+        $this->field->addRule('active_url');
+
+        return $this;
     }
 
     /**
-     * @param string $date
-     * @return mixed
+     * Add the after rule to the field.
+     *
+     * @param string $value
+     * @return \Styde\Html\Fields\FieldBuilder
      */
-    public function after(string $date)
+    public function after(string $value)
     {
-        return $this->addRule("after:$date");
+        $this->field->addRule("after:{$value}");
+
+        return $this;
     }
 
     /**
-     * @param string $date
-     * @return mixed
+     * Add the after or equal rule to the field.
+     *
+     * @param string $value
+     * @return \Styde\Html\Fields\FieldBuilder
      */
-    public function afterOrEqual(string $date)
+    public function afterOrEqual(string $value)
     {
-        return $this->addRule("after_or_equal:$date");
+        $this->field->addRule("after_or_equal:{$value}");
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * Add the alpha rule to the field.
+     *
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function alpha()
     {
-        return $this->addRule('alpha');
+        $this->field->addRule('alpha');
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * Add the alpha dash rule to the field.
+     *
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function alphaDash()
     {
-        return $this->addRule('alpha_dash');
+        $this->field->addRule('alpha_dash');
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * Add the alpha num rule to the field.
+     *
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function alphaNum()
     {
-        return $this->addRule('alpha_num');
+        $this->field->addRule('alpha_num');
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * Add the array rule to the field.
+     *
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function array()
     {
-        return $this->addRule('array');
+        $this->field->addRule('array');
+
+        return $this;
     }
 
     /**
@@ -78,7 +110,9 @@ trait IncludeRulesHelpers
      */
     public function bail()
     {
-        return $this->addRule('bail');
+        $this->field->addRule('bail');
+
+        return $this;
     }
 
     /**
@@ -87,7 +121,9 @@ trait IncludeRulesHelpers
      */
     public function before(string $date)
     {
-        return $this->addRule("before:$date");
+        $this->field->addRule("before:$date");
+
+        return $this;
     }
 
     /**
@@ -96,7 +132,9 @@ trait IncludeRulesHelpers
      */
     public function beforeOrEqual(string $date)
     {
-        return $this->addRule("before_or_equal:$date");
+        $this->field->addRule("before_or_equal:$date");
+
+        return $this;
     }
 
     /**
@@ -106,7 +144,9 @@ trait IncludeRulesHelpers
      */
     public function between(int $min, int $max)
     {
-        return $this->addRule("between:$min,$max");
+        $this->field->addRule("between:$min,$max");
+
+        return $this;
     }
 
     /**
@@ -114,7 +154,9 @@ trait IncludeRulesHelpers
      */
     public function boolean()
     {
-        return $this->addRule('boolean');
+        $this->field->addRule('boolean');
+
+        return $this;
     }
 
     /**
@@ -122,7 +164,9 @@ trait IncludeRulesHelpers
      */
     public function confirmed()
     {
-        return $this->addRule('confirmed');
+        $this->field->addRule('confirmed');
+
+        return $this;
     }
 
     /**
@@ -130,7 +174,9 @@ trait IncludeRulesHelpers
      */
     public function date()
     {
-        return $this->addRule('date');
+        $this->field->addRule('date');
+
+        return $this;
     }
 
     /**
@@ -139,7 +185,9 @@ trait IncludeRulesHelpers
      */
     public function dateEquals(string $date)
     {
-        return $this->addRule("date_equals:$date");
+        $this->field->addRule("date_equals:$date");
+
+        return $this;
     }
 
     /**
@@ -148,7 +196,9 @@ trait IncludeRulesHelpers
      */
     public function dateFormat(string $format)
     {
-        return $this->addRule("date_format:$format");
+        $this->field->addRule("date_format:$format");
+
+        return $this;
     }
 
     /**
@@ -157,7 +207,9 @@ trait IncludeRulesHelpers
      */
     public function different(string $field)
     {
-        return $this->addRule("different:$field");
+        $this->field->addRule("different:$field");
+
+        return $this;
     }
 
     /**
@@ -166,7 +218,9 @@ trait IncludeRulesHelpers
      */
     public function digits(int $value)
     {
-        return $this->addRule("digits:$value");
+        $this->field->addRule("digits:$value");
+
+        return $this;
     }
 
     /**
@@ -176,7 +230,9 @@ trait IncludeRulesHelpers
      */
     public function digitsBetween(int $min, int $max)
     {
-        return $this->addRule("digits_between:$min,$max");
+        $this->field->addRule("digits_between:$min,$max");
+
+        return $this;
     }
 
     /**
@@ -191,7 +247,9 @@ trait IncludeRulesHelpers
             $rule .= "$key=$value,";
         }
 
-        return $this->addRule(rtrim($rule, ','));
+        $this->field->addRule(rtrim($rule, ','));
+
+        return $this;
     }
 
     /**
@@ -199,7 +257,9 @@ trait IncludeRulesHelpers
      */
     public function distinct()
     {
-        return $this->addRule('distinct');
+        $this->field->addRule('distinct');
+
+        return $this;
     }
 
     /**
@@ -207,7 +267,9 @@ trait IncludeRulesHelpers
      */
     public function email()
     {
-        return $this->addRule('email');
+        $this->field->addRule('email');
+
+        return $this;
     }
 
     /**
@@ -218,10 +280,12 @@ trait IncludeRulesHelpers
     public function exists(string $table, string $column = null)
     {
         if ($column) {
-            return $this->addRule("exists:$table,$column");
+            $this->field->addRule("exists:$table,$column");
+        } else {
+            $this->field->addRule("exists:$table");
         }
 
-        return $this->addRule("exists:$table");
+        return $this;
     }
 
     /**
@@ -229,7 +293,9 @@ trait IncludeRulesHelpers
      */
     public function file()
     {
-        return $this->addRule('file');
+        $this->field->addRule('file');
+
+        return $this;
     }
 
     /**
@@ -237,7 +303,9 @@ trait IncludeRulesHelpers
      */
     public function filled()
     {
-        return $this->addRule('filled');
+        $this->field->addRule('filled');
+
+        return $this;
     }
 
     /**
@@ -246,7 +314,9 @@ trait IncludeRulesHelpers
      */
     public function gt(string $field)
     {
-        return $this->addRule("gt:$field");
+        $this->field->addRule("gt:$field");
+
+        return $this;
     }
 
     /**
@@ -255,7 +325,9 @@ trait IncludeRulesHelpers
      */
     public function gte(string $field)
     {
-        return $this->addRule("gte:$field");
+        $this->field->addRule("gte:$field");
+
+        return $this;
     }
 
     /**
@@ -263,7 +335,9 @@ trait IncludeRulesHelpers
      */
     public function image()
     {
-        return $this->addRule('image');
+        $this->field->addRule('image');
+
+        return $this;
     }
 
     /**
@@ -273,12 +347,14 @@ trait IncludeRulesHelpers
     public function in(...$values)
     {
         if (isset($values[0]) && is_array($values[0])) {
-            return $this->addRule(Rule::in($values[0]));
+            $this->field->addRule(Rule::in($values[0]));
+        } else {
+            $fields = implode(',', $values);
+
+            $this->field->addRule("in:$fields");
         }
 
-        $fields = implode(',', $values);
-
-        return $this->addRule("in:$fields");
+        return $this;
     }
 
     /**
@@ -287,7 +363,9 @@ trait IncludeRulesHelpers
      */
     public function inArray(string $field)
     {
-        return $this->addRule("in_array:$field");
+        $this->field->addRule("in_array:$field");
+
+        return $this;
     }
 
     /**
@@ -295,7 +373,9 @@ trait IncludeRulesHelpers
      */
     public function integer()
     {
-        return $this->addRule('integer');
+        $this->field->addRule('integer');
+
+        return $this;
     }
 
     /**
@@ -303,7 +383,9 @@ trait IncludeRulesHelpers
      */
     public function ip()
     {
-        return $this->addRule('ip');
+        $this->field->addRule('ip');
+
+        return $this;
     }
 
     /**
@@ -311,7 +393,9 @@ trait IncludeRulesHelpers
      */
     public function ipv4()
     {
-        return $this->addRule('ipv4');
+        $this->field->addRule('ipv4');
+
+        return $this;
     }
 
     /**
@@ -319,7 +403,9 @@ trait IncludeRulesHelpers
      */
     public function ipv6()
     {
-        return $this->addRule('ipv6');
+        $this->field->addRule('ipv6');
+
+        return $this;
     }
 
     /**
@@ -327,7 +413,9 @@ trait IncludeRulesHelpers
      */
     public function json()
     {
-        return $this->addRule('json');
+        $this->field->addRule('json');
+
+        return $this;
     }
 
     /**
@@ -336,7 +424,9 @@ trait IncludeRulesHelpers
      */
     public function lt(string $field)
     {
-        return $this->addRule("lt:$field");
+        $this->field->addRule("lt:$field");
+
+        return $this;
     }
 
     /**
@@ -345,7 +435,9 @@ trait IncludeRulesHelpers
      */
     public function lte(string $field)
     {
-        return $this->addRule("lte:$field");
+        $this->field->addRule("lte:$field");
+
+        return $this;
     }
 
     /**
@@ -354,9 +446,10 @@ trait IncludeRulesHelpers
      */
     public function max(int $value)
     {
-        $this->setAttribute('max', $value);
+        $this->field->setAttribute('max', $value);
+        $this->field->addRule("max:{$value}");
 
-        return $this->addRule("max:$value");
+        return $this;
     }
 
     /**
@@ -365,9 +458,10 @@ trait IncludeRulesHelpers
      */
     public function maxlength(int $value)
     {
-        $this->setAttribute('maxlength', $value);
+        $this->field->setAttribute('maxlength', $value);
+        $this->field->addRule("max:{$value}");
 
-        return $this->addRule("max:$value");
+        return $this;
     }
 
     /**
@@ -378,7 +472,9 @@ trait IncludeRulesHelpers
     {
         $extensions = implode(',', $values);
 
-        return $this->addRule("mimetypes:$extensions");
+        $this->field->addRule("mimetypes:$extensions");
+
+        return $this;
     }
 
     /**
@@ -389,7 +485,9 @@ trait IncludeRulesHelpers
     {
         $extensions = implode(',', $values);
 
-        return $this->addRule("mimes:$extensions");
+        $this->field->addRule("mimes:$extensions");
+
+        return $this;
     }
 
     /**
@@ -398,9 +496,10 @@ trait IncludeRulesHelpers
      */
     public function min(int $value)
     {
-        $this->setAttribute('min', $value);
+        $this->field->setAttribute('minlength', $value);
+        $this->field->addRule("min:{$value}");
 
-        return $this->addRule("min:$value");
+        return $this;
     }
 
     /**
@@ -409,9 +508,7 @@ trait IncludeRulesHelpers
      */
     public function minlength(int $value)
     {
-        $this->setAttribute('minlength', $value);
-
-        return $this->addRule("min:$value");
+        return $this->min($value);
     }
 
     /**
@@ -421,12 +518,13 @@ trait IncludeRulesHelpers
     public function notIn(...$values)
     {
         if (isset($values[0]) && is_array($values[0])) {
-            return $this->addRule(Rule::notIn($values[0]));
+            $this->field->addRule(Rule::notIn($values[0]));
+        } else {
+            $fields = implode(',', $values);
+            $this->field->addRule("not_in:{$fields}");
         }
 
-        $fields = implode(',', $values);
-
-        return $this->addRule("not_in:$fields");
+        return $this;
     }
 
     /**
@@ -435,7 +533,9 @@ trait IncludeRulesHelpers
      */
     public function notRegex($value)
     {
-        return $this->addRule("not_regex:/$value/");
+        $this->field->addRule("not_regex:/{$value}/");
+
+        return $this;
     }
 
     /**
@@ -443,9 +543,10 @@ trait IncludeRulesHelpers
      */
     public function nullable()
     {
-        $this->withoutRules('required');
+        $this->field->removeRule('required');
+        $this->field->addRule('nullable');
 
-        return $this->addRule('nullable');
+        return $this;
     }
 
     /**
@@ -453,7 +554,9 @@ trait IncludeRulesHelpers
      */
     public function numeric()
     {
-        return $this->addRule('numeric');
+        $this->field->addRule('numeric');
+
+        return $this;
     }
 
     /**
@@ -462,7 +565,7 @@ trait IncludeRulesHelpers
      */
     public function pattern($value)
     {
-        $this->setAttribute('pattern', $value);
+        $this->field->setAttribute('pattern', $value);
 
         return $this->regex($value);
     }
@@ -472,7 +575,9 @@ trait IncludeRulesHelpers
      */
     public function present()
     {
-        return $this->addRule('present');
+        $this->field->addRule('present');
+
+        return $this;
     }
 
     /**
@@ -481,32 +586,40 @@ trait IncludeRulesHelpers
      */
     public function regex($value)
     {
-        return $this->addRule("regex:/$value/");
+        $this->field->addRule("regex:/{$value}/");
+
+        return $this;
     }
 
     /**
-     * @return FieldBuilder
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function required()
     {
-        $this->setAttribute('required');
+        $this->field->setAttribute('required');
+        $this->field->removeRule('nullable');
+        $this->field->addRule('required');
 
-        $this->withoutRules('nullable');
-
-        return $this->addRule('required');
+        return $this;
     }
 
     /**
+     * ADd the required if rule to the field.
+     *
      * @param $column
      * @param $value
      * @return FieldBuilder
      */
     public function requiredIf($column, $value)
     {
-        return $this->addRule("required_if:$column,$value");
+        $this->field->addRule("required_if:{$column},{$value}");
+
+        return $this;
     }
 
     /**
+     * Add the required unless rule to the field.
+     *
      * @param $column
      * @param $operator
      * @param null $value
@@ -514,14 +627,18 @@ trait IncludeRulesHelpers
      */
     public function requiredUnless($column, $operator, $value = null)
     {
-        if (! $value) {
-            return $this->addRule("required_unless:$column,$operator");
+        if ($value) {
+            $this->field->addRule("required_unless:$column,$operator,$value");
+        } else {
+            $this->field->addRule("required_unless:$column,$operator");
         }
 
-        return $this->addRule("required_unless:$column,$operator,$value");
+        return $this;
     }
 
     /**
+     * Add the required with rule to the field.
+     *
      * @param array $values
      * @return FieldBuilder
      */
@@ -529,10 +646,14 @@ trait IncludeRulesHelpers
     {
         $value = implode(',', $values);
 
-        return $this->addRule("required_with:$value");
+        $this->field->addRule("required_with:{$value}");
+
+        return $this;
     }
 
     /**
+     * Add the required with all rule to the field.
+     *
      * @param array $values
      * @return FieldBuilder
      */
@@ -540,10 +661,14 @@ trait IncludeRulesHelpers
     {
         $value = implode(',', $values);
 
-        return $this->addRule("required_with_all:$value");
+        $this->field->addRule("required_with_all:{$value}");
+
+        return $this;
     }
 
     /**
+     * Add the required without rule to the field.
+     *
      * @param array $values
      * @return FieldBuilder
      */
@@ -551,7 +676,9 @@ trait IncludeRulesHelpers
     {
         $value = implode(',', $values);
 
-        return $this->addRule("required_without:$value");
+        $this->field->addRule("required_without:{$value}");
+
+        return $this;
     }
 
     /**
@@ -562,85 +689,82 @@ trait IncludeRulesHelpers
     {
         $value = implode(',', $values);
 
-        return $this->addRule("required_without_all:$value");
+        $this->field->addRule("required_without_all:$value");
+
+        return $this;
     }
 
     /**
+     * Add the same rule to the field.
+     *
      * @param $field
      * @return mixed
      */
     public function same($field)
     {
-        return $this->addRule("same:$field");
+        $this->field->addRule("same:$field");
+
+        return $this;
     }
 
     /**
+     * Add the size rule to the field.
+     *
      * @param $value
      * @return FieldBuilder
      */
     public function size($value)
     {
-        $this->setAttribute('size', $value);
+        $this->field->setAttribute('size', $value);
+        $this->field->addRule("size:{$value}");
 
-        return $this->addRule("size:$value");
+        return $this;
     }
 
     /**
+     * Add the string rule to the field.
+     *
      * @return mixed
      */
     public function string()
     {
-        return $this->addRule('string');
+        $this->field->addRule('string');
+
+        return $this;
     }
 
     /**
+     * Add the timezone rule to the field.
+     *
      * @return mixed
      */
     public function timezone()
     {
-        return $this->addRule('timezone');
+        $this->field->addRule('timezone');
+
+        return $this;
     }
 
     /**
+     * Add the unique rule to the field.
+     *
      * @param string $table
      * @param string $column
      * @return \Styde\Html\Rules\Unique
      */
     public function unique($table, $column = 'NULL')
     {
-        $rule = new Unique($table, $column, $this);
-
-        $this->addRule($rule);
+        $this->field->addRule($rule = new Unique($table, $column, $this));
 
         return $rule;
     }
 
     /**
-     * @param $id
-     * @param null $idColumn
-     * @return mixed
-     * @throws \Exception
+     * Placeholder to prevent the user from calling ignore before calling unique.
      */
-    public function ignore($id, $idColumn = null)
+    public function ignore()
     {
-        foreach ($this->getValidationRules() as $key => $rule) {
-            if (strpos($rule, 'unique:') !== false) {
-                $data = str_replace('unique:', '', $rule);
-                $this->withoutRules([$rule]);
-            }
-        }
-
-        if (! isset($data)) {
-            throw new \Exception('You need use the unique method before ignore.');
-        }
-
-        $data = explode(',', $data);
-
-        $table = $data[0] ? $data[0] : 'NULL';
-        $column = array_key_exists(1, $data) ? $data[1] : 'NULL';
-        $idColumn = $idColumn ? $idColumn : 'id';
-
-        return $this->addRule("unique:$table,$column,\"$id\",$idColumn");
+        throw new \Exception('You need call the unique method before calling ignore.');
     }
 
     /**
@@ -648,6 +772,8 @@ trait IncludeRulesHelpers
      */
     public function url()
     {
-        return $this->addRule('url');
+        $this->field->addRule('url');
+
+        return $this;
     }
 }

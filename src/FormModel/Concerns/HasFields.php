@@ -5,6 +5,7 @@ namespace Styde\Html\FormModel\Concerns;
 use Styde\Html\Facades\Html;
 use Styde\Html\Fields\FieldBuilder;
 use Styde\Html\Fields\HiddenFieldBuilder;
+use Styde\Html\Form\HiddenInput;
 
 trait HasFields
 {
@@ -160,11 +161,12 @@ trait HasFields
      * Add a hidden field.
      *
      * @param  string $name
-     * @return \Styde\Html\Fields\FieldBuilder
+     * @param null $value
+     * @return HiddenInput
      */
-    function hidden($name)
+    function hidden($name, $value = null)
     {
-        return $this->fields->add(new HiddenFieldBuilder($name), $name);
+        return $this->fields->add(new HiddenInput($name, $value), $name);
     }
 
     /**

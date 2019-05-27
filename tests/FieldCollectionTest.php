@@ -3,6 +3,7 @@
 namespace Styde\Html\Tests;
 
 use Illuminate\Support\Facades\View;
+use Styde\Html\Fields\Field;
 use Styde\Html\FormModel;
 use Styde\Html\Fields\FieldBuilder;
 use Styde\Html\FormModel\FieldCollection;
@@ -70,7 +71,7 @@ class FieldCollectionTest extends TestCase
 
         $form->hidden('plan');
 
-        $this->assertFieldTypeIs('hidden', $form->plan);
+        $this->assertSame('hidden', $form->plan->type);
         $this->assertSame('<input type="hidden" name="plan">', (string) $form->plan);
     }
 
@@ -112,7 +113,11 @@ class FieldCollectionTest extends TestCase
 
     public function assertFieldTypeIs($type, $field)
     {
-        $this->assertInstanceOf(FieldBuilder::class, $field);
+        if ($field instanceof FieldBuilder) {
+            $field = $field->getField();
+        }
+
+        $this->assertInstanceOf(Field::class, $field);
         $this->assertSame($type, $field->type);
     }
 

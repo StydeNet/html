@@ -317,9 +317,9 @@ class FormModel implements Htmlable
 
         $rules = [];
 
-        foreach ($this->fields->all() as $name => $field) {
-            if ($field instanceof FieldBuilder && $field->included) {
-                $rules[$name] = $field->getValidationRules();
+        foreach ($this->fields->all() as $name => $builder) {
+            if ($builder instanceof FieldBuilder && $builder->included) {
+                $rules[$name] = $builder->getField()->getValidationRules();
             }
         }
 
