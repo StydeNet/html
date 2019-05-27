@@ -261,8 +261,8 @@ class FormModel implements Htmlable
 
         $scripts = [];
 
-        foreach ($this->getFields() as $name => $field) {
-            $scripts = array_merge($scripts, $field->scripts);
+        foreach ($this->getFields() as $name => $builder) {
+            $scripts = array_merge($scripts, $builder->getField()->scripts);
         }
 
         return array_values(array_unique($scripts));
@@ -281,8 +281,8 @@ class FormModel implements Htmlable
 
         $styles = [];
 
-        foreach ($this->getFields() as $name => $field) {
-            $styles = array_merge($styles, $field->styles);
+        foreach ($this->getFields() as $name => $builder) {
+            $styles = array_merge($styles, $builder->getField()->styles);
         }
 
         return array_values(array_unique($styles));
