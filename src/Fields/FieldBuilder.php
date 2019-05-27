@@ -122,14 +122,14 @@ class FieldBuilder implements Htmlable
 
     public function style($style)
     {
-        $this->styles[] = $style;
+        $this->field->styles[] = $style;
 
         return $this;
     }
 
     public function script($script)
     {
-        $this->scripts[] = $script;
+        $this->field->scripts[] = $script;
 
         return $this;
     }
