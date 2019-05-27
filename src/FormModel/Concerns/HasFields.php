@@ -3,8 +3,8 @@
 namespace Styde\Html\FormModel\Concerns;
 
 use Styde\Html\Facades\Html;
-use Styde\Html\FormModel\Field;
-use Styde\Html\FormModel\HiddenField;
+use Styde\Html\Fields\FieldBuilder;
+use Styde\Html\Fields\HiddenFieldBuilder;
 
 trait HasFields
 {
@@ -13,7 +13,7 @@ trait HasFields
      *
      * @param  string $name
      *
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function text($name)
     {
@@ -25,7 +25,7 @@ trait HasFields
      *
      * @param  string $name
      *
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function number($name)
     {
@@ -37,7 +37,7 @@ trait HasFields
      *
      * @param  string $name
      *
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function integer($name)
     {
@@ -49,7 +49,7 @@ trait HasFields
      *
      * @param  string $name
      *
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function textarea($name)
     {
@@ -61,7 +61,7 @@ trait HasFields
      *
      * @param  string $name
      *
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function email($name)
     {
@@ -73,7 +73,7 @@ trait HasFields
      *
      * @param  string $name
      *
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function password($name)
     {
@@ -85,7 +85,7 @@ trait HasFields
      *
      * @param  string  $name
      *
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function checkbox($name)
     {
@@ -98,7 +98,7 @@ trait HasFields
      * @param  string $name
      * @param  array  $options
      *
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function select($name, array $options = array())
     {
@@ -111,7 +111,7 @@ trait HasFields
      * @param  string $name
      * @param  array  $options
      *
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function radios($name, array $options = array())
     {
@@ -124,7 +124,7 @@ trait HasFields
      * @param  string $name
      * @param  array  $options
      *
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function checkboxes($name, array $options = array())
     {
@@ -136,7 +136,7 @@ trait HasFields
      *
      * @param  string $name
      *
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function url($name)
     {
@@ -147,7 +147,7 @@ trait HasFields
      * Add a file field.
      *
      * @param  string $name
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function file($name)
     {
@@ -160,11 +160,11 @@ trait HasFields
      * Add a hidden field.
      *
      * @param  string $name
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     function hidden($name)
     {
-        return $this->fields->add(new HiddenField($name), $name);
+        return $this->fields->add(new HiddenFieldBuilder($name), $name);
     }
 
     /**
@@ -187,11 +187,11 @@ trait HasFields
      * @param string $name
      * @param string $type
      *
-     * @return \Styde\Html\FormModel\Field
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function addField($name, $type = 'text')
     {
-        return $this->fields->add(new Field($name, $type), $name);
+        return $this->fields->add(new FieldBuilder($name, $type), $name);
     }
 
     /**
@@ -202,7 +202,7 @@ trait HasFields
     public function getFields()
     {
         return $this->fields->filter(function ($field) {
-            return $field instanceof Field;
+            return $field instanceof FieldBuilder;
         });
     }
 

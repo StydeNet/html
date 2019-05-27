@@ -1,8 +1,7 @@
 <?php
 
-namespace Styde\Html\FormModel;
+namespace Styde\Html\Fields;
 
-use Styde\Html\FieldBuilder;
 use Styde\Html\HandlesAccess;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +9,7 @@ use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\Support\Htmlable;
 use Styde\Html\Facades\Field as FieldFacade;
 
-class Field implements Htmlable
+class FieldBuilder implements Htmlable
 {
     use HasAttributes, HandlesAccess, ValidationRules, IncludeRulesHelpers;
 

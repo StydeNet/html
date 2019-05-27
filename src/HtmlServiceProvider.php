@@ -143,7 +143,7 @@ class HtmlServiceProvider extends ServiceProvider
 
             $this->loadConfigurationOptions();
 
-            $fieldBuilder = new FieldBuilder(
+            $fieldBuilder = new FormFieldBuilder(
                 $app['form'], $app->make(Theme::class), $app['translator']
             );
 
@@ -164,7 +164,7 @@ class HtmlServiceProvider extends ServiceProvider
             return $fieldBuilder;
         });
 
-        $this->app->alias('field', FieldBuilder::class);
+        $this->app->alias('field', FormFieldBuilder::class);
     }
 
     public function registerMakeFormCommand()
@@ -246,7 +246,7 @@ class HtmlServiceProvider extends ServiceProvider
         return [
             HtmlBuilder::class,
             FormBuilder::class,
-            FieldBuilder::class,
+            FormFieldBuilder::class,
             Alert::class,
             AlertMiddleware::class,
             Menu::class,

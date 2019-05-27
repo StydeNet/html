@@ -1,15 +1,15 @@
 <?php
 
-namespace Styde\Html\FormModel;
+namespace Styde\Html\Fields;
 
 use Styde\Html\Form\HiddenInput;
 
-class HiddenField extends Field
+class HiddenFieldBuilder extends FieldBuilder
 {
     /**
      * HiddenField constructor.
      *
-     * @param \Styde\Html\FieldBuilder $name
+     * @param \Styde\Html\FormFieldBuilder $name
      */
     public function __construct($name)
     {

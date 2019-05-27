@@ -4,7 +4,7 @@ namespace Styde\Html\Tests;
 
 use Illuminate\Support\Facades\View;
 use Styde\Html\FormModel;
-use Styde\Html\FormModel\Field;
+use Styde\Html\Fields\FieldBuilder;
 use Styde\Html\FormModel\FieldCollection;
 
 class FieldCollectionTest extends TestCase
@@ -28,7 +28,7 @@ class FieldCollectionTest extends TestCase
 
         $form->text('first_name');
 
-        $this->assertInstanceOf(Field::class, $form->fields->first_name);
+        $this->assertInstanceOf(FieldBuilder::class, $form->fields->first_name);
     }
     
     /** @test */
@@ -112,7 +112,7 @@ class FieldCollectionTest extends TestCase
 
     public function assertFieldTypeIs($type, $field)
     {
-        $this->assertInstanceOf(Field::class, $field);
+        $this->assertInstanceOf(FieldBuilder::class, $field);
         $this->assertSame($type, $field->type);
     }
 

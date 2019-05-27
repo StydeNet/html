@@ -6,7 +6,7 @@ use BadMethodCallException;
 use Illuminate\Http\Request;
 use Styde\Html\Facades\Html;
 use Styde\Html\FormModel\ElementCollection;
-use Styde\Html\FormModel\Field;
+use Styde\Html\Fields\FieldBuilder;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Traits\Macroable;
 use Styde\Html\FormModel\FieldCollection;
@@ -52,7 +52,7 @@ class FormModel implements Htmlable
      */
     private $htmlBuilder;
     /**
-     * @var FieldBuilder
+     * @var FormFieldBuilder
      */
     private $fieldBuilder;
 
@@ -61,12 +61,12 @@ class FormModel implements Htmlable
      *
      * @param HtmlBuilder $htmlBuilder
      * @param FormBuilder $formBuilder
-     * @param FieldBuilder $fieldBuilder
+     * @param FormFieldBuilder $fieldBuilder
      * @param Theme $theme
      * @internal param FieldCollection $fields
      * @internal param ButtonCollection $buttons
      */
-    public function __construct(HtmlBuilder $htmlBuilder, FormBuilder $formBuilder, FieldBuilder $fieldBuilder, Theme $theme)
+    public function __construct(HtmlBuilder $htmlBuilder, FormBuilder $formBuilder, FormFieldBuilder $fieldBuilder, Theme $theme)
     {
         $this->formBuilder = $formBuilder;
         $this->htmlBuilder = $htmlBuilder;
@@ -318,7 +318,7 @@ class FormModel implements Htmlable
         $rules = [];
 
         foreach ($this->fields->all() as $name => $field) {
-            if ($field instanceof Field && $field->included) {
+            if ($field instanceof FieldBuilder && $field->included) {
                 $rules[$name] = $field->getValidationRules();
             }
         }
@@ -347,7 +347,7 @@ class FormModel implements Htmlable
      *
      * @param  string $name
      *
-     * @return Field
+     * @return FieldBuilder
      */
     public function __get($name)
     {

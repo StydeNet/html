@@ -15,7 +15,7 @@ class ElementCollection
      * @param Htmlable $element
      * @param null $key
      *
-     * @return Field
+     * @return FieldBuilder
      */
     public function add(Htmlable $element, $key = null)
     {
@@ -84,7 +84,7 @@ class ElementCollection
      *
      * @param  string $name
      *
-     * @return Field
+     * @return FieldBuilder
      */
     public function __get($name)
     {

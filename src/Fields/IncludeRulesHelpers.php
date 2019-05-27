@@ -1,6 +1,6 @@
 <?php
 
-namespace Styde\Html\FormModel;
+namespace Styde\Html\Fields;
 
 use Illuminate\Validation\Rule;
 use Styde\Html\Rules\Unique;
@@ -394,7 +394,7 @@ trait IncludeRulesHelpers
 
     /**
      * @param $value
-     * @return Field
+     * @return FieldBuilder
      */
     public function min(int $value)
     {
@@ -405,7 +405,7 @@ trait IncludeRulesHelpers
 
     /**
      * @param $value
-     * @return Field
+     * @return FieldBuilder
      */
     public function minlength(int $value)
     {
@@ -439,7 +439,7 @@ trait IncludeRulesHelpers
     }
 
     /**
-     * @return Field
+     * @return FieldBuilder
      */
     public function nullable()
     {
@@ -458,7 +458,7 @@ trait IncludeRulesHelpers
 
     /**
      * @param $value
-     * @return Field
+     * @return FieldBuilder
      */
     public function pattern($value)
     {
@@ -485,7 +485,7 @@ trait IncludeRulesHelpers
     }
 
     /**
-     * @return Field
+     * @return FieldBuilder
      */
     public function required()
     {
@@ -499,7 +499,7 @@ trait IncludeRulesHelpers
     /**
      * @param $column
      * @param $value
-     * @return Field
+     * @return FieldBuilder
      */
     public function requiredIf($column, $value)
     {
@@ -510,7 +510,7 @@ trait IncludeRulesHelpers
      * @param $column
      * @param $operator
      * @param null $value
-     * @return Field
+     * @return FieldBuilder
      */
     public function requiredUnless($column, $operator, $value = null)
     {
@@ -523,7 +523,7 @@ trait IncludeRulesHelpers
 
     /**
      * @param array $values
-     * @return Field
+     * @return FieldBuilder
      */
     public function requiredWith(...$values)
     {
@@ -534,7 +534,7 @@ trait IncludeRulesHelpers
 
     /**
      * @param array $values
-     * @return Field
+     * @return FieldBuilder
      */
     public function requiredWithAll(...$values)
     {
@@ -545,7 +545,7 @@ trait IncludeRulesHelpers
 
     /**
      * @param array $values
-     * @return Field
+     * @return FieldBuilder
      */
     public function requiredWithout(...$values)
     {
@@ -556,7 +556,7 @@ trait IncludeRulesHelpers
 
     /**
      * @param array $values
-     * @return Field
+     * @return FieldBuilder
      */
     public function requiredWithoutAll(...$values)
     {
@@ -576,7 +576,7 @@ trait IncludeRulesHelpers
 
     /**
      * @param $value
-     * @return Field
+     * @return FieldBuilder
      */
     public function size($value)
     {

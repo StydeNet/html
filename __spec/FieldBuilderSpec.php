@@ -20,7 +20,7 @@ class FieldBuilderSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Styde\Html\FieldBuilder');
+        $this->shouldHaveType('Styde\Html\FormFieldBuilder');
     }
 
 //    function it_generates_a_text_field($form, $theme, $lang)

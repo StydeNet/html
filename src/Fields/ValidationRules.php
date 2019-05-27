@@ -1,8 +1,6 @@
 <?php
 
-namespace Styde\Html\FormModel;
-
-use Illuminate\Validation\Rule;
+namespace Styde\Html\Fields;
 
 trait ValidationRules
 {

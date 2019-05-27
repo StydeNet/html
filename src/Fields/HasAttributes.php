@@ -1,6 +1,6 @@
 <?php
 
-namespace Styde\Html\FormModel;
+namespace Styde\Html\Fields;
 
 trait HasAttributes
 {
