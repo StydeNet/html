@@ -34,7 +34,7 @@ class Theme
      * @param string $currentTheme
      * @param string $publishedThemesDirectory Directory to store the custom templates
      */
-    public function __construct(View $view, $currentTheme, $publishedThemesDirectory = 'themes')
+    public function __construct(View $view, string $currentTheme, string $publishedThemesDirectory = 'themes')
     {
         $this->view = $view;
         $this->currentTheme = $currentTheme;

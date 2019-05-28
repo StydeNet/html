@@ -2,26 +2,27 @@
 
 namespace Styde\Html;
 
-use Illuminate\Support\ServiceProvider;
-use Styde\Html\Alert\Container as Alert;
-use Styde\Html\Alert\Middleware as AlertMiddleware;
-use Styde\Html\Alert\SessionHandler as AlertSessionHandler;
-use Styde\Html\FormModel\FormMakeCommand;
 use Styde\Html\Menu\Menu;
 use Styde\Html\Menu\MenuGenerator;
 use Styde\Html\Menu\MenuMakeCommand;
+use Illuminate\Support\ServiceProvider;
+use Styde\Html\Alert\Container as Alert;
+use Styde\Html\FormModel\FormMakeCommand;
+use Styde\Html\Alert\Middleware as AlertMiddleware;
+use Styde\Html\Alert\SessionHandler as AlertSessionHandler;
 
 class HtmlServiceProvider extends ServiceProvider
 {
     /**
-     * Array of options taken from the configuration file (config/html.php) and
-     * the default package configuration.
+     * Array of options taken from the configuration file (config/html.php) and the default package configuration.
      *
-     * @var array
+     * @var array|null
      */
     protected $options;
 
     /**
+     * Theme Object.
+     *
      * @var \Styde\Html\Theme
      */
     protected $theme;
@@ -33,6 +34,11 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected $defer = false;
 
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
     public function boot()
     {
         $this->loadViewsFrom(__DIR__.'/../themes', 'styde.html');
@@ -46,15 +52,10 @@ class HtmlServiceProvider extends ServiceProvider
         ], 'styde-html-config');
     }
 
-    protected function mergeDefaultConfiguration()
-    {
-        $this->mergeConfigFrom(
-            __DIR__.'/../config.php', 'html'
-        );
-    }
-
     /**
      * Register the service provider.
+     *
+     * @return void
      */
     public function register()
     {
@@ -64,55 +65,65 @@ class HtmlServiceProvider extends ServiceProvider
 
         $this->registerThemeClass();
 
-        $this->registerFieldBuilder();
+        $this->registerFieldRenderer();
+
+        $this->registerFormFieldBuilder();
 
         $this->registerMakeFormCommand();
 
         $this->registerAlertContainer();
+
         $this->registerAlertMiddleware();
 
         $this->registerMenuGenerator();
     }
 
     /**
-     * Load the configuration options from the config/html.php file.
+     * Load the configuration options from the config/html.php file. All the configuration options are optional,
+     * if they are not found, the default configuration of this package will be used.
      *
-     * All the configuration options are optional, if they are not found, the
-     * default configuration of this package will be used.
+     * @return void
      */
     protected function loadConfigurationOptions()
     {
-        if (! empty($this->options)) return;
+        if ($this->options != null) {
+            return;
+        }
 
-        $this->mergeDefaultConfiguration();
+        $this->mergeConfigFrom(__DIR__.'/../config.php', 'html');
 
         $this->options = $this->app->make('config')->get('html');
 
         $this->options['theme_values'] = $this->options['themes'][$this->options['theme']];
+
         unset($this->options['themes']);
     }
 
     /**
-     * Register the Theme object into the IoC container
+     * Register the Theme object into the IoC container.
      *
-     * @return \Styde\Html\Theme
+     * @return void
      */
     protected function registerThemeClass()
     {
-        $this->app->singleton(Theme::class, function ($app) {
+        $this->app->singleton('html.theme', function ($app) {
+            $this->loadConfigurationOptions();
+
             return new Theme($this->app['view'], $this->options['theme'], $this->options['custom']);
         });
+
+        $this->app->alias('html.theme', Theme::class);
     }
 
     /**
      * Register the Form Builder instance.
+     *
+     * @return void
      */
     protected function registerFormBuilder()
     {
         $this->app->singleton('form', function ($app) {
-            $this->loadConfigurationOptions();
-
-            $form = new FormBuilder($app['url'], $app->make(Theme::class), $app['session.store']);
+            $form = new FormBuilder($app['url'], $app['html.theme'], $app['session.store']);
 
             $form->novalidate($app['config']->get('html.novalidate', false));
 
@@ -123,7 +134,9 @@ class HtmlServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the HTML Builder instance.singlenotsinntrntrn
+     * Register the HTML Builder instance.
+     *
+     * @return void
      */
     protected function registerHtmlBuilder()
     {
@@ -135,28 +148,37 @@ class HtmlServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the Field Builder instance
+     * Register the Field Builder instance.
+     *
+     * @return void
      */
-    protected function registerFieldBuilder()
+    protected function registerFormFieldBuilder()
     {
-        $this->app->bind('field', function ($app) {
+        $this->app->bind('field', function () {
+            return new FormFieldBuilder;
+        });
 
+        $this->app->alias('field', FormFieldBuilder::class);
+    }
+
+    /**
+     * Register the Field Builder instance.
+     *
+     * @return void
+     */
+    protected function registerFieldRenderer()
+    {
+        $this->app->bind('field.renderer', function ($app) {
             $this->loadConfigurationOptions();
 
-            $fieldBuilder = new FormFieldBuilder(
-                $app['form'], $app->make(Theme::class), $app['translator']
-            );
+            $fieldBuilder = new FieldRenderer($app['form'], $app['html.theme'], $app['translator']);
 
             if (isset($this->options['theme_values']['field_templates'])) {
-                $fieldBuilder->setTemplates(
-                    $this->options['theme_values']['field_templates']
-                );
+                $fieldBuilder->setTemplates($this->options['theme_values']['field_templates']);
             }
 
             if (isset($this->options['theme_values']['field_classes'])) {
-                $fieldBuilder->classes(
-                    $this->options['theme_values']['field_classes']
-                );
+                $fieldBuilder->classes($this->options['theme_values']['field_classes']);
             }
 
             $fieldBuilder->setSessionStore($app['session.store']);
@@ -164,9 +186,14 @@ class HtmlServiceProvider extends ServiceProvider
             return $fieldBuilder;
         });
 
-        $this->app->alias('field', FormFieldBuilder::class);
+        $this->app->alias('field.renderer', FieldRenderer::class);
     }
 
+    /**
+     * Register the make:form command.
+     *
+     * @return void
+     */
     public function registerMakeFormCommand()
     {
         $this->commands(FormMakeCommand::class);
@@ -176,35 +203,28 @@ class HtmlServiceProvider extends ServiceProvider
     /**
      * Get the Alert handler implementation used to persist alert messages.
      *
-     * This will be used internally by the Alert Container class so we don't
-     * need to add this class to the IoC container.
+     * This will be used internally by the Alert Container class so we don't to add this class to the IoC container.
      *
-     * @return AlertSessionHandler
+     * @return \Styde\Html\Alert\SessionHandler
      */
     protected function getAlertHandler()
     {
-        return new AlertSessionHandler(
-            $this->app['session.store'],
-            'styde/alerts'
-        );
+        return new AlertSessionHandler($this->app['session.store'], 'styde/alerts');
     }
 
     /**
-     * Register the Alert Container instance
+     * Register the Alert Container instance.
+     *
+     * @return void
      */
     protected function registerAlertContainer()
     {
         $this->app->singleton('alert', function ($app) {
             $this->loadConfigurationOptions();
 
-            $alert = new Alert(
-                $this->getAlertHandler(),
-                $app->make(Theme::class)
-            );
+            $alert = new Alert($this->getAlertHandler(), $app['html.theme']);
 
-            if ($this->options['translate_texts']) {
-                $alert->setLang($app['translator']);
-            }
+            $alert->setLang($app['translator']);
 
             return $alert;
         });
@@ -213,7 +233,9 @@ class HtmlServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the Alert Middleware instance
+     * Register the Alert Middleware instance.
+     *
+     * @return void
      */
     protected function registerAlertMiddleware()
     {
@@ -223,16 +245,12 @@ class HtmlServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the Menu Generator instance
+     * Register the Menu Generator instance.
      */
     protected function registerMenuGenerator()
     {
         $this->app->bind('menu', function ($app) {
-            $this->loadConfigurationOptions();
-
-            $menu = new MenuGenerator($app['url'], $app[Theme::class]);
-
-            return $menu;
+            return new MenuGenerator($app['url'], $app['html.theme']);
         });
     }
 
@@ -244,17 +262,9 @@ class HtmlServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
-            HtmlBuilder::class,
-            FormBuilder::class,
-            FormFieldBuilder::class,
-            Alert::class,
-            AlertMiddleware::class,
-            Menu::class,
-            'html',
-            'form',
-            'field',
-            'alert',
-            'menu'
+            HtmlBuilder::class, FormBuilder::class, FormFieldBuilder::class,
+            Alert::class, AlertMiddleware::class, Menu::class,
+            'html', 'form', 'field', 'alert', 'menu'
         ];
     }
 }

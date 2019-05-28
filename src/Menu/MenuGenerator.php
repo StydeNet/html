@@ -67,7 +67,6 @@ class MenuGenerator
      * configuration key where you can store the items array.
      *
      * @param Closure $config
-     * @param string $classes main CSS classes for the menu
      * @return Menu
      */
     public function make(Closure $config)

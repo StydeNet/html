@@ -3,7 +3,6 @@
 namespace Styde\Html\Fields;
 
 use Closure;
-use Illuminate\Contracts\Validation\Rule;
 
 class Field
 {
@@ -211,12 +210,6 @@ class Field
      */
     public function getValidationRules()
     {
-        return array_values(array_map(function ($rule) {
-            if ($rule instanceof Rule) {
-                return $rule;
-            }
-
-            return (string) $rule;
-        }, $this->rules));
+        return array_values($this->rules);
     }
 }

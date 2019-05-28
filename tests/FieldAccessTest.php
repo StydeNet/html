@@ -2,17 +2,17 @@
 
 namespace Styde\Html\Tests;
 
+use Styde\Html\Facades\Field;
 use Styde\Html\Fields\FieldBuilder;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Contracts\Support\Htmlable;
-use Styde\Html\Facades\Field as FieldFactory;
 
 class FieldAccessTest extends TestCase
 {
     /** @test */
     function it_only_renders_the_field_if_the_user_has_the_expected_role()
     {
-        $field = FieldFactory::text('name');
+        $field = Field::text('name');
 
         $this->assertDontRender($field->ifIs('admin'));
 
@@ -26,7 +26,7 @@ class FieldAccessTest extends TestCase
     /** @test */
     function it_only_renders_the_field_if_the_user_is_not_guest()
     {
-        $field = FieldFactory::text('name');
+        $field = Field::text('name');
 
         $this->assertRender($field->ifGuest());
 
@@ -37,7 +37,7 @@ class FieldAccessTest extends TestCase
     /** @test */
     function if_only_renders_the_field_if_user_is_logged_in()
     {
-        $field = FieldFactory::text('name');
+        $field = Field::text('name');
 
         $this->assertDontRender($field->ifAuth());
 
@@ -58,7 +58,7 @@ class FieldAccessTest extends TestCase
             return true;
         });
 
-        $field = FieldFactory::text('name');
+        $field = Field::text('name');
 
         $this->assertDontRender($field->ifCan('edit-all'));
 
@@ -78,7 +78,7 @@ class FieldAccessTest extends TestCase
             return true;
         });
 
-        $field = FieldFactory::text('name');
+        $field = Field::text('name');
 
         $this->assertRender($field->ifCannot('edit-all'));
 

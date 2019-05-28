@@ -2,12 +2,12 @@
 
 namespace Styde\Html\Tests;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\{Auth, Gate, Route, View};
 use Styde\Html\Facades\Menu;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Styde\Html\Menu\{MenuBuilder, MenuComposer, Item};
+use Illuminate\Support\Facades\{Auth, Gate, Route, View};
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 
 class MenuGeneratorTest extends TestCase
 {

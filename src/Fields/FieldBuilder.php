@@ -7,7 +7,6 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\Support\Htmlable;
-use Styde\Html\Facades\Field as FieldFacade;
 
 class FieldBuilder implements Htmlable
 {
@@ -201,7 +200,7 @@ class FieldBuilder implements Htmlable
             return '';
         }
 
-        return FieldFacade::render($this->field);
+        return app('field.renderer')->render($this->field);
     }
 
     /**
