@@ -168,7 +168,7 @@ class HtmlServiceProvider extends ServiceProvider
      */
     protected function registerFieldRenderer()
     {
-        $this->app->bind('field.renderer', function ($app) {
+        $this->app->singleton('field.renderer', function ($app) {
             $this->loadConfigurationOptions();
 
             $fieldBuilder = new FieldRenderer($app['form'], $app['html.theme'], $app['translator']);
