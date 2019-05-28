@@ -90,16 +90,15 @@ class FieldRenderer
     public function render(Field $field)
     {
         return $this->theme->render($this->getTemplate($field), array_merge($field->data, [
-                'htmlName' => $this->getHtmlName($field->name),
-                'id' => $id = $this->getHtmlId($field->name, $field->attributes),
-                'label' => $this->getLabel($field),
-                'input' => $this->buildControl($field),
-                'errors' => $errors = $this->getControlErrors($id),
-                'hasErrors' => !empty($errors),
-                'required' => $this->getRequired($field->attributes),
-                'helpText' => $field->helpText,
-            ])
-        );
+            'htmlName' => $this->getHtmlName($field->name),
+            'id' => $id = $this->getHtmlId($field->name, $field->attributes),
+            'label' => $this->getLabel($field),
+            'input' => $this->buildControl($field),
+            'errors' => $errors = $this->getControlErrors($id),
+            'hasErrors' => !empty($errors),
+            'required' => $this->getRequired($field->attributes),
+            'helpText' => $field->helpText,
+        ]));
     }
 
     /**
