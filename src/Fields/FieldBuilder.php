@@ -144,14 +144,26 @@ class FieldBuilder implements Htmlable
         return $this;
     }
 
-    public function style($style)
+    /**
+     * Add a stylesheet path to the field.
+     *
+     * @param string $style
+     * @return $this
+     */
+    public function style(string $style)
     {
         $this->field->styles[] = $style;
 
         return $this;
     }
 
-    public function script($script)
+    /**
+     * Add a javascript path to the field.
+     *
+     * @param string $script
+     * @return $this
+     */
+    public function script(string $script)
     {
         $this->field->scripts[] = $script;
 
