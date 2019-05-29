@@ -67,6 +67,11 @@ class Field
     public $rules = [];
 
     /**
+     * @var bool
+     */
+    public $controlOnly = false;
+
+    /**
      * Field constructor.
      *
      * @param $name

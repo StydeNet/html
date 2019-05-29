@@ -119,6 +119,31 @@ class FieldBuilder implements Htmlable
         return $this;
     }
 
+    /**
+     * Indicate the field should be rendered as a single control only
+     * (input, select, etc.) and not with its full field template.
+     *
+     * @return $this
+     */
+    public function controlOnly()
+    {
+        $this->field->controlOnly = true;
+
+        return $this;
+    }
+
+    /**
+     * Indicate the field should be rendered as a full field template.
+     *
+     * @return $this
+     */
+    public function fullField()
+    {
+        $this->field->controlOnly = false;
+
+        return $this;
+    }
+
     public function style($style)
     {
         $this->field->styles[] = $style;

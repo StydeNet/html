@@ -89,6 +89,10 @@ class FieldRenderer
      */
     public function render(Field $field)
     {
+        if ($field->controlOnly) {
+            return $this->buildControl($field);
+        }
+
         return $this->theme->render($this->getTemplate($field), array_merge($field->data, [
             'htmlName' => $this->getHtmlName($field->name),
             'id' => $id = $this->getHtmlId($field->name, $field->attributes),

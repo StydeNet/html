@@ -339,6 +339,24 @@ class FieldBuilderTest extends TestCase
     }
 
     /** @test */
+    function renders_control_only()
+    {
+        $this->assertHtmlEquals(
+            '<input type="text" name="first_name">',
+            Field::text('first_name')->controlOnly()
+        );
+    }
+
+    /** @test */
+    function renders_as_full_field()
+    {
+        $this->assertTemplateMatches(
+            'field/text',
+            Field::text('name', 'value')->controlOnly()->fullField()
+        );
+    }
+
+    /** @test */
     function it_is_macroable()
     {
         Field::macro('myCustomField', function () {
