@@ -191,7 +191,7 @@ class FieldBuilder implements Htmlable
     /**
      * Set the options and the in rule in the field.
      *
-     * @param $options
+     * @param array $options
      * @return $this
      */
     public function options(array $options)

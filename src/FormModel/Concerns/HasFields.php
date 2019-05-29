@@ -96,13 +96,19 @@ trait HasFields
      * Add a select box field with options $options.
      *
      * @param  string $name
-     * @param  array  $options
+     * @param  array|null  $options
      *
      * @return \Styde\Html\Fields\FieldBuilder
      */
-    public function select($name, array $options = array())
+    public function select($name, $options = null)
     {
-        return $this->addField($name, 'select')->options($options);
+        $field = $this->addField($name, 'select');
+
+        if ($options !== null) {
+            $field->options($options);
+        }
+
+        return $field;
     }
 
     /**

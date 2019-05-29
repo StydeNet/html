@@ -2,6 +2,7 @@
 
 namespace Styde\Html\Tests;
 
+use Illuminate\Validation\Rules\Exists;
 use Styde\Html\FormModel;
 use Illuminate\Http\Request;
 use Styde\Html\Facades\Form;
@@ -71,7 +72,17 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
-    function it_return_all_validated_fields_of_a_form()
+    function select_field_does_not_add_an_empty_in_rule()
+    {
+        $form = app(TestFormModel::class);
+
+        $form->select('parent_id');
+
+        $this->assertCount(0, $form->parent_id->getField()->getValidationRules());
+    }
+
+    /** @test */
+    function it_returns_all_validated_fields_of_a_form()
     {
         $files = [
             'photo' => $image = (new FileFactory)->image('foo.jpg', 30, 20),
