@@ -68,13 +68,19 @@ class FieldCollectionTest extends TestCase
     function it_adds_a_hidden_field()
     {
         $form = app(TestFormModel::class);
-
         $form->hidden('plan');
 
-        $this->assertSame('hidden', $form->plan->type);
-        $this->assertSame('<input type="hidden" name="plan">', (string) $form->plan);
+        $this->assertFieldTypeIs('hidden', $form->plan);
     }
 
+    /** @test */
+    function hidden_fields_are_rendered_as_control_only_by_default()
+    {
+        $form = app(TestFormModel::class);
+        $form->hidden('plan');
+
+        $this->assertHtmlEquals('<input type="hidden" name="plan">', $form->plan);
+    }
 
     /** @test */
     function passes_custom_variables_to_the_field_template()

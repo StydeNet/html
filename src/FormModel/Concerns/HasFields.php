@@ -2,7 +2,6 @@
 
 namespace Styde\Html\FormModel\Concerns;
 
-use Styde\Html\Facades\Form;
 use Styde\Html\Facades\Html;
 use Styde\Html\Form\HiddenInput;
 use Styde\Html\Fields\FieldBuilder;
@@ -166,7 +165,9 @@ trait HasFields
      */
     function hidden($name, $value = null)
     {
-        return $this->fields->add(Form::hidden($name, $value), $name);
+        return $this->addField($name, 'hidden')
+            ->value($value)
+            ->controlOnly();
     }
 
     /**
