@@ -41,7 +41,9 @@ class SessionHandler implements Handler
      */
     public function getPreviousMessages()
     {
-        return $this->session->get($this->key, []);
+        $result = $this->session->get($this->key);
+
+        return is_array($result) ? $result : [];
     }
 
     /**
