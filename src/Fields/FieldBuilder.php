@@ -7,6 +7,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\Support\Htmlable;
+use Styde\Html\Transformer;
 
 class FieldBuilder implements Htmlable
 {
@@ -115,6 +116,19 @@ class FieldBuilder implements Htmlable
     public function template($template, $vars = [])
     {
         $this->field->setTemplate($template, $vars);
+
+        return $this;
+    }
+
+    /**
+     * Add a custom field transformer.
+     *
+     * @param \Styde\Html\Transformer $transformer
+     * @return $this
+     */
+    public function transformer(Transformer $transformer)
+    {
+        $this->field->transformer = $transformer;
 
         return $this;
     }

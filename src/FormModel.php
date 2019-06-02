@@ -296,14 +296,22 @@ class FormModel implements Htmlable
     }
     
     /**
-     * Validate the request with the validation rules specified
+     * Validate the request with the validation rules specified.
      *
      * @param Request|null $request
      * @return mixed
      */
     public function validate(Request $request = null)
     {
-        return ($request ?: request())->validate($this->getValidationRules());
+        $data = ($request ?: request())->validate($this->getValidationRules());
+
+        array_walk($data, function (&$value, $name) {
+            if ($transformer = $this->fields->get($name)->getField()->transformer) {
+                $value = $transformer->fromRequest($value);
+            }
+        });
+
+        return $data;
     }
 
     /**
@@ -351,6 +359,6 @@ class FormModel implements Htmlable
      */
     public function __get($name)
     {
-        return $this->fields->$name;
+        return $this->fields->get($name);
     }
 }

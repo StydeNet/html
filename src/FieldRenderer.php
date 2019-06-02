@@ -123,7 +123,7 @@ class FieldRenderer
                     $this->addEmptyOption(
                         $field->name, $this->getOptionsList($field->name, $field->getOptions()), $field->attributes
                     ),
-                    $field->value,
+                    $field->displayValue(),
                     $field->attributes
                 );
             case 'radios':
@@ -131,18 +131,18 @@ class FieldRenderer
                 return $this->form->$type(
                     $this->getHtmlName($field->name),
                     $this->getOptionsList($field->name, $field->getOptions()),
-                    $field->value,
+                    $field->displayValue(),
                     $field->attributes
                 );
             case 'checkbox':
                 return $this->form->checkbox(
                     $this->getHtmlName($field->name),
                     $field->getOptions() ?: 1,
-                    $field->value,
+                    $field->displayValue(),
                     $field->attributes
                 );
             default:
-                return $this->form->$type($this->getHtmlName($field->name), $field->value, $field->attributes);
+                return $this->form->$type($this->getHtmlName($field->name), $field->displayValue(), $field->attributes);
         }
     }
 

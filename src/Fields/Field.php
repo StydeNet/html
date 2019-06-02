@@ -72,6 +72,11 @@ class Field
     public $controlOnly = false;
 
     /**
+     * @var \Styde\Html\Transformer
+     */
+    public $transformer;
+
+    /**
      * Field constructor.
      *
      * @param $name
@@ -206,6 +211,20 @@ class Field
     public function removeAllRules()
     {
         $this->rules = [];
+    }
+
+    /**
+     * Return the value that should be displayed in the form control.
+     *
+     * @return mixed
+     */
+    public function displayValue()
+    {
+        if ($this->transformer) {
+            return $this->transformer->forDisplay($this->value);
+        }
+
+        return $this->value;
     }
 
     /**

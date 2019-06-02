@@ -86,8 +86,20 @@ class ElementCollection
      *
      * @return FieldBuilder
      */
-    public function __get($name)
+    public function get($name)
     {
         return $this->elements[$name];
+    }
+
+    /**
+     * Get a field by name.
+     *
+     * @param  string $name
+     *
+     * @return FieldBuilder
+     */
+    public function __get($name)
+    {
+        return $this->get($name);
     }
 }
