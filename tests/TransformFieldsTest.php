@@ -2,6 +2,7 @@
 
 namespace Styde\Html\Tests;
 
+use Illuminate\Database\Eloquent\Model;
 use Mockery as m;
 use Styde\Html\Transformer;
 use Illuminate\Http\Request;
@@ -34,6 +35,25 @@ class TransformFieldsTest extends TestCase
 
         $form->text('name')
             ->value('DUILIO PALACIOS')
+            ->transformer(new ConvertCaseTransformer)
+            ->controlOnly();
+
+        $this->assertHtmlEquals(
+            '<input type="text" name="name" value="duilio palacios">',
+            $form->name
+        );
+    }
+
+    /** @test */
+    function fields_render_transformed_values_from_the_model()
+    {
+        $form = app(TestFormModel::class);
+
+        $form->model(new class {
+             public $name = 'DUILIO PALACIOS';
+        });
+
+        $form->text('name')
             ->transformer(new ConvertCaseTransformer)
             ->controlOnly();
 

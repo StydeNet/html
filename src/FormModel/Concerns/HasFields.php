@@ -166,14 +166,11 @@ trait HasFields
      * Add a hidden field.
      *
      * @param  string $name
-     * @param null $value
      * @return HiddenInput
      */
-    function hidden($name, $value = null)
+    function hidden($name)
     {
-        return $this->addField($name, 'hidden')
-            ->value($value)
-            ->controlOnly();
+        return $this->addField($name, 'hidden')->controlOnly();
     }
 
     /**
@@ -200,7 +197,13 @@ trait HasFields
      */
     public function addField($name, $type = 'text')
     {
-        return $this->fields->add(new FieldBuilder($name, $type), $name);
+        $field = $this->fields->add(new FieldBuilder($name, $type), $name);
+
+        if ($this->model && !in_array($type, ['password', 'file'])) {
+            $field->value($this->model->{$name});
+        }
+
+        return $field;
     }
 
     /**

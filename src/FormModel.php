@@ -5,13 +5,13 @@ namespace Styde\Html;
 use BadMethodCallException;
 use Illuminate\Http\Request;
 use Styde\Html\Facades\Html;
-use Styde\Html\FormModel\ElementCollection;
-use Styde\Html\Fields\FieldBuilder;
 use Illuminate\Support\HtmlString;
+use Styde\Html\Fields\FieldBuilder;
 use Illuminate\Support\Traits\Macroable;
 use Styde\Html\FormModel\FieldCollection;
 use Illuminate\Contracts\Support\Htmlable;
 use Styde\Html\FormModel\ButtonCollection;
+use Styde\Html\FormModel\ElementCollection;
 use Styde\Html\FormModel\Concerns\HasFields;
 use Styde\Html\FormModel\Concerns\HasButtons;
 
@@ -25,6 +25,16 @@ class FormModel implements Htmlable
     protected $formBuilder;
 
     /**
+     * @var \Styde\Html\HtmlBuilder
+     */
+    private $htmlBuilder;
+
+    /**
+     * @var \Styde\Html\FormFieldBuilder
+     */
+    private $fieldBuilder;
+
+    /**
      * @var \Styde\Html\Theme
      */
     protected $theme;
@@ -33,6 +43,11 @@ class FormModel implements Htmlable
      * @var \Styde\Html\Form
      */
     public $form;
+
+    /**
+     * @var \Illuminate\Database\Eloquent\Model
+     */
+    public $model;
 
     /**
      * @var \Styde\Html\FormModel\FieldCollection
@@ -44,17 +59,15 @@ class FormModel implements Htmlable
      */
     public $buttons;
 
+    /**
+     * @var string
+     */
     public $method = 'post';
 
+    /**
+     * @var string
+     */
     public $customTemplate;
-    /**
-     * @var HtmlBuilder
-     */
-    private $htmlBuilder;
-    /**
-     * @var FormFieldBuilder
-     */
-    private $fieldBuilder;
 
     /**
      * Form Model constructor.
@@ -208,7 +221,7 @@ class FormModel implements Htmlable
      */
     public function model($model)
     {
-        $this->formBuilder->setCurrentModel($model);
+        $this->model = $model;
 
         return $this;
     }
