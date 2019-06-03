@@ -2,6 +2,7 @@
 
 namespace Styde\Html\Tests;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rules\Exists;
 use Styde\Html\FormModel;
 use Illuminate\Http\Request;
@@ -177,6 +178,25 @@ class FormModelTest extends TestCase
         $form = app(LoginForm::class)->novalidate(false);
 
         $this->assertTemplateMatches('form-model/login-form', $form);
+    }
+    
+    /** @test */
+    function set_a_model_and_get_the_field_values_from_its_attributes()
+    {
+        $eloquentModel = new class extends Model {
+            public function getNameAttribute()
+            {
+                return 'Duilio Palacios';
+            }
+        };
+
+        $form = app(TestFormModel::class);
+
+        $form->model($eloquentModel);
+
+        $form->text('name');
+
+        $this->assertSame('Duilio Palacios', $form->name->getField()->displayValue());
     }
 
     /** @test */
