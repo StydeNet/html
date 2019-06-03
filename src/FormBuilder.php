@@ -496,10 +496,8 @@ class FormBuilder
 
     public function getValueAttribute($name, $value = null)
     {
-        $old = $this->session->getOldInput($name);
-
-        if ($old !== null) {
-            return $old;
+        if ($this->session->hasOldInput()) {
+            return $this->session->getOldInput($name);
         }
 
         if ($value !== null) {
