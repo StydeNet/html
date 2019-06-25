@@ -60,11 +60,12 @@ Install by running `composer require "styde/html=~1.0"` or adding `"styde/html":
 ],
 ```
 
-3. Also, you need to register in the `app/Http/Kernel.php` file the `\Styde\Html\Alert\Middleware::class` middleware **BEFORE** the `EncryptCookies` middleware. For Laravel 5.4 and later, it's in the `$middlewareGroups` array and for previous versions (Laravel 5.3, 5.2, 5.1) it's in the `$middleware` array:
+3. Also, you need to register in the `app/Http/Kernel.php` file the `\Styde\Html\Alert\Middleware::class` middleware **BEFORE** the `EncryptCookies` middleware, for Laravel 5.8 and later the middleware needs to be registered **AFTER** the `StartSession` middleware. For Laravel 5.4 and later, it's in the `$middlewareGroups` array and for previous versions (Laravel 5.3, 5.2, 5.1) it's in the `$middleware` array:
 
 ```php
 // For Laravel 5.4 and later
 protected $middlewareGroups = [
+    // For Laravel 5.8 and later this needs to be after the StartSession middleware
     \Styde\Html\Alert\Middleware::class,
     //...
 ];
