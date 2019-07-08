@@ -7,9 +7,10 @@ trait HasButtons
     /**
      * Add a submit button.
      *
-     * @param  $text
+     * @param  string $text
      * @param  array  $attributes
-     * @return Button
+     *
+     * @return \Styde\Html\Htmltag
      */
     public function submit($text, $attributes = array())
     {
@@ -19,9 +20,10 @@ trait HasButtons
     /**
      * Add a button.
      *
-     * @param  $text
+     * @param  string $text
      * @param  array  $attributes
-     * @return Button
+     *
+     * @return \Styde\Html\Htmltag
      */
     public function button($text, $attributes = array())
     {
@@ -31,9 +33,10 @@ trait HasButtons
     /**
      * Add a reset button.
      *
-     * @param  $text
+     * @param  string $text
      * @param  array $attributes
-     * @return Button
+     *
+     * @return \Styde\Html\Htmltag
      */
     public function reset($text, array $attributes = array())
     {
@@ -43,10 +46,11 @@ trait HasButtons
     /**
      * Add a button.
      *
-     * @param  $type
-     * @param  $text
+     * @param  string $type
+     * @param  string $text
      * @param  array  $attributes
-     * @return Button
+     *
+     * @return \Styde\Html\Htmltag
      */
     public function addButton($type, $text, array $attributes = array())
     {
@@ -58,11 +62,12 @@ trait HasButtons
     /**
      * Add a link.
      *
-     * @param  $url
-     * @param  $title
+     * @param  string $url
+     * @param  string $title
      * @param  array  $attributes
      * @param  bool  $secure
-     * @return Link
+     *
+     * @return \Styde\Html\Htmltag
      */
     public function link($url, $title = null, array $attributes = array(), $secure = false)
     {

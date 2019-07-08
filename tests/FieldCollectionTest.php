@@ -43,6 +43,68 @@ class FieldCollectionTest extends TestCase
     }
 
     /** @test */
+    function it_adds_a_textarea_field()
+    {
+        $form = app(TestFormModel::class);
+
+        $form->textarea('content');
+
+        $this->assertFieldTypeIs('textarea', $form->content);
+    }
+
+    /** @test */
+    function it_adds_an_url_field()
+    {
+        $form = app(TestFormModel::class);
+
+        $form->url('website');
+
+        $this->assertFieldTypeIs('url', $form->website);
+    }
+
+    /** @test */
+    function it_adds_a_select_field_with_options()
+    {
+        $form = app(TestFormModel::class);
+
+        $fieldBuilder = $form->select('role', ['admin' => 'Admin' , 'user' => 'User']);
+
+        $this->assertFieldTypeIs('select', $form->role);
+
+        $this->assertEquals($fieldBuilder->getField()->getOptions(), ['admin' => 'Admin' , 'user' => 'User']);
+    }
+    
+    /** @test */
+    function it_adds_a_radios_field_with_options()
+    {
+        $form = app(TestFormModel::class);
+
+        $fieldBuilder = $form->radios('gender', ['m' => 'Male', 'f' => 'Female']);
+
+        $this->assertFieldTypeIs('radios', $form->gender);
+
+        $this->assertEquals($fieldBuilder->getField()->getOptions(), ['m' => 'Male', 'f' => 'Female']);
+    }
+
+    /** @test */
+    function it_adds_a_checkboxes_field_with_options()
+    {
+        $form = app(TestFormModel::class);
+
+        $options = [
+            'php' => 'PHP',
+            'js' => 'JS',
+            'css' => 'CSS'
+        ];
+
+        $fieldBuilder = $form->checkboxes('tags', $options);
+
+        $this->assertEquals($fieldBuilder->getField()->getOptions(), $options);
+
+        $this->assertFieldTypeIs('checkboxes', $form->tags);
+    }
+
+    /** @test */
     function it_adds_an_integer_field()
     {
         $form = app(TestFormModel::class);

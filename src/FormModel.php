@@ -8,9 +8,7 @@ use Styde\Html\Facades\Html;
 use Illuminate\Support\HtmlString;
 use Styde\Html\Fields\FieldBuilder;
 use Illuminate\Support\Traits\Macroable;
-use Styde\Html\FormModel\FieldCollection;
 use Illuminate\Contracts\Support\Htmlable;
-use Styde\Html\FormModel\ButtonCollection;
 use Styde\Html\FormModel\ElementCollection;
 use Styde\Html\FormModel\Concerns\HasFields;
 use Styde\Html\FormModel\Concerns\HasButtons;
@@ -50,12 +48,12 @@ class FormModel implements Htmlable
     public $model;
 
     /**
-     * @var \Styde\Html\FormModel\FieldCollection
+     * @var \Styde\Html\FormModel\ElementCollection
      */
     public $fields;
 
     /**
-     * @var \Styde\Html\FormModel\ButtonCollection
+     * @var \Styde\Html\FormModel\ElementCollection
      */
     public $buttons;
 
@@ -76,8 +74,8 @@ class FormModel implements Htmlable
      * @param FormBuilder $formBuilder
      * @param FormFieldBuilder $fieldBuilder
      * @param Theme $theme
-     * @internal param FieldCollection $fields
-     * @internal param ButtonCollection $buttons
+     * @internal param ElementCollection $fields
+     * @internal param ElementCollection $buttons
      */
     public function __construct(HtmlBuilder $htmlBuilder, FormBuilder $formBuilder, FormFieldBuilder $fieldBuilder, Theme $theme)
     {
@@ -254,6 +252,8 @@ class FormModel implements Htmlable
     }
 
     /**
+     * Render all form into HTML.
+     *
      * @param string|null $customTemplate
      * @return string
      */
@@ -267,7 +267,12 @@ class FormModel implements Htmlable
             'buttons' => $this->buttons,
         ]);
     }
-    
+
+    /**
+     * Get all Javascript scripts.
+     *
+     * @return array
+     */
     public function scripts()
     {
         $this->runSetup();
@@ -281,13 +286,23 @@ class FormModel implements Htmlable
         return array_values(array_unique($scripts));
     }
 
+    /**
+     * Render scripts into HTML.
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
     public function renderScripts()
     {
         return new HtmlString(array_reduce($this->scripts(), function ($result, $script) {
-            return $result.Html::script($script);
+            return $result . Html::script($script);
         }, ''));
     }
 
+    /**
+     * Get all CSS styles.
+     *
+     * @return array
+     */
     public function styles()
     {
         $this->runSetup();
@@ -301,13 +316,18 @@ class FormModel implements Htmlable
         return array_values(array_unique($styles));
     }
 
+    /**
+     * Render CSS styles into HTML.
+     *
+     * @return \Illuminate\Support\HtmlString
+     */
     public function renderStyles()
     {
         return new HtmlString(array_reduce($this->styles(), function ($result, $style) {
-            return $result.Html::style($style);
+            return $result . Html::style($style);
         }, ''));
     }
-    
+
     /**
      * Validate the request with the validation rules specified.
      *
@@ -368,7 +388,7 @@ class FormModel implements Htmlable
      *
      * @param  string $name
      *
-     * @return FieldBuilder
+     * @return \Styde\Html\Fields\FieldBuilder
      */
     public function __get($name)
     {

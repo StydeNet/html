@@ -3,6 +3,7 @@
 namespace Styde\Html\FormModel;
 
 use Styde\Html\HtmlBuilder;
+use Styde\Html\Fields\HasAttributes;
 
 class Link
 {

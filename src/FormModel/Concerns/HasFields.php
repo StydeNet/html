@@ -153,6 +153,7 @@ trait HasFields
      * Add a file field.
      *
      * @param  string $name
+     *
      * @return \Styde\Html\Fields\FieldBuilder
      */
     public function file($name)
@@ -166,9 +167,10 @@ trait HasFields
      * Add a hidden field.
      *
      * @param  string $name
-     * @return HiddenInput
+     *
+     * @return \Styde\Html\Form\HiddenInput
      */
-    function hidden($name)
+    public function hidden($name)
     {
         return $this->addField($name, 'hidden')->controlOnly();
     }
@@ -179,8 +181,8 @@ trait HasFields
      * @param $tag
      * @param string $content
      * @param array $attributes
-     * @return HtmlString
      *
+     * @return \Styde\Html\Htmltag
      */
     public function tag($tag, $content = '', array $attributes = [])
     {
