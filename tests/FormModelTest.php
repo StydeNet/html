@@ -83,6 +83,26 @@ class FormModelTest extends TestCase
     }
 
     /** @test */
+    function radios_field_does_not_add_an_empty_in_rule()
+    {
+        $form = app(TestFormModel::class);
+
+        $form->radios('role');
+
+        $this->assertCount(0, $form->role->getField()->getValidationRules());
+    }
+
+    /** @test */
+    function checkboxes_field_does_not_add_an_empty_in_rule()
+    {
+        $form = app(TestFormModel::class);
+
+        $form->checkboxes('tags');
+
+        $this->assertCount(0, $form->tags->getField()->getValidationRules());
+    }
+
+    /** @test */
     function it_returns_all_validated_fields_of_a_form()
     {
         $files = [

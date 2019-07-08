@@ -102,39 +102,51 @@ trait HasFields
      */
     public function select($name, $options = null)
     {
-        $field = $this->addField($name, 'select');
-
-        if ($options !== null) {
-            $field->options($options);
-        }
-
-        return $field;
+        return $this->addFieldWithOptions('select', $name, $options);
     }
 
     /**
      * Add radios with options given.
      *
      * @param  string $name
-     * @param  array  $options
+     * @param  array|null  $options
      *
      * @return \Styde\Html\Fields\FieldBuilder
      */
-    public function radios($name, array $options = array())
+    public function radios($name, $options = null)
     {
-        return $this->addField($name, 'radios')->options($options);
+        return $this->addFieldWithOptions('radios', $name, $options);
     }
 
     /**
      * Add checkboxes with options given.
      *
      * @param  string $name
-     * @param  array  $options
+     * @param  array|null  $options
      *
      * @return \Styde\Html\Fields\FieldBuilder
      */
-    public function checkboxes($name, array $options = array())
+    public function checkboxes($name, $options = null)
     {
-        return $this->addField($name, 'checkboxes')->options($options);
+        return $this->addFieldWithOptions('checkboxes', $name, $options);
+    }
+
+    /**
+     * Add a field like select, radios or checkboxes with options given.
+     *
+     * @param string $type
+     * @param string $name
+     * @param array|null $options
+     */
+    protected function addFieldWithOptions($type, $name, $options)
+    {
+        $field = $this->addField($name, $type);
+
+        if ($options !== null) {
+            $field->options($options);
+        }
+
+        return $field;
     }
 
     /**
