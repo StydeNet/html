@@ -6,16 +6,25 @@ use Styde\Html\Form\Input;
 use Styde\Html\Form\HiddenInput;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Traits\Macroable;
-use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Contracts\Session\Session;
 
 class FormBuilder
 {
     use Macroable {
         __call as macroCall;
     }
-
+    /**
+     * The current model instance for the form.
+     *
+     * @var \Illuminate\Database\Eloquent\Model
+     */
     protected $currentModel;
 
+    /**
+     * The current form instance.
+     *
+     * @var \Styde\Html\Form
+     */
     protected $currentForm;
 
     /**
@@ -33,28 +42,49 @@ class FormBuilder
      */
     protected $theme;
 
+    /**
+     * The session store instance.
+     *
+     * @var \Illuminate\Contracts\Session\Session
+     */
     protected $session;
 
     /**
      * Creates a new Form Builder class.
      *
-     * @param \Illuminate\Contracts\Routing\UrlGenerator $url
      * @param \Styde\Html\Theme $theme
      * @param \Illuminate\Contracts\Session\Session $session
      */
-    public function __construct(UrlGenerator $url, Theme $theme, $session)
+    public function __construct(Theme $theme, Session $session)
     {
         $this->theme = $theme;
         $this->session = $session;
-        $this->view = $theme->getView();
     }
 
     /**
-     * Get the protected model attribute
+     * Get the current model instance for the form.
      */
     public function getModel()
     {
         return $this->currentModel;
+    }
+
+    /**
+     * Set a model instance for the form.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $model
+     */
+    public function setCurrentModel($model)
+    {
+        $this->currentModel = $model;
+    }
+
+    /**
+     * Remove the model instance for the form
+     */
+    public function clearCurrentModel()
+    {
+        $this->currentModel = null;
     }
 
     /**
@@ -73,7 +103,7 @@ class FormBuilder
     /**
      * Makes a new Form Element.
      *
-     * @param $method
+     * @param string $method
      * @param array $attributes
      *
      * @return \Styde\Html\Form
@@ -98,11 +128,11 @@ class FormBuilder
 
         $attributes['method'] = $method;
 
-        return $this->currentForm = new Form($method, $children, $attributes);
+        return $this->currentForm = new Form($children, $attributes);
     }
 
     /**
-     * Makes a new Form Element.
+     * Makes a new get Form Element.
      *
      * @param array $attributes
      *
@@ -114,7 +144,7 @@ class FormBuilder
     }
 
     /**
-     * Makes a new Form Element.
+     * Makes a new post Form Element.
      *
      * @param array $attributes
      *
@@ -127,7 +157,7 @@ class FormBuilder
     }
 
     /**
-     * Makes a new Form Element.
+     * Makes a new put Form Element.
      *
      * @param array $attributes
      *
@@ -139,7 +169,7 @@ class FormBuilder
     }
 
     /**
-     * Makes a new Form Element.
+     * Makes a new delete Form Element.
      *
      * @param array $attributes
      *
@@ -148,16 +178,6 @@ class FormBuilder
     public function delete(array $attributes = [])
     {
         return $this->make('delete', $attributes);
-    }
-
-    public function setCurrentModel($model)
-    {
-        $this->currentModel = $model;
-    }
-
-    public function clearCurrentModel()
-    {
-        $this->currentModel = null;
     }
 
     /**
@@ -203,7 +223,7 @@ class FormBuilder
      * @param string $value
      * @param array  $attributes
      *
-     * @return \Styde\Html\Htmltag
+     * @return \Styde\Html\VoidTag
      */
     public function input($type, $name, $value = null, $attributes = [])
     {
@@ -217,7 +237,7 @@ class FormBuilder
      * @param  string $value
      * @param  array  $attributes
      *
-     * @return \Styde\Html\Htmltag
+     * @return \Styde\Html\VoidTag
      */
     public function text(string $name, $value = null, $attributes = [])
     {
@@ -230,7 +250,7 @@ class FormBuilder
      * @param  string $name
      * @param  array  $attributes
      *
-     * @return \Styde\Html\Htmltag
+     * @return \Styde\Html\VoidTag
      */
     public function password(string $name, $attributes = [])
     {
@@ -243,7 +263,7 @@ class FormBuilder
      * @param  string $name
      * @param  array  $attributes
      *
-     * @return \Styde\Html\Htmltag
+     * @return \Styde\Html\VoidTag
      */
     public function file(string $name, $attributes = [])
     {
@@ -257,7 +277,7 @@ class FormBuilder
      * @param string $value
      * @param array  $attributes
      *
-     * @return \Styde\Html\Htmltag
+     * @return \Styde\Html\VoidTag
      */
     public function hidden($name, $value = null, $attributes = [])
     {
@@ -301,7 +321,16 @@ class FormBuilder
         );
     }
 
-    public function options($list, $selected, array $attributes = [])
+    /**
+     * Create the options for a select element.
+     *
+     * @param  array $list
+     * @param  string $selected
+     * @param  array  $attributes
+     *
+     * @return array
+     */
+    protected function options($list, $selected, array $attributes = [])
     {
         $options = [];
 
@@ -324,7 +353,7 @@ class FormBuilder
      * @param  string $selected
      * @param  array  $attributes
      *
-     * @return \Illuminate\Support\HtmlString
+     * @return \Styde\Html\Htmltag
      */
     protected function optionGroup($label, $list, $selected, array $attributes = [])
     {
@@ -338,7 +367,8 @@ class FormBuilder
     }
 
     /**
-     * Create an option element
+     * Create an option element.
+     *
      * @param string $text
      * @param mixed $value
      * @param bool $selected
@@ -364,7 +394,7 @@ class FormBuilder
      * @param string $value
      * @param array  $options
      *
-     * @return \Styde\Html\Htmltag
+     * @return \Styde\Html\VoidTag
      */
     public function time($name, $value = null, $options = array())
     {
@@ -392,7 +422,7 @@ class FormBuilder
      * @param  bool   $checked
      * @param  array  $attributes
      *
-     * @return \Styde\Html\Htmltag
+     * @return \Styde\Html\VoidTag
      */
     public function radio($name, $value = null, $checked = false, $attributes = [])
     {
@@ -409,7 +439,7 @@ class FormBuilder
      * @param  bool   $checked
      * @param  array  $attributes
      *
-     * @return \Styde\Html\Htmltag
+     * @return \Styde\Html\VoidTag
      */
     public function checkbox($name, $value = 1, $checked = null, $attributes = [])
     {
@@ -426,13 +456,13 @@ class FormBuilder
      * @param string $checked
      * @param array  $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function radios($name, $options = [], $checked = null, $attributes = [])
     {
         $checked = $this->getValueAttribute($name, $checked);
 
-        if (empty ($attributes['template'])) {
+        if (empty($attributes['template'])) {
             $template = in_array('inline', $attributes) ? '@forms.radios-inline' : '@forms.radios';
         } else {
             $template = $attributes['template'];
@@ -441,7 +471,7 @@ class FormBuilder
         $radios = [];
 
         foreach ($options as $value => $text) {
-            $id = $name.'_'.str_slug($value,'_');
+            $id = $name.'_'.str_slug($value, '_');
 
             $radios[] = [
                 $this->radio($name, $value, $checked == $value, ['id' => $id]),
@@ -462,7 +492,7 @@ class FormBuilder
      * @param string $selected
      * @param array  $attributes
      *
-     * @return string
+     * @return \Illuminate\Support\HtmlString
      */
     public function checkboxes($name, $options = array(), $selected = null, $attributes = [])
     {
@@ -472,7 +502,7 @@ class FormBuilder
             $selected = [];
         }
 
-        if (empty ($attributes['template'])) {
+        if (empty($attributes['template'])) {
             $template = in_array('inline', $attributes) ? '@forms.checkboxes-inline' : '@forms.checkboxes';
         } else {
             $template = $attributes['template'];
@@ -481,7 +511,7 @@ class FormBuilder
         $checkboxes = [];
 
         foreach ($options as $value => $label) {
-            $id = $name.'_'.str_slug($value,'_');
+            $id = $name.'_'.str_slug($value, '_');
 
             $checkboxes[] = [
                 $this->checkbox($name.'[]', $value, in_array($value, $selected), ['id' => $id]),
@@ -494,6 +524,14 @@ class FormBuilder
         );
     }
 
+    /**
+     * Get the value attribute of a field.
+     *
+     * @param  string $name
+     * @param  string $value
+     *
+     * @return mixed
+     */
     public function getValueAttribute($name, $value = null)
     {
         if ($this->session->hasOldInput()) {
@@ -507,6 +545,14 @@ class FormBuilder
         return $this->currentModel[$name] ?? null;
     }
 
+    /**
+     * Handle dynamic calls to the form
+     *
+     * @param  string $method
+     * @param  array $parameters
+     *
+     * @return mixed
+     */
     public function __call($method, $parameters)
     {
         if (static::hasMacro($method)) {

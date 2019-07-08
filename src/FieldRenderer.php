@@ -72,7 +72,8 @@ class FieldRenderer
     }
 
     /**
-     * Set the current session
+     * Set the current session.
+     *
      * @param \Illuminate\Contracts\Session\Session $session
      * @return void
      */
@@ -169,7 +170,7 @@ class FieldRenderer
     }
 
     /**
-     * Get the option list for the select box or the group of radios
+     * Get the option list for the select box or the group of radios.
      *
      * @param  string $name
      * @param  array $options
@@ -368,7 +369,7 @@ class FieldRenderer
     }
 
     /**
-     * Get the control's errors (if any)
+     * Get the control's errors (if any).
      *
      * @param  string $name
      * @return array

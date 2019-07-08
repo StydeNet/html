@@ -9,24 +9,25 @@ use Styde\Html\Facades\Form as FormBuilder;
 class Form extends Htmltag
 {
     /**
+     * The current model instance for the form.
+     *
      * @var \Illuminate\Database\Eloquent\Model
      */
     private $model;
 
     /**
-     * Creates a new Form class.
+     * Create a new Form instance.
      *
-     * @param $tag
      * @param array $children
      * @param array $attributes
      */
-    public function __construct($tag, $children = [], array $attributes = [])
+    public function __construct($children = [], array $attributes = [])
     {
         parent::__construct('form', $children, $attributes);
     }
 
     /**
-     * Add the action attribute to the tag form with the value of a specified route
+     * Add the action attribute to the tag form with the value of a specified route.
      *
      * @param string $name
      * @param array $parameters
@@ -39,7 +40,7 @@ class Form extends Htmltag
     }
 
     /**
-     * Set a new Model Class
+     * Set a new model instance for the form.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      */
@@ -49,7 +50,7 @@ class Form extends Htmltag
     }
 
     /**
-     * Add the necessary attribute to allow files
+     * Add the necessary attribute to allow files.
      *
      * @return Form
      */
@@ -59,7 +60,7 @@ class Form extends Htmltag
     }
 
     /**
-     * Open the form tag
+     * Open the form tag.
      *
      * @return HtmlString
      */
@@ -76,7 +77,7 @@ class Form extends Htmltag
     }
 
     /**
-     * Close the form tag
+     * Close the form tag.
      *
      * @return HtmlString
      */
@@ -90,7 +91,7 @@ class Form extends Htmltag
     }
 
     /**
-     * Render the inputs with the hidden attribute
+     * Render the inputs with the hidden attribute.
      *
      * @return string
      */

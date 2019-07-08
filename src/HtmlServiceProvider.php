@@ -123,7 +123,7 @@ class HtmlServiceProvider extends ServiceProvider
     protected function registerFormBuilder()
     {
         $this->app->singleton('form', function ($app) {
-            $form = new FormBuilder($app['url'], $app['html.theme'], $app['session.store']);
+            $form = new FormBuilder($app['html.theme'], $app['session.store']);
 
             $form->novalidate($app['config']->get('html.novalidate', false));
 

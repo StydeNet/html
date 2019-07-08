@@ -7,18 +7,23 @@ use Illuminate\Contracts\Support\Htmlable;
 abstract class BaseTag implements Htmlable
 {
     use HandlesAccess;
+
     /**
+     * The name of the tag.
+     *
      * @var string
      */
     protected $tag;
 
     /**
+     * The attributes of the tag.
+     *
      * @var array
      */
     protected $attributes;
 
     /**
-     * HtmlElement constructor.
+     * Create a new HTML tag.
      *
      * @param string $tag
      * @param array $attributes
@@ -31,10 +36,10 @@ abstract class BaseTag implements Htmlable
 
 
     /**
-     * Set a new attribute
+     * Set a new attribute.
      *
      * @param string $name
-     * @param bool $value
+     * @param bool|string $value
      * @return $this
      */
     public function attr($name, $value = true)
@@ -47,18 +52,19 @@ abstract class BaseTag implements Htmlable
     /**
      * Removes an attribute.
      *
+     * @param string $name
      * @return $this
      */
     public function removeAttr($name)
     {
-        unset ($this->attributes[$name]);
+        unset($this->attributes[$name]);
         $this->attributes = array_diff_key($this->attributes, ['required']);
 
         return $this;
     }
 
     /**
-     * Set a new attribute with all the classes
+     * Set a new attribute with all the classes.
      *
      * @param array $classes
      * @return BaseTag
@@ -69,7 +75,7 @@ abstract class BaseTag implements Htmlable
     }
 
     /**
-     * Render all the attributes in the tag
+     * Render all the attributes in the tag.
      *
      * @return string
      */
@@ -87,7 +93,7 @@ abstract class BaseTag implements Htmlable
     }
 
     /**
-     * Render the open tag with the attributes
+     * Render the open tag with the attributes.
      *
      * @return string
      */
@@ -97,6 +103,8 @@ abstract class BaseTag implements Htmlable
     }
 
     /**
+     * Get a rendered attribute of the tag.
+     *
      * @param string $name
      * @return mixed|string
      */
@@ -124,6 +132,8 @@ abstract class BaseTag implements Htmlable
     }
 
     /**
+     * Encode HTML special characters in a string.
+     *
      * @param string $value
      * @return string
      */
@@ -133,6 +143,8 @@ abstract class BaseTag implements Htmlable
     }
 
     /**
+     *  Handle dynamic calls to add tag attributes.
+     *
      * @param string $method
      * @param array $parameters
      * @return BaseTag
@@ -143,6 +155,8 @@ abstract class BaseTag implements Htmlable
     }
 
     /**
+     * Render the tag into HTML.
+     *
      * @return string
      */
     public function toHtml()
@@ -156,6 +170,8 @@ abstract class BaseTag implements Htmlable
     abstract public function render();
 
     /**
+     * Get the HTML representation of the tag.
+     *
      * @return string
      */
     public function __toString()
@@ -164,6 +180,8 @@ abstract class BaseTag implements Htmlable
     }
 
     /**
+     * Get an attribute of the tag.
+     *
      * @param string $name
      * @return mixed
      */
