@@ -14,9 +14,9 @@ Para generar un menú simplemente agrega el siguiente código en la plantilla de
 
 ```php
 [
-	'home' => ['url' => ''],
-	'about' => ['title' => 'Who we are', 'url' => 'about-us'],
-	'contact-us' => ['full_url' => 'http://contact.us']
+    'home' => ['url' => ''],
+    'about' => ['title' => 'Who we are', 'url' => 'about-us'],
+    'contact-us' => ['full_url' => 'http://contact.us'],
 ]
 ```
 
@@ -52,7 +52,7 @@ También puedes pasar una llave 'secure' para indicar si ese URL particular debe
 
 ### route
 
-Especifica el nombre de una ruta para un menu item: 
+Especifica el nombre de una ruta para un menu item:
 
 ```php
 ['route' => 'home']
@@ -70,7 +70,7 @@ El primer valor será tomado como el nombre de la ruta y los otros serán los pa
 
 ### action
 
-Especifica una acción para un menu item. 
+Especifica una acción para un menu item.
 
 ### action con parámetros
 
@@ -90,7 +90,7 @@ Algunas veces necesitarás utilizar parámetros dinámicos para construir rutas 
 ['route' => ['profile', ':username']]
 ```
 
-Después puedes asignar un valor usando los métodos `setParam` or `setParams`, así: 
+Después puedes asignar un valor usando los métodos `setParam` or `setParams`, así:
 
 ```blade
 {!! Menu::make('config.items')->setParam('username', 'sileence') !!}
@@ -110,7 +110,7 @@ Especifica un título para un menu item usando la llave 'title' en el array de o
 ['title' => 'Contact me']
 ```
 
-Si el título no es definido y estás usando la opción `translate_texts`, buscará la llave de idioma para el menu item, siguiendo esta convención: `menu.[key]`, por ejemplo: 
+Si el título no es definido y estás usando la opción `translate_texts`, buscará la llave de idioma para el menu item, siguiendo esta convención: `menu.[key]`, por ejemplo:
 
 ```php
 [
@@ -118,7 +118,7 @@ Si el título no es definido y estás usando la opción `translate_texts`, busca
 ]
 ```
 
-En este caso, como title no está definido, buscará la llave de idioma para `menu.home`. 
+En este caso, como title no está definido, buscará la llave de idioma para `menu.home`.
 
 Si no se encuentra ni la opción title o la llave de idioma, el componente generará un título basado en la llave del menu, es decir, 'home' generará 'Home', 'contact-us' generará 'Contact us', etc.
 
@@ -138,23 +138,23 @@ Se puede especificar una llave submenu y pasar otro array de menu items, así:
     'pages' => [
         'submenu' => [
             'about' => [],
-            'company' => ['url' => 'company']
-        ]
-    ]
+            'company' => ['url' => 'company'],
+        ],
+    ],
 ]
 ```
 
 Los items del sub-menu serán renderizados con las mismas opciones y fallbacks que el menu item.
 
-## active 
+## active
 
-Todos los menu items tendrán establecido el valor active en false por defecto, a menos que la URL de un menu item o sub-menu tenga el mismo o parcial valor que la URL actual. 
+Todos los menu items tendrán establecido el valor active en false por defecto, a menos que la URL de un menu item o sub-menu tenga el mismo o parcial valor que la URL actual.
 
-Por ejemplo: 
+Por ejemplo:
 
 ```php
 [
-    'news' => ['url' => 'news/']
+    'news' => ['url' => 'news/'],
 ]
 ```
 
@@ -166,12 +166,12 @@ Puedes pasar clases de CSS para un menu item determinado usando la opción 'clas
 
 El item activo también tendrá la clase 'active' y los items con sub-menus tendrán la clase 'dropdown'.
 
-Puedes personalizar estas clases usando: 
+Puedes personalizar estas clases usando:
 
 ```blade
 {!! Menu::make('items')
-        ->setActiveClass('Active')
-        ->setDropDownClass('dropdown') !!}
+    ->setActiveClass('Active')
+    ->setDropDownClass('dropdown') !!}
 ```
 
 ## Renderizar menús and plantillas personalizadas

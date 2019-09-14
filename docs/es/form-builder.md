@@ -5,9 +5,11 @@
 Permite a los usuarios establecer la opción `novalidate` para cada formulario generado con el método `Form::open` o el método `Form::model` así los desarrolladores pueden saltar la validación de HTML5 para evaluar la validación backend en los entornos local o de desarrollo:
 
 ```php
+<?php
+
 return [
     //..
-    'novalidate' => true
+    'novalidate' => true,
     //..
 ];
 ```
@@ -35,7 +37,7 @@ $tags = [
     'php' => 'PHP',
     'python' => 'Python',
     'js' => 'JS',
-    'ruby' => 'Ruby on Rails'
+    'ruby' => 'Ruby on Rails',
 ];
 
 $checked = ['php', 'js'];
