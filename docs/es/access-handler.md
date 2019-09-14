@@ -1,6 +1,6 @@
 # Access handler
 
-Algunas veces quieres mostrar o esconder menu items, form fields, etc. para ciertos usuarios, con este componente se puede hacer sin necesidad de condicionales o código boilerplate.
+Algunas veces querrás mostrar o esconder menu items, form fields, etc. para ciertos usuarios, con este componente se puede hacer sin necesidad de condicionales o código boilerplate.
 
 Este paquete incluye una clase `BasicAccessHandler` pero puedes construir tu propia implementación de `AccessHandler`.
 
@@ -18,36 +18,37 @@ Sólo pasa una de las siguientes opciones como un atributo de campo o valor del 
 
 *WARNING*: tomar en cuenta que este paquete sólo evitará que los elementos aparezcan en el frontend, aún se necesita proteger el acceso de backend usando middleware, etc.
 
-Uso: 
+Uso:
 
 #### Form fields
 
 ```blade
-{!! Field::select('user_id', null, ['roles' => 'admin'])
+{!! Field::select('user_id', null, ['roles' => 'admin']) !!}
 ```
 
 #### Menu items
 
 ```php
+<?php
 // config/menu.php
 
 return [
     'items' => [
         'account' => [
-            'logged' => true
+            'logged' => true,
         ],
         'login' => [
-            'logged' => false
+            'logged' => false,
         ],
         'settings' => [
-            'roles' => 'admin'
-        ]
-    ]
+            'roles' => 'admin',
+        ],
+    ],
 ];
 ```
-     
+
 ```blade
-{!! Menu::make('menu.items') !}}
+{!! Menu::make('menu.items') !!}
 ```
 
 ## Autorización y políticas de acceso
@@ -70,39 +71,40 @@ Ejemplos:
 
 Si estás contruyendo menús puedes usar parámetros dinámicos para pasar valores a la autorización.
 
-En el siguiente ejemplo definiremos un parámetro dinámico 'post' y pasarlo usando setParam cuando se construya el menú:
+En el siguiente ejemplo definiremos un parámetro dinámico 'post' y lo pasaremos usando setParam cuando se construya el menú:
 
 ```php
+<?php
 // config/menu.php
 
 return [
     'items' => [
         'view-post' => [],
         'edit-post' => [
-            'allows' => ['update-post', ':post']
-        ]
-    ]
+            'allows' => ['update-post', ':post'],
+        ],
+    ],
 ];
 ```
-     
+
 ```blade
-{!! Menu::make('menu.items')->setParam('post', $post)->render() !}}
+{!! Menu::make('menu.items')->setParam('post', $post)->render() !!}
 ```
-     
+
 ## Personalización
 
-Si estás trabajando en un proyecto complejo con muchas reglas de acceso diferentes, etc. puedes necesitar implementar un  AccessHandler propio. Para hacer esto, crea una nueva clase que implemente la interface `Styde\Html\Access\AccessHandler`, entonces extiende el HtmlServiceProvider y sustituye el método `registerAccessHandler`.
+Si estás trabajando en un proyecto complejo con muchas reglas de acceso diferentes, etc. puedes necesitar implementar un AccessHandler propio. Para hacer esto, crea una nueva clase que implemente la interface `Styde\Html\Access\AccessHandler`, entonces extiende el HtmlServiceProvider y sustituye el método `registerAccessHandler`.
 
 ## Standalone
 
 Si se quiere usar la clase del access handler como un componente independiente, por favor agrega este alias global en `config/app.php`.
 
 ```php
-  'aliases' => [
-    // ...
-    'Access' => Styde\Html\Facades\Access,
-    // ...
-  ],
+    'aliases' => [
+        // ...
+        'Access' => Styde\Html\Facades\Access,
+        // ...
+    ],
 ```
 
 Luego se puede utilizar la facade donde se quiera:
@@ -122,6 +124,7 @@ Luego se puede utilizar la facade donde se quiera:
 Se puede desactivar este componente en la configuración:
 
 ```php
+<?php
 //config/html.php
 
 return [

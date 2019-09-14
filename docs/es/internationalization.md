@@ -3,11 +3,12 @@
 Puedes configurar si quieres usar este paquete para tratar de traducir los textos o no, por ejemplo si tu proyecto sólo necesita ser implementado en un idioma y prefieres simplemente escribir los textos donde los necesites en lugar de utilizar el componente Translator, desactiva las traducciones en la configuración:
 
 ```php
+<?php
 //config/html.php
 
 return [
   //...
-  'translate_texts' => false
+  'translate_texts' => false,
   //...
 ];
 ```
@@ -19,23 +20,23 @@ Pero si tu proyecto necesita ser implementado en más de un idioma o quieres org
 ## Traducir labels (field builder)
 
 Si quieres tener un label específico en un campo, puedes hacerlo pasándolo como parte del array de atributos:
- 
+
 ```blade
 {!! Field::text('name', ['label' => 'Nombre completo']) !!}
 ```
- 
+
 También puedes definirlo como parte del array `attributes`en el archivo `resources/lang/en/validation.php`:
- 
- ```php
+
+```php
 //resources/lang/en/validation.php
 
 //..
 'attributes' => [
-    'name' => 'Nombre completo'
+    'name' => 'Nombre completo',
 ],
 ```
 
-Toma en cuenta que esto también es una convención usada por el componente Laravel Validator, de esta manera puedes tener todos los textos de los labels en un mismo lugar.  
+Toma en cuenta que esto también es una convención usada por el componente Laravel Validator, de esta manera puedes tener todos los textos de los labels en un mismo lugar.
 
 [Aprender más sobre field builder](field-builder.md)
 
@@ -57,22 +58,24 @@ Por supuesto, si la llave de idioma no es encontrada, éste devolverá el string
 Si `'translate_texts'` es definido como `true`, pero no específicas un título explícito para un menu item; el componente buscará un llave de idioma en: `menu.[llave_menu_item]` si la llave no es encontrada, el paquete intentará convertir la llave del menu item en un formato de título. Por ejemplo:
 
 ```php
+<?php
 //resources/lang/en/menu.php
 
 return [
-    'home' => 'Homepage'
+    'home' => 'Homepage',
 ];
 ```
 
 ```php
+<?php
 //config/menu.php
 
 return [
     'items' => [
         'home'  => [],
         'about' => ['title' => 'Who we are'],
-        'contact-us' => []
-    ]
+        'contact-us' => [],
+    ],
 ];
 ```
 
@@ -91,7 +94,7 @@ Devolverá algo así:
 ```
 
 Tomar en cuenta que:
- 
+
 * "Homepage" es tomado desde la llave del menu "menu.home".
 * "Who we are" es definido explícitamente (no se intenta traducir)
 * "Contact us" es generado desde la llave "contact-us" (debido a que la clave de idioma no está definida)

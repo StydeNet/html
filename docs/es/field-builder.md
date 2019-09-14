@@ -37,13 +37,13 @@ Es lo mismo que:
 
 ## Labels:
 
-Se puede explicítamente pasar un label a un campo como parte del array de atributos, es decir: 
+Se puede pasar explicítamente un label a un campo como parte del array de atributos, es decir:
 
 ```blade
 {!! Field::text(’name’, [‘label’ => ‘Full name’]) !!}
 ```
 
-Como una segunda opción, se puede almacenar los labels en la carpeta lang/ con la misma convención usada para almacenar los nombres de los atributos para los errores de validación:
+Como una segunda opción, se puede almacenar los labels en el directorio lang/ con la misma convención usada para almacenar los nombres de los atributos para los errores de validación:
 
 validation.atributos.[nombre_del_atributo].
 
@@ -57,7 +57,7 @@ Si saltas ambas opciones, entonces FieldBuilder generará un label basado en el 
 
 Por defecto, los campos serán renderizados con la plantilla predeterminada, ubicada en la carpeta [theme]/fields, por ejemplo, para el tema Bootstrap sería: `vendor/styde/html/themes/bootstrap/fields/default.blade.php`
 
-Pero se tiene la opción de personalizar la plantilla usada para un tipo o campo particular: 
+Pero se tiene la opción de personalizar la plantilla usada para un tipo o campo particular:
 
 ### Personalizar por tipo
 
@@ -69,9 +69,10 @@ Algunos frameworks de CSS (como Bootstrap) necesitan diferentes markups para dis
         'field_templates' => [
             'checkbox' => 'checkbox',
             'checkboxes' => 'collection',
-            'radios' => 'collection'
+            'radios' => 'collection',
         ],
-        //...
+    ],
+],
 //...
 ```
 
@@ -150,34 +151,42 @@ Los inputs, selects, textareas, etc. con errores también tendrán una clase de 
     'bootstrap' => [
         //...
         'field_classes' => [
-                //...
+            //...
             'error' => 'input-with-feedback'
             //...
+        ],
+    ],
+],
 ```
 
 Una vez más, si estás usando Twitter Bootstrap cualquier campo con errores tendrá la clase `input-with-feedback`. Esto también es necesario para mostrar el input en color rojo.
 
 ## Options
 
-Para selects, radios and checkboxes, se puede omitir los argumentos de las opciones o pasar `null`:
+Para selects, radios y checkboxes, se puede omitir los argumentos de las opciones o pasar `null`:
 
 ```blade
-{!! Field::select('os') !!}` or `{!! Field::select('os', null) !!}
+{!! Field::select('os') !!}` o `{!! Field::select('os', null) !!}
 ```
 
 Si existe un modelo vinculado al formulario, entonces el FieldBuilder verificará si hay un método llamado: `get[fieldName]Options`, en ese caso, será llamado y devolverá los valores a ser utilizados como las opciones, es decir:
 
 ```php
-class Product extends Model 
+<?php
+
+//...
+
+class Product extends Model{
 
     //...
-    
+
     public function getOsOptions()
     {
         return ['osx', 'linux', 'windows'];
     }
-    
+
     //...
+}
 ```
 
 ## Opción empty
@@ -202,12 +211,12 @@ Para ahorrar algunas pulsaciones de teclas, puedes utilizar abreviaturas en luga
 
 ```php
 /*
-* Especifica las abreviaturas para los atributos del campo del formulario
-*/
+ * Especifica las abreviaturas para los atributos del campo del formulario
+ */
 'abbreviations' => [
     'ph' => 'placeholder',
     'max' => 'maxlength',
-    'tpl' => 'template'
+    'tpl' => 'template',
 ],
 ```
 
@@ -227,7 +236,7 @@ Utilizando la configuración, se puede asignar clases de CSS predeterminadas par
 
 ```php
 'themes' => [
-        //...
+    //...
     'bootstrap' => [
         //...
         'field_classes' => [
@@ -236,6 +245,8 @@ Utilizando la configuración, se puede asignar clases de CSS predeterminadas par
             'checkbox' => '',
             'error' => 'input-with-feedback'
         ],
+    ],
+],
 ```
 
 Por supuesto, esto es para cada theme en específico, debido a que es imposible convencer a todos los autores de frameworks de CSS de usar las mismas clases.

@@ -13,7 +13,7 @@ Alert::info('Su cuenta está a punto de caducar')
     ->button('¡Renueva ahora!', '#', 'primary');
 ```
 
-Los mensajes serán persistentes en el sesión hasta que sean presentados al usuario con:
+Los mensajes serán persistentes en la sesión hasta que sean presentados al usuario con:
 
 ```blade
 {!! Alert::render() !!}
@@ -21,7 +21,7 @@ Los mensajes serán persistentes en el sesión hasta que sean presentados al usu
 
 ## Crear un nuevo mensaje de alerta
 
-Se puede generar un nuevo mensaje de alerta con: 
+Se puede generar un nuevo mensaje de alerta con:
 
 ```blade
 {!! Alert::message('Este es el mensaje', 'tipo-alerta') !!}
@@ -43,7 +43,7 @@ Alert::success("Está todo bien ahora");
 
 ## Encadenamiento de métodos
 
-Se puede especificar más opciones por encadenamiento de métodos:
+Se pueden especificar más opciones por encadenamiento de métodos:
 
 ### Details
 
@@ -55,7 +55,7 @@ Se puede pasar uno o más mensajes detallados encadenando el método details():
 
 ### Llamadas de acción
 
-Se puede asignar botones a un mensaje de alerta: 
+Se pueden asignar botones a un mensaje de alerta:
 
 ```blade
 {!! Alert::info()->button('Llamada de acción', 'alguna-url', 'primary') !!}
@@ -63,7 +63,7 @@ Se puede asignar botones a un mensaje de alerta:
 
 ### Html
 
-Se puede directamente pasar HTML a un mensaje de alerta: 
+Se puede pasar directamente HTML a un mensaje de alerta:
 
 ```blade
 {!! Alert::info()->html('<strong>El HTML va aquí</strong>') !!}
@@ -89,31 +89,32 @@ Se puede pasar un array de items (tal vez una lista de errores):
 
 ## Persistir los mensajes de alerta
 
-Agrega el siguiente middleware al array `$middleware` en `app/Http/Kernel.php` **ANTES** de `\App\Http\Middleware\EncryptCookies`: 
+Agrega el siguiente middleware al array `$middleware` en `app/Http/Kernel.php` **ANTES** de `\App\Http\Middleware\EncryptCookies`:
 
 ```php
 protected $middleware = [
     //...
-    \Styde\Html\Alert\Middleware::class
+    \Styde\Html\Alert\Middleware::class,
     //...
 ];
 ```
-Se necesita este middleware para persistir los mensajes de alerta después de que se complete cada request. 
+Se necesita este middleware para persistir los mensajes de alerta después de que se complete cada request.
 
-Por defecto, los mensajes de alerta serán persistidos usando el componente session de Laravel. Pero también se puede crear una implementación propia. 
+Por defecto, los mensajes de alerta serán persistidos usando el componente session de Laravel. Pero también se puede crear una implementación propia.
 
 ## Traducciones
 
 Si la opción `'translate_texts'` está definida como true en la configuración (es true por defecto), el componente de alerta intentará traducir todos los mensajes, utilizando el valor de la llave `$message`, pero si esta llave de idioma no es encontrada, devolverá el string literal.
- 
+
 Si no se necesita utilizar el componente Traductor, sólo define translate_texts como false en la configuración:
 
 ```php
+<?php
 //config/html.php
 
 return [
     //...
-    'translate_texts' => false
+    'translate_texts' => false,
     //...
 ];
 ```
