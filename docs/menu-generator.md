@@ -14,9 +14,9 @@ To generate a menu simply add the following code in your layout's template:
 
 ```php
 [
-	'home' => ['url' => ''],
-	'about' => ['title' => 'Who we are', 'url' => 'about-us'],
-	'contact-us' => ['full_url' => 'http://contact.us']
+    'home' => ['url' => ''],
+    'about' => ['title' => 'Who we are', 'url' => 'about-us'],
+    'contact-us' => ['full_url' => 'http://contact.us'],
 ]
 ```
 
@@ -138,10 +138,10 @@ You can specify a sub-menu key and pass another array of menu items, like this:
     'pages' => [
         'submenu' => [
             'about' => [],
-            'company' => ['url' => 'company']
-        ]
-    ]
-]
+            'company' => ['url' => 'company'],
+        ],
+    ],
+],
 ```
 
 The sub-menu items will be rendered with the same options and fallbacks as the menu items.
@@ -150,11 +150,11 @@ The sub-menu items will be rendered with the same options and fallbacks as the m
 
 All menu items will have the active value set to false as default, unless the URL of a menu item or sub-item has the same or partial base value than the current URL.
 
-For example: 
+For example:
 
 ```php
 [
-    'news' => ['url' => 'news/']
+    'news' => ['url' => 'news/'],
 ]
 ```
 
@@ -170,8 +170,8 @@ You can customize these classes using:
 
 ```php
 {!! Menu::make('items')
-        ->setActiveClass('Active')
-        ->setDropDownClass('dropdown') !!}
+    ->setActiveClass('Active')
+    ->setDropDownClass('dropdown') !!}
 ```
 
 ## Render menus and custom templates

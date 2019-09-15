@@ -5,6 +5,8 @@
 Allow users to set the novalidate option for every form generated with the `Form::open` or `Form::model` method, so developers can skip HTML5 validation in order to test backend validation in local or development environments:
 
 ```php
+<?php
+
 return [
     //..
     'novalidate' => true
@@ -19,7 +21,7 @@ Create a list of radios.
 This function is similar to `Form::select` but it generates a collection of radios instead of options. i.e.:
 
 ```blade
-Form::radios('status', ['a' => 'Active', 'i' => 'Inactive'])
+{!! Form::radios('status', ['a' => 'Active', 'i' => 'Inactive']) !!}
 ```
 
 You can pass 'inline' as a value in the attributes array, to set the radios as inline (they'll be rendered with the 'radios-inline' template).
@@ -35,7 +37,7 @@ $tags = [
     'php' => 'PHP',
     'python' => 'Python',
     'js' => 'JS',
-    'ruby' => 'Ruby on Rails'
+    'ruby' => 'Ruby on Rails',
 ];
 
 $checked = ['php', 'js'];

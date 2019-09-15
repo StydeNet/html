@@ -89,14 +89,23 @@ You can pass an array of items (maybe an error list):
 
 ## Persist alert messages
 
-Add the following middleware to the `$middleware` array in `app/Http/Kernel.php` **BEFORE** the `\App\Http\Middleware\EncryptCookies`: 
+Add the following middleware to the `$middleware` array in `app/Http/Kernel.php` **BEFORE** the `\App\Http\Middleware\EncryptCookies`:
 
 ```php
-protected $middleware = [
+<?php
+//app/Http/Kernel.php
+
+//...
+
+class Kernel extends HttpKernel
+{
     //...
-    \Styde\Html\Alert\Middleware::class
-    //...
-];
+    protected $middleware = [
+        //...
+        \Styde\Html\Alert\Middleware::class,
+        //...
+    ];
+}
 ```
 
 This middleware is needed to persist the alert messages after each request is completed.
@@ -105,16 +114,17 @@ By default the alert messages will persist using the Laravel's session component
 
 ## Translations
 
-If the `'translate_texts'` options is set to true in the configuration (it's true by default), the alert component will attempt to translate all the messages, using the `$message` value as a lang key, if the language key is not found, it will return the literal string.
- 
+If the `'translate_texts'` option is set to true in the configuration (it's true by default), the alert component will attempt to translate all the messages, using the `$message` value as a lang key, if the language key is not found, it will return the literal string.
+
 If you don't need to use the translator component, just set translate_texts to false in the configuration:
 
 ```php
+<?php
 //config/html.php
 
 return [
     //...
-    'translate_texts' => false
+    'translate_texts' => false,
     //...
 ];
 ```
@@ -123,7 +133,7 @@ return [
 
 By default, the alert messages will be rendered with the default template, located in themes/[theme]/alert, for example, for the Bootstrap theme that would be:
 
-```
+```bash
 vendor/styde/html/themes/bootstrap/alert.blade.php
 ```
 
