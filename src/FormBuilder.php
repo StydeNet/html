@@ -471,7 +471,7 @@ class FormBuilder
         $radios = [];
 
         foreach ($options as $value => $text) {
-            $id = $name.'_'.str_slug($value, '_');
+            $id = $name.'_'.Str::slug($value, '_');
 
             $radios[] = [
                 $this->radio($name, $value, $checked == $value, ['id' => $id]),
@@ -511,7 +511,7 @@ class FormBuilder
         $checkboxes = [];
 
         foreach ($options as $value => $label) {
-            $id = $name.'_'.str_slug($value, '_');
+            $id = $name.'_'.Str::slug($value, '_');
 
             $checkboxes[] = [
                 $this->checkbox($name.'[]', $value, in_array($value, $selected), ['id' => $id]),
