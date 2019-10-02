@@ -263,11 +263,16 @@ trait IncludeRulesHelpers
     }
 
     /**
+     * @param null $strategies
      * @return mixed
      */
-    public function email()
+    public function email($strategies = null)
     {
-        $this->field->addRule('email');
+        if ($strategies) {
+            $this->field->addRule('email:'.implode((array) $strategies, ','));
+        } else {
+            $this->field->addRule('email');
+        }
 
         return $this;
     }

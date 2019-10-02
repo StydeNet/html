@@ -162,7 +162,7 @@ class Field
     {
         $this->data = array_merge($this->data, $data);
     }
-    
+
     /**
      * Get the options from the field.
      *

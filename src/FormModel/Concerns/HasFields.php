@@ -63,9 +63,9 @@ trait HasFields
      *
      * @return \Styde\Html\Fields\FieldBuilder
      */
-    public function email($name)
+    public function email($name, $strategies = null)
     {
-        return $this->addField($name, 'email');
+        return $this->addField($name, 'email')->email($strategies);
     }
 
     /**

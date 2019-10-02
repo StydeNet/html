@@ -44,7 +44,7 @@ class FormModelTest extends TestCase
 
         $this->assertHtmlEquals('<p>Custom template</p>', $formModel);
     }
-    
+
     /** @test */
     function can_use_a_customized_template_from_the_current_theme()
     {
@@ -137,7 +137,7 @@ class FormModelTest extends TestCase
 
         $form->tag('h3', 'title here');
         $form->email('email')->required();
-        
+
         $expect = [
             'email' => ['email', 'required']
         ];
@@ -199,7 +199,7 @@ class FormModelTest extends TestCase
 
         $this->assertTemplateMatches('form-model/login-form', $form);
     }
-    
+
     /** @test */
     function set_a_model_and_get_the_field_values_from_its_attributes()
     {
@@ -226,6 +226,28 @@ class FormModelTest extends TestCase
         $this->expectExceptionMessage('Call to undefined method Styde\Html\Tests\LoginForm::badMethod()');
 
         app(LoginForm::class)->badMethod();
+    }
+
+    /** @test */
+    function adds_strategies_to_email_rule()
+    {
+        $form = app(EmailForm::class);
+
+        $expectedRules = [
+            'email' => ['email:rfc,dns'],
+            'another_email' => ['email:rfc,dns'],
+        ];
+
+        $this->assertSame($expectedRules, $form->getValidationRules());
+    }
+}
+
+class EmailForm extends FormModel
+{
+    public function setup()
+    {
+        $this->email('email', ['rfc', 'dns']);
+        $this->email('another_email', 'rfc,dns');
     }
 }
 

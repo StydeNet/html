@@ -168,7 +168,7 @@ class FieldAttributesValidationTest extends TestCase
             Field::text('name')->requiredWith('foo', 'bar', 'john', 'doe')
         );
     }
-    
+
     /** @test */
     function it_adds_the_required_with_all_rule()
     {
@@ -204,7 +204,7 @@ class FieldAttributesValidationTest extends TestCase
             Field::number('phone')->same('phone2')
         );
     }
-    
+
     /** @test */
     function it_adds_the_size_rule()
     {
@@ -222,7 +222,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $this->assertHasRules(['accepted'], Field::text('name')->accepted());
     }
-    
+
     /** @test */
     function it_adds_the_active_url_rule()
     {
@@ -297,7 +297,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $this->assertHasRules(['between:1,10'], Field::text('name')->between(1,10));
     }
-    
+
     /** @test */
     function it_adds_the_boolean_rule()
     {
@@ -348,7 +348,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $this->assertHasRules(['numeric', 'digits:2'], Field::number('age')->digits(2));
     }
-    
+
     /** @test */
     function it_adds_the_digits_between_rule()
     {
@@ -375,6 +375,12 @@ class FieldAttributesValidationTest extends TestCase
 
     /** @test */
     function it_adds_the_email_rule()
+    {
+        $this->assertHasRules(['email'], Field::text('email')->email());
+    }
+
+    /** @test */
+    function it_adds_the_email_rule_with_custom_strategies()
     {
         $this->assertHasRules(['email'], Field::text('email')->email());
     }
@@ -449,7 +455,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $this->assertHasRules(['integer'], Field::text('dni')->integer());
     }
-    
+
     /** @test */
     function it_adds_the_ip_rule()
     {
@@ -473,7 +479,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $this->assertHasRules(['json'], Field::text('data')->json());
     }
-    
+
     /** @test */
     function it_adds_the_lt_rule()
     {
@@ -554,7 +560,7 @@ class FieldAttributesValidationTest extends TestCase
     {
         $this->assertHasRules(['timezone'], Field::text('date')->timezone());
     }
-    
+
     /** @test */
     function it_adds_the_unique_rule()
     {
