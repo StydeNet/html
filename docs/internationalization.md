@@ -3,12 +3,13 @@
 You can configure whether you want this package to attempt to translate texts or not, for example if your project only needs to implement one language and you prefer to simply write texts wherever you need them instead of using the Translator component, please deactivate translations in the configuration:
 
 ```php
+<?php
 //config/html.php
 
 return [
-  //...
-  'translate_texts' => false
-  //...
+    //...
+    'translate_texts' => false,
+    //...
 ];
 ```
 
@@ -19,23 +20,26 @@ But if your project needs to implement more than one language or you want to org
 ## Translating labels (field builder)
 
 If you want to have a specific label in a field, you can do so by passing it as part of the attribute array:
- 
+
 ```blade
 {!! Field::text('name', ['label' => 'Full name']) !!}
 ```
- 
+
 But you can also define it as part of the `attributes` array in the `resources/lang/en/validation.php` file:
- 
+
 ```php
+<?php
  //resources/lang/en/validation.php
 
- //..
- 'attributes' => [
-     'name' => 'Full name'
- ],
+return [
+     //...
+    'attributes' => [
+       'name' => 'Full name'
+    ],
+];
 ```
 
-Note that this is also the convention used by the Laravel Validator component, so this way you can have all your label texts in one place.  
+Note that this is also the convention used by the Laravel Validator component, so this way you can have all your label texts in one place.
 
 [Learn more about the field builder](field-builder.md)
 
@@ -45,7 +49,7 @@ If the `'translate_texts'` is set to `true`, this component will assume that all
 
 ```php
 Alert::success('messages.users.updated')
-		->button('messages.users.go_to_profile', url('users/profile'))
+    ->button('messages.users.go_to_profile', url('users/profile'))
 ```
 
 Of course if the lang key is not found, it will return the literal string (so you can also pass the full message instead of a lang key).
@@ -57,10 +61,11 @@ Of course if the lang key is not found, it will return the literal string (so yo
 If the `'translate_texts'` is set to `true`, and you don't specify an explicit title for a menu item; the component will search for a lang key in: `menu.[menu_item_key]` if the key is not found, the package will attempt to convert the menu item key in a title format. For example:
 
 ```php
+<?php
 //resources/lang/en/menu.php
 
 return [
-    'home' => 'Homepage'
+    'home' => 'Homepage',
 ];
 ```
 
@@ -71,8 +76,8 @@ return [
     'items' => [
         'home'  => [],
         'about' => ['title' => 'Who we are'],
-        'contact-us' => []
-    ]
+        'contact-us' => [],
+    ],
 ];
 ```
 
@@ -91,7 +96,7 @@ Will return something like:
 ```
 
 Note that:
- 
+
 * "Homepage" is taken from the menu key "menu.home".
 * "Who we are" is explicit defined (no translation is attempted)
 * "Contact us" is generated from the key "contact-us" (since no lang key is provided)

@@ -2,7 +2,7 @@
 
 There are a lot of CSS (and all kind of) frameworks out there, this package was created with that in mind, and even though *Bootstrap* is included _out of the box_, we plan to add more themes in the future (we also invite you to collaborate). You can also create your own themes, publish and customize them if you need to.
 
-To change or customize a theme, simply run: 
+To change or customize a theme, simply run:
 
 ```bash
 php artisan vendor:publish
@@ -11,10 +11,11 @@ php artisan vendor:publish
 Then go to `config/html.php` and change the theme value:
 
 ```php
+<?php
 //config/html.php
 
 return [
-    'theme' => 'custom-theme'
+    'theme' => 'custom-theme',
 ];
 ```
 
@@ -35,7 +36,7 @@ Maybe you don't need to create or use a new theme and you just simply need to ov
 ```
 
 ```blade
-{!! Field::email('email', ['template' => 'custom-template'])
+{!! Field::email('email', ['template' => 'custom-template']) !!}
 ```
 
 ## Customize templates by field type (field builder)

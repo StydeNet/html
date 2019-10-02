@@ -57,7 +57,7 @@ If you skip both options, then the FieldBuilder will generate a label based on t
 
 By default, the fields will be rendered with the default template, located in the [theme]/fields folder, for example, for the Bootstrap theme that would be:
 
-```
+```bash
 vendor/styde/html/themes/bootstrap/fields/default.blade.php
 ```
 
@@ -73,10 +73,12 @@ Some CSS frameworks (like Bootstrap) need different markups for different form f
         'field_templates' => [
             'checkbox' => 'checkbox',
             'checkboxes' => 'collection',
-            'radios' => 'collection'
+            'radios' => 'collection',
         ],
         //...
-//...
+    ],
+    //...
+],
 ```
 
 With this configuration, the "checkbox" fields will use the `vendor/styde/html/themes/bootstrap/fields/checkbox.blade.php` template by default, while the "checkboxes" and "radios" fields will use the `vendor/styde/html/themes/bootstrap/fields/collection.blade.php` template.
@@ -117,7 +119,7 @@ You can specify a 'required' value in the attributes array:
 {!! Field::text(’name’, [’required’]) !!}
 ```
 
-Or as a key => value pair (the field will be marked as required if the value evaluates to true, i.e.:
+Or as a key => value pair (the field will be marked as required if the value evaluates to true), i.e.:
 
 ```php
 $required = true;
@@ -155,9 +157,12 @@ Inputs, selects, textareas, etc. with errors will also get an extra CSS class, y
     'bootstrap' => [
         //...
         'field_classes' => [
-                //...
-            'error' => 'input-with-feedback'
             //...
+            'error' => 'input-with-feedback',
+            //...
+        ],
+    ],
+],
 ```
 
 And once again, if you are using Twitter Bootstrap, any field with errors will get the `input-with-feedback` class. This is also required for showing the input in red color.
@@ -173,8 +178,10 @@ For selects, radios and checkboxes, you can skip the options argument or pass nu
 If there is a model bound to the form, then the FieldBuilder will check if there is a method called: `get[fieldName]Options` in that case, it will be called and the returned value will be used as the options, i.e.:
 
 ```php
-class Product extends Model
+<?php
 
+class Product extends Model
+{
     //...
 
     public function getOsOptions()
@@ -183,6 +190,7 @@ class Product extends Model
     }
 
     //...
+}
 ```
 
 ## Empty option
@@ -214,7 +222,7 @@ To save some key strokes, you can use abbreviations instead of the full name of 
 'abbreviations' => [
     'ph' => 'placeholder',
     'max' => 'maxlength',
-    'tpl' => 'template'
+    'tpl' => 'template',
 ],
 ```
 
@@ -234,15 +242,17 @@ Using the configuration, you can assign default CSS class for every field accord
 
 ```php
 'themes' => [
-        //...
+    //...
     'bootstrap' => [
         //...
         'field_classes' => [
             // type => CSS class or classes
             'default' => 'form-control',
             'checkbox' => '',
-            'error' => 'input-with-feedback'
+            'error' => 'input-with-feedback',
         ],
+    ],
+],
 ```
 
 Of course this is theme specific, since it would be impossible to convince all CSS framework authors to use the same classes...
