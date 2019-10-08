@@ -104,7 +104,7 @@ class AlertTest extends TestCase
 
 
     /** @test */
-    function it_persist_the_alert_messages_once_the_response()
+    function it_persist_the_alert_messages()
     {
         Alert::success('Success!');
 
@@ -112,7 +112,9 @@ class AlertTest extends TestCase
 
         $this->assertNull($this->app['session.store']->get('styde/alerts'));
 
-        $middleware->terminate(new Request(), new Response());
+        $middleware->handle(new Request, function () {
+            return new Response;
+        });
 
         $session = $this->app['session.store']->get('styde/alerts');
         $this->assertNotNull($session);
