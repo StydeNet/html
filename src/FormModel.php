@@ -4,6 +4,7 @@ namespace Styde\Html;
 
 use BadMethodCallException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Styde\Html\Facades\Html;
 use Illuminate\Support\HtmlString;
 use Styde\Html\Fields\FieldBuilder;
@@ -332,11 +333,22 @@ class FormModel implements Htmlable
      * Validate the request with the validation rules specified.
      *
      * @param Request|null $request
-     * @return mixed
+     * @return array
+     * @throws ValidationException
      */
     public function validate(Request $request = null)
     {
-        $data = ($request ?: request())->validate($this->getValidationRules());
+        if ($request == null) {
+            $request = request();
+        }
+
+        try {
+            $data = $request->validate($this->getValidationRules());
+        } catch (ValidationException $validationException) {
+            $this->failedValidation($request);
+
+            throw $validationException;
+        }
 
         array_walk($data, function (&$value, $name) {
             if ($transformer = $this->fields->get($name)->getField()->transformer) {
@@ -345,6 +357,16 @@ class FormModel implements Htmlable
         });
 
         return $data;
+    }
+
+    /**
+     * Callback method that will be called if the validation fails.
+     *
+     * @param Request $request
+     */
+    protected function failedValidation(Request $request)
+    {
+        //
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Styde\Html\Tests;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rules\Exists;
+use Illuminate\Validation\ValidationException;
 use Styde\Html\FormModel;
 use Illuminate\Http\Request;
 use Styde\Html\Facades\Form;
@@ -234,11 +235,55 @@ class FormModelTest extends TestCase
         $form = app(EmailForm::class);
 
         $expectedRules = [
-            'email' => ['email:rfc,dns'],
+            'email' => ['email:rfc,dns', 'required'],
             'another_email' => ['email:rfc,dns'],
         ];
 
         $this->assertSame($expectedRules, $form->getValidationRules());
+    }
+
+    /** @test */
+    function calls_failedValidation_callback_if_validation_fails()
+    {
+        $form = app(CallbackForm::class);
+
+        $this->assertFalse($form->failedValidationWasCalled);
+
+        try {
+            $form->validate(new Request(['name' => null]));
+            $this->fail("Validation didn't failed");
+        } catch (ValidationException $exception) {
+        }
+
+        $this->assertTrue($form->failedValidationWasCalled);
+    }
+
+    /** @test */
+    function failedValidation_has_a_placeholder_method()
+    {
+        $form = app(EmailForm::class);
+
+        try {
+            $form->validate(new Request(['email' => 'invalid-email']));
+            $this->fail("Validation didn't failed");
+        } catch (ValidationException $exception) {
+            $this->assertTrue(true);
+        }
+    }
+}
+
+class CallbackForm extends FormModel
+{
+    public $failedValidationWasCalled = false;
+
+    public function setup()
+    {
+        $this->text('name')->required();
+    }
+
+    public function failedValidation(Request $request)
+    {
+        $this->failedValidationWasCalled = true;
     }
 }
 
@@ -246,7 +291,7 @@ class EmailForm extends FormModel
 {
     public function setup()
     {
-        $this->email('email', ['rfc', 'dns']);
+        $this->email('email', ['rfc', 'dns'])->required();
         $this->email('another_email', 'rfc,dns');
     }
 }
