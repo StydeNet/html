@@ -184,7 +184,7 @@ This component will allow you to generate complex alert messages.
 ```php
 Alert::info('Your account is about to expire')
     ->details('Renew now to learn about:')
-    ->items(['Laravel', 'PHP, 'And more!'])
+    ->items(['Laravel', 'PHP', 'And more!'])
     ->button('Renew now!', url('renew'), 'primary');
 ```
 
