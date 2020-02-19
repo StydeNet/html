@@ -52,19 +52,14 @@ class HtmlServiceProvider extends ServiceProvider
         );
     }
 
-    protected function mergeDefaultConfiguration()
-    {
-        $this->mergeConfigFrom(
-            __DIR__.'/../config.php', 'html'
-        );
-    }
-
     /**
      * Register the service provider.
      */
     public function register()
     {
         parent::register();
+
+        $this->mergeConfigFrom(__DIR__.'/../config.php', 'html');
 
         $this->registerAccessHandler();
 
@@ -85,8 +80,6 @@ class HtmlServiceProvider extends ServiceProvider
     protected function loadConfigurationOptions()
     {
         if ( ! empty($this->options)) return;
-
-        $this->mergeDefaultConfiguration();
 
         $this->options = $this->app->make('config')->get('html');
 
