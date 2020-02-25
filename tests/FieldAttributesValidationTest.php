@@ -20,7 +20,8 @@ class FieldAttributesValidationTest extends TestCase
     function it_returns_the_email_rule_for_email_fields()
     {
         $this->assertHasRules(
-            ['email', 'required'], Field::email('email', ['required' => true])
+            ['email', 'required'],
+            Field::email('email', ['required' => true])
         );
     }
 
@@ -50,8 +51,8 @@ class FieldAttributesValidationTest extends TestCase
     function it_builds_the_exists_rule_when_options_come_from_a_table()
     {
         $field = Field::select('parent_id')
-            ->from('table_name', 'label', 'id', function ($query) { // TODO: improve this syntax
-                $query->whereNull('parent_id')
+            ->from('table_name', 'label', 'id', function ($q) {
+                $q->whereNull('parent_id')
                     ->orderBy('label', 'ASC');
             });
 
@@ -295,7 +296,7 @@ class FieldAttributesValidationTest extends TestCase
     /** @test */
     function it_adds_the_between_rule()
     {
-        $this->assertHasRules(['between:1,10'], Field::text('name')->between(1,10));
+        $this->assertHasRules(['between:1,10'], Field::text('name')->between(1, 10));
     }
 
     /** @test */

@@ -5,8 +5,13 @@ namespace Styde\Html\Tests;
 use Styde\Html\Facades\Menu;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-use Styde\Html\Menu\{MenuBuilder, MenuComposer, Item};
-use Illuminate\Support\Facades\{Auth, Gate, Route, View};
+use Styde\Html\Menu\MenuBuilder;
+use Styde\Html\Menu\MenuComposer;
+use Styde\Html\Menu\Item;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 
 class MenuGeneratorTest extends TestCase
@@ -158,7 +163,9 @@ class MenuGeneratorTest extends TestCase
             }
         };
 
-        $fakePost = new class { public $id = 1; };
+        $fakePost = new class {
+            public $id = 1;
+        };
 
         Auth::login($fakeUser);
 
@@ -285,7 +292,7 @@ class MenuGeneratorTest extends TestCase
     /** @test */
     function can_create_menus_using_a_helper()
     {
-        $config = function($items) {
+        $config = function ($items) {
             $items->url('/', 'Home');
             $items->placeholder('About us');
             $items->url('projects', 'Our projects');

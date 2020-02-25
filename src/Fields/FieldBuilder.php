@@ -225,7 +225,7 @@ class FieldBuilder implements Htmlable
      * @param null $customQuery
      * @return $this
      */
-    public function from($table, $text, $id = 'id', $customQuery = null)
+    public function from(string $table, string $text, string $id = 'id', callable $customQuery = null)
     {
         $this->field->options = function () use ($table, $customQuery, $text, $id) {
             $q = DB::table($table);

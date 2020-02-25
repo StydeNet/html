@@ -103,7 +103,7 @@ trait ValidationRules
      */
     public function withoutRules($rules = [])
     {
-        if (empty ($rules)) {
+        if (empty($rules)) {
             $this->field->removeAllRules();
             return $this;
         }

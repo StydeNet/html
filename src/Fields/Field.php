@@ -201,7 +201,7 @@ class Field
      */
     public function removeRule($rule)
     {
-        unset ($this->rules[$rule]);
+        unset($this->rules[$rule]);
     }
 
     /**

@@ -2,7 +2,8 @@
 
 namespace Styde\Html;
 
-use Illuminate\Support\Facades\{Auth, Gate};
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Styde\Html\Fields\FieldBuilder;
 
 trait HandlesAccess

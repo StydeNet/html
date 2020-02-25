@@ -6,5 +6,4 @@ use Styde\Html\FormModel;
 
 class TestFormModel extends FormModel
 {
-
 }

@@ -4,7 +4,8 @@ namespace Styde\Html\Tests;
 
 use Styde\Html\Facades\Form;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\{Route, Session};
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use Styde\Html\Form\Input;
 
 class FormBuilderTest extends TestCase
@@ -13,7 +14,8 @@ class FormBuilderTest extends TestCase
     function it_opens_a_form()
     {
         $this->assertHtmlEquals(
-            '<form method="get">', Form::open()
+            '<form method="get">',
+            Form::open()
         );
     }
 
@@ -65,7 +67,8 @@ class FormBuilderTest extends TestCase
     function it_renders_a_form()
     {
         $this->assertTemplateMatches(
-            'form/get-method', Form::get()->render()
+            'form/get-method',
+            Form::get()->render()
         );
     }
 
@@ -95,7 +98,8 @@ class FormBuilderTest extends TestCase
         Route::post('the-url/{param1}/{param2}', ['as' => 'the-route']);
 
         $this->assertTemplateMatches(
-            'form/route', Form::post()->route('the-route', ['with', 'parameters'])
+            'form/route',
+            Form::post()->route('the-route', ['with', 'parameters'])
         );
     }
 
@@ -105,7 +109,8 @@ class FormBuilderTest extends TestCase
         Session::put('_token', 'random_token_here');
 
         $this->assertTemplateMatches(
-            'form/csrf-field', Form::post()->render()
+            'form/csrf-field',
+            Form::post()->render()
         );
     }
 
@@ -115,7 +120,8 @@ class FormBuilderTest extends TestCase
         Session::put('_token', 'random_token_here');
 
         $this->assertTemplateMatches(
-            'form/put-method', Form::put()->render()
+            'form/put-method',
+            Form::put()->render()
         );
     }
     
@@ -125,7 +131,8 @@ class FormBuilderTest extends TestCase
         Form::novalidate(true);
 
         $this->assertHtmlEquals(
-            '<form novalidate method="get">', Form::get()->open()
+            '<form novalidate method="get">',
+            Form::get()->open()
         );
     }
 
@@ -133,7 +140,8 @@ class FormBuilderTest extends TestCase
     function it_generates_time_inputs()
     {
         $this->assertHtmlEquals(
-            '<input type="time" name="time">', Form::time('time')
+            '<input type="time" name="time">',
+            Form::time('time')
         );
     }
 
@@ -141,7 +149,8 @@ class FormBuilderTest extends TestCase
     function it_generates_radios()
     {
         $this->assertTemplateMatches(
-            'form/radios', Form::radios('gender', ['m' => 'Male', 'f' => 'Female'], 'm')
+            'form/radios',
+            Form::radios('gender', ['m' => 'Male', 'f' => 'Female'], 'm')
         );
     }
 
@@ -152,7 +161,8 @@ class FormBuilderTest extends TestCase
         $checked = ['php', 'js'];
 
         $this->assertTemplateMatches(
-            'form/checkboxes', Form::checkboxes('tags', $tags, $checked)
+            'form/checkboxes',
+            Form::checkboxes('tags', $tags, $checked)
         );
     }
     
@@ -162,7 +172,8 @@ class FormBuilderTest extends TestCase
         Session::put('_old_input', ['name' => 'Duilio Palacios']);
 
         $this->assertHtmlEquals(
-            '<input type="text" name="name" value="Duilio Palacios">', Form::text('name')
+            '<input type="text" name="name" value="Duilio Palacios">',
+            Form::text('name')
         );
     }
 
@@ -176,7 +187,8 @@ class FormBuilderTest extends TestCase
         Form::setCurrentModel($user);
 
         $this->assertHtmlEquals(
-            '<input type="text" name="name" value="Duilio">', Form::text('name')
+            '<input type="text" name="name" value="Duilio">',
+            Form::text('name')
         );
     }
 
@@ -190,7 +202,8 @@ class FormBuilderTest extends TestCase
         Form::setCurrentModel($post);
 
         $this->assertHtmlEquals(
-            '<textarea name="content">The content.</textarea>', Form::textarea('content')
+            '<textarea name="content">The content.</textarea>',
+            Form::textarea('content')
         );
     }
 

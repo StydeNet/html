@@ -9,7 +9,8 @@ use Styde\Html\FormModel;
 use Illuminate\Http\Request;
 use Styde\Html\Facades\Form;
 use Illuminate\Http\Testing\FileFactory;
-use Illuminate\Support\Facades\{View, Route};
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Route;
 
 class FormModelTest extends TestCase
 {
@@ -114,7 +115,7 @@ class FormModelTest extends TestCase
             'email' => 'clemir@styde.net',
             'password' => 'secret',
             'password_confirmation' => 'secret',
-            "remember_me" => 1,
+            'remember_me' => 1,
         ], [], $files);
 
         $result = app(RegisterForm::class)->validate($request);
@@ -125,7 +126,7 @@ class FormModelTest extends TestCase
             'password' => 'secret',
             'password_confirmation' => 'secret',
             'photo' => $image,
-            "remember_me" => 1,
+            'remember_me' => 1,
         ];
 
         $this->assertSame($expect, $result);

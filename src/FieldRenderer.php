@@ -122,7 +122,9 @@ class FieldRenderer
                 return $this->form->select(
                     $this->getHtmlName($field->name),
                     $this->addEmptyOption(
-                        $field->name, $this->getOptionsList($field->name, $field->getOptions()), $field->attributes
+                        $field->name,
+                        $this->getOptionsList($field->name, $field->getOptions()),
+                        $field->attributes
                     ),
                     $field->displayValue(),
                     $field->attributes

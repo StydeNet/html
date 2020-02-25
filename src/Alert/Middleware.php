@@ -2,7 +2,8 @@
 
 namespace Styde\Html\Alert;
 
-class Middleware {
+class Middleware
+{
 
     /**
      * @var Container
@@ -37,5 +38,4 @@ class Middleware {
 
         return $response;
     }
-
 }

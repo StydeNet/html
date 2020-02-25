@@ -118,7 +118,7 @@ class AlertTest extends TestCase
 
         $session = $this->app['session.store']->get('styde/alerts');
         $this->assertNotNull($session);
-        $this->assertContains(["message" => "Success!", "type" => "success"], $session);
+        $this->assertContains(['message' => 'Success!', 'type' => 'success'], $session);
     }
 
     /** @test */

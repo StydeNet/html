@@ -65,5 +65,4 @@ class SessionHandler implements Handler
     {
         $this->session->put($this->key, null);
     }
-
 }

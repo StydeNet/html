@@ -64,4 +64,3 @@ class AssetsForm extends FormModel
             ->style('//cdn.example.com/the-editor.css');
     }
 }
-

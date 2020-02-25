@@ -38,7 +38,8 @@ class TestCase extends OrchestraTestCase
     }
 }
 
-class TestUser extends Model implements AuthenticatableInterface {
+class TestUser extends Model implements AuthenticatableInterface
+{
     use Authenticatable;
 
     protected $guarded = [];

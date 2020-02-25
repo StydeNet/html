@@ -50,7 +50,7 @@ class TransformFieldsTest extends TestCase
         $form = app(TestFormModel::class);
 
         $form->model(new class {
-             public $name = 'DUILIO PALACIOS';
+            public $name = 'DUILIO PALACIOS';
         });
 
         $form->text('name')

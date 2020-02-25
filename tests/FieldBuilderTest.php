@@ -14,7 +14,8 @@ class FieldBuilderTest extends TestCase
     function it_generates_a_text_field()
     {
         $this->assertTemplateMatches(
-            'field/text', Field::text('name', 'value')
+            'field/text',
+            Field::text('name', 'value')
         );
     }
 
@@ -22,7 +23,8 @@ class FieldBuilderTest extends TestCase
     function it_generates_a_required_text_field()
     {
         $this->assertTemplateMatches(
-            'field/text-required', Field::text('name', ['required' => true])
+            'field/text-required',
+            Field::text('name', ['required' => true])
         );
     }
 
@@ -30,7 +32,8 @@ class FieldBuilderTest extends TestCase
     function it_generates_an_optional_text_field()
     {
         $this->assertTemplateMatches(
-            'field/text-not-required', Field::text('name', ['required' => false])
+            'field/text-not-required',
+            Field::text('name', ['required' => false])
         );
     }
 
@@ -38,7 +41,8 @@ class FieldBuilderTest extends TestCase
     function it_generates_a_required_password_field()
     {
         $this->assertTemplateMatches(
-            'field/password-required', Field::password('password')->required()
+            'field/password-required',
+            Field::password('password')->required()
         );
     }
 
@@ -46,7 +50,8 @@ class FieldBuilderTest extends TestCase
     public function it_generates_a_text_field_with_a_custom_label()
     {
         $this->assertTemplateMatches(
-            'field/text-custom-label', Field::text('name', 'value', ['label' => 'Full name'])
+            'field/text-custom-label',
+            Field::text('name', 'value', ['label' => 'Full name'])
         );
     }
 
@@ -54,7 +59,8 @@ class FieldBuilderTest extends TestCase
     public function it_generates_a_text_field_with_an_help_text()
     {
         $this->assertTemplateMatches(
-            'field/text-help-text', Field::text('name', 'value', ['helpText' => 'This is a help text for the field'])
+            'field/text-help-text',
+            Field::text('name', 'value', ['helpText' => 'This is a help text for the field'])
         );
     }
 
@@ -62,7 +68,8 @@ class FieldBuilderTest extends TestCase
     public function it_generates_a_text_field_with_a_raw_help_text()
     {
         $this->assertTemplateMatches(
-            'field/text-raw-help-text', Field::text('name', 'value')->rawHelpText('This is a text with a <a href="#">link</a>')
+            'field/text-raw-help-text',
+            Field::text('name', 'value')->rawHelpText('This is a text with a <a href="#">link</a>')
         );
     }
 
@@ -70,31 +77,34 @@ class FieldBuilderTest extends TestCase
     public function it_generates_a_text_field_with_a_custom_id()
     {
         $this->assertTemplateMatches(
-            'field/text-custom-id', Field::text('name', 'value', ['id' => 'custom_id'])
+            'field/text-custom-id',
+            Field::text('name', 'value', ['id' => 'custom_id'])
         );
     }
 
     /** @test */
     public function it_generates_a_select_field()
     {
-         trans()->addLines([
+        trans()->addLines([
              'validation.empty_option.default' => 'Select value',
          ], 'en');
 
         $this->assertTemplateMatches(
-            'field/select', Field::select('gender', ['m' => 'Male', 'f' => 'Female'])
+            'field/select',
+            Field::select('gender', ['m' => 'Male', 'f' => 'Female'])
         );
     }
 
     /** @test */
     public function it_generates_a_select_field_with_custom_trans_empty()
     {
-         trans()->addLines([
+        trans()->addLines([
              'validation.empty_option.gender' => 'Select gender',
          ], 'en');
 
         $this->assertTemplateMatches(
-            'field/select-empty', Field::select('gender', ['m' => 'Male', 'f' => 'Female'])
+            'field/select-empty',
+            Field::select('gender', ['m' => 'Male', 'f' => 'Female'])
         );
     }
 
@@ -102,7 +112,8 @@ class FieldBuilderTest extends TestCase
     function it_adds_an_empty_option_to_select_fields()
     {
         $this->assertTemplateMatches(
-            'field/select-empty', Field::select('gender', ['m' => 'Male', 'f' => 'Female'], ['empty' => 'Select gender'])
+            'field/select-empty',
+            Field::select('gender', ['m' => 'Male', 'f' => 'Female'], ['empty' => 'Select gender'])
         );
     }
 
@@ -117,11 +128,13 @@ class FieldBuilderTest extends TestCase
         ];
 
         $this->assertTemplateMatches(
-            'field/select-multiple', Field::select('tags', $options, ['php', 'laravel'], ['multiple'])
+            'field/select-multiple',
+            Field::select('tags', $options, ['php', 'laravel'], ['multiple'])
         );
 
         $this->assertTemplateMatches(
-            'field/select-multiple', Field::selectMultiple('tags', $options, ['php', 'laravel'])
+            'field/select-multiple',
+            Field::selectMultiple('tags', $options, ['php', 'laravel'])
         );
     }
 
@@ -140,7 +153,8 @@ class FieldBuilderTest extends TestCase
         ];
 
         $this->assertTemplateMatches(
-            'field/select-group', Field::selectMultiple('frameworks', $options, ['vue', 'laravel'])
+            'field/select-group',
+            Field::selectMultiple('frameworks', $options, ['vue', 'laravel'])
         );
     }
 
@@ -156,7 +170,8 @@ class FieldBuilderTest extends TestCase
         });
 
         $this->assertTemplateMatches(
-            'field/text_with_errors', Field::text('name')
+            'field/text_with_errors',
+            Field::text('name')
         );
     }
 
@@ -172,7 +187,8 @@ class FieldBuilderTest extends TestCase
         $checked = ['php', 'js'];
 
         $this->assertTemplateMatches(
-            'field/checkboxes', Field::checkboxes('tags', $tags, $checked)
+            'field/checkboxes',
+            Field::checkboxes('tags', $tags, $checked)
         );
     }
 
@@ -188,7 +204,8 @@ class FieldBuilderTest extends TestCase
         $checked = ['php', 'js'];
 
         $this->assertTemplateMatches(
-            'field/checkboxes_help_text', Field::checkboxes('tags', $tags, $checked)->helpText('This is a help text')->required()
+            'field/checkboxes_help_text',
+            Field::checkboxes('tags', $tags, $checked)->helpText('This is a help text')->required()
         );
     }
 
@@ -196,7 +213,8 @@ class FieldBuilderTest extends TestCase
     function it_generates_radios()
     {
         $this->assertTemplateMatches(
-            'field/radios', Field::radios('gender', ['m' => 'Male', 'f' => 'Female'], 'm')
+            'field/radios',
+            Field::radios('gender', ['m' => 'Male', 'f' => 'Female'], 'm')
         );
     }
 
@@ -204,7 +222,8 @@ class FieldBuilderTest extends TestCase
     function it_generates_an_input_field_with_label()
     {
         $this->assertTemplateMatches(
-            'field/input', Field::input('text', 'profession', 'developer')
+            'field/input',
+            Field::input('text', 'profession', 'developer')
         );
     }
 
@@ -212,7 +231,8 @@ class FieldBuilderTest extends TestCase
     function it_generates_an_email_field()
     {
         $this->assertTemplateMatches(
-            'field/email', Field::email('e-mail', 'clemir@styde.net')
+            'field/email',
+            Field::email('e-mail', 'clemir@styde.net')
         );
     }
 
@@ -220,7 +240,8 @@ class FieldBuilderTest extends TestCase
     function it_generates_an_url_field()
     {
         $this->assertTemplateMatches(
-            'field/url', Field::url('site', 'https://styde.net')
+            'field/url',
+            Field::url('site', 'https://styde.net')
         );
     }
 
@@ -228,7 +249,8 @@ class FieldBuilderTest extends TestCase
     function it_generates_a_file_field()
     {
         $this->assertTemplateMatches(
-            'field/file', Field::file('myFile')
+            'field/file',
+            Field::file('myFile')
         );
     }
 
@@ -236,7 +258,8 @@ class FieldBuilderTest extends TestCase
     function it_generates_a_textarea_field()
     {
         $this->assertTemplateMatches(
-            'field/textarea', Field::textarea('address', '742 Evergreen Terrace', ['rows' => 2, 'cols' => 20])
+            'field/textarea',
+            Field::textarea('address', '742 Evergreen Terrace', ['rows' => 2, 'cols' => 20])
         );
     }
 
@@ -244,7 +267,8 @@ class FieldBuilderTest extends TestCase
     function it_generates_an_hidden_field()
     {
         $this->assertTemplateMatches(
-            'field/hidden', Field::hidden('_token', 'some-random-token')
+            'field/hidden',
+            Field::hidden('_token', 'some-random-token')
         );
     }
 
@@ -252,7 +276,8 @@ class FieldBuilderTest extends TestCase
     function it_generates_a_checkbox_field()
     {
         $this->assertTemplateMatches(
-            'field/checkbox', Field::checkbox('remember_me')
+            'field/checkbox',
+            Field::checkbox('remember_me')
         );
     }
 
@@ -309,7 +334,8 @@ class FieldBuilderTest extends TestCase
         Form::setCurrentModel($post);
 
         $this->assertTemplateMatches(
-            'field/select-from-model', Field::select('category', [], null, ['empty' => 'Select category'])
+            'field/select-from-model',
+            Field::select('category', [], null, ['empty' => 'Select category'])
         );
     }
 
@@ -326,7 +352,8 @@ class FieldBuilderTest extends TestCase
         Form::setCurrentModel($post);
 
         $this->assertTemplateMatches(
-            'field/select-without-options-from-model', Field::select('user', [], null, ['empty' => 'Select user'])
+            'field/select-without-options-from-model',
+            Field::select('user', [], null, ['empty' => 'Select user'])
         );
     }
 
@@ -334,7 +361,8 @@ class FieldBuilderTest extends TestCase
     function it_adds_a_select_field_from_model_without_options()
     {
         $this->assertTemplateMatches(
-            'field/select-without-options-from-model', Field::select('user', [], null, ['empty' => 'Select user'])
+            'field/select-without-options-from-model',
+            Field::select('user', [], null, ['empty' => 'Select user'])
         );
     }
 

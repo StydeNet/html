@@ -62,5 +62,4 @@ class Link
     {
         return Html::link($this->url, $this->title, $this->attributes, $this->secure);
     }
-
 }

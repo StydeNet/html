@@ -11,22 +11,25 @@ class Container
     /**
      * The Handler is used to persist, clean and retrieve the alert messages.
      *
-     * @var \Styde\Html\Alert\Handler
+     * @var Handler
      */
     protected $handler;
+
     /**
      * The Theme renders the alert messages using the current theme's templates.
      *
-     * @var \Styde\Html\Theme
+     * @var Theme
      */
     protected $theme;
+
     /**
      * Optional object for translating the messages for the current locale
      * configuration.
      *
-     * @var \Illuminate\Translation\Translator
+     * @var Lang
      */
     protected $lang;
+
     /**
      * Stores the current Alert messages collection.
      *
@@ -35,7 +38,7 @@ class Container
     protected $messages = array();
 
     /**
-     * Creates a new Alert Container object
+     * Creates a new Alert Container object.
      *
      * @param Handler $handler
      * @param Theme $theme
@@ -47,9 +50,9 @@ class Container
     }
 
     /**
-     * Set the translator component (this is optional)
+     * Set the translator component (this is optional).
      *
-     * @param \Illuminate\Translation\Translator $lang
+     * @param Lang $lang
      */
     public function setLang(Lang $lang)
     {
@@ -57,14 +60,12 @@ class Container
     }
 
     /**
-     * Calls the message() method, using the magic method's name as the message
-     * $type. Example:
-     *
+     * Calls the message() method, using the magic method's name as the message $type. Example:
      * Alert::success('msg') is the same as Alert::message('msg', 'success')
      *
      * @param $method
      * @param $args
-     * @return \Styde\Html\Alert\Message
+     * @return Message
      */
     public function __call($method, $args)
     {
@@ -81,7 +82,7 @@ class Container
      * @param string $message
      * @param string $type
      * @param array $args
-     * @return \Styde\Html\Alert\Message
+     * @return Message
      */
     public function message($message = '', $type = 'success', array $args = [])
     {
@@ -172,7 +173,7 @@ class Container
     {
         $messages = $this->toArray();
 
-        if (empty ($messages)) {
+        if (empty($messages)) {
             return '';
         }
 

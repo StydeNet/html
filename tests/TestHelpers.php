@@ -23,7 +23,7 @@ trait TestHelpers
 
         $template = __DIR__ . "/snapshots/$theme/$template.html";
 
-        if ( ! file_exists($template)) {
+        if (! file_exists($template)) {
             file_put_contents($template, $actual);
             $this->markTestIncomplete("The template [$template] was created");
 
