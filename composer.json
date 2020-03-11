@@ -11,7 +11,7 @@
     "require": {
         "php": "^7.2",
         "laravelcollective/html": "^6.0",
-        "illuminate/translation": "^6.0"
+        "illuminate/translation": "^6.0|^7.0"
     },
     "require-dev": {
         "phpspec/phpspec": "~4.0"
