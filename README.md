@@ -18,7 +18,7 @@ This is an extension of the Laravel Collective [HTML package](https://github.com
 
 1. The preferred way to install this package is through Composer:
 
-**Laravel 6.0 users**:
+**Laravel 6.0 users / Laravel 7.0 users**:
 
 Install by running `composer require "styde/html=~1.8"` or adding `"styde/html": "~1.8"` to your `composer.json` file and then running `composer update`.
 
