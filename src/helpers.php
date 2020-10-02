@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Convenient helpers in case you prefer to use them instead of the facades
+ * Convenient helpers in case you prefer sto use them instead of the facades
  */
 
 if (!function_exists('alert')) {
