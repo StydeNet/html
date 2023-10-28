@@ -7,10 +7,10 @@
 
 This package contains a collection of Laravel PHP classes designed to generate common HTML components, such as:
 
-* Menus
-* Alert messages
-* Form fields
-* Collection of radios and checkboxes
+* Menus.
+* Alert messages.
+* Form fields.
+* Collection of radios and checkboxes.
 
 This is an extension of the Laravel Collective [HTML package](https://github.com/laravelcollective/html) and will be very useful if you are working on a custom CMS, an admin panel or basically any project that needs to generate HTML dynamically.
 
@@ -142,7 +142,7 @@ This package adds the following functionality to the Laravel Collective's Form B
 
 #### novalidate
 
-Deactivate the HTML5 validation, ideal for local or development environments
+Deactivate the HTML5 validation, ideal for local or development environments:
 
 ```php
 //config/html.php
@@ -161,7 +161,7 @@ i.e.:
 
 #### checkboxes
 
-Generate a collection of checkboxes
+Generate a collection of checkboxes:
 
 ```php
 $options = [
@@ -179,7 +179,7 @@ $checked = ['php'];
 
 ## Alert messages
 
-This component will allow you to generate complex alert messages.
+This component will allow you to generate complex alert messages:
 
 ```php
 Alert::info('Your account is about to expire')
