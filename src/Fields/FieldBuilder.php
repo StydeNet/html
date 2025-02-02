@@ -237,7 +237,13 @@ class FieldBuilder implements Htmlable
             return $q->pluck($text, $id)->all();
         };
 
-        $this->field->addRule(Rule::exists($table, $id)->where($customQuery));
+        $rule = Rule::exists($table, $id);
+
+        if ($customQuery != null) {
+            $rule->where($customQuery);
+        }
+
+        $this->field->addRule($rule);
 
         return $this;
     }
