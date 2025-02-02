@@ -269,7 +269,7 @@ trait IncludeRulesHelpers
     public function email($strategies = null)
     {
         if ($strategies) {
-            $this->field->addRule('email:'.implode((array) $strategies, ','));
+            $this->field->addRule('email:'.implode(',', (array) $strategies));
         } else {
             $this->field->addRule('email');
         }
