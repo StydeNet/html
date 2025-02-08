@@ -2,7 +2,7 @@
 
 namespace Styde\Html\Alert;
 
-use Illuminate\Session\Store as Session;
+use Illuminate\Session\Store;
 
 class SessionHandler implements Handler
 {
@@ -28,7 +28,7 @@ class SessionHandler implements Handler
      * @param Session $session
      * @param $key
      */
-    public function __construct(Session $session, $key)
+    public function __construct(Store $session, $key)
     {
         $this->session = $session;
         $this->key = $key;

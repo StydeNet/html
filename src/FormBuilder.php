@@ -414,6 +414,11 @@ class FormBuilder
         return new Htmltag('button', $text, array_merge(['type' => 'button'], $attributes));
     }
 
+    public function submit($text = null, $attributes = [])
+    {
+        return new Htmltag('button', $text, array_merge(['type' => 'submit'], $attributes));
+    }
+
     /**
      * Create a radio button input field.
      *

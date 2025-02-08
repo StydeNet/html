@@ -41,8 +41,12 @@ if (! function_exists('alert')) {
      * @param array $args
      * @return string
      */
-    function alert($message = '', $type = 'success', $args = [])
+    function alert($message = null, $type = 'success', $args = []): \Styde\Html\Alert\Container|\Styde\Html\Alert\Message
     {
+        if (is_null($message)) {
+            return app('alert');
+        }
+
         return app('alert')->message($message, $type, $args);
     }
 }
