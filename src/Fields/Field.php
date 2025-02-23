@@ -113,7 +113,7 @@ class Field
     public function setAttribute($name, $value = null)
     {
         if (! in_array($name, $this->attributes)) {
-            if (! $value) {
+            if ($value === null) {
                 $this->attributes[] = $name;
             } else {
                 $this->attributes[$name] = $value;
@@ -140,6 +140,11 @@ class Field
     public function hasAttribute($name)
     {
         return array_key_exists($name, $this->attributes);
+    }
+
+    public function getAttribute($name)
+    {
+        return $this->attributes[$name] ?? null;
     }
 
     /**

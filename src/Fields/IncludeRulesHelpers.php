@@ -501,7 +501,12 @@ trait IncludeRulesHelpers
      */
     public function min(int $value)
     {
-        $this->field->setAttribute('minlength', $value);
+        if ($this->field->type === 'number') {
+            $this->field->setAttribute('min', $value);
+        } else {
+            $this->field->setAttribute('minlength', $value);
+        }
+
         $this->field->addRule("min:{$value}");
 
         return $this;
