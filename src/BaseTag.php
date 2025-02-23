@@ -120,7 +120,7 @@ abstract class BaseTag implements Htmlable
             return $name;
         }
 
-        if ($value) {
+        if ($value !== null) {
             return $name.'="'.$this->escape($value).'"';
         }
 
